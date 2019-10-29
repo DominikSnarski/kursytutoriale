@@ -9,4 +9,8 @@
     <ProjectReference Include="..\KursyTutoriale.Shared\KursyTutoriale.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="URF.Core.All" Version="3.0.0" />
+  </ItemGroup>
+
 </Project>

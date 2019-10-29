@@ -1,3 +1,4 @@
+using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -16,6 +17,7 @@ namespace KursyTutoriale.API
         }
 
         public IConfiguration Configuration { get; }
+        public ILifetimeScope AutofacContainer { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -31,6 +33,11 @@ namespace KursyTutoriale.API
             {
                 configuration.RootPath = "ClientApp/build";
             });
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
