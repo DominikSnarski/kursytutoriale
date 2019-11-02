@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { Button, ButtonGroup, ButtonToolbar, Container } from 'reactstrap';
+import {Zoom, Fade} from 'react-reveal';
 
 const defaultProps = {
     initialPage: 1
@@ -101,6 +102,7 @@ class Pagination extends React.Component {
 
         return (
             <Container className="d-none d-lg-flex justify-content-center">
+            <Fade left>
             <ButtonGroup >
             <Button color="info" onClick={() => this.setPage(1)}>First</Button>
             <Button color="info" onClick={() => this.setPage(pager.currentPage - 1)}>Previous</Button>
@@ -109,6 +111,7 @@ class Pagination extends React.Component {
                 )}
             <Button color="info" onClick={() => this.setPage(pager.totalPages)}>Last</Button>
           </ButtonGroup>
+          </Fade>
           </Container>
         );
         

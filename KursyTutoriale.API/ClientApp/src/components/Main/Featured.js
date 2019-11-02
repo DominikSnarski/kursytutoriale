@@ -14,7 +14,6 @@ const Featured = () => {
     const toggle = () => setModal(!modal);
 
     return (
-
         <Container className="Container">
             <Jumbotron fluid className="jumbotron_bg">
                 <span className="d-lg-flex justify-content-center d-block h2 text-dark">Featured courses.</span>
@@ -101,16 +100,7 @@ const Featured = () => {
                     </div>
                 </Col>
             </Row>
-            <Details
-                isOpen={modal}
-                toggle={toggle}
-                title="we zadzialaj"
-                category="ffs"
-                tags={["tag1", "tag2"]}
-                price="Free"
-            />
         </Container>
-
     );
 }
 export default Featured;

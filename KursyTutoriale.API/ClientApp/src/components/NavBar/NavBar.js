@@ -9,7 +9,7 @@ import {
 
 
 const NavBar = () => (
-  <header>
+  <header className="page">
     <Navbar fixed="top" color="light" light expand="xs" className="border-bottom border-gray bg-white" style={{ height: 80 }}>
       <Container>
         <Row noGutters className="position-relative w-100 align-items-center">
