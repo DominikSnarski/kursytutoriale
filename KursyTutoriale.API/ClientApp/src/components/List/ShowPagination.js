@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import Pagination from './Pagination';
 import { Table, Media, Jumbotron, Container } from 'reactstrap';
+import Details from '../Details/Details';
 
 class ShowPagination extends React.Component {
     constructor() {
@@ -11,11 +12,13 @@ class ShowPagination extends React.Component {
 
         this.state = {
             exampleItems: exampleItems,
-            pageOfItems: []
+            pageOfItems: [],
+            isModalOpen: false
         };
 
         // bind function in constructor instead of render (https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-no-bind.md)
         this.onChangePage = this.onChangePage.bind(this);
+        this.toggle = this.toggle.bind(this);
     }
 
     onChangePage(pageOfItems) {
@@ -23,9 +26,17 @@ class ShowPagination extends React.Component {
         this.setState({ pageOfItems: pageOfItems });
     }
 
+    toggle() {
+        this.setState({
+          isModalOpen: !this.state.isModalOpen
+        });
+      }
+    
+
     render() {
         return (
             <Container>
+                
                 <Jumbotron fluid className="jumbotron_bg">
                     <span className="d-lg-flex justify-content-center d-block h2 text-dark">Courses</span>
                 </Jumbotron>
@@ -41,7 +52,7 @@ class ShowPagination extends React.Component {
                         </thead>
                         {this.state.pageOfItems.map(item =>
                             <tbody>
-                            <tr onClick={() => { alert("test") }}
+                            <tr onClick={this.toggle}
                             style={{ cursor: 'pointer' }}>
                             <td>{item.id}</td>
                             <td>      
@@ -50,7 +61,16 @@ class ShowPagination extends React.Component {
                             <td>{item.name}</td>
                             <td>{item.category}</td>
                             </tr>
+                            <Details
+                            isOpen={this.state.isModalOpen}
+                            toggle={this.toggle}
+                            title={item.name}
+                            category={item.category}
+                            tags={["tag1", "tag2"]}
+                            price="Free"
+                            />
                             </tbody>
+                            
                         )}
                         </Table>
                         <Pagination items={this.state.exampleItems} onChangePage={this.onChangePage} />
