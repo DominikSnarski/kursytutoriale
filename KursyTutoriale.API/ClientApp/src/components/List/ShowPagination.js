@@ -36,19 +36,17 @@ class ShowPagination extends React.Component {
 
     render() {
 
-        const classes = this.state.showDetails ? 'fadeIn' : 'fadeOut'
-
         if (this.state.showDetails)
             return (
                 <Fade right>
-                <div className="fadeIn">
+                <div>
                     <Jumbotron fluid className="jumbotron_bg">
                         <span className="d-lg-flex justify-content-center d-block h2 text-dark">Course Details</span>
                     </Jumbotron>
                     <Jumbotron fluid className="courses_bg">
-                        <Details title="Item1" category="Cat1" tags={["tag1"]} price="free" className={classes}/>
+                        <Details title="Item1" category="Cat1" tags={["tag1"]} price="free"/>
                         <div class="float-right mr-4">
-                            <Button color="primary" onClick={this.toggle}>Got To Course's Page</Button>{' '}
+                            <Button color="primary" onClick={this.toggle}>Got to course's page</Button>{' '}
                             <Button color="secondary" onClick={this.toggle}>Back</Button>
                         </div>
                     </Jumbotron>

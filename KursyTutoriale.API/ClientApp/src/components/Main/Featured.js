@@ -16,7 +16,7 @@ const Featured = () => {
     return (
         <Container className="Container">
             <Jumbotron fluid className="jumbotron_bg">
-                <span className="d-lg-flex justify-content-center d-block h2 text-dark">Featured courses.</span>
+                <span className="d-lg-flex justify-content-center d-block h2 text-dark">Featured courses</span>
             </Jumbotron>
             <Row>
                 <Col xs="6" sm="4">
