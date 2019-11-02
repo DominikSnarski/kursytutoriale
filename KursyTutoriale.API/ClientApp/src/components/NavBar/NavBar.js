@@ -18,7 +18,7 @@ const NavBar = () => (
             <Nav className="mrx-auto" navbar>
 
               <NavItem className="d-flex align-items-center">
-                <NavLink className="font-weight-bold" href="/">Home</NavLink>
+                <NavLink className="font-weight-bold" href="#Home">Home</NavLink>
               </NavItem>
 
               <NavItem className="d-flex align-items-center">

@@ -10,16 +10,17 @@ import ShowPagination from './components/List/ShowPagination';
 const App = () => (
 	<Fragment>
 		<NavBar />
-		<main className="my-5 py-5">
-		<Search/>
-		<Featured/>
+		<main className="my-5 py-5" id="Home">
+			<Search />
 			<Container className="px-0">
-				<Jumbotron fluid className="Container" id="Courses">
-				<Row>
-					<Col className="d-none d-lg-flex justify-content-center">
-					<ShowPagination/>
-					</Col>
-				</Row>
+				<Jumbotron fluid className="Container">
+					<Featured />
+					<Jumbotron className="Container" id="Courses"></Jumbotron>
+					<Row>
+						<Col className="d-none d-lg-flex justify-content-center">
+							<ShowPagination />
+						</Col>
+					</Row>
 				</Jumbotron>
 			</Container>
 		</main>
