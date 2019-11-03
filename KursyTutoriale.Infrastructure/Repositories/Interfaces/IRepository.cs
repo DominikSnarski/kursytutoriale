@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace KursyTutoriale.Infrastructure.Repositories.Interfaces
 {
-    interface IRepository<EntityType, IdType>
+    public interface IRepository<EntityType, IdType>
     {
         IEnumerable<EntityType> GetAll();
         void Add(EntityType toAdd);

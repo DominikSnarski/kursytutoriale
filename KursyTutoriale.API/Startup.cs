@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using KursyTutoriale.Infrastructure.Repositories.Interfaces;
+using KursyTutoriale.Infrastructure.Repositories.Mockups;
 
 namespace KursyTutoriale.API
 {
@@ -30,7 +32,16 @@ namespace KursyTutoriale.API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "KursyTutorialeAPI", Version = "v1" });
             });
 
+<<<<<<< HEAD
             services = ConfigureCORS(services);
+=======
+            // In production, the React files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/build";
+            });
+            services.AddTransient<ICoursesRepository, MockupCoursesRepository>();
+>>>>>>> Adding repository to controller
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

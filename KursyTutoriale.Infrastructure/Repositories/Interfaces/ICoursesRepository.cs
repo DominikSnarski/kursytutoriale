@@ -1,9 +1,8 @@
-﻿
-using KursyTutoriale.Domain;
+﻿using KursyTutoriale.Domain.Entites;
 
 namespace KursyTutoriale.Infrastructure.Repositories.Interfaces
 {
-    interface ICoursesRepository : IRepository<Course, int>
+    public interface ICoursesRepository : IRepository<Course, int>
     {
 
     }
