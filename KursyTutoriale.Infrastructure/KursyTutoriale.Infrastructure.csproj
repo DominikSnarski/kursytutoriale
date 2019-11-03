@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
@@ -11,10 +11,6 @@
 
   <ItemGroup>
     <PackageReference Include="URF.Core.All" Version="3.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Repositories\Mockups\" />
   </ItemGroup>
 
 </Project>

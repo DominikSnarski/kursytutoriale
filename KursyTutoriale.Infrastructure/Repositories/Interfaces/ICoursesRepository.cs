@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
+using KursyTutoriale.Domain;
 
 namespace KursyTutoriale.Infrastructure.Repositories.Interfaces
 {
-    interface Interface1
+    interface ICoursesRepository : IRepository<Course, int>
     {
+
     }
 }
