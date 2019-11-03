@@ -1,0 +1,17 @@
+.title{
+    padding:2%;
+    background-color: #3489a1 !important;
+    width: 100%;
+}
+
+.jumbotron_bg {
+    background-color:#53A6BE !important; 
+}
+
+.courses_bg{
+    background-color: #9dd2e2 !important;
+}
+
+html{
+    scroll-behavior: smooth;
+}

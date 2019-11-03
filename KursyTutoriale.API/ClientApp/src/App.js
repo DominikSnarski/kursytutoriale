@@ -1,22 +1,30 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router';
-import { Layout } from './components/Layout';
-import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
+import React, { Fragment } from 'react';
+import axios from 'axios';
+import { Container, Row, Col, Jumbotron } from 'reactstrap';
 
-import './custom.css'
+import NavBar from './components/NavBar/NavBar';
+import Search from './components/Search/Search';
+import Featured from './components/Main/Featured';
+import ShowPagination from './components/List/ShowPagination';
 
-export default class App extends Component {
-  static displayName = App.name;
+const App = () => (
+	<Fragment>
+		<NavBar />
+		<main className="my-5 py-5" id="Home">
+			<Search />
+			<Container className="px-0">
+				<Jumbotron fluid className="Container">
+					<Featured />
+					<Jumbotron className="Container" id="Courses"></Jumbotron>
+					<Row>
+						<Col className="d-none d-lg-flex justify-content-center">
+							<ShowPagination />
+						</Col>
+					</Row>
+				</Jumbotron>
+			</Container>
+		</main>
+	</Fragment>
+);
 
-  render () {
-    return (
-      <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/fetch-data' component={FetchData} />
-      </Layout>
-    );
-  }
-}
+export default App;
