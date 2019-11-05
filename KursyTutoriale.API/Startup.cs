@@ -19,6 +19,8 @@ namespace KursyTutoriale.API
         public IConfiguration Configuration { get; }
         public ILifetimeScope AutofacContainer { get; private set; }
 
+        private readonly string EnabledOriginsPolicy = "enabledOriginsPolicy";
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -27,11 +29,30 @@ namespace KursyTutoriale.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "KursyTutorialeAPI", Version = "v1" });
             });
+
+            services = ConfigureCORS(services);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
             
+        }
+
+        private IServiceCollection ConfigureCORS(IServiceCollection services)
+        {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    EnabledOriginsPolicy,
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:3000")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    });
+            });
+
+            return services;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +69,7 @@ namespace KursyTutoriale.API
                 app.UseHsts();
             }
 
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -57,6 +79,8 @@ namespace KursyTutoriale.API
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "KursyTutorialeAPI V1");
             });
 
+
+            app.UseCors(EnabledOriginsPolicy);
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
