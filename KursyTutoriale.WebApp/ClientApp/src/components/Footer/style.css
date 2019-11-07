@@ -1,0 +1,9 @@
+.footer {   
+    flex-shrink: 0; 
+    padding: 0.5%;
+    font-size: 0.8em;
+}
+
+.ListGroup{
+    background-color: transparent;
+}
