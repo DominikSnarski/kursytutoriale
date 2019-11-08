@@ -3,6 +3,7 @@ import Pagination from './Pagination';
 import { Table, Media, Jumbotron, Container, Button } from 'reactstrap';
 import Details from '../Details/Details';
 import { Fade } from 'react-reveal';
+import Filters from '../Filters/Filters';
 
 class ShowPagination extends React.Component {
     constructor() {
@@ -14,13 +15,16 @@ class ShowPagination extends React.Component {
         this.state = {
             exampleItems: exampleItems,
             pageOfItems: [],
-            showFilters: true,
+            showFilters: false,
             showDetails: false
         };
 
         // bind function in constructor instead of render (https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-no-bind.md)
         this.onChangePage = this.onChangePage.bind(this);
         this.toggle = this.toggle.bind(this);
+        this.toggleFilters = this.toggleFilters.bind(this);
+        this.formRef = React.createRef();
+        this.formReset = this.formReset.bind(this);
     }
 
     onChangePage(pageOfItems) {
@@ -34,10 +38,15 @@ class ShowPagination extends React.Component {
         });
     }
 
-    handleClick() {
-        this.setState({ showFilters: !this.state.showFilters });
-      }
+    toggleFilters() {
+        this.setState({
+            showFilters: !this.state.showFilters
+        });
+    }
 
+    formReset() {
+        this.formRef.current.reset()
+        }
 
     render() {
 
@@ -65,10 +74,10 @@ class ShowPagination extends React.Component {
                         <span className="d-lg-flex justify-content-center d-block h2 text-dark">Courses</span>
                     </Jumbotron>
                     <Button color="info" size="xm"
-                        onClick={this.handleClick}
+                        onClick={this.toggleFilters}
                     >Filters</Button>
                     <Fade top collapse when={this.state.showFilters}>
-                        <h1>React Reveal</h1>
+                        <Filters formRef={this.formRef} formReset={this.formReset}/>
                     </Fade>
 
                     <div>
