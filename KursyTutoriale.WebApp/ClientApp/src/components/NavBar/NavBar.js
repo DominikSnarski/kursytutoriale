@@ -25,6 +25,20 @@ const NavBar = (props) => (
                 <NavLink className="font-weight-bold" href="#Courses">Courses</NavLink>
               </NavItem>
 
+              <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle nav caret className="font-weight-bold">
+                  Categories
+              </DropdownToggle>
+                <DropdownMenu right>
+                  <DropdownItem>
+                    Option 1
+                </DropdownItem>
+                  <DropdownItem>
+                    Option 2
+                </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+
             </Nav>
           </Col>
 
@@ -41,7 +55,7 @@ const NavBar = (props) => (
             </Form>
           </Col>
 
-          
+
 
         </Row>
       </Container>

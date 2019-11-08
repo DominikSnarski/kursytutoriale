@@ -22,7 +22,7 @@ const Featured = () => {
                         <span className="d-lg-flex justify-content-center d-block h2 text-dark">Course Details</span>
                     </Jumbotron>
                     <Jumbotron fluid className="courses_bg">
-                        <Details title="Item1" category="Cat1" tags={["tag1"]} price="free" />
+                        <Details title="Item1" category="Cat1" tags={["tag1"]} price="free" description="Lorem "/>
                         <div class="float-right mr-4">
                             <Button color="primary" onClick={toggle}>Go to course's page</Button>{' '}
                             <Button color="secondary" onClick={toggle}>Back</Button>

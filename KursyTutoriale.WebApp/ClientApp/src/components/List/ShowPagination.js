@@ -14,6 +14,7 @@ class ShowPagination extends React.Component {
         this.state = {
             exampleItems: exampleItems,
             pageOfItems: [],
+            showFilters: true,
             showDetails: false
         };
 
@@ -33,6 +34,10 @@ class ShowPagination extends React.Component {
         });
     }
 
+    handleClick() {
+        this.setState({ showFilters: !this.state.showFilters });
+      }
+
 
     render() {
 
@@ -44,7 +49,7 @@ class ShowPagination extends React.Component {
                             <span className="d-lg-flex justify-content-center d-block h2 text-dark">Course Details</span>
                         </Jumbotron>
                         <Jumbotron fluid className="courses_bg">
-                            <Details title="Item1" category="Cat1" tags={["tag1"]} price="free" />
+                            <Details title="Item1" category="Cat1" tags={["tag1"]} price="free" description="Lorem " />
                             <div class="float-right mr-4">
                                 <Button color="primary" onClick={this.toggle}>Go to course's page</Button>{' '}
                                 <Button color="secondary" onClick={this.toggle}>Back</Button>
@@ -59,6 +64,13 @@ class ShowPagination extends React.Component {
                     <Jumbotron fluid className="jumbotron_bg">
                         <span className="d-lg-flex justify-content-center d-block h2 text-dark">Courses</span>
                     </Jumbotron>
+                    <Button color="info" size="xm"
+                        onClick={this.handleClick}
+                    >Filters</Button>
+                    <Fade top collapse when={this.state.showFilters}>
+                        <h1>React Reveal</h1>
+                    </Fade>
+
                     <div>
                         <Table className="courses_bg">
                             <thead>
