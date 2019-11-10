@@ -1,35 +1,40 @@
 ﻿using KursyTutoriale.Domain.Entities;
+using KursyTutoriale.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace KursyTutoriale.Infrastructure
 {
     public interface IAccountManager
     {
-        public Task<IdentityResult> CreateAccountAsync(ApplicationUser user, string password);
-        public Task<ApplicationUser> FindByNameAsync(string UserName);
+        public IdentityResult CreateAccount(ApplicationUser user, string password);
+        public ApplicationUser FindByName(string UserName);
     }
     public class AccountManager : IAccountManager
     {
-        UserManager<ApplicationUser> userManager;
-        public AccountManager(UserManager<ApplicationUser> userManager)
+        private IApplicationUserRepository applicationUserRepository;
+        private IPasswordHasher<ApplicationUser> passwordHasher;
+        public AccountManager()
         {
-            this.userManager = userManager;
+            applicationUserRepository = MockUpApplicationUserRepository.GetInstance();
+            passwordHasher = new PasswordHasher<ApplicationUser>();
+        }
+        public IdentityResult CreateAccount(ApplicationUser user, string password)
+        {
+            user.PasswordHash = passwordHasher.HashPassword(user, password);
+            applicationUserRepository.Insert(user);
+            return new IdentityResult();
         }
 
-        public async Task<IdentityResult> CreateAccountAsync(ApplicationUser user, string password)
+        public ApplicationUser FindByName(string UserName)
         {
-            var result = await userManager.CreateAsync(user, password);
-            return result;
-        }
-
-        public async Task<ApplicationUser> FindByNameAsync(string UserName)
-        {
-            var result = await userManager.FindByNameAsync(UserName);
-            return result;
+            return applicationUserRepository.Queryable()
+                .Where(e => e.UserName == UserName)
+                .First<ApplicationUser>();
         }
 
     }

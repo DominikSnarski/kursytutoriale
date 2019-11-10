@@ -14,6 +14,7 @@ namespace KursyTutoriale.Tests
         [Fact]
         public void CreateAccountSuccess()
         {
+            accountManager = new AccountManager();
             string userName = "Piecia";
             string email = "piecinsky@gmail.com";
             ApplicationUser user = new ApplicationUser
@@ -22,16 +23,16 @@ namespace KursyTutoriale.Tests
                 Email = email
             };
             string password = "qwerty123";
-            var res = accountManager.CreateAccountAsync(user, password);
-            Assert.True(res.Result.Succeeded);
-            var result = accountManager.FindByNameAsync("Piecia");
-            Assert.True(result.Result != null);
-            Assert.Equal(result.Result.Email, email);
-            Assert.Equal(result.Result.UserName, userName);
+            accountManager.CreateAccount(user, password);
+            ApplicationUser appUser = accountManager.FindByName("Piecia");
+            Assert.True(appUser != null);
+            Assert.Equal(appUser.Email, email);
+            Assert.Equal(appUser.UserName, userName);
         }
         [Fact]
-        public void CreateAccountWrongPasswordExpression()
+        public void AccountManagerHasherSuccess()
         {
+            accountManager = new AccountManager();
             string userName = "Piecia";
             string email = "piecinsky@gmail.com";
             ApplicationUser user = new ApplicationUser
@@ -39,9 +40,11 @@ namespace KursyTutoriale.Tests
                 UserName = userName,
                 Email = email
             };
-            string password = "abc";
-            var result = accountManager.CreateAccountAsync(user, password);
-            Assert.True(!result.Result.Succeeded);
+            string password = "qwerty123";
+            accountManager.CreateAccount(user, password);
+            ApplicationUser appUser = accountManager.FindByName("Piecia");
+            Assert.True(appUser != null);
+            Assert.True(appUser.PasswordHash != password);
         }
     }
 }

@@ -19,13 +19,9 @@ namespace KursyTutoriale.API.Controllers
         {
             this.accountManager = accountManager;
         }
-        [HttpGet]
-        public void SignUp()
-        {
-            return;
-        }
 
-        public async Task<IdentityResult> SignUpAsync(string username, string password, string email)
+        [HttpPost("signUp")]
+        public IdentityResult SignUp(string username, string password, string email)
         {
             var user = new ApplicationUser
             {
@@ -33,7 +29,7 @@ namespace KursyTutoriale.API.Controllers
                 Email = email
             };
 
-            var result = await accountManager.CreateAccountAsync(user, password);
+            var result = accountManager.CreateAccount(user, password);
             return result;
         }
 

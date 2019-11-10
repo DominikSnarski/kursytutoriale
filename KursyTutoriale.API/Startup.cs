@@ -32,6 +32,9 @@ namespace KursyTutoriale.API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "KursyTutorialeAPI", Version = "v1" });
             });
             services = ConfigureCORS(services);
+            #region identity
+            services.AddTransient<IAccountManager, AccountManager>();
+            #endregion
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
