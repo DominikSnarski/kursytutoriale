@@ -35,7 +35,7 @@ namespace KursyTutoriale.API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "KursyTutorialeAPI", Version = "v1" });
             });
             services = ConfigureCORS(services);
-            // In production, the React files will be served from this directory
+
             services.AddSpaStaticFiles(configuration =>
             {
 
@@ -44,6 +44,11 @@ namespace KursyTutoriale.API
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
+            #region identity
+            builder.RegisterType<MockUpUserProfileRepository>().As<IUserProfileRepository>();
+            builder.RegisterType<MockUpApplicationUserRepository>().As<IApplicationUserRepository>();
+            builder.RegisterType<AccountManager>().As<IAccountManager>();
+            #endregion
             builder.RegisterType<MockupCoursesRepository>().As<ICoursesRepository>().SingleInstance();
             builder.RegisterType<CourseService>().As<ICourseService>();
         }
