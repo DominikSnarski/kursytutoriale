@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KursyTutoriale.Application.DataTransferObjects;
 using KursyTutoriale.Application.Services;
 using KursyTutoriale.Domain.Entites;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
@@ -30,7 +31,7 @@ namespace KursyTutoriale.API.Controllers
         /// Returns details of course.
         /// </returns>
         [HttpGet("GetCourseDetails")]
-        public Course GetCourseDetails(Guid courseId)
+        public CourseDetailsDTO GetCourseDetails(Guid courseId)
         {
             return courseService.GetCourseDetail(courseId);
         }
@@ -46,9 +47,22 @@ namespace KursyTutoriale.API.Controllers
         /// If for exemple firstPageNumber=1 and lastPageNumber=3, it will return courses from first page to third page.
         /// </returns>
         [HttpGet("GetPagesOfCourses")]
-        public List<Course> GetPagesOfCourses(int firstPageNumber, int lastPageNumber, int pageSize)
+        public List<CourseBasicInformationsDTO> GetPagesOfCourses(int firstPageNumber, int lastPageNumber, int pageSize)
         {
             return courseService.GetPagesOfCourses(firstPageNumber, lastPageNumber, pageSize);
+        }
+
+
+        /// <summary>
+        /// Used to get number of courses
+        /// </summary>
+        /// <returns>
+        /// Returns number of courses
+        /// </returns>
+        [HttpGet("GetNumberOfCourses")]
+        public int GetNumberOfCourses()
+        {
+            return courseService.GetNumberOfCourses();
         }
 
     }

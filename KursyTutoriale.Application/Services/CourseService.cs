@@ -1,4 +1,5 @@
-﻿using KursyTutoriale.Domain.Entites;
+﻿using KursyTutoriale.Application.DataTransferObjects;
+using KursyTutoriale.Domain.Entites;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -23,13 +24,20 @@ namespace KursyTutoriale.Application.Services
         /// <returns>
         /// Returns details of course.
         /// </returns>
-        public Course GetCourseDetail(Guid courseId)
+        public CourseDetailsDTO GetCourseDetail(Guid courseId)
         {
             var query = courseRepository.Queryable();
             query = query.Where(q => q.Id.Equals(courseId));
             if (query != null)
             {
-                return query.FirstOrDefault();
+                var result = query.FirstOrDefault();
+                return new CourseDetailsDTO()
+                {
+                    Id = result.Id,
+                    AuthorId = result.AuthorId,
+                    Title = result.Title,
+                    Date = result.Date
+                };
             }
             else throw new Exception("Error 1000! GetCourseDetail service returned null");
         }
@@ -45,11 +53,23 @@ namespace KursyTutoriale.Application.Services
         /// Returns pages from firstPageNumber to lastPageNumber.
         /// If for exemple firstPageNumber=1 and lastPageNumber=3, it will return courses from first page to third page.
         /// </returns>
-        public List<Course> GetPagesOfCourses(int firstPageNumber, int lastPageNumber, int pageSize)
+        public List<CourseBasicInformationsDTO> GetPagesOfCourses(int firstPageNumber, int lastPageNumber, int pageSize)
         {
             var query = courseRepository.Queryable();
             query = query.Skip(firstPageNumber * pageSize).Take(pageSize * (lastPageNumber - firstPageNumber + 1));
-            return query.ToList();
+            var queryList = query.ToList();
+            List<CourseBasicInformationsDTO> list = new List<CourseBasicInformationsDTO>();
+            foreach(Course c in queryList)
+            {
+                list.Add(new CourseBasicInformationsDTO()
+                {
+                    Id = c.Id,
+                    Date = c.Date,
+                    Title = c.Title
+                });
+            }
+            return list;
+
         }
 
 
@@ -59,9 +79,14 @@ namespace KursyTutoriale.Application.Services
         /// <param name="course">
         /// Version of course you want to add to database.
         /// </param>
-        public void AddCourse(Course course)
+        public void AddCourse(CourseCreationDTO course)
         {
-            courseRepository.Insert(course);
+            courseRepository.Insert(new Course() {
+                Date = DateTime.Now,
+                AuthorId = course.AuthorId,
+                Content = course.Content,
+                Title = course.Title
+            });
         }
 
         /// <summary>
@@ -71,15 +96,33 @@ namespace KursyTutoriale.Application.Services
         /// <returns>
         /// Returns version of course viable for edition 
         /// </returns>
-        public Course GetCourseForEdition(Guid courseId)
+        public CourseForEditionDTO GetCourseForEdition(Guid courseId)
         {
             var query = courseRepository.Queryable();
             query = query.Where(q => q.Id.Equals(courseId));
             if (query != null)
             {
-                return query.FirstOrDefault();
+                var result = query.FirstOrDefault();
+                return new CourseForEditionDTO()
+                {
+                    Id = result.Id,
+                    Title = result.Title,
+                    Content = result.Content
+                };
             }
             else throw new Exception("Error 1001! GetCourseForEdition service returned null");
+        }
+
+        /// <summary>
+        /// Used to get number of courses
+        /// </summary>
+        /// <returns>
+        /// Returns number of courses
+        /// </returns>
+        public int GetNumberOfCourses()
+        {
+            var query = courseRepository.Queryable();
+            return query.Count();
         }
     }
 }
