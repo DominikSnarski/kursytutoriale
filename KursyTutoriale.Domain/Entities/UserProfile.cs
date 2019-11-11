@@ -6,6 +6,7 @@ namespace KursyTutoriale.Domain.Entities
 {
     public class UserProfile
     {
+        public UserProfile() { Id = new Guid(); }
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
