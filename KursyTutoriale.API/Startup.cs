@@ -46,7 +46,7 @@ namespace KursyTutoriale.API
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            
+            //builder.
         }
 
         private IServiceCollection ConfigureCORS(IServiceCollection services)
