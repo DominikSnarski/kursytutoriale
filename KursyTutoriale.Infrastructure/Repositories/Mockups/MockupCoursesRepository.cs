@@ -14,7 +14,6 @@ namespace KursyTutoriale.Infrastructure.Repositories.Mockups
     public class MockupCoursesRepository : ICoursesRepository
     {
         public List<Course> courses;
-
         public MockupCoursesRepository()
         {
             courses = new List<Course>();
@@ -23,16 +22,14 @@ namespace KursyTutoriale.Infrastructure.Repositories.Mockups
             {
                 courses.Add(new Course()
                 {
-                    authorId = i.ToString(),
-                    content = i.ToString(),
-                    date = DateTime.Now,
-                    title = i.ToString(),
-                    Id = Guid.NewGuid()
+                    AuthorId = Guid.NewGuid(),
+                    Content = i.ToString(),
+                    Date = DateTime.Now,
+                    Title = i.ToString()
                 });
                 
             }
         }
-
 
         public void Insert(Course item)
         {

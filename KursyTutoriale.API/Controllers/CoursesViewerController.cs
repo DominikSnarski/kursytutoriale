@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KursyTutoriale.Application.Services;
 using KursyTutoriale.Domain.Entites;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -14,10 +15,10 @@ namespace KursyTutoriale.API.Controllers
     public class CoursesViewerController : ControllerBase
     {
 
-        ICoursesRepository courseRepository;
-        public CoursesViewerController(ICoursesRepository courseRepository)
+        CourseService courseService;
+        public CoursesViewerController(CourseService courseService)
         {
-            this.courseRepository = courseRepository;
+            this.courseService = courseService;
         }
 
 
@@ -29,15 +30,9 @@ namespace KursyTutoriale.API.Controllers
         /// Returns details of course.
         /// </returns>
         [HttpGet("GetCourseDetails")]
-        public Course GetCourseDetails(string id)
+        public Course GetCourseDetails(Guid courseId)
         {
-            var query = courseRepository.Queryable();
-            query = query.Where(q => q.Id.Equals(id));
-            if (query != null)
-            {
-                return query.FirstOrDefault();
-            }
-            else return null;
+            return courseService.GetCourseDetail(courseId);
         }
 
         /// <summary>
@@ -53,9 +48,7 @@ namespace KursyTutoriale.API.Controllers
         [HttpGet("GetPagesOfCourses")]
         public List<Course> GetPagesOfCourses(int firstPageNumber, int lastPageNumber, int pageSize)
         {
-            var query = courseRepository.Queryable();
-            query = query.Skip(firstPageNumber * pageSize).Take(pageSize * (lastPageNumber-firstPageNumber+1));
-            return query.ToList();
+            return courseService.GetPagesOfCourses(firstPageNumber, lastPageNumber, pageSize);
         }
 
     }

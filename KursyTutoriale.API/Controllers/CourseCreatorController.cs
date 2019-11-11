@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KursyTutoriale.Application.Services;
 using KursyTutoriale.Domain.Entites;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -13,12 +14,13 @@ namespace KursyTutoriale.API.Controllers
     [Route("api/[controller]")]
     public class CourseCreatorController : Controller
     {
-        ICoursesRepository courseRepository;
-        public CourseCreatorController(ICoursesRepository courseRepository)
+
+        CourseService courseService;
+        public CourseCreatorController(CourseService courseService)
         {
-            this.courseRepository = courseRepository;
+            this.courseService = courseService;
         }
-        
+
 
         /// <summary>
         /// Used to create course.
@@ -27,9 +29,9 @@ namespace KursyTutoriale.API.Controllers
         /// Version of course you want to add to database.
         /// </param>
         [HttpPost("AddCourse")]
-        public void CreateCourse(Course course)
+        public void AddCourse(Course course)
         {
-            courseRepository.Insert(course);
+            courseService.AddCourse(course);
 
         }
 
@@ -41,15 +43,9 @@ namespace KursyTutoriale.API.Controllers
         /// Returns version of course viable for edition 
         /// </returns>
         [HttpGet("GetCourseForEdition")]
-        public Course GetCourseForEdition(string id)
+        public Course GetCourseForEdition(Guid courseId)
         {
-            var query = courseRepository.Queryable();
-            query = query.Where(q => q.Id.Equals(id));
-            if (query != null)
-            {
-                return query.FirstOrDefault();
-            }
-            else return null;
+            return courseService.GetCourseForEdition(courseId);
         }
     }
 }

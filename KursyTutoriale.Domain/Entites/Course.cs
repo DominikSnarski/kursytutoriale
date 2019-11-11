@@ -7,9 +7,9 @@ namespace KursyTutoriale.Domain.Entites
 {
     public class Course : BaseEntity
     {
-        public string title { get; set; }
-        public string content { get; set; }
-        public string authorId { get; set; }
-        public DateTime date { get; set; }
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public Guid AuthorId { get; set; }
+        public DateTime Date { get; set; }
     }
 }
