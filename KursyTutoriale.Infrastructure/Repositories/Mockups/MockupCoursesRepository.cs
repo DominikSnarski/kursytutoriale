@@ -21,7 +21,15 @@ namespace KursyTutoriale.Infrastructure.Repositories.Mockups
 
             for (int i = 0; i < 100; i++)
             {
-                courses.Add(new Course());
+                courses.Add(new Course()
+                {
+                    authorId = i.ToString(),
+                    content = i.ToString(),
+                    date = DateTime.Now,
+                    title = i.ToString(),
+                    Id = Guid.NewGuid()
+                });
+                
             }
         }
 
