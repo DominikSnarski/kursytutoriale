@@ -38,7 +38,6 @@ namespace KursyTutoriale.API
             {
                 configuration.RootPath = "ClientApp/build";
             });
-            //services.AddSingleton<ICoursesRepository, MockupCoursesRepository>();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
