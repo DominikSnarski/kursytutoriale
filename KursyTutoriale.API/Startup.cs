@@ -1,5 +1,6 @@
 using Autofac;
 using KursyTutoriale.Infrastructure;
+using KursyTutoriale.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;

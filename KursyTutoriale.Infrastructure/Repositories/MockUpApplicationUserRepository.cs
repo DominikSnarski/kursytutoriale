@@ -13,21 +13,24 @@ using System.Collections.Generic;
 
 namespace KursyTutoriale.Infrastructure.Repositories
 {
-    interface IApplicationUserRepository : IExtendedRepository<ApplicationUser>
+    public interface IApplicationUserRepository : IExtendedRepository<ApplicationUser>
     {
     }
-    class MockUpApplicationUserRepository :  IApplicationUserRepository
+    public class MockUpApplicationUserRepository :  IApplicationUserRepository
     {
-        private MockUpApplicationUserRepository()
+        public MockUpApplicationUserRepository()
         {
             list = new List<ApplicationUser>();
-        }
-        private static IApplicationUserRepository instance;
-        public static IApplicationUserRepository GetInstance() {
-            if (instance == null) instance = new MockUpApplicationUserRepository();
-            return instance;
-        }
 
+            for(int i = 0; i < 100; i++)
+            {
+                list.Add(
+                    new ApplicationUser()
+                    {
+                        UserName = i.ToString()
+                    });
+            }
+        }
         public List<ApplicationUser> list;
 
         public void Insert(ApplicationUser item)

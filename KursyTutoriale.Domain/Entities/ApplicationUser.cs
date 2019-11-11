@@ -7,8 +7,6 @@ namespace KursyTutoriale.Domain.Entities
 {
     public class ApplicationUser : IdentityUser<Guid>
     {
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public string Description { get; set; }
+        public Guid UserProfileId { get; set; }
     }
 }

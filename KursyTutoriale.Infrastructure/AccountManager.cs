@@ -17,16 +17,19 @@ namespace KursyTutoriale.Infrastructure
     public class AccountManager : IAccountManager
     {
         private IApplicationUserRepository applicationUserRepository;
-        private IPasswordHasher<ApplicationUser> passwordHasher;
-        public AccountManager()
+        private IUserProfileRepository userProfileRepository;
+        public AccountManager(IApplicationUserRepository applicationUserRepository,
+                              IUserProfileRepository userProfileRepository)
         {
-            applicationUserRepository = MockUpApplicationUserRepository.GetInstance();
-            passwordHasher = new PasswordHasher<ApplicationUser>();
+            this.applicationUserRepository = applicationUserRepository;
+            this.userProfileRepository = userProfileRepository;
         }
         public IdentityResult CreateAccount(ApplicationUser user, string password)
         {
-            user.PasswordHash = passwordHasher.HashPassword(user, password);
+            UserProfile userProfile = new UserProfile();
+            user.UserProfileId = userProfile.Id;
             applicationUserRepository.Insert(user);
+            userProfileRepository.Insert(userProfile);
             return new IdentityResult();
         }
 
