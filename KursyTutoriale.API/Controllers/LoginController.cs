@@ -14,8 +14,8 @@ namespace KursyTutoriale.API.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        AccountManager accountManager;
-        public LoginController(AccountManager accountManager)
+        IAccountManager accountManager;
+        public LoginController(IAccountManager accountManager)
         {
             this.accountManager = accountManager;
         }

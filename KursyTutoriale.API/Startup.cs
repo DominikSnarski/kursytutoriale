@@ -1,5 +1,6 @@
 using Autofac;
 using KursyTutoriale.Infrastructure;
+using KursyTutoriale.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -32,14 +33,15 @@ namespace KursyTutoriale.API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "KursyTutorialeAPI", Version = "v1" });
             });
             services = ConfigureCORS(services);
-            #region identity
-            services.AddTransient<IAccountManager, AccountManager>();
-            #endregion
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            
+            #region identity
+            builder.RegisterType<MockUpUserProfileRepository>().As<IUserProfileRepository>();
+            builder.RegisterType<MockUpApplicationUserRepository>().As<IApplicationUserRepository>();
+            builder.RegisterType<AccountManager>().As<IAccountManager>();
+            #endregion
         }
 
         private IServiceCollection ConfigureCORS(IServiceCollection services)
