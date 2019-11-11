@@ -18,7 +18,14 @@ namespace KursyTutoriale.API.Controllers
         {
             this.courseRepository = courseRepository;
         }
-        // GET: api/<controller>
+        
+
+        /// <summary>
+        /// Used to create course.
+        /// </summary>
+        /// <param name="course">
+        /// Version of course you want to add to database.
+        /// </param>
         [HttpPost("AddCourse")]
         public void CreateCourse(Course course)
         {
@@ -26,10 +33,23 @@ namespace KursyTutoriale.API.Controllers
 
         }
 
+        /// <summary>
+        /// Used to get course you want to edit.
+        /// </summary>
+        /// <param name="id">  Id of course you want to get </param>
+        /// <returns>
+        /// Returns version of course viable for edition 
+        /// </returns>
         [HttpGet("GetCourseForEdition")]
-        public Course GetCourseForEdition()
+        public Course GetCourseForEdition(string id)
         {
-            return new Course();
+            var query = courseRepository.Queryable();
+            query = query.Where(q => q.Id.Equals(id));
+            if (query != null)
+            {
+                return query.FirstOrDefault();
+            }
+            else return null;
         }
     }
 }

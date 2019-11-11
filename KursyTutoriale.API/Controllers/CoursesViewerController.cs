@@ -19,7 +19,15 @@ namespace KursyTutoriale.API.Controllers
         {
             this.courseRepository = courseRepository;
         }
-        // GET: api/<controller>
+
+
+        /// <summary>
+        /// Used to get details of course.
+        /// </summary>
+        /// <param name="id"> Id of course you want to get </param>
+        /// <returns>
+        /// Returns details of course.
+        /// </returns>
         [HttpGet("GetCourseDetails")]
         public Course GetCourseDetails(string id)
         {
@@ -32,20 +40,21 @@ namespace KursyTutoriale.API.Controllers
             else return null;
         }
 
-        [HttpGet("GetPageOfCourses")]
-        public List<Course> GetPageOfCourses(int pageNumber)
-        {
-            var query = courseRepository.Queryable();
-            query = query.Skip(pageNumber*4).Take(4);
-            return query.ToList();
-
-        }
-
+        /// <summary>
+        /// Return pages of courses, as a list of courses.
+        /// </summary>
+        /// <param name="firstPageNumber"> Indicates with page is first in range</param>
+        /// <param name="lastPageNumber"> Indicates with page is last in range</param>
+        /// <param name="pageSize"> Indicates how many courses is on page</param>
+        /// <returns>
+        /// Returns pages from firstPageNumber to lastPageNumber.
+        /// If for exemple firstPageNumber=1 and lastPageNumber=3, it will return courses from first page to third page.
+        /// </returns>
         [HttpGet("GetPagesOfCourses")]
-        public List<Course> GetPagesOfCourses(int firstPageNumber, int lastPageNumber)
+        public List<Course> GetPagesOfCourses(int firstPageNumber, int lastPageNumber, int pageSize)
         {
             var query = courseRepository.Queryable();
-            query = query.Skip(firstPageNumber * 4).Take(4*(lastPageNumber-firstPageNumber+1));
+            query = query.Skip(firstPageNumber * pageSize).Take(pageSize * (lastPageNumber-firstPageNumber+1));
             return query.ToList();
         }
 
