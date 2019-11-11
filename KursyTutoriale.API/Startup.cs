@@ -1,4 +1,5 @@
 using Autofac;
+using KursyTutoriale.Application;
 using KursyTutoriale.Infrastructure;
 using KursyTutoriale.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -42,6 +43,7 @@ namespace KursyTutoriale.API
             builder.RegisterType<MockUpApplicationUserRepository>().As<IApplicationUserRepository>();
             builder.RegisterType<AccountManager>().As<IAccountManager>();
             #endregion
+            builder.RegisterType<UserProfileDTOBuilder>().As<IUserProfileDTOBuilder>();
         }
 
         private IServiceCollection ConfigureCORS(IServiceCollection services)
