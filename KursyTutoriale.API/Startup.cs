@@ -6,6 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using KursyTutoriale.Infrastructure.Repositories.Interfaces;
+using KursyTutoriale.Infrastructure.Repositories.Mockups;
+using KursyTutoriale.Application.Services;
 
 namespace KursyTutoriale.API
 {
@@ -31,11 +34,17 @@ namespace KursyTutoriale.API
             });
 
             services = ConfigureCORS(services);
+            // In production, the React files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
+            {
+
+            });
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            
+            builder.RegisterType<MockupCoursesRepository>().As<ICoursesRepository>().SingleInstance();
+            builder.RegisterType<CourseService>().As<ICourseService>();
         }
 
         private IServiceCollection ConfigureCORS(IServiceCollection services)
