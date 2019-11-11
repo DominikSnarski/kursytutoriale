@@ -44,7 +44,7 @@ namespace KursyTutoriale.API
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterType<MockupCoursesRepository>().As<ICoursesRepository>().SingleInstance();
-            builder.RegisterType<CourseService>().AsSelf();
+            builder.RegisterType<CourseService>().As<ICourseService>();
         }
 
         private IServiceCollection ConfigureCORS(IServiceCollection services)

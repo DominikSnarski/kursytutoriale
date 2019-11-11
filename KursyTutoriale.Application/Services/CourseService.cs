@@ -8,7 +8,16 @@ using System.Text;
 
 namespace KursyTutoriale.Application.Services
 {
-    public class CourseService
+    public interface ICourseService
+    {
+        CourseDetailsDTO GetCourseDetail(Guid courseId);
+        List<CourseBasicInformationsDTO> GetPagesOfCourses(int firstPageNumber, int lastPageNumber, int pageSize);
+        void AddCourse(CourseCreationDTO course);
+        CourseForEditionDTO GetCourseForEdition(Guid courseId);
+        int GetNumberOfCourses();
+    }
+
+    public class CourseService : ICourseService
     {
         ICoursesRepository courseRepository;
         public CourseService(ICoursesRepository courseRepository)

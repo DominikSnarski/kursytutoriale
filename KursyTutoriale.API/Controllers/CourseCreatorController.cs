@@ -16,8 +16,8 @@ namespace KursyTutoriale.API.Controllers
     public class CourseCreatorController : Controller
     {
 
-        CourseService courseService;
-        public CourseCreatorController(CourseService courseService)
+        ICourseService courseService;
+        public CourseCreatorController(ICourseService courseService)
         {
             this.courseService = courseService;
         }
