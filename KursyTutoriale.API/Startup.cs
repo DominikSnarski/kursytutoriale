@@ -32,21 +32,18 @@ namespace KursyTutoriale.API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "KursyTutorialeAPI", Version = "v1" });
             });
 
-<<<<<<< HEAD
             services = ConfigureCORS(services);
-=======
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";
             });
-            services.AddTransient<ICoursesRepository, MockupCoursesRepository>();
->>>>>>> Adding repository to controller
+            //services.AddSingleton<ICoursesRepository, MockupCoursesRepository>();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            //builder.
+            builder.RegisterType<MockupCoursesRepository>().As<ICoursesRepository>();
         }
 
         private IServiceCollection ConfigureCORS(IServiceCollection services)

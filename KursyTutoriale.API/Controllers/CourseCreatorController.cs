@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KursyTutoriale.Domain.Entites;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,10 +19,17 @@ namespace KursyTutoriale.API.Controllers
             this.courseRepository = courseRepository;
         }
         // GET: api/<controller>
-        public IActionResult CreateCourse()
+        [HttpPost("AddCourse")]
+        public void CreateCourse(Course course)
         {
-           // courseRepository.Add();
-            return View("A");
+            courseRepository.Insert(course);
+
+        }
+
+        [HttpGet("GetCourseForEdition")]
+        public Course GetCourseForEdition()
+        {
+            return new Course();
         }
     }
 }

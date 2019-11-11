@@ -2,7 +2,7 @@
 
 namespace KursyTutoriale.Infrastructure.Repositories.Interfaces
 {
-    public interface ICoursesRepository : IRepository<Course, int>
+    public interface ICoursesRepository : IExtendedRepository<Course>
     {
 
     }
