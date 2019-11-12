@@ -4,10 +4,9 @@ using System.Text;
 
 namespace KursyTutoriale.Domain.Entities
 {
-    public class UserProfile
+    public class UserProfile : BaseEntity
     {
-        public UserProfile() { Id = new Guid(); }
-        public Guid Id { get; set; }
+        public UserProfile() :base() { }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Description { get; set; }

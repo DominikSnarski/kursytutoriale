@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using WebApp.Data;
 
-namespace KursyTutoriale.Domain.Entites
+namespace KursyTutoriale.Domain.Entities
 {
     public class Course : BaseEntity
     {

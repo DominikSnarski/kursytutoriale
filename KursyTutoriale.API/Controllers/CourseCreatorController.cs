@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using KursyTutoriale.Application.DataTransferObjects;
 using KursyTutoriale.Application.Services;
-using KursyTutoriale.Domain.Entites;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

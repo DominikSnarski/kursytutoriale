@@ -1,4 +1,4 @@
-﻿using KursyTutoriale.Domain.Entites;
+﻿using KursyTutoriale.Domain.Entities;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;

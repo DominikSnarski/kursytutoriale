@@ -7,15 +7,12 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using URF.Core.Abstractions;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
+using KursyTutoriale.Domain;
+using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 
 namespace KursyTutoriale.Infrastructure.Repositories
 {
-    public interface IApplicationUserRepository : IExtendedRepository<ApplicationUser>
-    {
-    }
     public class MockUpApplicationUserRepository :  IApplicationUserRepository
     {
         public MockUpApplicationUserRepository()

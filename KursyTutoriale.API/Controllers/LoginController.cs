@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KursyTutoriale.Domain;
 using KursyTutoriale.Domain.Entities;
 using KursyTutoriale.Infrastructure;
 using Microsoft.AspNetCore.Http;
@@ -14,23 +15,21 @@ namespace KursyTutoriale.API.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        IAccountManager accountManager;
-        public LoginController(IAccountManager accountManager)
+        IAccountManagerService accountManager;
+        public LoginController(IAccountManagerService accountManager)
         {
             this.accountManager = accountManager;
         }
 
         [HttpPost("signUp")]
-        public IdentityResult SignUp(string username, string password, string email)
+        public void SignUp(string username, string password, string email)
         {
             var user = new ApplicationUser
             {
                 UserName = username,
                 Email = email
             };
-
-            var result = accountManager.CreateAccount(user, password);
-            return result;
+            accountManager.CreateAccount(user, password);
         }
 
     }

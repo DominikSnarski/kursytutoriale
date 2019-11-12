@@ -6,13 +6,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using KursyTutoriale.Domain.Entities;
+using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using URF.Core.Abstractions;
 
 namespace KursyTutoriale.Infrastructure.Repositories
 {
-    public interface IUserProfileRepository : IExtendedRepository<UserProfile>
-    {
-    }
     public class MockUpUserProfileRepository : IUserProfileRepository
     {
         public MockUpUserProfileRepository()

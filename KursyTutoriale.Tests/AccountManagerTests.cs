@@ -1,4 +1,5 @@
-﻿using KursyTutoriale.Domain.Entities;
+﻿using KursyTutoriale.Domain;
+using KursyTutoriale.Domain.Entities;
 using KursyTutoriale.Infrastructure;
 using KursyTutoriale.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
@@ -11,11 +12,11 @@ namespace KursyTutoriale.Tests
 {
     public class AccountManagerTests
     {
-        IAccountManager accountManager;
+        IAccountManagerService accountManager;
         [Fact]
         public void CreateAccountSuccess()
         {
-            accountManager = new AccountManager(new MockUpApplicationUserRepository(),
+            accountManager = new AccountManagerService(new MockUpApplicationUserRepository(),
                                                 new MockUpUserProfileRepository());
             string userName = "Piecia";
             string email = "piecinsky@gmail.com";
