@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApp.Data
+namespace KursyTutoriale.Domain.Entities
 {
     public class BaseEntity
     {
