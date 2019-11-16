@@ -12,6 +12,7 @@ using Microsoft.OpenApi.Models;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using KursyTutoriale.Infrastructure.Repositories.Mockups;
 using KursyTutoriale.Application.Services;
+using KursyTutoriale.Infrastructure.Configuration;
 
 namespace KursyTutoriale.API
 {
@@ -52,6 +53,8 @@ namespace KursyTutoriale.API
             #endregion
             builder.RegisterType<MockupCoursesRepository>().As<ICoursesRepository>().SingleInstance();
             builder.RegisterType<CourseService>().As<ICourseService>();
+
+            builder.RegisterModule(new DataAccessModule(Configuration.GetConnectionString("default")));
         }
 
         private IServiceCollection ConfigureCORS(IServiceCollection services)
