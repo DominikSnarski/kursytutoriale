@@ -1,6 +1,8 @@
 ﻿using Autofac;
 using KursyTutoriale.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using URF.Core.Abstractions;
+using URF.Core.EF;
 
 namespace KursyTutoriale.Infrastructure.Configuration
 {
@@ -18,6 +20,8 @@ namespace KursyTutoriale.Infrastructure.Configuration
             base.Load(builder);
 
             builder.RegisterGeneric(typeof(ExtendedRepository<>)).As(typeof(IExtendedRepository<>)).InstancePerLifetimeScope();
+
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
 
             builder.Register<ApplicationDbContext>(ctx =>
             {
