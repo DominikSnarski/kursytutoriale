@@ -1,5 +1,6 @@
 ﻿using KursyTutoriale.Domain;
 using KursyTutoriale.Domain.Entities;
+using KursyTutoriale.Domain.Entities.Auth;
 using KursyTutoriale.Infrastructure;
 using KursyTutoriale.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;

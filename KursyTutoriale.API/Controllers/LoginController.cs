@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using KursyTutoriale.Domain;
 using KursyTutoriale.Domain.Entities;
+using KursyTutoriale.Domain.Entities.Auth;
 using KursyTutoriale.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;

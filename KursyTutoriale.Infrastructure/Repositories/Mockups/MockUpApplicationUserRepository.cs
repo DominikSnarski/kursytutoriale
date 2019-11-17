@@ -10,6 +10,7 @@ using URF.Core.Abstractions;
 using System.Collections.Generic;
 using KursyTutoriale.Domain;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
+using KursyTutoriale.Domain.Entities.Auth;
 
 namespace KursyTutoriale.Infrastructure.Repositories
 {

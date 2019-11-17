@@ -1,5 +1,6 @@
 ﻿using KursyTutoriale.Domain;
 using KursyTutoriale.Domain.Entities;
+using KursyTutoriale.Domain.Entities.Auth;
 using KursyTutoriale.Infrastructure.Repositories;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using System.Linq;
