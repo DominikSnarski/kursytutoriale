@@ -35,22 +35,7 @@ namespace KursyTutoriale.Application.Services.Auth
                 await userManager.SetAuthenticationTokenAsync(user, REFRESH_TOKEN_PROVIDER, REFRESH_TOKEN_KEY, refreshToken);
             }
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ultra mega long secret key"));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            List<Claim> claims = new List<Claim>() {
-                new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim("Role","ApiUser")
-            };
-
-            var accessToken = new JwtSecurityToken(
-                issuer: "http://localhost:44354/",
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(15),
-                notBefore: DateTime.UtcNow,
-                audience: "http://localhost:5000/",
-                signingCredentials: creds);
+            var accessToken = GenerateAccessToken(user);
 
             return new JWTTokenDto
             {
@@ -66,26 +51,11 @@ namespace KursyTutoriale.Application.Services.Auth
 
             if (isTokenValid)
             {
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ultra mega long secret key"));
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-                    List<Claim> claims = new List<Claim>() {
-                    new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
-                    new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim("Role","ApiUser")
-                };
-
                 await userManager.RemoveAuthenticationTokenAsync(user, REFRESH_TOKEN_PROVIDER, REFRESH_TOKEN_KEY);
-                refreshToken = await userManager.GenerateUserTokenAsync(user, REFRESH_TOKEN_PROVIDER, REFRESH_TOKEN_KEY); 
+                refreshToken = await userManager.GenerateUserTokenAsync(user, REFRESH_TOKEN_PROVIDER, REFRESH_TOKEN_KEY);
                 await userManager.SetAuthenticationTokenAsync(user, REFRESH_TOKEN_PROVIDER, REFRESH_TOKEN_KEY, refreshToken);
 
-                var accessToken = new JwtSecurityToken(
-                    issuer: "http://localhost:44354/",
-                    claims: claims,
-                    expires: DateTime.UtcNow.AddMinutes(15),
-                    notBefore: DateTime.UtcNow,
-                    audience: "http://localhost:5000/",
-                    signingCredentials: creds);
+                var accessToken = GenerateAccessToken(user);
 
                 return new JWTTokenDto
                 {
@@ -95,6 +65,26 @@ namespace KursyTutoriale.Application.Services.Auth
             }
 
             throw new NotImplementedException();
+        }
+
+        private JwtSecurityToken GenerateAccessToken(ApplicationUser user)
+        {
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ultra mega long secret key"));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            List<Claim> claims = new List<Claim>() {
+                    new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim("Role","ApiUser")
+                };
+
+            return new JwtSecurityToken(
+                issuer: "http://localhost:44354/",
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(15),
+                notBefore: DateTime.UtcNow,
+                audience: "http://localhost:5000/",
+                signingCredentials: creds);
         }
     }
 }
