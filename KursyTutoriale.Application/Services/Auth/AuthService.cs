@@ -22,9 +22,13 @@ namespace KursyTutoriale.Application.Services.Auth
             this.userManager = userManager;
         }
 
-        public async Task<JWTTokenDto> GenerateTokenAsync(string username)
+        public async Task<JWTTokenDto> GenerateTokenAsync(string username, string password)
         {
             var user = await userManager.FindByNameAsync(username);
+
+            if (user is null || !await userManager.CheckPasswordAsync(user, password))
+                throw new Exception("invalid username or password");
+
             var refreshToken = await userManager.GetAuthenticationTokenAsync(user, REFRESH_TOKEN_PROVIDER, REFRESH_TOKEN_KEY);
 
             if (refreshToken == null)

@@ -5,7 +5,7 @@ namespace KursyTutoriale.Application.Services.Auth
 {
     public interface IAuthService
     {
-        Task<JWTTokenDto> GenerateTokenAsync(string username);
+        Task<JWTTokenDto> GenerateTokenAsync(string username, string password);
         Task<JWTTokenDto> RefreshTokenAsync(string username, string refreshToken);
     }
 }

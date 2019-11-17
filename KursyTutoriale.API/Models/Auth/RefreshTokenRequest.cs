@@ -1,4 +1,4 @@
-﻿namespace KursyTutoriale.API.Models
+﻿namespace KursyTutoriale.API.Models.Auth
 {
     public class RefreshTokenRequest
     {
