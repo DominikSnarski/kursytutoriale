@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using KursyTutoriale.Application.DataTransferObjects;
 using KursyTutoriale.Application.Services;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
