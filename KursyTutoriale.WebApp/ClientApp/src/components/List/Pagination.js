@@ -6,10 +6,14 @@ const defaultProps = {
     initialPage: 1
 }
 
+
 class Pagination extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { pager: {} };
+        this.state = { 
+            pager: {}
+        };
+        
     }
 
     componentWillMount() {
@@ -18,16 +22,18 @@ class Pagination extends React.Component {
             this.setPage(this.props.initialPage);
         }
     }
-
     componentDidUpdate(prevProps, prevState) {
         // reset page if items array has changed
+
         if (this.props.items !== prevProps.items) {
             this.setPage(this.props.initialPage);
         }
     }
 
+
     setPage(page) {
-        var items = this.props.items;
+
+        var items=this.props.items;
         var pager = this.state.pager;
 
         if (page < 1 || page > pager.totalPages) {

@@ -5,13 +5,9 @@
 }
 
 .jumbotron_bg {
-    background-color:#53A6BE !important; 
+    background-color:#53A6BE !important;
 }
 
 .courses_bg{
     background-color: #9dd2e2 !important;
-}
-
-html{
-    scroll-behavior: smooth;
 }

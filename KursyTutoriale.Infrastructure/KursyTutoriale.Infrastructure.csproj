@@ -1,8 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20191116112821_UserProfiles.cs" />
+    <Compile Remove="Migrations\20191116112821_UserProfiles.Designer.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\KursyTutoriale.Domain\KursyTutoriale.Domain.csproj" />
@@ -10,6 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.9.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
     <PackageReference Include="URF.Core.All" Version="3.0.0" />
   </ItemGroup>
 

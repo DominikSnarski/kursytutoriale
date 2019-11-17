@@ -15,4 +15,8 @@
     <ProjectReference Include="..\KursyTutoriale.Shared\KursyTutoriale.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Configuration\DIModules\" />
+  </ItemGroup>
+
 </Project>
