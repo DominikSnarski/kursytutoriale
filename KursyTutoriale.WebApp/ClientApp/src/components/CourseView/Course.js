@@ -3,12 +3,8 @@ import {
     Jumbotron, Button, Container, Col, Row, Card, CardHeader, CardBody,
     ListGroup, ListGroupItem, CardText, UncontrolledCollapse, Progress, CardTitle
 } from 'reactstrap';
-import { Fade, Carousel } from 'react-reveal';
+import { Fade } from 'react-reveal';
 import './style.css';
-import makeCarousel from 'react-reveal/makeCarousel';
-// we'll need the Slide component for sliding animations
-// but you can use any other effect
-import Slide from 'react-reveal/Slide';
 
 
 class Course extends React.Component {
