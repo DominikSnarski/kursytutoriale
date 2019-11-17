@@ -21,6 +21,10 @@ using System.Text;
 using KursyTutoriale.Domain.Entities.Auth;
 using System;
 using System.Threading.Tasks;
+using KursyTutoriale.Application.Configuration.DIModules;
+using Microsoft.IdentityModel.Logging;
+using System.Collections.Generic;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace KursyTutoriale.API
 {
@@ -45,6 +49,29 @@ namespace KursyTutoriale.API
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "KursyTutorialeAPI", Version = "v1" });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please insert JWT with Bearer into field",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                        },
+                        new List<string>()
+                    }
+                });
             });
         }
 
@@ -61,6 +88,7 @@ namespace KursyTutoriale.API
             builder.RegisterModule(new DataAccessModule(Configuration.GetConnectionString("default")));
 
             builder.RegisterModule(new AutoMapperModule());
+            builder.RegisterModule(new ServiceModule());
         }
 
         private IServiceCollection ConfigureAuthentication(IServiceCollection services)
@@ -68,6 +96,8 @@ namespace KursyTutoriale.API
             services.AddIdentity<ApplicationUser, UserRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+            IdentityModelEventSource.ShowPII = true;
 
             services.Configure<IdentityOptions>(op =>
             {
@@ -80,7 +110,7 @@ namespace KursyTutoriale.API
                 op.User.RequireUniqueEmail = false;
             });
 
-            var key = Encoding.ASCII.GetBytes("secretKey");
+            var key = Encoding.UTF8.GetBytes("ultra mega long secret key");
 
             services.AddAuthentication(x =>
             {
@@ -95,12 +125,9 @@ namespace KursyTutoriale.API
                 {
                     ValidateIssuer = true,
                     ValidIssuer = "http://localhost:44354/",
-                    ValidateAudience = true,
-                    ValidAudience = "http://localhost:44354/",
+                    ValidateAudience = false,
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
-                    RequireExpirationTime = false,
-                    ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
                 };
                 x.Events = new JwtBearerEvents
@@ -131,7 +158,8 @@ namespace KursyTutoriale.API
                     EnabledOriginsPolicy,
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:3000")
+                        builder
+                        .WithOrigins("http://localhost:3000")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                     });
