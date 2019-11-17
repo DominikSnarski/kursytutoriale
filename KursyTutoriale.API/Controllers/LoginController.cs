@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KursyTutoriale.API.Models;
 using KursyTutoriale.Application.DataTransferObjects.Auth;
 using KursyTutoriale.Application.Services.Auth;
 using KursyTutoriale.Domain;
@@ -38,6 +39,14 @@ namespace KursyTutoriale.API.Controllers
         public async Task<JWTTokenDto> SignIn(string username)
         {
             var token = await authService.GenerateTokenAsync(username);
+
+            return token;
+        }
+
+        [HttpPost("RefreshToken")]
+        public async Task<JWTTokenDto> RefreshToken([FromBody] RefreshTokenRequest request)
+        {
+            var token = await authService.RefreshTokenAsync(request.Username,request.RefreshToken);
 
             return token;
         }

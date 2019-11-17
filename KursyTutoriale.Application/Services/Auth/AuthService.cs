@@ -58,5 +58,43 @@ namespace KursyTutoriale.Application.Services.Auth
                 RefreshToken = refreshToken
             };
         }
+
+        public async Task<JWTTokenDto> RefreshTokenAsync(string username, string refreshToken)
+        {
+            var user = await userManager.FindByNameAsync(username);
+            var isTokenValid = await userManager.VerifyUserTokenAsync(user, REFRESH_TOKEN_PROVIDER, REFRESH_TOKEN_KEY, refreshToken);
+
+            if (isTokenValid)
+            {
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ultra mega long secret key"));
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                    List<Claim> claims = new List<Claim>() {
+                    new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim("Role","ApiUser")
+                };
+
+                await userManager.RemoveAuthenticationTokenAsync(user, REFRESH_TOKEN_PROVIDER, REFRESH_TOKEN_KEY);
+                refreshToken = await userManager.GenerateUserTokenAsync(user, REFRESH_TOKEN_PROVIDER, REFRESH_TOKEN_KEY); 
+                await userManager.SetAuthenticationTokenAsync(user, REFRESH_TOKEN_PROVIDER, REFRESH_TOKEN_KEY, refreshToken);
+
+                var accessToken = new JwtSecurityToken(
+                    issuer: "http://localhost:44354/",
+                    claims: claims,
+                    expires: DateTime.UtcNow.AddMinutes(15),
+                    notBefore: DateTime.UtcNow,
+                    audience: "http://localhost:5000/",
+                    signingCredentials: creds);
+
+                return new JWTTokenDto
+                {
+                    AccessToken = new JwtSecurityTokenHandler().WriteToken(accessToken),
+                    RefreshToken = refreshToken
+                };
+            }
+
+            throw new NotImplementedException();
+        }
     }
 }
