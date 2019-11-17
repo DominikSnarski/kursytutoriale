@@ -46,7 +46,7 @@ class ShowPagination extends React.Component {
                         <Jumbotron fluid className="courses_bg">
                             <Details title="Item1" category="Cat1" tags={["tag1"]} price="free" />
                             <div class="float-right mr-4">
-                                <Button color="primary" onClick={this.toggle}>Go to course's page</Button>{' '}
+                                <Button color="primary" onClick={this.props.toggleCourse}>Go to course's page</Button>{' '}
                                 <Button color="secondary" onClick={this.toggle}>Back</Button>
                             </div>
                         </Jumbotron>
