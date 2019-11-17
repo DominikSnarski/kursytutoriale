@@ -8,7 +8,7 @@ import {
 } from 'reactstrap';
 
 
-const NavBar = () => (
+const NavBar = (props) => (
   <header className="page">
     <Navbar fixed="top" color="light" light expand="xs" className="border-bottom border-gray bg-white" style={{ height: 80 }}>
       <Container>
@@ -25,6 +25,20 @@ const NavBar = () => (
                 <NavLink className="font-weight-bold" href="#Courses">Courses</NavLink>
               </NavItem>
 
+              <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle nav caret className="font-weight-bold">
+                  Categories
+              </DropdownToggle>
+                <DropdownMenu right>
+                  <DropdownItem>
+                    Option 1
+                </DropdownItem>
+                  <DropdownItem>
+                    Option 2
+                </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+
             </Nav>
           </Col>
 
@@ -32,16 +46,16 @@ const NavBar = () => (
           <Col className="d-none d-lg-flex justify-content-end">
             <Form inline>
 
-              <Button type="button" color="primary" outline>Sign in</Button>
+              <Button type="button" color="primary" outline onClick={props.toggleSignIn}>Sign in</Button>
             </Form>
 
             <Form inline>
 
-              <Button type="button" color="primary" outline>Register</Button>
+              <Button type="button" color="primary" outline onClick={props.toggleSignUp}>Register</Button>
             </Form>
           </Col>
 
-          
+
 
         </Row>
       </Container>

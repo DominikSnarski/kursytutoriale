@@ -3,6 +3,10 @@ import Pagination from './Pagination';
 import { Table, Media, Jumbotron, Container, Button, Spinner, Col, Row, Alert } from 'reactstrap';
 import Details from '../Details/Details';
 import { Fade } from 'react-reveal';
+import Filters from '../Filters/Filters';
+
+
+const API='https://localhost:44354/api/CoursesViewer';
 
 
 const API='https://localhost:44354/api/CoursesViewer';
@@ -17,12 +21,16 @@ class ShowPagination extends React.Component {
             pageOfItems: [],
             showDetails: false,
             isLoading: false,
+            showFilters: false,
             error: false
         };
         // an example array of items to be paged
         // bind function in constructor instead of render
         this.onChangePage = this.onChangePage.bind(this);
         this.toggle = this.toggle.bind(this);
+        this.toggleFilters = this.toggleFilters.bind(this);
+        this.formRef = React.createRef();
+        this.formReset = this.formReset.bind(this);
 
     }
 
@@ -61,6 +69,21 @@ class ShowPagination extends React.Component {
         });
     }
 
+    toggle() {
+        this.setState({
+            showDetails: !this.state.showDetails
+        });
+    }
+
+    toggleFilters() {
+        this.setState({
+            showFilters: !this.state.showFilters
+        });
+    }
+
+    formReset() {
+        this.formRef.current.reset()
+        }
 
     render() {
 
@@ -100,6 +123,12 @@ class ShowPagination extends React.Component {
                     <Jumbotron fluid className="jumbotron_bg">
                         <span className="d-lg-flex justify-content-center d-block h2 text-dark">Courses</span>
                     </Jumbotron>
+                    <Button color="info" size="xm"
+                        onClick={this.toggleFilters}
+                    >Filters</Button>
+                    <Fade top collapse when={this.state.showFilters}>
+                        <Filters formRef={this.formRef} formReset={this.formReset}/>
+                    </Fade>
                     <div>
                         <Table className="courses_bg">
                             <thead>
