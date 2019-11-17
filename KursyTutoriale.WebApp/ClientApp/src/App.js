@@ -10,19 +10,9 @@ import SignInForm from './components/LoginForms/SignInForm';
 import SignUpForm from './components/LoginForms/SignUpForm';
 import Footer from './components/Footer/Footer';
 
-const App = () => {
-
-	const [showSignIn, setShowSignIn] = useState(false);
-	const [showSignUp, setShowSignUp] = useState(false);
-	
-	const toggleSignIn = () => setShowSignIn(!showSignIn);
-	const toggleSignUp = () => setShowSignUp(!showSignUp);
-
-	return (
+const App = () => (
 		<Fragment>
-			<NavBar toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
-			{showSignIn && <SignInForm/>}
-			{showSignUp && <SignUpForm/>}
+			<NavBar />
 			<main className="my-5 py-5" id="Home">
 				<Search />
 				<Container className="px-0">
@@ -40,5 +30,4 @@ const App = () => {
 			<Footer/>
 		</Fragment>
 	);
-}
 export default App;
