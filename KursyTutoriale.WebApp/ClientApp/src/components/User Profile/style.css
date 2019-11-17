@@ -1,0 +1,33 @@
+.col_bg{
+    padding:2%;
+    background-color: #7CC3D8 !important;
+}
+
+.left_side{
+    padding:2%;
+}
+
+.right_side{
+    margin-left: 10%;
+    width:90%;
+}
+
+.row-width{
+    width:110%
+}
+
+.name{
+    font-size: 30pt;
+}
+
+.badge{
+    font-size: 20pt;
+}
+
+.stats{
+    font-size: 16pt;
+}
+
+.about{
+    font-size: 14pt;
+}
