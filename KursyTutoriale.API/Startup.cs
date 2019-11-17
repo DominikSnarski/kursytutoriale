@@ -25,6 +25,7 @@ using KursyTutoriale.Application.Configuration.DIModules;
 using Microsoft.IdentityModel.Logging;
 using System.Collections.Generic;
 using Swashbuckle.AspNetCore.Swagger;
+using KursyTutoriale.Application.Configuration.Options;
 
 namespace KursyTutoriale.API
 {
@@ -110,7 +111,15 @@ namespace KursyTutoriale.API
                 op.User.RequireUniqueEmail = false;
             });
 
-            var key = Encoding.UTF8.GetBytes("ultra mega long secret key");
+            var jwtConfig = Configuration.GetSection("JwtConfiguration");
+            services.Configure<JWTOptions>(opt =>
+            {
+                opt.Issuer = jwtConfig["issuer"];
+                opt.Audience = jwtConfig["audience"];
+                opt.Secret = jwtConfig["secret"];
+            });
+
+            var key = Encoding.UTF8.GetBytes(jwtConfig["secret"]);
 
             services.AddAuthentication(x =>
             {
@@ -124,7 +133,7 @@ namespace KursyTutoriale.API
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = "http://localhost:44354/",
+                    ValidIssuer = jwtConfig["issuer"],
                     ValidateAudience = false,
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),

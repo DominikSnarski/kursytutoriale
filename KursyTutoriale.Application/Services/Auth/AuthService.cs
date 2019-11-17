@@ -1,6 +1,8 @@
-﻿using KursyTutoriale.Application.DataTransferObjects.Auth;
+﻿using KursyTutoriale.Application.Configuration.Options;
+using KursyTutoriale.Application.DataTransferObjects.Auth;
 using KursyTutoriale.Domain.Entities.Auth;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -14,11 +16,14 @@ namespace KursyTutoriale.Application.Services.Auth
     class AuthService : IAuthService
     {
         private UserManager<ApplicationUser> userManager;
+        private JWTOptions jwtOptions;
+
         private const string REFRESH_TOKEN_KEY = "RefreshToken";
         private const string REFRESH_TOKEN_PROVIDER = "Default";
 
-        public AuthService(UserManager<ApplicationUser> userManager)
+        public AuthService(UserManager<ApplicationUser> userManager,IOptions<JWTOptions> options)
         {
+            jwtOptions = options.Value;
             this.userManager = userManager;
         }
 
@@ -73,7 +78,7 @@ namespace KursyTutoriale.Application.Services.Auth
 
         private JwtSecurityToken GenerateAccessToken(ApplicationUser user)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ultra mega long secret key"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Secret));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             List<Claim> claims = new List<Claim>() {
                     new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
@@ -83,11 +88,11 @@ namespace KursyTutoriale.Application.Services.Auth
                 };
 
             return new JwtSecurityToken(
-                issuer: "http://localhost:44354/",
+                issuer: jwtOptions.Issuer,
                 claims: claims,
                 expires: DateTime.UtcNow.AddMinutes(15),
                 notBefore: DateTime.UtcNow,
-                audience: "http://localhost:5000/",
+                audience: jwtOptions.Audience,
                 signingCredentials: creds);
         }
     }
