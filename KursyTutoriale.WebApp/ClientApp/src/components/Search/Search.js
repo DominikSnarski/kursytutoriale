@@ -5,10 +5,12 @@ import {
   NavbarBrand, NavLink, NavItem, UncontrolledDropdown,
   DropdownToggle, DropdownMenu, DropdownItem, Jumbotron
 } from 'reactstrap';
-
+import Zoom from 'react-reveal/Zoom';
 
 const Search = () => (
-  <header><Jumbotron fluid className="jumbotron_bg">
+  
+  <Jumbotron fluid className="jumbotron_bg">
+    <Zoom duration="200">
     <Container className="Container">
       <Row>
         <Col className="d-none d-lg-flex justify-content-center">
@@ -23,9 +25,8 @@ const Search = () => (
             </Form>
         </Col>
       </Row>
-    </Container>
+    </Container></Zoom>
     </Jumbotron>
-  </header>
 );
 
 export default Search;
