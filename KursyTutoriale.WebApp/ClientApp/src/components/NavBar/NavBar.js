@@ -17,6 +17,7 @@ const NavBar = (props) => (
           <Col className="d-none d-lg-flex justify-content-start">
             <Nav className="mrx-auto" navbar>
 
+
               <NavItem className="d-flex align-items-center">
                 <NavLink className="font-weight-bold" href="#Home">Home</NavLink>
               </NavItem>
@@ -25,37 +26,24 @@ const NavBar = (props) => (
                 <NavLink className="font-weight-bold" href="#Courses">Courses</NavLink>
               </NavItem>
 
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret className="font-weight-bold">
-                  Categories
-              </DropdownToggle>
-                <DropdownMenu right>
-                  <DropdownItem>
-                    Option 1
-                </DropdownItem>
-                  <DropdownItem>
-                    Option 2
-                </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-
             </Nav>
           </Col>
 
 
           <Col className="d-none d-lg-flex justify-content-end">
+          <Button onClick={props.toggleProfile} color="warning" outline>UserProfilePlaceholder</Button>
             <Form inline>
 
-              <Button type="button" color="primary" outline onClick={props.toggleSignIn}>Sign in</Button>
+              <Button type="button" color="primary" outline>Sign in</Button>
             </Form>
 
             <Form inline>
 
-              <Button type="button" color="primary" outline onClick={props.toggleSignUp}>Register</Button>
+              <Button type="button" color="primary" outline>Register</Button>
             </Form>
           </Col>
 
-
+          
 
         </Row>
       </Container>
