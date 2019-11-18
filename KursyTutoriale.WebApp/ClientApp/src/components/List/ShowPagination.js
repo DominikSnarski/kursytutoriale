@@ -8,9 +8,6 @@ import Filters from '../Filters/Filters';
 
 const API='https://localhost:44354/api/CoursesViewer';
 
-
-const API='https://localhost:44354/api/CoursesViewer';
-
 class ShowPagination extends React.Component {
     constructor() {
         super();

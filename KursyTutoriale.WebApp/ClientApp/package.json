@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "arvo": "0.0.1",
     "axios": "^0.18.1",
     "boostrap": "^2.0.0",
     "bootstrap": "^4.3.1",
