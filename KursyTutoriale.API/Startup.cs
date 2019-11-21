@@ -13,6 +13,7 @@ using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using KursyTutoriale.Infrastructure.Repositories.Mockups;
 using KursyTutoriale.Application.Services;
 using KursyTutoriale.Infrastructure.Configuration;
+using KursyTutoriale.Application.Configuration;
 
 namespace KursyTutoriale.API
 {
@@ -55,6 +56,8 @@ namespace KursyTutoriale.API
             builder.RegisterType<CourseService>().As<ICourseService>();
 
             builder.RegisterModule(new DataAccessModule(Configuration.GetConnectionString("default")));
+
+            builder.RegisterModule(new AutoMapperModule());
         }
 
         private IServiceCollection ConfigureCORS(IServiceCollection services)
