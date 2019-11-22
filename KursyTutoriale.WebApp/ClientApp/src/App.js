@@ -63,7 +63,7 @@ const App = () => {
 				{!showProfile && !showCourse && !showSignIn && !showSignUp &&
 				<Container className="px-0">
 					<Jumbotron fluid className="Container">
-						<Featured />
+						<Featured toggleCourse={toggleCourse}/>
 						<Jumbotron className="Container" id="Courses"></Jumbotron>
 						<Row>
 							<Col className="d-none d-lg-flex justify-content-center">
