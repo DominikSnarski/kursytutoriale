@@ -1,5 +1,6 @@
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
+import UserContext from '../Context/UserContext';
 
 const apiClient = axios.create({
     baseURL: 'https://localhost:44354/',
@@ -16,11 +17,15 @@ apiClient.login = async (username, password)=>{
 
       localStorage.setItem("access_token",res.data.accessToken);
       localStorage.setItem("refresh_token",res.data.refreshToken);
+
+      let name = jwtDecode(res.data.accessToken)["sub"];
+      apiClient.onLogin(name);
 }
 
 apiClient.logout = () =>{
     localStorage.removeItem("refresh_token");
     localStorage.removeItem("access_token");
+    apiClient.onLogout();
 }
 
 apiClient.interceptors.request.use(
