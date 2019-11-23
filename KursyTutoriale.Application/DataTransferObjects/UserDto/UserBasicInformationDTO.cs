@@ -4,7 +4,7 @@ using System.Text;
 
 namespace KursyTutoriale.Application.DataTransferObjects
 {
-    class UserBasicInformationDTO
+    public class UserBasicInformationDTO
     {
         public string Name { get; set; }
         public string Surname { get; set; }

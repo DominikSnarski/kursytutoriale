@@ -19,6 +19,7 @@ namespace KursyTutoriale.Application.Configuration
                 cfg.CreateMap<Course, CourseCreationDTO>();
                 cfg.CreateMap<Course, CourseDetailsDTO>();
                 cfg.CreateMap<Course, CourseForEditionDTO>();
+                cfg.CreateMap<UserProfile, UserBasicInformationDTO>();
             });
 
             DTOMapper dtoMapper = new DTOMapper(config);

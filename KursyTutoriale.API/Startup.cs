@@ -54,6 +54,7 @@ namespace KursyTutoriale.API
             #endregion
             builder.RegisterType<MockupCoursesRepository>().As<ICoursesRepository>().SingleInstance();
             builder.RegisterType<CourseService>().As<ICourseService>();
+            builder.RegisterType<UserListService>().As<IUserListService>();
 
             builder.RegisterModule(new DataAccessModule(Configuration.GetConnectionString("default")));
 
