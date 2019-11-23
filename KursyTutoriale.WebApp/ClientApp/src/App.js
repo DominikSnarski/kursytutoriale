@@ -9,6 +9,9 @@ import Featured from './components/Main/Featured';
 import ShowPagination from './components/List/ShowPagination';
 import Course from './components/CourseView/Course';
 import UserProfile from './components/User Profile/UserProfile';
+import apiClient from './components/Auth/ApiClient';
+import {UserContext} from './components/Context/UserContext';
+import {InitialUserContext} from './components/Context/UserContext';
 
 const App = () => {
 
@@ -20,8 +23,24 @@ const App = () => {
     const [showProfile, setShowProfile] = useState(false);
 
     const toggleProfile = () => setShowProfile(!showProfile);
+	const [userContext,setUserContext] = useState(InitialUserContext);
+
+	apiClient.onLogin = username =>{
+		setUserContext({
+			authenticated:true,
+			username:username
+		});
+	};
+
+	apiClient.onLogout = () =>{
+		setUserContext({
+			authenticated:false,
+			username:null
+		});
+	}
 
 	return(
+		<UserContext.Provider value={userContext}>
 		<Fragment>
 			<NavBar toggleProfile={toggleProfile} />
 			<main className="my-5 py-5" id="Home">
@@ -43,7 +62,8 @@ const App = () => {
 				</Container>}
 				
 			</main>
-		</Fragment>);
+		</Fragment>
+		</UserContext.Provider>);
 }
 
 export default App;
