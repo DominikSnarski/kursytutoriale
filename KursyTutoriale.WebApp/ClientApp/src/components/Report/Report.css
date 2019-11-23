@@ -1,0 +1,41 @@
+#Container{
+  width: 30%;
+  margin: auto;
+  background-color: #99ccff;
+}
+#Header{
+  text-align: center;
+  padding: 10px;
+  background-color: #68acda;
+}
+.Question{
+  text-align: center;
+  padding: 10px;
+  background-color: #99ccff;
+  border-bottom: 3px solid #68acda;
+}
+.List{
+  margin-left: 20%;
+  margin-right: 20%;
+}
+.Item{
+  padding: 6px;
+}
+.Button{
+  text-align: center;
+  padding: 10px;
+}
+.MyButton {
+  background-color: #707C8B;
+  color: white;
+  border: none;
+  outline: none;
+  font-weight: bold;
+  border-radius: 25px;
+  padding: 15px 70px;
+  margin-right: 20px;
+  font-size: .8em;
+}
+.MyButton:active {
+  background-color: #505A60;
+}
