@@ -13,7 +13,7 @@ import TopCategories from '../Showcase/TopCategories/TopCategories';
 import TopMentors from '../Showcase/TopMentors/TopMentors';
 
 
-const Featured = () => {
+const Featured = (props) => {
 
     const [showDetails, setShowDetails] = useState(false);
     const [activeTab, setActiveTab] = useState('1');
@@ -36,7 +36,7 @@ const Featured = () => {
                     <Jumbotron fluid className="courses_bg">
                         <Details title="Item1" category="Cat1" tags={["tag1"]} price="free" description="Lorem " />
                         <div class="float-right mr-4">
-                            <Button color="primary" onClick={toggle}>Go to course's page</Button>{' '}
+                            <Button color="primary" onClick={props.toggleCourse}>Go to course's page</Button>{' '}
                             <Button color="secondary" onClick={toggle}>Back</Button>
                         </div>
                     </Jumbotron>
@@ -47,6 +47,7 @@ const Featured = () => {
     return (
         <Container className="Container">
             <Nav tabs>
+
                 <NavItem>
                     <NavLink
                         className={classnames({ active: activeTab === '1' })}
@@ -55,6 +56,7 @@ const Featured = () => {
                         Featured courses
                     </NavLink>
                 </NavItem>
+
                 <NavItem>
                     <NavLink
                         className={classnames({ active: activeTab === '2' })}
@@ -63,6 +65,7 @@ const Featured = () => {
                         Top categories
                     </NavLink>
                 </NavItem>
+
                 <NavItem>
                     <NavLink
                         className={classnames({ active: activeTab === '3' })}
@@ -71,6 +74,7 @@ const Featured = () => {
                         Top mentors
                     </NavLink>
                 </NavItem>
+                
             </Nav>
             
                 <TabContent activeTab={activeTab}>

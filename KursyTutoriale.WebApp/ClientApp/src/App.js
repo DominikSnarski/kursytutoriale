@@ -10,6 +10,7 @@ import ShowPagination from './components/List/ShowPagination';
 import Course from './components/CourseView/Course';
 import UserProfile from './components/User Profile/UserProfile';
 import apiClient from './components/Auth/ApiClient';
+import Footer from './components/Footer/Footer';
 import {UserContext} from './components/Context/UserContext';
 import {InitialUserContext} from './components/Context/UserContext';
 
@@ -62,6 +63,7 @@ const App = () => {
 				</Container>}
 				
 			</main>
+			<Footer />
 		</Fragment>
 		</UserContext.Provider>);
 }
