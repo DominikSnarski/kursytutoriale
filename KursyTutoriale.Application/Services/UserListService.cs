@@ -12,7 +12,7 @@ namespace KursyTutoriale.Application.Services
     {
         public IQueryable<UserBasicInformationDTO> GetUserList();
     }
-    public class UserListService
+    public class UserListService : IUserListService
     {
         IDTOMapper mapper;
         IUserProfileRepository userProfileRepository;
