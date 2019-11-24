@@ -6,6 +6,7 @@ namespace KursyTutoriale.Domain.Entities.Course
 {
     public class Tag
     {
+        public string TagName { get; set; }
         public int Id {get;set;}
     }
 }

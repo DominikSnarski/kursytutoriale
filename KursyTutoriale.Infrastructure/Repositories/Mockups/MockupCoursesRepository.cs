@@ -49,8 +49,9 @@ namespace KursyTutoriale.Infrastructure.Repositories.Mockups
                     course.Modules.Add(module);
                 }
 
-                course.Tags.Add(new Tag() { Id = 1 });
-                    courses.Add(course);
+                course.Tags.Add(new Tag() { Id = 1,TagName = "Baking" });
+                course.Tags.Add(new Tag() { Id = 2, TagName = "Cooking" });
+                courses.Add(course);
                 
             }
         }
