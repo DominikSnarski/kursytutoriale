@@ -8,15 +8,15 @@ import {
 import './style.css';
 import Zoom from 'react-reveal/Zoom';
 import classnames from 'classnames';
+import { UserContext } from '../Context/UserContext';
 
 
 class UserProfile extends React.Component {
-
-    constructor() {
+    constructor(props) {
         super();
-
+        
         this.state = {
-            userName: "User",
+            userName: props.username,
             type: "Author",
             karma: 421,
             courses: 93,

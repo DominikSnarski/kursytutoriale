@@ -1,8 +1,16 @@
 import React from 'react';
 // eslint-disable-next-line
 import { Button, Form, FormGroup, Label, Input, FormText, Nav, NavItem, NavLink, Row, Col, Container, Alert } from 'reactstrap';
+import AuthService from '../ApiServices/AuthService';
 
 const SignUpForm = (props) => {
+    const handleSubmit=(event)=>{
+        event.preventDefault();
+        const formData = new FormData(event.target);
+
+        AuthService.createAccount(formData.get('name'),formData.get('password'),formData.get('email'));
+    }
+
     return (
         <Container>
             <Row>
@@ -14,7 +22,7 @@ const SignUpForm = (props) => {
             </Row>
             <Row>
                 <Col>
-                    <Form>
+                    <Form onSubmit={(e)=>handleSubmit(e)}>
                         <FormGroup>
                             <Label for="exampleEmail">Name</Label>
                             <Input type="text" name="name" id="exampleEmail" placeholder="Enter your full name" />
