@@ -22,10 +22,27 @@ namespace KursyTutoriale.API.Controllers
         {
             this.userListService = userListService;
         }
-        [HttpGet("userList")]
+        /// <summary>
+        /// Returns the list of app users with their basic information, best used to form a list
+        /// </summary>
+        /// <returns>
+        /// list of app users with minimal information
+        /// </returns>
+        [HttpGet("GetUserList")]
         public IEnumerable<UserBasicInformationDTO> GetUserProfileList()
         {
             return userListService.GetUserList();
+        }
+        /// <summary>
+        /// Returns the total number of app Users
+        /// </summary>
+        /// <returns>
+        /// Total number of app Users
+        /// </returns>
+        [HttpGet("GetNumberOfUsers")]
+        public int GetNumberOfUsers()
+        {
+            return userListService.GetNumberOfUsers();
         }
     }
 }
