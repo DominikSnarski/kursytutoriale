@@ -34,12 +34,12 @@ const NavBar = (props) => (
           <Button onClick={props.toggleProfile} color="warning" outline>UserProfilePlaceholder</Button>
             <Form inline>
 
-              <Button type="button" color="primary" outline>Sign in</Button>
+              <Button type="button" color="primary" outline onClick={props.toggleSignIn}>Sign in</Button>
             </Form>
 
             <Form inline>
 
-              <Button type="button" color="primary" outline>Register</Button>
+              <Button type="button" color="primary" outline onClick={props.toggleSignUp}>Register</Button>
             </Form>
           </Col>
 
