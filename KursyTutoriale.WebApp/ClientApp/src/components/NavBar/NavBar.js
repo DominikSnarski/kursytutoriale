@@ -6,49 +6,57 @@ import {
   NavbarBrand, NavLink, NavItem, UncontrolledDropdown,
   DropdownToggle, DropdownMenu, DropdownItem
 } from 'reactstrap';
+import { UserContext } from '../Context/UserContext';
 
 
-const NavBar = (props) => (
-  <header className="page">
-    <Navbar fixed="top" color="light" light expand="xs" className="border-bottom border-gray bg-white" style={{ height: 80 }}>
-      <Container>
-        <Row noGutters className="position-relative w-100 align-items-center">
+const NavBar = (props) => {
+  const userContext = React.useContext(UserContext)
 
-          <Col className="d-none d-lg-flex justify-content-start">
-            <Nav className="mrx-auto" navbar>
+  return(
+    <header className="page">
+      <Navbar fixed="top" color="light" light expand="xs" className="border-bottom border-gray bg-white" style={{ height: 80 }}>
+        <Container>
+          <Row noGutters className="position-relative w-100 align-items-center">
 
-
-              <NavItem className="d-flex align-items-center">
-                <NavLink className="font-weight-bold" href="#Home">Home</NavLink>
-              </NavItem>
-
-              <NavItem className="d-flex align-items-center">
-                <NavLink className="font-weight-bold" href="#Courses">Courses</NavLink>
-              </NavItem>
-
-            </Nav>
-          </Col>
+            <Col className="d-none d-lg-flex justify-content-start">
+              <Nav className="mrx-auto" navbar>
 
 
-          <Col className="d-none d-lg-flex justify-content-end">
-          <Button onClick={props.toggleProfile} color="warning" outline>UserProfilePlaceholder</Button>
-            <Form inline>
+                <NavItem className="d-flex align-items-center">
+                  <NavLink className="font-weight-bold" href="#Home">Home</NavLink>
+                </NavItem>
 
-              <Button type="button" color="primary" outline onClick={props.toggleSignIn}>Sign in</Button>
-            </Form>
+                <NavItem className="d-flex align-items-center">
+                  <NavLink className="font-weight-bold" href="#Courses">Courses</NavLink>
+                </NavItem>
 
-            <Form inline>
+              </Nav>
+            </Col>
 
-              <Button type="button" color="primary" outline onClick={props.toggleSignUp}>Register</Button>
-            </Form>
-          </Col>
 
-          
+            <Col className="d-none d-lg-flex justify-content-end">
 
-        </Row>
-      </Container>
-    </Navbar>
-  </header>
-);
+              {userContext.authenticated &&
+              <Button onClick={props.toggleProfile} color="warning" outline>{userContext.username}</Button>}
+            
+              <Form inline>
+
+                <Button type="button" color="primary" outline onClick={props.toggleSignIn}>Sign in</Button>
+              </Form>
+
+              <Form inline>
+
+                <Button type="button" color="primary" outline onClick={props.toggleSignUp}>Register</Button>
+              </Form>
+            </Col>
+
+            
+
+          </Row>
+        </Container>
+      </Navbar>
+    </header>
+  );
+};
 
 export default NavBar;
