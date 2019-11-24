@@ -3,6 +3,7 @@
 {
     public class Tag:BaseEntity
     {
+
         private Tag():base()
         {
 
@@ -14,6 +15,7 @@
         }
 
         public string Name { get; private set; }
+
 
     }
 }
