@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace KursyTutoriale.Application.DataTransferObjects
+namespace KursyTutoriale.Domain.Entities.Course
 {
-    public class CourseForEditionDTO
+    public class Lesson
     {
-        public Guid Id { get; set; }
+        public int Index { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
     }

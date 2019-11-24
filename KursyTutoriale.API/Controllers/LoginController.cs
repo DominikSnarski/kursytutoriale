@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KursyTutoriale.API.Models;
+using KursyTutoriale.API.Models.Auth;
+using KursyTutoriale.Application.DataTransferObjects.Auth;
+using KursyTutoriale.Application.Services.Auth;
 using KursyTutoriale.Domain;
 using KursyTutoriale.Domain.Entities;
+using KursyTutoriale.Domain.Entities.Auth;
 using KursyTutoriale.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -16,21 +21,35 @@ namespace KursyTutoriale.API.Controllers
     public class LoginController : ControllerBase
     {
         IAccountManagerService accountManager;
-        public LoginController(IAccountManagerService accountManager)
+        IAuthService authService;
+        public LoginController(
+            IAccountManagerService accountManager,
+            IAuthService authService)
         {
             this.accountManager = accountManager;
+            this.authService = authService;
         }
 
-        [HttpPost("signUp")]
-        public void SignUp(string username, string password, string email)
+        [HttpPost("SignUp")]
+        public async Task SignUp([FromBody]CreateUserRequestDto request)
         {
-            var user = new ApplicationUser
-            {
-                UserName = username,
-                Email = email
-            };
-            accountManager.CreateAccount(user, password);
+            var result = await accountManager.CreateAccount(request);
         }
 
+        [HttpPost("SignIn")]
+        public async Task<JWTTokenDto> SignIn([FromBody] LoginRequest request)
+        {
+            var token = await authService.GenerateTokenAsync(request.Username,request.Password);
+
+            return token;
+        }
+
+        [HttpPost("RefreshToken")]
+        public async Task<JWTTokenDto> RefreshToken([FromBody] RefreshTokenRequest request)
+        {
+            var token = await authService.RefreshTokenAsync(request.Username,request.RefreshToken);
+
+            return token;
+        }
     }
 }
