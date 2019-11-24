@@ -9,7 +9,10 @@ import Featured from './components/Main/Featured';
 import ShowPagination from './components/List/ShowPagination';
 import Course from './components/CourseView/Course';
 import UserProfile from './components/User Profile/UserProfile';
+import apiClient from './components/Auth/ApiClient';
 import Footer from './components/Footer/Footer';
+import {UserContext} from './components/Context/UserContext';
+import {InitialUserContext} from './components/Context/UserContext';
 
 const App = () => {
 
@@ -21,8 +24,24 @@ const App = () => {
     const [showProfile, setShowProfile] = useState(false);
 
     const toggleProfile = () => setShowProfile(!showProfile);
+	const [userContext,setUserContext] = useState(InitialUserContext);
+
+	apiClient.onLogin = username =>{
+		setUserContext({
+			authenticated:true,
+			username:username
+		});
+	};
+
+	apiClient.onLogout = () =>{
+		setUserContext({
+			authenticated:false,
+			username:null
+		});
+	}
 
 	return(
+		<UserContext.Provider value={userContext}>
 		<Fragment>
 			<NavBar toggleProfile={toggleProfile} />
 			<main className="my-5 py-5" id="Home">
@@ -33,7 +52,7 @@ const App = () => {
 				{showCourse && !showProfile && <Course toggle={toggleCourse}/>}
 				{!showProfile && !showCourse && <Container className="px-0">
 					<Jumbotron fluid className="Container">
-						<Featured toggleCourse={toggleCourse}/>
+						<Featured />
 						<Jumbotron className="Container" id="Courses"></Jumbotron>
 						<Row>
 							<Col className="d-none d-lg-flex justify-content-center">
@@ -45,7 +64,8 @@ const App = () => {
 				
 			</main>
 			<Footer />
-		</Fragment>);
+		</Fragment>
+		</UserContext.Provider>);
 }
 
 export default App;
