@@ -11,6 +11,8 @@ import Course from './components/CourseView/Course';
 import UserProfile from './components/User Profile/UserProfile';
 import apiClient from './components/Auth/ApiClient';
 import Footer from './components/Footer/Footer';
+import SignInForm from './components/LoginForms/SignInForm';
+import SignUpForm from './components/LoginForms/SignUpForm';
 import {UserContext} from './components/Context/UserContext';
 import {InitialUserContext} from './components/Context/UserContext';
 
@@ -20,8 +22,14 @@ const App = () => {
 
     const toggleCourse = () => setShowCourse(!showCourse);
 
-
     const [showProfile, setShowProfile] = useState(false);
+
+	
+	const [showSignIn, setShowSignIn] = useState(false);
+	const toggleSignIn = () => setShowSignIn(!showSignIn);
+	const [showSignUp, setShowSignUp] = useState(false);
+	const toggleSignUp = () => setShowSignUp(!showSignUp);
+
 
     const toggleProfile = () => setShowProfile(!showProfile);
 	const [userContext,setUserContext] = useState(InitialUserContext);
@@ -43,14 +51,17 @@ const App = () => {
 	return(
 		<UserContext.Provider value={userContext}>
 		<Fragment>
-			<NavBar toggleProfile={toggleProfile} />
+			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
 			<main className="my-5 py-5" id="Home">
 				
 				{showProfile && <UserProfile/>}
-				{!showProfile && 
+				{showSignIn && <SignInForm />}
+				{showSignUp && <SignUpForm />}
+				{!showProfile && !showSignIn && !showSignUp &&
 				<Search />}
 				{showCourse && !showProfile && <Course toggle={toggleCourse}/>}
-				{!showProfile && !showCourse && <Container className="px-0">
+				{!showProfile && !showCourse && !showSignIn && !showSignUp &&
+				<Container className="px-0">
 					<Jumbotron fluid className="Container">
 						<Featured />
 						<Jumbotron className="Container" id="Courses"></Jumbotron>
