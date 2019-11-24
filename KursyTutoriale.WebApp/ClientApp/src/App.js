@@ -54,7 +54,7 @@ const App = () => {
 			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
 			<main className="my-5 py-5" id="Home">
 				
-				{showProfile && <UserProfile/>}
+				{showProfile && <UserProfile username={userContext.username}/>}
 				{showSignIn && !showSignUp && !showProfile && <SignInForm />}
 				{showSignUp && !showSignIn && !showProfile && <SignUpForm />}
 				{!showProfile && !showSignIn && !showSignUp &&
