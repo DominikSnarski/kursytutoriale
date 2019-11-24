@@ -21,6 +21,9 @@ namespace KursyTutoriale.Application.Services
         int GetNumberOfCourses();
         LessonForEditionDTO GetLessonForEdition(Guid courseId, int moduleIndex, int lessonIndex);
         CourseModuleForEditionDTO GetCourseModuleForEdition(Guid courseId, int moduleIndex);
+        List<CourseBasicInformationsDTO> GetPagesOfCoursesOrderedByPrice(int firstPageNumber, int lastPageNumber, int pageSize,
+            bool isDescending, float lowestPrice, float highestPrice);
+        List<CourseBasicInformationsDTO> GetPagesOfCoursesByTag(int firstPageNumber, int lastPageNumber, int pageSize, int tagId);
         Course GetCourse(int id);
         FeaturedCoursesDTO getFeaturesCourses(int numberInEachCategory);
 
@@ -120,6 +123,61 @@ namespace KursyTutoriale.Application.Services
         public List<CourseBasicInformationsDTO> GetPagesOfCourses(int firstPageNumber, int lastPageNumber, int pageSize)
         {
             var query = courseRepository.Queryable();
+            query = query.Skip(firstPageNumber * pageSize).Take(pageSize * (lastPageNumber - firstPageNumber + 1));
+            var queryList = query.ToList();
+            List<CourseBasicInformationsDTO> list = new List<CourseBasicInformationsDTO>();
+            foreach (Course c in queryList)
+            {
+                list.Add(mapper.Map<CourseBasicInformationsDTO>(c));
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// Return pages of courses, as a list of courses.
+        /// </summary>
+        /// <param name="firstPageNumber"> Indicates with page is first in range</param>
+        /// <param name="lastPageNumber"> Indicates with page is last in range</param>
+        /// <param name="pageSize"> Indicates how many courses is on page</param>
+        /// <param name="isDescending"> Indicates if returned list should be in descending(if true) or ascending(if false) order</param>
+        /// <param name="lowestPrice"> Lowest price accepted in filter</param>
+        /// <param name="highestPrice"> Highest price accepted in filter</param>
+        /// <returns>
+        /// Returns pages from firstPageNumber to lastPageNumber.
+        /// If for exemple firstPageNumber=1 and lastPageNumber=3, it will return courses from first page to third page.
+        /// </returns>
+        public List<CourseBasicInformationsDTO> GetPagesOfCoursesOrderedByPrice(int firstPageNumber, int lastPageNumber, int pageSize,
+            bool isDescending, float lowestPrice, float highestPrice)
+        {
+            var query = courseRepository.Queryable();
+            query = query.Where(c => c.Price >= lowestPrice && c.Price <= highestPrice);
+            query = query.Skip(firstPageNumber * pageSize).Take(pageSize * (lastPageNumber - firstPageNumber + 1));
+            if (isDescending) query = query.OrderByDescending(c => c.Price);
+            else query = query.OrderBy(c => c.Price);
+            var queryList = query.ToList();
+            List<CourseBasicInformationsDTO> list = new List<CourseBasicInformationsDTO>();
+            foreach (Course c in queryList)
+            {
+                list.Add(mapper.Map<CourseBasicInformationsDTO>(c));
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// Return pages of courses, as a list of courses.
+        /// </summary>
+        /// <param name="firstPageNumber"> Indicates with page is first in range</param>
+        /// <param name="lastPageNumber"> Indicates with page is last in range</param>
+        /// <param name="pageSize"> Indicates how many courses is on page</param>
+        /// <param name="tagId"> Indicates tag that must be in course to be included in list</param>
+        /// <returns>
+        /// Returns pages from firstPageNumber to lastPageNumber.
+        /// If for exemple firstPageNumber=1 and lastPageNumber=3, it will return courses from first page to third page.
+        /// </returns>
+        public List<CourseBasicInformationsDTO> GetPagesOfCoursesByTag(int firstPageNumber, int lastPageNumber, int pageSize, int tagId)
+        {
+            var query = courseRepository.Queryable();
+            query = query.Where(c => c.Tags.Any(t => t.Id == tagId));
             query = query.Skip(firstPageNumber * pageSize).Take(pageSize * (lastPageNumber - firstPageNumber + 1));
             var queryList = query.ToList();
             List<CourseBasicInformationsDTO> list = new List<CourseBasicInformationsDTO>();

@@ -29,6 +29,7 @@ namespace KursyTutoriale.Infrastructure.Repositories.Mockups
                     Popularity = i * 10,
                     Rating = i / 3,
                     DateOfLastEdit = DateTime.Now
+                    Price = i
 
                 };
 
