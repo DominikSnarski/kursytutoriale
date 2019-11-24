@@ -2,6 +2,7 @@
 using AutoMapper;
 using KursyTutoriale.Application.DataTransferObjects.Course;
 using KursyTutoriale.Application.DataTransferObjects.Tags;
+using KursyTutoriale.Domain.Entities;
 using KursyTutoriale.Domain.Entities.Course;
 
 namespace KursyTutoriale.Application.Configuration
@@ -29,6 +30,7 @@ namespace KursyTutoriale.Application.Configuration
                 cfg.CreateMap<Lesson, LessonForEditionDTO>();
 
                 cfg.CreateMap<Tag, TagDTO>();
+
 
             });
 

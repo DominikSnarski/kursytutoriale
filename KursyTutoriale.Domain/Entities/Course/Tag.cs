@@ -1,3 +1,4 @@
+
 ﻿namespace KursyTutoriale.Domain.Entities.Course
 {
     public class Tag:BaseEntity
@@ -13,5 +14,6 @@
         }
 
         public string Name { get; private set; }
+
     }
 }

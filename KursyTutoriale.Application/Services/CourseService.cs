@@ -23,6 +23,7 @@ namespace KursyTutoriale.Application.Services
         CourseModuleForEditionDTO GetCourseModuleForEdition(Guid courseId, int moduleIndex);
         Course GetCourse(int id);
         FeaturedCoursesDTO getFeaturesCourses(int numberInEachCategory);
+
     }
 
     public class CourseService : ICourseService

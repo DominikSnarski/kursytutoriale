@@ -19,7 +19,6 @@ namespace KursyTutoriale.Domain.Entities.Course
         public DateTime DateOfLastEdit { get; set; }
         public int Popularity { get; set; }
         public double Rating { get; set; }
-
         public ICollection<Tag>Tags { get; set; }
         public ICollection<CourseModule> Modules { get; set; }
     }

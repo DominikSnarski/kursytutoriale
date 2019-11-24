@@ -107,6 +107,7 @@ namespace KursyTutoriale.API.Controllers
         {
             return courseService.GetCourse(id);
         }
+
         /// <summary>
         /// Gets the featured courses, it contains: Recently Updated, New Popular, Now Popular, Discover
         /// </summary>
@@ -117,5 +118,6 @@ namespace KursyTutoriale.API.Controllers
         {
             return courseService.getFeaturesCourses(numberInEachCategory);
         }
+
     }
 }
