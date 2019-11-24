@@ -1,62 +1,37 @@
-import React, { Component } from 'react';
+import React from 'react';
+// eslint-disable-next-line
+import { Button, Form, FormGroup, Label, Input, FormText, Nav, NavItem, NavLink, Row, Col, Container, Alert } from 'reactstrap';
 
-class SignInForm extends Component {
-    constructor() {
-        super();
+const SignInForm = (props) => {
+    return (
+        <Container>
+            <Row>
+                <Col>
+                <Alert color="primary" className="text-center">
+                    SIGN IN FORM
+                </Alert>
+                </Col>              
+            </Row>
+            <Form>
+                <FormGroup>
+                    <Label for="exampleEmail">E-mail adress</Label>
+                    <Input type="email" name="email" id="exampleEmail" placeholder="Enter your email" />
+                </FormGroup>
 
-        this.state = {
-            email: '',
-            password: ''
-        };
+                <FormGroup>
+                    <Label for="examplePassword">Password</Label>
+                    <Input type="password" name="password" id="examplePassword" placeholder="Enter your password" />
+                </FormGroup>
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleChange(e) {
-        let target = e.target;
-        let value = target.type === 'checkbox' ? target.checked : target.value;
-        let name = target.name;
-
-        this.setState({
-            [name]: value
-        })
-    }
-
-    handleSubmit(e){
-        e.preventDefault();
-
-        console.log('The form was submitted with the following data:');
-        console.log(this.state);
-    }
-
-    render() {
-        return (
-            
-            <div className="FormCenter">
-                <form onSubmit={this.handleSubmit} className="FormFields">
-                    <div className="FormField">
-                        <label className="FormField__Label" htmlFor="email"> E-Mail Adress </label>
-                        <input type="email" id="email" className="FormField__Input" placeholder="Enter your email"
-                            name="email" value={this.state.email} onChange={this.handleChange}></input>
-                    </div>
-
-                    <div className="FormField">
-                        <label className="FormField__Label" htmlFor="password"> Password </label>
-                        <input type="password" id="password" className="FormField__Input" placeholder="Enter your password"
-                            name="password" value={this.state.password} onChange={this.handleChange}></input>
-                    </div>
-
-                    <div className="FormField">
-                        <button className="FormField__Button">Sign In</button>
-                    </div>
-
-                </form>
-
-            </div>
-        );
-    }
-
+                <Row>
+                    <Col xs="auto">
+                        <Button color="primary">Sign in</Button>{' '}
+                        <Button href="#" outline color="primary">I don't have an account</Button>{' '}
+                    </Col>
+                </Row>
+            </Form>
+        </Container>
+    );
 }
 
 export default SignInForm;

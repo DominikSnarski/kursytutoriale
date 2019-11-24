@@ -1,76 +1,48 @@
-import React, { Component } from 'react'
+import React from 'react';
+// eslint-disable-next-line
+import { Button, Form, FormGroup, Label, Input, FormText, Nav, NavItem, NavLink, Row, Col, Container, Alert } from 'reactstrap';
 
-class SignUpForm extends Component {
-    constructor() {
-        super();
+const SignUpForm = (props) => {
+    return (
+        <Container>
+            <Row>
+                <Col>
+                <Alert color="primary" className="text-center">
+                    SIGN UP FORM
+                </Alert>
+                </Col>              
+            </Row>
+            <Row>
+                <Col>
+                    <Form>
+                        <FormGroup>
+                            <Label for="exampleEmail">Name</Label>
+                            <Input type="text" name="name" id="exampleEmail" placeholder="Enter your full name" />
+                        </FormGroup>
 
-        this.state = {
-            name:'',
-            password: '',
-            email: '',          
-            hasAgreed: false
-        };
+                        <FormGroup>
+                            <Label for="exampleEmail">E-mail adress</Label>
+                            <Input type="email" name="email" id="exampleEmail" placeholder="Enter your email" />
+                        </FormGroup>
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
+                        <FormGroup>
+                            <Label for="examplePassword">Password</Label>
+                            <Input type="password" name="password" id="examplePassword" placeholder="Enter your password" />
+                        </FormGroup>
+                    
 
-    handleChange(e) {
-        let target = e.target;
-        let value = target.type === 'checkbox' ? target.checked : target.value;
-        let name = target.name;
+                        <Row style={{ marginTop: 20 }}>
+                            <Col xs="auto">
+                                <Button color="primary">Sign up</Button>{' '}
+                                <Button href="#" outline color="primary">I already have an account</Button>{' '}
+                            </Col>
+                        </Row>
+                    </Form>
+                </Col>
 
-        this.setState({
-            [name]: value
-        })
-    }
-
-    handleSubmit(e){
-        e.preventDefault();
-
-        console.log('The form was submitted with the following data:');
-        console.log(this.state);
-
-        //axios.post();
-    }
-    render() {
-        return (
-            <div className="FormCenter">
-                <form onSubmit={this.handleSubmit} className="FormFields">
-                    <div className="FormField">
-                        <label className="FormField__Label" htmlFor="name"> Full Name </label>
-                        <input type="text" id="name" className="FormField__Input" placeholder="Enter your full name" 
-                        name="name" value={this.state.name} onChange={this.handleChange}></input>
-                    </div>
-
-                    <div className="FormField">
-                        <label className="FormField__Label" htmlFor="password"> Password </label>
-                        <input type="password" id="password" className="FormField__Input" placeholder="Enter your password" 
-                        name="password" value={this.state.password} onChange={this.handleChange}></input>
-                    </div>
-
-                    <div className="FormField">
-                        <label className="FormField__Label" htmlFor="email"> E-Mail Adress </label>
-                        <input type="email" id="email" className="FormField__Input" placeholder="Enter your email" 
-                        name="email" value={this.state.email} onChange={this.handleChange}></input>
-                    </div>
-
-                    <div className="FormField">
-                        <label className="FormField__CheckboxLabel1">
-                            <input className="FormField__Checkbox" type="checkbox" name="hasAgreed" 
-                            value={this.state.hasAgreed} onChange={this.handleChange}></input>
-                            I agree all statements in<a href="https://google.pl" className="FormField__TermsLink">terms of service</a>
-                        </label>
-                    </div>
-
-                    <div className="FormField">
-                        <button className="FormField__Button mr-20">Sign Up</button>
-                    </div>
-
-                </form>
-
-            </div>
-        );
-    }
+            </Row>
+        </Container>
+    );
 }
+
 export default SignUpForm;
