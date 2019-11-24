@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using KursyTutoriale.Application.DataTransferObjects;
+using KursyTutoriale.Application.DataTransferObjects.Course;
 using KursyTutoriale.Application.Services;
+using KursyTutoriale.Domain.Entities.Course;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,7 +35,36 @@ namespace KursyTutoriale.API.Controllers
         [HttpGet("GetCourseDetails")]
         public CourseDetailsDTO GetCourseDetails(Guid courseId)
         {
-            return courseService.GetCourseDetail(courseId);
+            return courseService.GetCourseDetails(courseId);
+        }
+
+        /// <summary>
+        /// Used to get module details
+        /// </summary>
+        /// <param name="courseId">Id of course you want to get</param>
+        /// <param name="moduleIndex">Index of course module you want to get</param>
+        /// <returns>
+        /// Returns module details
+        /// </returns>
+        [HttpGet("GetCourseModuleDetails")]
+        public CourseModuleDetailsDTO GetCourseModuleDetails(Guid courseId, int moduleIndex)
+        {
+            return courseService.GetCourseModuleDetails(courseId, moduleIndex);
+        }
+
+        /// <summary>
+        /// Used to get lesson details
+        /// </summary>
+        /// <param name="courseId">Id of course you want to get</param>
+        /// <param name="moduleIndex">Index of course module you want to get</param>
+        /// <param name="lessonIndex">Index of lesson you want to get</param>
+        /// <returns>
+        /// Returns lesson details
+        /// </returns>
+        [HttpGet("GetLessonDetails")]
+        public LessonDetailsDTO GetLessonDetails(Guid courseId, int moduleIndex, int lessonIndex)
+        {
+            return courseService.GetLessonDetails(courseId, moduleIndex, lessonIndex);
         }
 
         /// <summary>
@@ -63,6 +95,19 @@ namespace KursyTutoriale.API.Controllers
         {
             return courseService.GetNumberOfCourses();
         }
+
+        /// <summary>
+        /// Used to get entire course! Only for testing purpouses
+        /// </summary>
+        /// <returns>
+        /// Returns course
+        /// </returns>
+        [HttpGet("GetCourse")]
+        public Course GetCourses(int id)
+        {
+            return courseService.GetCourse(id);
+        }
+
 
     }
 }

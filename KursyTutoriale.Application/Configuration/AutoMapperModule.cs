@@ -4,7 +4,9 @@ using System.Text;
 using Autofac;
 using AutoMapper;
 using KursyTutoriale.Application.DataTransferObjects;
+using KursyTutoriale.Application.DataTransferObjects.Course;
 using KursyTutoriale.Domain.Entities;
+using KursyTutoriale.Domain.Entities.Course;
 
 namespace KursyTutoriale.Application.Configuration
 {
@@ -15,10 +17,21 @@ namespace KursyTutoriale.Application.Configuration
             //Add new Maps for Data Transfer Object here
             var config = new MapperConfiguration(cfg =>
             {
+                cfg.CreateMap<CourseCreationDTO, Course>();
+
                 cfg.CreateMap<Course, CourseBasicInformationsDTO>();
-                cfg.CreateMap<Course, CourseCreationDTO>();
+                cfg.CreateMap<CourseModule, CourseModuleBasicInformationsDTO>();
+                cfg.CreateMap<Lesson, LessonBasicInformationsDTO>();
+
+
                 cfg.CreateMap<Course, CourseDetailsDTO>();
+                cfg.CreateMap<CourseModule, CourseModuleDetailsDTO>();
+                cfg.CreateMap<Lesson, LessonDetailsDTO>();
+
                 cfg.CreateMap<Course, CourseForEditionDTO>();
+                cfg.CreateMap<CourseModule, CourseModuleForEditionDTO>();
+                cfg.CreateMap<Lesson, LessonForEditionDTO>();
+
             });
 
             DTOMapper dtoMapper = new DTOMapper(config);

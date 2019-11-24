@@ -1,4 +1,5 @@
 ﻿using KursyTutoriale.Domain;
+using KursyTutoriale.Domain.Entities.Auth;
 using System;
 using System.Collections.Generic;
 using System.Text;
