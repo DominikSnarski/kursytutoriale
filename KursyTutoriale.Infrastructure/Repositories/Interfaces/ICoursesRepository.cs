@@ -1,4 +1,4 @@
-﻿using KursyTutoriale.Domain.Entities;
+﻿using KursyTutoriale.Domain.Entities.Course;
 
 namespace KursyTutoriale.Infrastructure.Repositories.Interfaces
 {
