@@ -74,9 +74,12 @@ const App = () => {
 				</Container>}
 				
 			</main>
+
 			<Footer />
+
 		</Fragment>
 		</UserContext.Provider>);
+
 }
 
 export default App;
