@@ -26,12 +26,12 @@ const App = () => {
 
 	
 	const [showSignIn, setShowSignIn] = useState(false);
-	const toggleSignIn = () => setShowSignIn(!showSignIn);
+	const toggleSignIn = () => {setShowSignIn(!showSignIn); setShowSignUp(false); setShowProfile(false);}
 	const [showSignUp, setShowSignUp] = useState(false);
-	const toggleSignUp = () => setShowSignUp(!showSignUp);
+	const toggleSignUp = () => {setShowSignUp(!showSignUp); setShowSignIn(false); setShowProfile(false);}
 
 
-    const toggleProfile = () => setShowProfile(!showProfile);
+    const toggleProfile = () => {setShowProfile(!showProfile); setShowSignUp(false); setShowSignIn(false);}
 	const [userContext,setUserContext] = useState(InitialUserContext);
 
 	apiClient.onLogin = username =>{
@@ -55,8 +55,8 @@ const App = () => {
 			<main className="my-5 py-5" id="Home">
 				
 				{showProfile && <UserProfile/>}
-				{showSignIn && <SignInForm />}
-				{showSignUp && <SignUpForm />}
+				{showSignIn && !showSignUp && !showProfile && <SignInForm />}
+				{showSignUp && !showSignIn && !showProfile && <SignUpForm />}
 				{!showProfile && !showSignIn && !showSignUp &&
 				<Search />}
 				{showCourse && !showProfile && <Course toggle={toggleCourse}/>}
