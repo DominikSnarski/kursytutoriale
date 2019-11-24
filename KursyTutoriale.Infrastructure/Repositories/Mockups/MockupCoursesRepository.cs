@@ -1,10 +1,10 @@
 ﻿using KursyTutoriale.Domain.Entities;
+using KursyTutoriale.Domain.Entities.Course;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using URF.Core.Abstractions;
@@ -18,15 +18,39 @@ namespace KursyTutoriale.Infrastructure.Repositories.Mockups
         {
             courses = new List<Course>();
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 10; i++)
             {
-                courses.Add(new Course()
+                Course course = new Course()
                 {
-                    AuthorId = Guid.NewGuid(),
-                    Content = i.ToString(),
+                    OwnerId = Guid.NewGuid(),
+                    Description = i.ToString(),
                     Date = DateTime.Now,
                     Title = i.ToString()
-                });
+                };
+
+                for (int j = 0; j < 5; j++)
+                {
+                    CourseModule module = new CourseModule()
+                    {
+                        Index = j,
+                        Title = j.ToString()
+                    };
+
+                    for (int k = 0; k < 5; k++)
+                    {
+                        module.Lessons.Add(new Lesson()
+                        {
+                            Index = k,
+                            Content = k.ToString(),
+                            Title = k.ToString()
+                        }) ;
+                    }
+
+                    course.Modules.Add(module);
+                }
+
+                course.Tags.Add(new Tag() { Id = 1 });
+                    courses.Add(course);
                 
             }
         }
