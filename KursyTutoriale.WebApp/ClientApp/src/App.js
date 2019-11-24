@@ -63,7 +63,7 @@ const App = () => {
 				{!showProfile && !showCourse && !showSignIn && !showSignUp &&
 				<Container className="px-0">
 					<Jumbotron fluid className="Container">
-						<Featured toggleCourse={toggleCourse}/>
+						<Featured />
 						<Jumbotron className="Container" id="Courses"></Jumbotron>
 						<Row>
 							<Col className="d-none d-lg-flex justify-content-center">
@@ -76,10 +76,8 @@ const App = () => {
 			</main>
 
 			<Footer />
-
 		</Fragment>
 		</UserContext.Provider>);
-
 }
 
 export default App;
