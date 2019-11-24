@@ -114,9 +114,9 @@ namespace KursyTutoriale.API.Controllers
         /// If for exemple firstPageNumber=1 and lastPageNumber=3, it will return courses from first page to third page.
         /// </returns>
         [HttpGet("GetPagesOfCoursesByTag")]
-        public List<CourseBasicInformationsDTO> GetPagesOfCoursesByTag(int firstPageNumber, int lastPageNumber, int pageSize, int tagId)
+        public List<CourseBasicInformationsDTO> GetPagesOfCoursesByTag(int firstPageNumber, int lastPageNumber, int pageSize, ICollection<int> tags)
         {
-            return courseService.GetPagesOfCoursesByTag(firstPageNumber, lastPageNumber, pageSize, tagId);
+            return courseService.GetPagesOfCoursesByTag(firstPageNumber, lastPageNumber, pageSize, tags);
         }
 
 

@@ -23,7 +23,7 @@ namespace KursyTutoriale.Application.Services
         CourseModuleForEditionDTO GetCourseModuleForEdition(Guid courseId, int moduleIndex);
         List<CourseBasicInformationsDTO> GetPagesOfCoursesOrderedByPrice(int firstPageNumber, int lastPageNumber, int pageSize,
             bool isDescending, float lowestPrice, float highestPrice);
-        List<CourseBasicInformationsDTO> GetPagesOfCoursesByTag(int firstPageNumber, int lastPageNumber, int pageSize, int tagId);
+        List<CourseBasicInformationsDTO> GetPagesOfCoursesByTag(int firstPageNumber, int lastPageNumber, int pageSize, ICollection<int> tags);
         Course GetCourse(int id);
         FeaturedCoursesDTO getFeaturesCourses(int numberInEachCategory);
 
@@ -174,10 +174,11 @@ namespace KursyTutoriale.Application.Services
         /// Returns pages from firstPageNumber to lastPageNumber.
         /// If for exemple firstPageNumber=1 and lastPageNumber=3, it will return courses from first page to third page.
         /// </returns>
-        public List<CourseBasicInformationsDTO> GetPagesOfCoursesByTag(int firstPageNumber, int lastPageNumber, int pageSize, int tagId)
+        public List<CourseBasicInformationsDTO> GetPagesOfCoursesByTag(int firstPageNumber, int lastPageNumber, int pageSize, ICollection<int> tags)
         {
             var query = courseRepository.Queryable();
-            query = query.Where(c => c.Tags.Any(t => t.Id == tagId));
+            foreach(int id in tags)
+            query = query.Where(c => c.Tags.Any(t => t.Id == id));
             query = query.Skip(firstPageNumber * pageSize).Take(pageSize * (lastPageNumber - firstPageNumber + 1));
             var queryList = query.ToList();
             List<CourseBasicInformationsDTO> list = new List<CourseBasicInformationsDTO>();
