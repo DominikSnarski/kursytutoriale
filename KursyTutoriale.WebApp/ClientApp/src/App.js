@@ -9,6 +9,7 @@ import Featured from './components/Main/Featured';
 import ShowPagination from './components/List/ShowPagination';
 import Course from './components/CourseView/Course';
 import UserProfile from './components/User Profile/UserProfile';
+import Footer from './components/Footer/Footer';
 
 const App = () => {
 
@@ -43,6 +44,7 @@ const App = () => {
 				</Container>}
 				
 			</main>
+			<Footer />
 		</Fragment>);
 }
 
