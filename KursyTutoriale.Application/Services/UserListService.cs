@@ -11,6 +11,7 @@ namespace KursyTutoriale.Application.Services
     public interface IUserListService
     {
         public IQueryable<UserBasicInformationDTO> GetUserList();
+        public int GetNumberOfUsers();
     }
     public class UserListService : IUserListService
     {
@@ -22,6 +23,9 @@ namespace KursyTutoriale.Application.Services
             this.mapper = mapper;
             this.userProfileRepository = userProfileRepository;
         }
+
+        public int GetNumberOfUsers() => userProfileRepository.Queryable().Count();
+
         public IQueryable<UserBasicInformationDTO> GetUserList()
         {
             List<UserBasicInformationDTO> userList = new List<UserBasicInformationDTO>();
