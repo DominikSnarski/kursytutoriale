@@ -9,6 +9,21 @@ const apiClient = axios.create({
 
 apiClient.baseURL = 'https://localhost:44354/';
 
+apiClient.fetchCourses=(first_page,last_page, caller)=>{
+     apiClient.get('api/CoursesViewer/GetNumberOfCourses')
+    .then(response => {  
+        var nrOfCourses=response.data;
+        var nrOfPages=Math.ceil(response.data/4)-1;
+        apiClient.get('api/CoursesViewer/GetPagesOfCourses?firstPageNumber='+first_page+'&lastPageNumber='+nrOfPages+'&pageSize=4')
+        .then(response => {  
+            var example=[...Array(nrOfCourses).keys()].map(i => ({ id: (i + 1), name: response.data[i].title, date: response.data[i].date }));
+            caller.setState({ exampleItems: example, isLoading: false });  
+
+        });
+
+    }, error => {caller.setState({ error, isLoading: false })});
+    }
+
 apiClient.login = async (username, password)=>{
     var res = await apiClient.post("api/Login/SignIn", {
         username: username,
