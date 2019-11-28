@@ -13,6 +13,7 @@ using KursyTutoriale.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace KursyTutoriale.API.Controllers
 {
@@ -22,12 +23,15 @@ namespace KursyTutoriale.API.Controllers
     {
         IAccountManagerService accountManager;
         IAuthService authService;
+        private ILogger<LoginController> logger;
         public LoginController(
             IAccountManagerService accountManager,
-            IAuthService authService)
+            IAuthService authService, 
+            ILogger<LoginController> logger)
         {
             this.accountManager = accountManager;
             this.authService = authService;
+            this.logger = logger;
         }
 
         [HttpPost("SignUp")]
@@ -40,7 +44,7 @@ namespace KursyTutoriale.API.Controllers
         public async Task<JWTTokenDto> SignIn([FromBody] LoginRequest request)
         {
             var token = await authService.GenerateTokenAsync(request.Username,request.Password);
-
+            logger.LogInformation($"User: {request.Username} signed in at {DateTime.UtcNow}");
             return token;
         }
 
