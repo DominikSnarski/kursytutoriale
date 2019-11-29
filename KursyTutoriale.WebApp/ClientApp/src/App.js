@@ -17,6 +17,7 @@ import {UserContext} from './components/Context/UserContext';
 import {InitialUserContext} from './components/Context/UserContext';
 import Lesson from './components/Lesson/LessonView';
 import LessonEdit from './components/Lesson/LessonEdit';
+import LessonPreview from './components/Lesson/LessonPreview';
 
 const App = () => {
 
@@ -64,7 +65,7 @@ const App = () => {
 				
 				{showProfile && <UserProfile username={userContext.username}/>}
 				{showLesson && <Lesson toggleLesson={toggleLesson}/>}
-				{showLessonEdit && <LessonEdit toggleLesson={toggleLesson} toggleLessonEdit={toggleLessonEdit} />}
+				{showLessonEdit && <LessonEdit toggleLessonEdit={toggleLessonEdit} />}
 				{showSignIn && !showSignUp && !showProfile && <SignInForm />}
 				{showSignUp && !showSignIn && !showProfile && <SignUpForm />}
 

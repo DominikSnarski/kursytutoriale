@@ -2,9 +2,8 @@ import React from 'react';
 
 
 import {
-  Container, Row, Col, Form, Input, Button, Navbar, Nav,
-  NavbarBrand, NavLink, NavItem, UncontrolledDropdown,
-  DropdownToggle, DropdownMenu, DropdownItem
+  Container, Row, Col, Form, Button, Navbar, Nav,
+  NavLink, NavItem
 } from 'reactstrap';
 import { UserContext } from '../Context/UserContext';
 

@@ -1,9 +1,8 @@
 import React from 'react';
 import {
-    Jumbotron, Button, Container, Col, Row, Card, CardHeader, CardBody,
-    ListGroup, ListGroupItem, CardText, UncontrolledCollapse, Progress, CardTitle
+    Container, Row,
+    ListGroup, ListGroupItem, UncontrolledCollapse
 } from 'reactstrap';
-import { Fade } from 'react-reveal';
 import './style.css';
 import LessonsList from './LessonsList';
 

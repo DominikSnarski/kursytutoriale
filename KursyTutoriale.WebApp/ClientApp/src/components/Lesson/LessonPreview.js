@@ -1,40 +1,36 @@
 import React from 'react';
 import {
-    Jumbotron, Button, Container, Col, Row
+    Jumbotron, Button, Container, Col, Row, Alert
 } from 'reactstrap';
-import { Fade } from 'react-reveal';
+import { Fade, Zoom } from 'react-reveal';
 
-class Lesson extends React.Component {
+class LessonPreview extends React.Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
-        var exampleContents = [{ name: 'text', value: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dolor lacus, congue a rutrum a, consectetur et justo. Nulla laoreet, tortor eget faucibus cursus, lorem erat rutrum nunc, quis varius augue dolor in turpis.' },
-        { name: 'question', value: 'How much is 2+2?', answers: { 1: '3', 2: '22', 3: '4' }, correctAnswer: 3, type: 'radio' },
-        { name: 'text', value: 'One under another.' },
-        { name: 'multipleAnswersQuestion', value: 'что это?', answers: ['это штахета.', 'чики брики в дамке', 'nudy'], correctAnswers: [1, 2] },
-        { name: 'image', value: 'https://via.placeholder.com/480x320', alt: 'We are sorry but we have lost this image.' }];
-        
-        var exampleItems = [...Array(5)].map(i => ({ id: (i + 1), name: i, date:i }));
-        console.log(exampleContents);
-
-        this.state = {
-            exampleContents: exampleContents
-        }
+        console.log(this.props.items);
     }
 
     render() {
         return (
             <Container className='Container'>
+
+                <Zoom left duration="200">
+                    <Alert color="primary" className="text-center">
+                        Lesson preview
+                    </Alert>
+                </Zoom>
+
                 <Fade left duration="200">
 
                     <Jumbotron fluid className='jumbotron_bg'>
-                        <span className='d-lg-flex justify-content-center d-block h2 text-dark'>Lesson's Title</span>
+                        <span className='d-lg-flex justify-content-center d-block h2 text-dark'>{this.props.title}</span>
                     </Jumbotron>
 
                     <Jumbotron className='courses_bg pr-4'>
 
-                        {this.state.exampleContents.map(item =>
+                        {this.props.items.map(item =>
 
                             <div>
                                 
@@ -63,17 +59,23 @@ class Lesson extends React.Component {
 
                         <Row className='mt-5'>
                             <Col >
-                                <Button color='secondary' onClick={this.props.toggleLesson}>Previous lesson</Button>
+                                <Button color='secondary' onClick={this.props.toggleLessonPreview}>Previous lesson</Button>
                             </Col>
                             <Col className='text-right'>
-                                <Button color='secondary' onClick={this.props.toggleLesson}>Next lesson</Button>
+                                <Button color='secondary' onClick={this.props.toggleLessonPreview}>Next lesson</Button>
                             </Col>
                         </Row>
 
                     </Jumbotron>
 
 
-                    <Button color='secondary' onClick={this.props.toggleLesson}>Leave lesson</Button>
+                    <Row className='mt-5'>
+                            <Col >
+                            </Col>
+                            <Col className='text-right'>
+                                <Button color='secondary' onClick={this.props.toggleLessonPreview}>Confirm and save</Button>
+                            </Col>
+                        </Row>
 
                 </Fade>
             </Container>
@@ -82,4 +84,4 @@ class Lesson extends React.Component {
 
 
 }
-export default Lesson;
+export default LessonPreview;

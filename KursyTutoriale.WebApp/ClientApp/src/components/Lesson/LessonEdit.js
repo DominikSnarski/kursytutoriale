@@ -1,9 +1,10 @@
 import React from 'react';
 import {
     Alert, Button, Container, Col, Row, Input, InputGroup, InputGroupAddon,
-    ListGroup, ListGroupItem, FormText, Label, Jumbotron, FormGroup
+    FormText,  FormGroup
 } from 'reactstrap';
 import { Zoom } from 'react-reveal';
+import LessonPreview from './LessonPreview';
 
 
 class LessonEdit extends React.Component {
@@ -12,12 +13,13 @@ class LessonEdit extends React.Component {
         super();
 
         this.state = {
-            isCreating: true,
             lessonTitle: '',
             list: [],
             areaText: '',
             file: '',
-            imagePreviewURL: null
+            imagePreviewURL: null,
+            exampleContents: exampleContents,
+            showPreview: false
         }
 
         this.titleChange = this.titleChange.bind(this);
@@ -25,6 +27,13 @@ class LessonEdit extends React.Component {
         this.addText = this.addText.bind(this);
         this.addFile = this.addFile.bind(this);
         this.fileChange = this.fileChange.bind(this);
+        this.toggleLessonPreview = this.toggleLessonPreview.bind(this);
+    }
+
+    toggleLessonPreview(){
+        this.addText();
+        this.addFile();
+        this.setState({showPreview: !this.state.showPreview})
     }
 
     titleChange(event) {
@@ -65,16 +74,25 @@ class LessonEdit extends React.Component {
 
     addFile = () => {
         this.setState(state => {
-            const list = [...state.list, { name: 'image', value: state.file }];
+            const list = [...state.list, { name: 'image', value: 'https://via.placeholder.com/480x320'}];
             return {
                 list,
                 file: '',
             };
         });
-        console.log(this.state.list);
     };
 
     render() {
+
+        if(this.state.showPreview)
+        {
+            return(
+                <Container>
+                    <LessonPreview toggleLessonPreview={this.toggleLessonPreview} items={this.state.list} title={this.state.lessonTitle}/>
+                </Container>
+            )
+        }
+
         return (
             <Container className='Container'>
                 <Zoom left duration="200">
@@ -131,7 +149,7 @@ class LessonEdit extends React.Component {
                                 <Button color='secondary' >Back</Button>
                             </Col>
                             <Col className='text-right'>
-                                <Button color='secondary' onClick={this.props.toggleLesson}>Next</Button>
+                                <Button color='secondary' onClick={this.toggleLessonPreview}>Next</Button>
                             </Col>
                         </Row>
 
