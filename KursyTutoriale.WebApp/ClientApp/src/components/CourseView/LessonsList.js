@@ -16,12 +16,12 @@ const LessonsList = (props) => (
                         dignissimos esse fuga! Minus, alias.
                     </CardBody>
 
-                    <Row >
+                    <Row>
                         <Col className="ml-2 mb-2 mr-2">
-                            <Card  body style={{ backgroundColor: '#7CC3D8', borderColor: '#7CC3D8' }}>
+                            <Card  body style={{ backgroundColor: '#7CC3D8', borderColor: '#7CC3D8' }} >
                                 <CardTitle>Lesson 1</CardTitle>
-                                <CardText>You learn how to use reactstrap.</CardText>
-                                <Button onClick={props.toggleShowLesson}>Let's go</Button>
+                                <CardText className="card-height">You learn how to use reactstrap.</CardText>
+                                <Button onClick={props.toggleLesson}>Let's go</Button>
                             </Card>
                         </Col>
                     </Row>
@@ -30,8 +30,8 @@ const LessonsList = (props) => (
                         <Col className="ml-2 mb-2 mr-2">
                             <Card body style={{ backgroundColor: '#7CC3D8', borderColor: '#7CC3D8' }}>
                                 <CardTitle>Lesson 2</CardTitle>
-                                <CardText>You learn how to use reactstrap.</CardText>
-                                <Button onClick={props.toggleShowLesson}>Let's go</Button>
+                                <CardText className="card-height">You learn how to use reactstrap.</CardText>
+                                <Button onClick={props.toggleLesson}>Let's go</Button>
                             </Card>
                         </Col>
                     </Row>
@@ -39,9 +39,9 @@ const LessonsList = (props) => (
                     <Row>
                         <Col className="ml-2 mb-2 mr-2">
                             <Card body style={{ backgroundColor: '#7CC3D8', borderColor: '#7CC3D8' }}>
-                                <CardTitle>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt magni. Max. char in LessonsList desc = 50</CardTitle>
-                                <CardText>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt magni. Max. char in Lessons Lorem ipsum dolor sit amet consectetur length ok=150</CardText>
-                                <Button onClick={props.toggleShowLesson}>Let's go</Button>
+                                <CardTitle>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt magni. <b>Lesson title max 100 characters</b></CardTitle>
+                                <CardText className="card-height">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt magni. Max. char in Lessons Lorem ipsum dolor sit amet consectetur length  <b>Set LessonDescriptionMaximumCharacters=250</b></CardText>
+                                <Button onClick={props.toggleLesson}>Let's go</Button>
                             </Card>
                         </Col>
                     </Row>
