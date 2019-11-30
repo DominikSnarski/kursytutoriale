@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using URF.Core.Abstractions;
 
 namespace KursyTutoriale.Application.Services
 {
@@ -16,7 +18,7 @@ namespace KursyTutoriale.Application.Services
         CourseModuleDetailsDTO GetCourseModuleDetails(Guid courseId, int moduleIndex);
         LessonDetailsDTO GetLessonDetails(Guid courseId, int moduleIndex, int lessonIndex);
         List<CourseBasicInformationsDTO> GetPagesOfCourses(int firstPageNumber, int lastPageNumber, int pageSize);
-        void AddCourse(CourseCreationDTO course);
+        void AddCourseAsync(CourseCreationDTO course);
         void AddModule(CourseModuleCreationDTO module);
         void AddLesson(LessonCreationDTO lesson);
         void AddTag(TagCreationDTO tag);
@@ -33,13 +35,13 @@ namespace KursyTutoriale.Application.Services
 
     public class CourseService : ICourseService
     {
-        ICoursesRepository courseRepository;
+        IUrfUnitOfWork uof;
         IDTOMapper mapper;
         public CourseService(
-            ICoursesRepository courseRepository,
+            IUrfUnitOfWork uof,
             IDTOMapper mapper)
         {
-            this.courseRepository = courseRepository;
+            this.uof = uof;
             this.mapper = mapper;
         }
 
@@ -53,7 +55,7 @@ namespace KursyTutoriale.Application.Services
         /// </returns>
         public CourseDetailsDTO GetCourseDetails(Guid courseId)
         {
-            var query = courseRepository.Queryable();
+            var query = uof.courseRepository.Queryable();
             query = query.Where(q => q.Id.Equals(courseId));
             if (query != null)
             {
@@ -74,7 +76,7 @@ namespace KursyTutoriale.Application.Services
         /// </returns>
         public CourseModuleDetailsDTO GetCourseModuleDetails(Guid courseId, int moduleIndex)
         {
-            var query = courseRepository.Queryable();
+            var query = uof.courseRepository.Queryable();
             query = query.Where(q => q.Id.Equals(courseId));
             if (query != null)
             {
@@ -97,7 +99,7 @@ namespace KursyTutoriale.Application.Services
         /// </returns>
         public LessonDetailsDTO GetLessonDetails(Guid courseId, int moduleIndex, int lessonIndex)
         {
-            var query = courseRepository.Queryable();
+            var query = uof.courseRepository.Queryable();
             query = query.Where(q => q.Id.Equals(courseId));
             if (query != null)
             {
@@ -124,7 +126,7 @@ namespace KursyTutoriale.Application.Services
         /// </returns>
         public List<CourseBasicInformationsDTO> GetPagesOfCourses(int firstPageNumber, int lastPageNumber, int pageSize)
         {
-            var query = courseRepository.Queryable();
+            var query = uof.courseRepository.Queryable();
             query = query.Skip(firstPageNumber * pageSize).Take(pageSize * (lastPageNumber - firstPageNumber + 1));
             var queryList = query.ToList();
             List<CourseBasicInformationsDTO> list = new List<CourseBasicInformationsDTO>();
@@ -153,7 +155,7 @@ namespace KursyTutoriale.Application.Services
         public List<CourseBasicInformationsDTO> GetPagesOfCoursesFiltered(int firstPageNumber, int lastPageNumber, int pageSize,
             bool isDescending, float lowestPrice, float highestPrice, ICollection<int> tags)
         {
-            var query = courseRepository.Queryable();
+            var query = uof.courseRepository.Queryable();
 
 
             if(tags.Count > 0)
@@ -186,9 +188,11 @@ namespace KursyTutoriale.Application.Services
         /// <param name="course">
         /// Version of course you want to add to database.
         /// </param>
-        public void AddCourse(CourseCreationDTO course)
+        public void AddCourseAsync(CourseCreationDTO course)
         {
-            courseRepository.Insert(mapper.Map<Course>(course));
+            uof.courseRepository.Insert(mapper.Map<Course>(course));
+            uof.SaveChanges();
+
         }
 
         /// <summary>
@@ -199,10 +203,11 @@ namespace KursyTutoriale.Application.Services
         /// </param>
         public void AddModule(CourseModuleCreationDTO module)
         {
-            var query = courseRepository.Queryable();
+            var query = uof.courseRepository.Queryable();
             var course = query.Where(c => c.Id.Equals(module.CourseId)).FirstOrDefault();
             course.Modules.Add(mapper.Map<CourseModule>(module));
-            courseRepository.Update(course);
+            uof.courseRepository.Update(course);
+            uof.SaveChanges();
 
         }
 
@@ -214,10 +219,11 @@ namespace KursyTutoriale.Application.Services
         /// </param>
         public void AddLesson(LessonCreationDTO lesson)
         {
-            var query = courseRepository.Queryable();
+            var query = uof.courseRepository.Queryable();
             var course = query.Where(c => c.Id.Equals(lesson.CourseId)).FirstOrDefault();
             course.Modules.Where(m => m.Index.Equals(lesson.CourseModuleIndex)).FirstOrDefault().Lessons.Add(mapper.Map<Lesson>(lesson));
-            courseRepository.Update(course);
+            uof.courseRepository.Update(course);
+            uof.SaveChanges();
 
         }
 
@@ -229,10 +235,11 @@ namespace KursyTutoriale.Application.Services
         /// </param>
         public void AddTag(TagCreationDTO tag)
         {
-            var query = courseRepository.Queryable();
+            var query = uof.courseRepository.Queryable();
             var course = query.Where(c => c.Id.Equals(tag.CourseId)).FirstOrDefault();
             course.Tags.Add(mapper.Map<Tag>(tag));
-            courseRepository.Update(course);
+            uof.courseRepository.Update(course);
+            uof.SaveChanges();
         }
 
 
@@ -245,7 +252,7 @@ namespace KursyTutoriale.Application.Services
         /// </returns>
         public CourseForEditionDTO GetCourseForEdition(Guid courseId)
         {
-            var query = courseRepository.Queryable();
+            var query = uof.courseRepository.Queryable();
             query = query.Where(q => q.Id.Equals(courseId));
             if (query != null)
             {
@@ -265,7 +272,7 @@ namespace KursyTutoriale.Application.Services
         /// </returns>
         public CourseModuleForEditionDTO GetCourseModuleForEdition(Guid courseId,int moduleIndex)
         {
-            var query = courseRepository.Queryable();
+            var query = uof.courseRepository.Queryable();
             query = query.Where(q => q.Id.Equals(courseId));
             if (query != null)
             {
@@ -289,7 +296,7 @@ namespace KursyTutoriale.Application.Services
         /// </returns>
         public LessonForEditionDTO GetLessonForEdition(Guid courseId, int moduleIndex, int lessonIndex)
         {
-            var query = courseRepository.Queryable();
+            var query = uof.courseRepository.Queryable();
             query = query.Where(q => q.Id.Equals(courseId));
             if (query != null)
             {
@@ -312,7 +319,7 @@ namespace KursyTutoriale.Application.Services
         /// </returns>
         public int GetNumberOfCourses()
         {
-            var query = courseRepository.Queryable();
+            var query = uof.courseRepository.Queryable();
             return query.Count();
         }
 
@@ -324,7 +331,7 @@ namespace KursyTutoriale.Application.Services
         /// </returns>
         public Course GetCourse(Guid id)
         {
-            var query = courseRepository.Queryable().Where(c => c.Id.Equals(id)).FirstOrDefault();
+            var query = uof.courseRepository.Queryable().Where(c => c.Id.Equals(id)).FirstOrDefault();
             return query;
         }
 

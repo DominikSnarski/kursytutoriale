@@ -25,6 +25,7 @@ namespace KursyTutoriale.Infrastructure
 
             builder.ApplyConfiguration(new UserProfileConfiguration());
             builder.ApplyConfiguration(new TagConfiguration());
+            builder.ApplyConfiguration(new CourseConfigurator());
         }
     }
 }

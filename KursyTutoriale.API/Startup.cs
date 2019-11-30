@@ -26,6 +26,8 @@ using Microsoft.IdentityModel.Logging;
 using System.Collections.Generic;
 using Swashbuckle.AspNetCore.Swagger;
 using KursyTutoriale.Application.Configuration.Options;
+using KursyTutoriale.Infrastructure.Repositories.Implementations;
+using URF.Core.Abstractions;
 
 namespace KursyTutoriale.API
 {
@@ -78,12 +80,14 @@ namespace KursyTutoriale.API
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
+            builder.RegisterType<UnitOfWork>().As<IUrfUnitOfWork>();
+
             #region identity
             builder.RegisterType<MockUpUserProfileRepository>().As<IUserProfileRepository>();
             builder.RegisterType<MockUpApplicationUserRepository>().As<IApplicationUserRepository>();
             builder.RegisterType<AccountManagerService>().As<IAccountManagerService>();
             #endregion
-            builder.RegisterType<MockupCoursesRepository>().As<ICoursesRepository>().SingleInstance();
+            builder.RegisterType<CoursesRepository>().As<ICoursesRepository>().SingleInstance();
             builder.RegisterType<CourseService>().As<ICourseService>();
 
             builder.RegisterModule(new DataAccessModule(Configuration.GetConnectionString("default")));

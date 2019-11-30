@@ -32,7 +32,7 @@ namespace KursyTutoriale.API.Controllers
         [HttpPost("AddCourse")]
         public void AddCourse(CourseCreationDTO course)
         {
-            courseService.AddCourse(course);
+             courseService.AddCourseAsync(course);
 
         }
 
