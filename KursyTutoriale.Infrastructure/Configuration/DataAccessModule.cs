@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using KursyTutoriale.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using URF.Core.Abstractions;
 using URF.Core.EF;
 
@@ -26,8 +27,12 @@ namespace KursyTutoriale.Infrastructure.Configuration
             builder.Register<ApplicationDbContext>(ctx =>
             {
                 var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
+                var loggerFactory = ctx.Resolve<ILoggerFactory>();
 
-                var options = builder.UseSqlServer(connectionString).Options;
+                var options = builder
+                    .UseSqlServer(connectionString)
+                    .UseLoggerFactory(loggerFactory)
+                    .Options;
 
                 var context = new ApplicationDbContext(options);
 
