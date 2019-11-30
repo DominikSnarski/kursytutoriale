@@ -4,6 +4,8 @@ import { Table, Media, Jumbotron, Container, Button, Spinner, Col, Row, Alert } 
 import Details from '../Details/Details';
 import { Fade } from 'react-reveal';
 import Filters from '../Filters/Filters';
+import apiClient from '../Auth/ApiClient';
+import axios from 'axios';
 
 
 const API='https://localhost:44354/api/CoursesViewer';
@@ -34,25 +36,7 @@ class ShowPagination extends React.Component {
     componentDidMount(){
         this.setState({ isLoading: true });
 
-        //FIRST FETCH FOR NUMBER OF COURSES
-        fetch(API+"/GetNumberOfCourses")
-        .then(response => response.json())
-        .then(data => {  
-    
-            var nrOfCourses=data;
-            var nrOfPages=Math.ceil(data/4)-1;
-            //SECOND FETCH FOR ALL COURSES
-            fetch(API+"/GetPagesOfCourses?firstPageNumber=0&lastPageNumber="+nrOfPages+"&pageSize=4")
-            .then(response => response.json())
-            .then(data => {  
-                var example=[...Array(nrOfCourses).keys()].map(i => ({ id: (i + 1), name: data[i].title, date:data[i].date }));
-                this.setState({ exampleItems: example, isLoading: false });  
-    
-            })
-    
-        })
-        .catch(error => this.setState({ error, isLoading: false }));
-        
+        apiClient.fetchCourses(0,4, this);        
     }
 
     onChangePage(pageOfItems) {
