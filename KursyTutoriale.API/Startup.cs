@@ -80,7 +80,6 @@ namespace KursyTutoriale.API
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterType<UnitOfWork>().As<IUrfUnitOfWork>();
 
             #region identity
             builder.RegisterType<MockUpUserProfileRepository>().As<IUserProfileRepository>();

@@ -30,9 +30,9 @@ namespace KursyTutoriale.API.Controllers
         /// Version of course you want to add to database.
         /// </param>
         [HttpPost("AddCourse")]
-        public void AddCourse(CourseCreationDTO course)
+        public async Task AddCourse(CourseCreationDTO course)
         {
-             courseService.AddCourseAsync(course);
+            var result = await courseService.AddCourse(course);
 
         }
 
@@ -43,9 +43,9 @@ namespace KursyTutoriale.API.Controllers
         /// Version of module you want to add to course
         /// </param>
         [HttpPost("AddCourseModule")]
-        public void AddModule(CourseModuleCreationDTO module)
+        public async Task AddModule(CourseModuleCreationDTO module)
         {
-            courseService.AddModule(module);
+            var result = await courseService.AddModule(module);
 
         }
 
@@ -56,9 +56,9 @@ namespace KursyTutoriale.API.Controllers
         /// Version of lesson you want to add to module
         /// </param>
         [HttpPost("AddLesson")]
-        public void AddLesson(LessonCreationDTO lesson)
+        public async Task AddLesson(LessonCreationDTO lesson)
         {
-            courseService.AddLesson(lesson);
+            var result = await courseService.AddLesson(lesson);
 
         }
 
@@ -69,9 +69,9 @@ namespace KursyTutoriale.API.Controllers
         /// Version of tag you want to add to course
         /// </param>
         [HttpPost("AddTag")]
-        public void AddTag(TagCreationDTO tag)
+        public async Task AddTag(TagCreationDTO tag)
         {
-            courseService.AddTag(tag);
+            var result = await courseService.AddTag(tag);
         }
 
         /// <summary>

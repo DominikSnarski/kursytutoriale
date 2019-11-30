@@ -13,11 +13,14 @@ namespace KursyTutoriale.Infrastructure.Configuration.DataModels
             builder.HasKey(c => c.Id);
             builder.OwnsMany(c => c.Modules, m =>
             {
+                m.WithOwner().HasForeignKey("CourseId");
+                m.HasKey("Index");
                 m.ToTable("KTCourseModule");
                 m.OwnsMany(module => module.Lessons, l =>
                 {
-                    l.ToTable("KTLesson");
-
+                    l.WithOwner().HasForeignKey("Index");
+                    l.HasKey("Index");
+                    l.ToTable("KTLesson");  
                 });
             });
             builder.OwnsMany(c => c.Tags, t =>
