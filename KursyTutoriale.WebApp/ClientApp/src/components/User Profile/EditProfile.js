@@ -3,16 +3,15 @@ import {
   Container, Row, Col, Form, Input, Button, Navbar, Nav,
   NavbarBrand, NavLink, NavItem, UncontrolledDropdown,
   DropdownToggle, DropdownMenu, DropdownItem, Jumbotron, Media, Badge,
-  TabContent, TabPane, Card, CardTitle, CardText, Progress
+  TabContent, TabPane, Card, CardTitle, CardText, Progress, Label, CustomInput
 } from 'reactstrap';
 import './style.css';
 import Zoom from 'react-reveal/Zoom';
 import classnames from 'classnames';
-import EditProfile from './EditProfile'
 import { UserContext } from '../Context/UserContext';
 
 
-class UserProfile extends React.Component {
+class EditProfile extends React.Component {
     constructor(props) {
         super();
         
@@ -24,33 +23,78 @@ class UserProfile extends React.Component {
             karma_color: "primary",
             courses_color: "success",
             activeTab: 1,
-            showEdit: false
+            slider_val1: '',
+            slider_val2: '',
+            slider_val3: '',
+            slider_val4: '',
+            slider_val5: ''
         };
         this.toggle=this.toggle.bind(this);
-        this.toggleEdit=this.toggleEdit.bind(this);
     }
 
     toggle(tab){
       if(this.state.activeTab!==tab)
       this.setState({activeTab: tab})
     }
-
-    toggleEdit(){
-      this.setState({ showEdit: !this.state.showEdit });
-    }
     componentWillMount(){
       this.toggle('1')
     }
 
+    updateValue(event){
+        this.setState({
+            slider_val1: event.target.value
+        })
+    }
+    updateValue2(event){
+        this.setState({
+            slider_val2: event.target.value
+        })
+    }
+    updateValue3(event){
+        this.setState({
+            slider_val3: event.target.value
+        })
+    }
+    updateValue4(event){
+        this.setState({
+            slider_val4: event.target.value
+        })
+    }
+    updateValue5(event){
+        this.setState({
+            slider_val5: event.target.value
+        })
+    }
+
+    updateNameValue(event){
+        this.setState({
+            name_value: event.target.value
+        })
+    }
+    updateAgeValue(event){
+        this.setState({
+            age_value: event.target.value
+        })
+    }
+    updateSiteValue(event){
+        this.setState({
+            site_value: event.target.value
+        })
+    }
+    updateBirthdayValue(event){
+        this.setState({
+            birthday_value: event.target.value
+        })
+    }
+    updateGenderValue(event){
+        this.setState({
+            gender_value: event.target.value
+        })
+    }
     render(){
 
         return(
-          
-            <div>
-              {this.state.showEdit && <EditProfile/>}
-              {!this.state.showEdit &&
-                <Jumbotron className="jumbotron_bg">
-              <Zoom duration="200">
+            <Jumbotron className="jumbotron_bg">
               <Container className="col_bg about">
                 <Row>
                   <Col xs="3">
@@ -58,27 +102,28 @@ class UserProfile extends React.Component {
               <Row>   
                 <Media
                     src="https://www.w3schools.com/howto/img_avatar.png" alt="Generic placeholder image" />
+                    <CustomInput type="file" label="Pick a file!" />
                     <hr width="100%"></hr>
               </Row>
               <Row>
-                <Col className="left_side">IT
-                <Progress value={2 * 5} >Newbie</Progress></Col>
+                <Col className="left_side">IT <Label size="sm">{this.state.slider_val1}</Label>
+                <CustomInput onChange={event=>this.updateValue(event)} type="range" min="0" max="100" step="1"/></Col>
               </Row>
               <Row>
-                <Col className="left_side">Kitchen
-                <Progress color="success" value="25">Novice</Progress></Col>
+                <Col className="left_side">Kitchen <Label size="sm">{this.state.slider_val2}</Label>
+                <CustomInput onChange={event=>this.updateValue2(event)} type="range" min="0" max="100" step="1"/></Col>
               </Row>
               <Row>
-                <Col className="left_side">DIY
-                <Progress color="info" value={50} >Knows something</Progress></Col>
+                <Col className="left_side">DIY <Label size="sm">{this.state.slider_val3}</Label>
+                <CustomInput onChange={event=>this.updateValue3(event)} type="range" min="0" max="100" step="1"/></Col>
               </Row>
               <Row>
-                <Col className="left_side">Handcraft
-                <Progress color="warning" value={75}>Master</Progress></Col>
+                <Col className="left_side">Handcraft <Label size="sm">{this.state.slider_val4}</Label>
+                <CustomInput onChange={event=>this.updateValue4(event)} type="range" min="0" max="100" step="1"/></Col>
               </Row>
               <Row>
-                <Col className="left_side">Drawing
-                <Progress color="danger" value="100">GrandMaster</Progress></Col>
+                <Col className="left_side">Drawing <Label size="sm">{this.state.slider_val5}</Label>
+                <CustomInput onChange={event=>this.updateValue5(event)} type="range" min="0" max="100" step="1"/></Col>
               </Row>
             </Container>
             </Col>
@@ -90,9 +135,7 @@ class UserProfile extends React.Component {
                 <p className="text-primary">{this.state.type}</p>
                 </Col>
                 <Col>
-                  <Button color="primary" outline className="float-right" onClick={this.toggleEdit}>Edit profile</Button>
-                  <Button color="primary" className="float-right">💬 Send message</Button>
-                  <Button color="primary" className="float-right" active>Follow</Button>
+                <Button color="primary" outline className="float-right">Save profile</Button>
                   </Col>
                 </Row>
                 <Row className="row-width">
@@ -104,6 +147,7 @@ class UserProfile extends React.Component {
 
                 </Col>
                 </Row>
+
                 <hr width="100%"></hr>
               </Row>
               <Row>
@@ -116,70 +160,39 @@ class UserProfile extends React.Component {
             <l class="stats">👤 About</l>
           </NavLink>
         </NavItem>
-        <NavItem>
-          <NavLink
-            className={classnames({ active: this.state.activeTab === '2' })}
-            onClick={() => { this.toggle('2'); }}
-          >
-           <l class="stats"> 📝 Courses</l>
-          </NavLink>
-        </NavItem>
       </Nav>
       <TabContent activeTab={this.state.activeTab}>
         <TabPane tabId="1" className="about">
         <Row className="mb-3">
                   <Col sm="3">Name</Col>
-                  <Col>1</Col>
+                  <Col><Input onChange={event=>this.updateNameValue(event)} size="sm" type="text" placeholder="name" /></Col>
                 </Row>
                 <Row className="mb-3">
                 <Col sm="3">Age</Col>
-                  <Col>1</Col>
-                </Row>
-                <Row className="mb-3">
-                <Col sm="3">E-mail</Col>
-                  <Col>1</Col>
+                    <Col><Input onChange={event=>this.updateAgeValue(event)} size="sm" type="number" placeholder="age" /></Col>
                 </Row>
                 <Row className="mb-3">
                 <Col sm="3">Site</Col>
-                  <Col>1</Col>
+                    <Col><Input onChange={event=>this.updateSiteValue(event)} size="sm" type="url" placeholder="site" /></Col>
                 </Row>
                 <Row className="mb-3">
                 <Col sm="3">Birthday</Col>
-                  <Col>1</Col>
+                    <Col><Input onChange={event=>this.updateBirthdayValue(event)} size="sm" type="date" placeholder="birthday" /></Col>
                 </Row>
                 <Row className="mb-3">
                 <Col sm="3">Gender</Col>
-                  <Col>1</Col>
+                    <Col><Input onChange={event=>this.updateGenderValue(event)} size="sm" type="text" placeholder="gender" /></Col>
                 </Row>   
-        </TabPane>
-        <TabPane tabId="2">
-          <Row>
-            <Col sm="6">
-              <Card body>
-                <CardTitle>Special Title Treatment</CardTitle>
-                <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
-                <Button>Go somewhere</Button>
-              </Card>
-            </Col>
-            <Col sm="6">
-              <Card body>
-                <CardTitle>Special Title Treatment</CardTitle>
-                <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
-                <Button>Go somewhere</Button>
-              </Card>
-            </Col>
-          </Row>
         </TabPane>
       </TabContent></Container></Row>
             </Container>
             </Col>
             </Row>      
            
-            </Container></Zoom></Jumbotron>}
-            </div>
-            
+            </Container>
+            </Jumbotron>
         );
     };
 }
 
-export default UserProfile;
+export default EditProfile;
