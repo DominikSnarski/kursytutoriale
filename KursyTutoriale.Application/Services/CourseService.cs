@@ -26,8 +26,8 @@ namespace KursyTutoriale.Application.Services
         CourseModuleForEditionDTO GetCourseModuleForEdition(Guid courseId, int moduleIndex);
         List<CourseBasicInformationsDTO> GetPagesOfCoursesFiltered(int firstPageNumber, int lastPageNumber, int pageSize,
             bool isDescending, float lowestPrice, float highestPrice, ICollection<int> tags);
-        Course GetCourse(int id);
         FeaturedCoursesDTO getFeaturesCourses(int numberInEachCategory);
+        Course GetCourse(Guid id);
 
     }
 
