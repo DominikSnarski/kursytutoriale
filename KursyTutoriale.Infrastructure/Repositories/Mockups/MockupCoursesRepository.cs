@@ -25,7 +25,11 @@ namespace KursyTutoriale.Infrastructure.Repositories.Mockups
                     OwnerId = Guid.NewGuid(),
                     Description = i.ToString(),
                     Date = DateTime.Now,
-                    Title = i.ToString()
+                    Title = i.ToString(),
+                    Popularity = i * 10,
+                    Rating = i / 3,
+                    DateOfLastEdit = DateTime.Now
+
                 };
 
                 for (int j = 0; j < 5; j++)

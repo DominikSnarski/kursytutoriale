@@ -107,7 +107,15 @@ namespace KursyTutoriale.API.Controllers
         {
             return courseService.GetCourse(id);
         }
-
-
+        /// <summary>
+        /// Gets the featured courses, it contains: Recently Updated, New Popular, Now Popular, Discover
+        /// </summary>
+        /// <param name="numberInEachCathegory">number of featured courses in each cathegory</param>
+        /// <returns>An object containing the lists of </returns>
+        [HttpGet("GetFeaturedCourses")]
+        public FeaturedCoursesDTO GetFeaturedCourses(int numberInEachCategory)
+        {
+            return courseService.getFeaturesCourses(numberInEachCategory);
+        }
     }
 }
