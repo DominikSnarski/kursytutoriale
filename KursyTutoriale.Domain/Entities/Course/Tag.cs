@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace KursyTutoriale.Domain.Entities.Course
+﻿namespace KursyTutoriale.Domain.Entities.Course
 {
-    public class Tag
+    public class Tag:BaseEntity
     {
-        public string TagName { get; set; }
-        public int Id {get;set;}
+        private Tag():base()
+        {
+
+        }
+
+        public Tag(string name):base()
+        {
+            Name = name;
+        }
+
+        public string Name { get; private set; }
     }
 }

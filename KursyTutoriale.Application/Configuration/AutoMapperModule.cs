@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Autofac;
+﻿using Autofac;
 using AutoMapper;
-using KursyTutoriale.Application.DataTransferObjects;
 using KursyTutoriale.Application.DataTransferObjects.Course;
-using KursyTutoriale.Domain.Entities;
+using KursyTutoriale.Application.DataTransferObjects.Tags;
 using KursyTutoriale.Domain.Entities.Course;
 
 namespace KursyTutoriale.Application.Configuration
@@ -31,6 +27,8 @@ namespace KursyTutoriale.Application.Configuration
                 cfg.CreateMap<Course, CourseForEditionDTO>();
                 cfg.CreateMap<CourseModule, CourseModuleForEditionDTO>();
                 cfg.CreateMap<Lesson, LessonForEditionDTO>();
+
+                cfg.CreateMap<Tag, TagDTO>();
 
             });
 
