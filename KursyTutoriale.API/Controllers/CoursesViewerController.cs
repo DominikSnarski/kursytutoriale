@@ -125,7 +125,7 @@ namespace KursyTutoriale.API.Controllers
         /// Returns course
         /// </returns>
         [HttpGet("GetCourse")]
-        public Course GetCourses(int id)
+        public Course GetCourses(Guid id)
         {
             return courseService.GetCourse(id);
         }

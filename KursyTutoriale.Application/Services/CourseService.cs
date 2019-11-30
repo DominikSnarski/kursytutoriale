@@ -17,6 +17,9 @@ namespace KursyTutoriale.Application.Services
         LessonDetailsDTO GetLessonDetails(Guid courseId, int moduleIndex, int lessonIndex);
         List<CourseBasicInformationsDTO> GetPagesOfCourses(int firstPageNumber, int lastPageNumber, int pageSize);
         void AddCourse(CourseCreationDTO course);
+        void AddModule(CourseModuleCreationDTO module);
+        void AddLesson(LessonCreationDTO lesson);
+        void AddTag(TagCreationDTO tag);
         CourseForEditionDTO GetCourseForEdition(Guid courseId);
         int GetNumberOfCourses();
         LessonForEditionDTO GetLessonForEdition(Guid courseId, int moduleIndex, int lessonIndex);
@@ -189,6 +192,51 @@ namespace KursyTutoriale.Application.Services
         }
 
         /// <summary>
+        /// Used to add module to course.
+        /// </summary>
+        /// <param name="module">
+        /// Version of module you want to add to course
+        /// </param>
+        public void AddModule(CourseModuleCreationDTO module)
+        {
+            var query = courseRepository.Queryable();
+            var course = query.Where(c => c.Id.Equals(module.CourseId)).FirstOrDefault();
+            course.Modules.Add(mapper.Map<CourseModule>(module));
+            courseRepository.Update(course);
+
+        }
+
+        /// <summary>
+        /// Used to add lesson to course module
+        /// </summary>
+        /// <param name="lesson">
+        /// Version of lesson you want to add to module
+        /// </param>
+        public void AddLesson(LessonCreationDTO lesson)
+        {
+            var query = courseRepository.Queryable();
+            var course = query.Where(c => c.Id.Equals(lesson.CourseId)).FirstOrDefault();
+            course.Modules.Where(m => m.Index.Equals(lesson.CourseModuleIndex)).FirstOrDefault().Lessons.Add(mapper.Map<Lesson>(lesson));
+            courseRepository.Update(course);
+
+        }
+
+        /// <summary>
+        /// Used to add tag to course
+        /// </summary>
+        /// <param name="tag">
+        /// Version of tag you want to add to course
+        /// </param>
+        public void AddTag(TagCreationDTO tag)
+        {
+            var query = courseRepository.Queryable();
+            var course = query.Where(c => c.Id.Equals(tag.CourseId)).FirstOrDefault();
+            course.Tags.Add(mapper.Map<Tag>(tag));
+            courseRepository.Update(course);
+        }
+
+
+        /// <summary>
         /// Used to get course you want to edit.
         /// </summary>
         /// <param name="courseId">  Id of course you want to get </param>
@@ -274,10 +322,10 @@ namespace KursyTutoriale.Application.Services
         /// <returns>
         /// Returns course
         /// </returns>
-        public Course GetCourse(int id)
+        public Course GetCourse(Guid id)
         {
-            var query = courseRepository.Queryable().ToList();
-            return query[id];
+            var query = courseRepository.Queryable().Where(c => c.Id.Equals(id)).FirstOrDefault();
+            return query;
         }
 
         /// <summary>

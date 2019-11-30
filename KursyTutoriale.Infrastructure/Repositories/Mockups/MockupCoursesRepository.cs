@@ -140,7 +140,8 @@ namespace KursyTutoriale.Infrastructure.Repositories.Mockups
 
         public void Update(Course item)
         {
-            throw new NotImplementedException();
+            courses.RemoveAll(c => c.Id == item.Id);
+            courses.Add(item);
         }
     }
 }

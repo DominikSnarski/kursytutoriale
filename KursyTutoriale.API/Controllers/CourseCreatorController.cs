@@ -37,6 +37,44 @@ namespace KursyTutoriale.API.Controllers
         }
 
         /// <summary>
+        /// Used to add module to course.
+        /// </summary>
+        /// <param name="module">
+        /// Version of module you want to add to course
+        /// </param>
+        [HttpPost("AddCourseModule")]
+        public void AddModule(CourseModuleCreationDTO module)
+        {
+            courseService.AddModule(module);
+
+        }
+
+        /// <summary>
+        /// Used to add lesson to course module
+        /// </summary>
+        /// <param name="lesson">
+        /// Version of lesson you want to add to module
+        /// </param>
+        [HttpPost("AddLesson")]
+        public void AddLesson(LessonCreationDTO lesson)
+        {
+            courseService.AddLesson(lesson);
+
+        }
+
+        /// <summary>
+        /// Used to add tag to course
+        /// </summary>
+        /// <param name="tag">
+        /// Version of tag you want to add to course
+        /// </param>
+        [HttpPost("AddTag")]
+        public void AddTag(TagCreationDTO tag)
+        {
+            courseService.AddTag(tag);
+        }
+
+        /// <summary>
         /// Used to get course you want to edit.
         /// </summary>
         /// <param name="courseId">  Id of course you want to get </param>
