@@ -1,7 +1,4 @@
-﻿using KursyTutoriale.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using KursyTutoriale.Domain.Entities.UserProfiles;
 
 namespace KursyTutoriale.Infrastructure.Repositories.Interfaces
 {
