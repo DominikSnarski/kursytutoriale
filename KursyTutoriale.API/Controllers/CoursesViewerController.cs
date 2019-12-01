@@ -91,8 +91,7 @@ namespace KursyTutoriale.API.Controllers
         /// <param name="pageSize"> Indicates how many courses is on page</param>
         /// <param name="isDescending"> Indicates if returned list should be in descending(if true) or ascending(if false) order</param>
         /// <param name="lowestPrice"> Lowest price accepted in filter</param>
-        /// <param name="highestPrice"> Highest price accepted in filter. If you don't want to limit range by highest price put negative number otherwise 
-        /// if you dont put anything it will be counted as highestPrice = 0</param>
+        /// <param name="highestPrice"> Highest price accepted in filter.</param>
         /// <param name="tags"> Indicates tags that must be in course to be included in list</param>
         /// <returns>
         /// Returns pages from firstPageNumber to lastPageNumber.
@@ -100,7 +99,7 @@ namespace KursyTutoriale.API.Controllers
         /// </returns>
         [HttpPost("GetPagesOfCoursesFiltered")]
         public List<CourseBasicInformationsDTO> GetPagesOfCoursesFiltered(int firstPageNumber, int lastPageNumber, int pageSize,
-            bool isDescending, float lowestPrice, float highestPrice, ICollection<Guid> tags)
+            bool isDescending, float lowestPrice, float ?highestPrice, ICollection<Guid> tags)
         {
             return courseService.GetPagesOfCoursesFiltered(firstPageNumber, lastPageNumber, pageSize, isDescending, lowestPrice, highestPrice,tags);
         }
