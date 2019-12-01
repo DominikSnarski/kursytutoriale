@@ -27,7 +27,7 @@ namespace KursyTutoriale.Application.Services
         LessonForEditionDTO GetLessonForEdition(Guid courseId, int moduleIndex, int lessonIndex);
         CourseModuleForEditionDTO GetCourseModuleForEdition(Guid courseId, int moduleIndex);
         List<CourseBasicInformationsDTO> GetPagesOfCoursesFiltered(int firstPageNumber, int lastPageNumber, int pageSize,
-            bool isDescending, float lowestPrice, float highestPrice, ICollection<int> tags);
+            bool isDescending, float lowestPrice, float highestPrice, ICollection<Guid> tags);
         FeaturedCoursesDTO getFeaturesCourses(int numberInEachCategory);
         Course GetCourse(Guid id);
 
@@ -156,14 +156,14 @@ namespace KursyTutoriale.Application.Services
         /// If for exemple firstPageNumber=1 and lastPageNumber=3, it will return courses from first page to third page.
         /// </returns>
         public List<CourseBasicInformationsDTO> GetPagesOfCoursesFiltered(int firstPageNumber, int lastPageNumber, int pageSize,
-            bool isDescending, float lowestPrice, float highestPrice, ICollection<int> tags)
+            bool isDescending, float lowestPrice, float highestPrice, ICollection<Guid> tags)
         {
             var query = coursesRepository.Queryable();
 
 
             if(tags.Count > 0)
-                foreach (int id in tags)
-                    query = query.Where(c => c.Tags.Any(t => t.Id == id));
+                foreach (Guid id in tags)
+                    query = query.Where(c => c.Tags.Any(t => t.Id.Equals(id)));
 
             if (lowestPrice < 0) lowestPrice = 0;
 
@@ -193,8 +193,15 @@ namespace KursyTutoriale.Application.Services
         /// </param>
         public async Task<int> AddCourse(CourseCreationDTO course)
         {
-            var c = mapper.Map<Course>(course);
-            coursesRepository.Insert(c);
+            var c = new Course()
+            {
+                Date = course.Date,
+                Description = course.Description,
+                OwnerId = course.OwnerId,
+                Price = course.Price,
+                Title = course.Title
+            };
+            coursesRepository.InsertAgreggate(c);
             var result =  await unitOfWork.SaveChangesAsync();
             return result;
 
@@ -210,7 +217,15 @@ namespace KursyTutoriale.Application.Services
         {
             var query = coursesRepository.Queryable();
             var course = query.Where(c => c.Id.Equals(module.CourseId)).FirstOrDefault();
-            course.Modules.Add(mapper.Map<CourseModule>(module));
+
+            var m = new CourseModule()
+            {
+               CourseId = module.CourseId,
+               Index = module.Index,
+               Title = module.Title
+            };
+
+            course.Modules.Add(m);
             coursesRepository.Update(course);
             var result = await unitOfWork.SaveChangesAsync();
             return result;
@@ -228,7 +243,17 @@ namespace KursyTutoriale.Application.Services
         {
             var query = coursesRepository.Queryable();
             var course = query.Where(c => c.Id.Equals(lesson.CourseId)).FirstOrDefault();
-            course.Modules.Where(m => m.Index.Equals(lesson.CourseModuleIndex)).FirstOrDefault().Lessons.Add(mapper.Map<Lesson>(lesson));
+
+            var l = new Lesson()
+            {
+                Title = lesson.Title,
+                Index = lesson.Index,
+                Content = lesson.Content,
+                CourseId = lesson.CourseId,
+                CourseModuleIndex = lesson.CourseModuleIndex
+            };
+
+            course.Modules.Where(m => m.Index.Equals(lesson.CourseModuleIndex)).FirstOrDefault().Lessons.Add(l);
             coursesRepository.Update(course);
             var result = await unitOfWork.SaveChangesAsync();
             return result;
@@ -246,7 +271,14 @@ namespace KursyTutoriale.Application.Services
         {
             var query = coursesRepository.Queryable();
             var course = query.Where(c => c.Id.Equals(tag.CourseId)).FirstOrDefault();
-            course.Tags.Add(mapper.Map<Tag>(tag));
+
+            var t = new CourseTag()
+            {
+                Id = tag.Id,
+                CourseId = tag.CourseId
+            };
+
+            course.Tags.Add(t);
             coursesRepository.Update(course);
             var result = await unitOfWork.SaveChangesAsync();
             return result;
@@ -356,7 +388,7 @@ namespace KursyTutoriale.Application.Services
         {
             // number of days for a course to be published in to still be relevant in the context of this service
             int daysRelevant = 7;
-            var query = courseRepository.Queryable();
+            var query = coursesRepository.Queryable();
             if(query.Count() < numberInEachCategory) return null;
             FeaturedCoursesDTO featuredCourses = new FeaturedCoursesDTO();
 

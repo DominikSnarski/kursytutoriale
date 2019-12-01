@@ -13,7 +13,7 @@ namespace KursyTutoriale.Application.DataTransferObjects.Course
         public Guid OwnerId { get; set; }
         public DateTime Date { get; set; }
         public float Price { get; set; }
-        public ICollection<Tag> Tags { get; set; }
+        public ICollection<CourseTag> Tags { get; set; }
         public ICollection<CourseModuleBasicInformationsDTO> Modules { get; set; }
     }
 }

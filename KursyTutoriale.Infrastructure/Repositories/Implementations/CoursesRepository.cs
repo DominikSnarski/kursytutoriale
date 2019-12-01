@@ -19,15 +19,7 @@ namespace KursyTutoriale.Infrastructure.Repositories.Implementations
         public CoursesRepository(ApplicationDbContext context) : base (context)
         {
             this.context = context;
+           
         }
-
-        new public void Insert(Course course)
-        {
-            context.Add(course);
-            context.Entry(course).State = EntityState.Added;
-            context.SaveChanges();
-        }
-
-
     }
 }

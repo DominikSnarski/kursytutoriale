@@ -18,6 +18,7 @@ namespace KursyTutoriale.Infrastructure
 
         public DbSet<UserProfile> UserProfiles{ get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<Course> Courses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

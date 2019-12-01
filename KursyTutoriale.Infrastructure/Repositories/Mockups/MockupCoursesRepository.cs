@@ -28,7 +28,7 @@ namespace KursyTutoriale.Infrastructure.Repositories.Mockups
                     Title = i.ToString(),
                     Popularity = i * 10,
                     Rating = i / 3,
-                    DateOfLastEdit = DateTime.Now
+                    DateOfLastEdit = DateTime.Now,
                     Price = i
 
                 };
@@ -54,8 +54,8 @@ namespace KursyTutoriale.Infrastructure.Repositories.Mockups
                     course.Modules.Add(module);
                 }
 
-                course.Tags.Add(new Tag("Baking"));
-                course.Tags.Add(new Tag("Cooking"));
+                course.Tags.Add(new CourseTag("Baking"));
+                course.Tags.Add(new CourseTag("Cooking"));
                 courses.Add(course);
                 
             }
