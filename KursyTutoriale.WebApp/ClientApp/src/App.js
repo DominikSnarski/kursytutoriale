@@ -16,6 +16,8 @@ import SignUpForm from './components/LoginForms/SignUpForm';
 import {UserContext} from './components/Context/UserContext';
 import {InitialUserContext} from './components/Context/UserContext';
 
+import NewCourse from './components/NewCourse/NewCourse';
+
 const App = () => {
 
 	const [showCourse, setShowCourse] = useState(false);
@@ -55,6 +57,11 @@ const App = () => {
 			<main className="my-5 py-5" id="Home">
 				
 				{showProfile && <UserProfile username={userContext.username}/>}
+
+				<div className="App">
+					<NewCourse />
+				</div>
+				
 				{showSignIn && !showSignUp && !showProfile && <SignInForm />}
 				{showSignUp && !showSignIn && !showProfile && <SignUpForm />}
 				{!showProfile && !showSignIn && !showSignUp &&

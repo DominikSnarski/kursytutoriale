@@ -1,9 +1,20 @@
 import React, { useState } from 'react'; 
 import Tags from './Tags';
-import { Button, Container, Label, Input, Row, Col } from 'reactstrap';
+import { Button, Container, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
+import apiClient from "../Auth/ApiClient"
 
 function NewCourse()
 {
+
+  const AddNewCourseObject = {
+    createNewCourse: (title, /*tagsList,*/ description, ownerId, date, price) => {
+      apiClient.post(
+            '/api/CourseCreator/AddCourse',
+            {
+                title, /*tagsList,*/ description, ownerId, date, price
+            });
+    }
+  }
     //table of tags
     //setTagsList is used to add tags dynamically
     //const [tagsList, setTagsList] = useState([]);
@@ -59,20 +70,33 @@ function NewCourse()
 
     const { error, tagsList, inputValue } = tagsState;
 
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+
+      AddNewCourseObject.createNewCourse(formData.get('title'), formData.get('description'), formData.get('email'), formData.get('ownerId'), formData.get('date'), formData.get('price'));
+    }
+
     return (
         <Container className="justify-content-center" style={{backgroundColor: "#7BC5DA"}}>
         <br/>
         <h1 style={{textAlign: "center"}}>Add a new course</h1>
 
+
+        <Form onSubmit={(e)=>handleSubmit(e)}>
         <br/>
+        <FormGroup>
           <Row>         
             <Label sm={2} for="title">Title</Label>
             <Col sm={10}>
                 <Input type="text" name="title" id="title" placeholder="Set title" />         
             </Col>          
           </Row>
+          </FormGroup>
 
         <br/>
+
+        <FormGroup>
           <Row>        
             <Label sm={2} for="tags">Tags</Label>
             <Col sm={9}>
@@ -112,9 +136,11 @@ function NewCourse()
                 <p> <br/> { error } </p>
             }        
             </Col>
-          </Row>     
+          </Row>    
+          </FormGroup>  
 
         <br/>
+        <FormGroup>
           <Row>          
             <Label sm={2} for="description">Description </Label>
             <Col sm={10}>
@@ -122,8 +148,10 @@ function NewCourse()
             </Col>
             
           </Row>
+          </FormGroup>
 
         <br/>
+        <FormGroup>
           <Row>           
             <Label sm={2} for="price">Price (in $) </Label>
             <Col sm={10}>
@@ -131,22 +159,27 @@ function NewCourse()
             </Col>
             
           </Row>
+          </FormGroup>
 
         <br/>
+        <FormGroup>
           <Row>           
             <Label sm={2} for="date">Date of adding course </Label>
             <Col sm={10}>
-                <Input type="datetime-local" name="date" id="exampleText"/> 
+                <Input type="text" name="date" id="exampleText"/> 
             </Col>       
           </Row>
+          </FormGroup>
 
         <br/>
+        <FormGroup>
           <Row>            
             <Label sm={2} for="ownerId">Author ID </Label>
             <Col sm={10}>
-                <p name="ownerId"> 1 </p>
+                <p name="ownerId" value="3fa85f64-5717-4562-b3fc-2c963f66afa6">3fa85f64-5717-4562-b3fc-2c963f66afa6</p>
             </Col>       
           </Row>
+          </FormGroup>
 
         <br/>
         
@@ -158,6 +191,8 @@ function NewCourse()
             </Button>
             </Col>
           </Row>
+          </Form>
+
         <br/>
 
         </Container>
