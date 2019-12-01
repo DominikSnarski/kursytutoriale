@@ -54,8 +54,8 @@ namespace KursyTutoriale.Infrastructure.Repositories.Mockups
                     course.Modules.Add(module);
                 }
 
-                course.Tags.Add(new CourseTag("Baking"));
-                course.Tags.Add(new CourseTag("Cooking"));
+                course.Tags.Add(new CourseTag() { CourseId = course.Id,Id = new Guid() });
+                course.Tags.Add(new CourseTag() { CourseId = course.Id, Id = new Guid() });
                 courses.Add(course);
                 
             }
@@ -64,6 +64,11 @@ namespace KursyTutoriale.Infrastructure.Repositories.Mockups
         public void Insert(Course item)
         {
             courses.Add(item);
+        }
+
+        public void InsertAgreggate(Course agreggate)
+        {
+            courses.Add(agreggate);
         }
 
         public IQueryable<Course> Queryable()
@@ -116,11 +121,6 @@ namespace KursyTutoriale.Infrastructure.Repositories.Mockups
             throw new NotImplementedException();
         }
 
-
-        public void InsertAgreggate(Course aggregate)
-        {
-            throw new NotImplementedException();
-        }
 
         public Task LoadPropertyAsync(Course item, Expression<Func<Course, object>> property, CancellationToken cancellationToken = default)
         {

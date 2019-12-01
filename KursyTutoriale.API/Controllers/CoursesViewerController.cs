@@ -100,7 +100,7 @@ namespace KursyTutoriale.API.Controllers
         /// </returns>
         [HttpPost("GetPagesOfCoursesFiltered")]
         public List<CourseBasicInformationsDTO> GetPagesOfCoursesFiltered(int firstPageNumber, int lastPageNumber, int pageSize,
-            bool isDescending, float lowestPrice, float highestPrice, ICollection<int> tags)
+            bool isDescending, float lowestPrice, float highestPrice, ICollection<Guid> tags)
         {
             return courseService.GetPagesOfCoursesFiltered(firstPageNumber, lastPageNumber, pageSize, isDescending, lowestPrice, highestPrice,tags);
         }

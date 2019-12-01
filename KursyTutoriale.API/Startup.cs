@@ -86,7 +86,8 @@ namespace KursyTutoriale.API
             builder.RegisterType<MockUpApplicationUserRepository>().As<IApplicationUserRepository>();
             builder.RegisterType<AccountManagerService>().As<IAccountManagerService>();
             #endregion
-            builder.RegisterType<CoursesRepository>().As<ICoursesRepository>().InstancePerLifetimeScope();
+           // builder.RegisterType<CoursesRepository>().As<ICoursesRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<MockupCoursesRepository>().As<ICoursesRepository>().SingleInstance();
             builder.RegisterType<CourseService>().As<ICourseService>();
 
             builder.RegisterModule(new DataAccessModule(Configuration.GetConnectionString("default")));
