@@ -16,7 +16,7 @@ import SignUpForm from './components/LoginForms/SignUpForm';
 import {UserContext} from './components/Context/UserContext';
 import {InitialUserContext} from './components/Context/UserContext';
 
-import NewCourse from './components/NewCourse/NewCourse';
+import NewCoursePost from './components/NewCourse/NewCoursePost';
 
 const App = () => {
 
@@ -59,9 +59,9 @@ const App = () => {
 				{showProfile && <UserProfile username={userContext.username}/>}
 
 				<div className="App">
-					<NewCourse />
+					<NewCoursePost />
 				</div>
-				
+
 				{showSignIn && !showSignUp && !showProfile && <SignInForm />}
 				{showSignUp && !showSignIn && !showProfile && <SignUpForm />}
 				{!showProfile && !showSignIn && !showSignUp &&

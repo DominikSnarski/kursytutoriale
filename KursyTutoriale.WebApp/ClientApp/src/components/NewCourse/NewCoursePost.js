@@ -3,11 +3,11 @@ import Tags from './Tags';
 import { Button, Container, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import apiClient from "../Auth/ApiClient"
 
-function NewCourse()
+function NewCoursePostPost()
 {
 
-  const AddNewCourseObject = {
-    createNewCourse: (title, /*tagsList,*/ description, ownerId, date, price) => {
+  const AddNewCoursePostPostObject = {
+    createNewCoursePost: (title, /*tagsList,*/ description, ownerId, date, price) => {
       apiClient.post(
             '/api/CourseCreator/AddCourse',
             {
@@ -74,7 +74,7 @@ function NewCourse()
       event.preventDefault();
       const formData = new FormData(event.target);
 
-      AddNewCourseObject.createNewCourse(formData.get('title'), formData.get('description'), formData.get('email'), formData.get('ownerId'), formData.get('date'), formData.get('price'));
+      AddNewCoursePostObject.createNewCoursePost(formData.get('title'), formData.get('description'), formData.get('email'), formData.get('ownerId'), formData.get('date'), formData.get('price'));
     }
 
     return (
@@ -199,4 +199,4 @@ function NewCourse()
       );
 }
 
-export default NewCourse;
+export default NewCoursePost;
