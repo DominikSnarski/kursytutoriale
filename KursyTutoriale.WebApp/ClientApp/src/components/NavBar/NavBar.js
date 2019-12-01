@@ -38,13 +38,6 @@ const NavBar = (props) => {
               {userContext.authenticated &&
                 <Button onClick={props.toggleProfile} color="warning" outline>{userContext.username}</Button>}
 
-
-              <Form inline>
-
-                <Button type="button" color="primary" outline onClick={props.toggleLessonEdit}>TEMPORARY</Button>
-              </Form>
-
-
               <Form inline>
 
                 <Button type="button" color="primary" outline onClick={props.toggleSignIn}>Sign in</Button>

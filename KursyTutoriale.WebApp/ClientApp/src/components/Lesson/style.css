@@ -1,0 +1,8 @@
+.working-area{
+    padding: 2rem;
+    border: solid, black, 2px;
+    text-align: center;
+    background: white;
+    min-height: 400px;
+    width: 100%;
+}

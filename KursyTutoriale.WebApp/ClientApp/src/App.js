@@ -16,8 +16,6 @@ import SignUpForm from './components/LoginForms/SignUpForm';
 import {UserContext} from './components/Context/UserContext';
 import {InitialUserContext} from './components/Context/UserContext';
 import Lesson from './components/Lesson/LessonView';
-import LessonEdit from './components/Lesson/LessonEdit';
-import LessonPreview from './components/Lesson/LessonPreview';
 
 const App = () => {
 
@@ -26,10 +24,7 @@ const App = () => {
 
 
 	const [showLesson, setShowLesson] = useState(false);
-	const toggleLesson = () => {setShowLesson(!showLesson); setShowLessonEdit(!showLessonEdit);}
-
-	const [showLessonEdit, setShowLessonEdit] = useState(false);
-    const toggleLessonEdit = () => setShowLessonEdit(!showLessonEdit);
+	const toggleLesson = () => setShowLesson(!showLesson);
 
     const [showProfile, setShowProfile] = useState(false);
 
@@ -60,21 +55,20 @@ const App = () => {
 	return(
 		<UserContext.Provider value={userContext}>
 		<Fragment>
-			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp} toggleLessonEdit={toggleLessonEdit}/>
+			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
 			<main className="my-5 py-5" id="Home">
 				
 				{showProfile && <UserProfile username={userContext.username}/>}
 				{showLesson && <Lesson toggleLesson={toggleLesson}/>}
-				{showLessonEdit && <LessonEdit toggleLessonEdit={toggleLessonEdit} />}
 				{showSignIn && !showSignUp && !showProfile && <SignInForm />}
 				{showSignUp && !showSignIn && !showProfile && <SignUpForm />}
 
-				{!showProfile && !showSignIn && !showSignUp && !showLesson && !showLessonEdit &&
+				{!showProfile && !showSignIn && !showSignUp && !showLesson &&
 				<Search />}
 
-				{showCourse && !showProfile && !showLesson && !showLessonEdit && <Course toggle={toggleCourse} toggleLesson={toggleLesson}/>}
+				{showCourse && !showProfile && !showLesson && <Course toggle={toggleCourse} toggleLesson={toggleLesson}/>}
 
-				{!showProfile && !showCourse && !showSignIn && !showSignUp && !showLesson && !showLessonEdit &&
+				{!showProfile && !showCourse && !showSignIn && !showSignUp && !showLesson &&
 				<Container className="px-0">
 					<Jumbotron fluid className="Container">
 						<Featured toggleCourse={toggleCourse} />

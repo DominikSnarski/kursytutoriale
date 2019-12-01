@@ -18,7 +18,6 @@ class LessonEdit extends React.Component {
             areaText: '',
             file: '',
             imagePreviewURL: null,
-            exampleContents: exampleContents,
             showPreview: false
         }
 
@@ -146,7 +145,7 @@ class LessonEdit extends React.Component {
 
                 <Row className='mt-5'>
                             <Col >
-                                <Button color='secondary' >Back</Button>
+                                <Button color='secondary' onClick={this.props.toggleLessonEdit}>Back</Button>
                             </Col>
                             <Col className='text-right'>
                                 <Button color='secondary' onClick={this.toggleLessonPreview}>Next</Button>
@@ -159,3 +158,4 @@ class LessonEdit extends React.Component {
 }
 
 export default LessonEdit;
+

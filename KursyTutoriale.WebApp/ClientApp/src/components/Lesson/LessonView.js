@@ -3,6 +3,9 @@ import {
     Jumbotron, Button, Container, Col, Row
 } from 'reactstrap';
 import { Fade } from 'react-reveal';
+import LessonEdit from './LessonEdit';
+import { DndProvider } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 
 class Lesson extends React.Component {
 
@@ -14,16 +17,28 @@ class Lesson extends React.Component {
         { name: 'text', value: 'One under another.' },
         { name: 'multipleAnswersQuestion', value: 'что это?', answers: ['это штахета.', 'чики брики в дамке', 'nudy'], correctAnswers: [1, 2] },
         { name: 'image', value: 'https://via.placeholder.com/480x320', alt: 'We are sorry but we have lost this image.' }];
-        
-        var exampleItems = [...Array(5)].map(i => ({ id: (i + 1), name: i, date:i }));
-        console.log(exampleContents);
 
         this.state = {
-            exampleContents: exampleContents
+            exampleContents: exampleContents,
+            showLessonEdit: false
         }
+
+        this.toggleLessonEdit = this.toggleLessonEdit.bind(this);
+    }
+
+    toggleLessonEdit(){
+        this.setState({showLessonEdit: !this.state.showLessonEdit})
     }
 
     render() {
+        if(this.state.showLessonEdit)
+        {
+            return(
+                <DndProvider backend={HTML5Backend}>
+					<LessonEdit toggleLessonEdit={this.toggleLessonEdit} />
+				</DndProvider>
+            )
+        }
         return (
             <Container className='Container'>
                 <Fade left duration="200">
@@ -73,7 +88,14 @@ class Lesson extends React.Component {
                     </Jumbotron>
 
 
-                    <Button color='secondary' onClick={this.props.toggleLesson}>Leave lesson</Button>
+                    <Row className='mt-5'>
+                            <Col >
+                                <Button color='secondary' onClick={this.props.toggleLesson}>Leave lesson</Button>
+                            </Col>
+                            <Col className='text-right'>
+                                <Button color='secondary' onClick={this.toggleLessonEdit}>Edit lesson</Button>
+                            </Col>
+                        </Row>
 
                 </Fade>
             </Container>
