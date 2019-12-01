@@ -28,7 +28,7 @@ const Featured = (props) => {
 
     if (showDetails)
         return (
-            <Fade right>
+            <Fade right duration="200">
                 <div >
                     <Jumbotron fluid className="jumbotron_bg">
                         <span className="d-lg-flex justify-content-center d-block h2 text-dark">Course Details</span>

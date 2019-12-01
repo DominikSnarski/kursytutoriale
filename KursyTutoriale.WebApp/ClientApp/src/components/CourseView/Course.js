@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     Jumbotron, Button, Container, Col, Row, Card, CardHeader, CardBody,
-    ListGroup, ListGroupItem, CardText, UncontrolledCollapse, Progress, CardTitle
+    CardText, Progress
 } from 'reactstrap';
 import { Fade } from 'react-reveal';
 import './style.css';
@@ -18,7 +18,7 @@ class Course extends React.Component {
     render() {
         return (
             <Container className="Container">
-                <Fade left>
+                <Fade left duration="200">
 
                     <Jumbotron fluid className="jumbotron_bg">
                         <span className="d-lg-flex justify-content-center d-block h2 text-dark">Course Name</span>
@@ -60,7 +60,7 @@ class Course extends React.Component {
                         </Row>
                         <Progress value="25" className="mb-4" />
 
-                        <Modules />
+                        <Modules toggleLesson={this.props.toggleLesson}/>
                     </Jumbotron>
 
                     <Button color="secondary" onClick={this.props.toggle}>Back</Button>

@@ -2,9 +2,8 @@ import React from 'react';
 
 
 import {
-  Container, Row, Col, Form, Input, Button, Navbar, Nav,
-  NavbarBrand, NavLink, NavItem, UncontrolledDropdown,
-  DropdownToggle, DropdownMenu, DropdownItem
+  Container, Row, Col, Form, Button, Navbar, Nav,
+  NavLink, NavItem
 } from 'reactstrap';
 import { UserContext } from '../Context/UserContext';
 
@@ -12,7 +11,7 @@ import { UserContext } from '../Context/UserContext';
 const NavBar = (props) => {
   const userContext = React.useContext(UserContext)
 
-  return(
+  return (
     <header className="page">
       <Navbar fixed="top" color="light" light expand="xs" className="border-bottom border-gray bg-white" style={{ height: 80 }}>
         <Container>
@@ -37,8 +36,8 @@ const NavBar = (props) => {
             <Col className="d-none d-lg-flex justify-content-end">
 
               {userContext.authenticated &&
-              <Button onClick={props.toggleProfile} color="warning" outline>{userContext.username}</Button>}
-            
+                <Button onClick={props.toggleProfile} color="warning" outline>{userContext.username}</Button>}
+
               <Form inline>
 
                 <Button type="button" color="primary" outline onClick={props.toggleSignIn}>Sign in</Button>
@@ -50,7 +49,7 @@ const NavBar = (props) => {
               </Form>
             </Col>
 
-            
+
 
           </Row>
         </Container>

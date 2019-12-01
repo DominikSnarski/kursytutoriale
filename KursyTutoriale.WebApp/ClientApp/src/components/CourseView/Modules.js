@@ -1,14 +1,13 @@
 import React from 'react';
 import {
-    Jumbotron, Button, Container, Col, Row, Card, CardHeader, CardBody,
-    ListGroup, ListGroupItem, CardText, UncontrolledCollapse, Progress, CardTitle
+    Container, Row,
+    ListGroup, ListGroupItem, UncontrolledCollapse
 } from 'reactstrap';
-import { Fade } from 'react-reveal';
 import './style.css';
-import Lesson from './Lesson';
+import LessonsList from './LessonsList';
 
 
-const Modules = () => (
+const Modules = (props) => (
     <Container>
         <Row>
             <h3>Modules</h3>
@@ -18,27 +17,27 @@ const Modules = () => (
 
             <ListGroupItem tag="button" id="toggler" style={{ backgroundColor: '#53A6BE' }}>Module 2</ListGroupItem>
             <UncontrolledCollapse toggler="#toggler">
-                <Lesson />
+                <LessonsList toggleLesson={props.toggleLesson}/>
             </UncontrolledCollapse>
 
             <ListGroupItem tag="button" id="toggler1" style={{ backgroundColor: '#53A6BE' }}>Module 3</ListGroupItem>
             <UncontrolledCollapse toggler="#toggler1">
-                <Lesson />
+                <LessonsList />
             </UncontrolledCollapse>
 
             <ListGroupItem tag="button" id="toggler2" style={{ backgroundColor: '#53A6BE' }}>Module 4</ListGroupItem>
             <UncontrolledCollapse toggler="#toggler2">
-                <Lesson />
+                <LessonsList />
             </UncontrolledCollapse>
 
             <ListGroupItem tag="button" id="toggler3" style={{ backgroundColor: '#53A6BE' }}>Module 5</ListGroupItem>
             <UncontrolledCollapse toggler="#toggler3">
-                <Lesson />
+                <LessonsList />
             </UncontrolledCollapse>
 
             <ListGroupItem tag="button" id="toggler4" style={{ backgroundColor: '#53A6BE' }}>Module 6</ListGroupItem>
             <UncontrolledCollapse toggler="#toggler4">
-                <Lesson />
+                <LessonsList />
             </UncontrolledCollapse>
 
         </ListGroup>

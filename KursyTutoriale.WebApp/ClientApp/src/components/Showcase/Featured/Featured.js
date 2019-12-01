@@ -10,7 +10,7 @@ const Featured2 = (props) => {
 
     return (
         <Container className="Container">
-            <Fade left>
+            <Fade left duration="200">
             <Jumbotron fluid className="jumbotron_bg">
                 <span className="d-lg-flex justify-content-center d-block h2 text-dark">Featured courses</span>
             </Jumbotron>

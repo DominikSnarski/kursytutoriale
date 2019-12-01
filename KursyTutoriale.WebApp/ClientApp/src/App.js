@@ -15,12 +15,16 @@ import SignInForm from './components/LoginForms/SignInForm';
 import SignUpForm from './components/LoginForms/SignUpForm';
 import {UserContext} from './components/Context/UserContext';
 import {InitialUserContext} from './components/Context/UserContext';
+import Lesson from './components/Lesson/LessonView';
 
 const App = () => {
 
 	const [showCourse, setShowCourse] = useState(false);
+	const toggleCourse = () => setShowCourse(!showCourse);
 
-    const toggleCourse = () => setShowCourse(!showCourse);
+
+	const [showLesson, setShowLesson] = useState(false);
+	const toggleLesson = () => setShowLesson(!showLesson);
 
     const [showProfile, setShowProfile] = useState(false);
 
@@ -55,15 +59,19 @@ const App = () => {
 			<main className="my-5 py-5" id="Home">
 				
 				{showProfile && <UserProfile username={userContext.username}/>}
+				{showLesson && <Lesson toggleLesson={toggleLesson}/>}
 				{showSignIn && !showSignUp && !showProfile && <SignInForm />}
 				{showSignUp && !showSignIn && !showProfile && <SignUpForm />}
-				{!showProfile && !showSignIn && !showSignUp &&
+
+				{!showProfile && !showSignIn && !showSignUp && !showLesson &&
 				<Search />}
-				{showCourse && !showProfile && <Course toggle={toggleCourse}/>}
-				{!showProfile && !showCourse && !showSignIn && !showSignUp &&
+
+				{showCourse && !showProfile && !showLesson && <Course toggle={toggleCourse} toggleLesson={toggleLesson}/>}
+
+				{!showProfile && !showCourse && !showSignIn && !showSignUp && !showLesson &&
 				<Container className="px-0">
 					<Jumbotron fluid className="Container">
-						<Featured />
+						<Featured toggleCourse={toggleCourse} />
 						<Jumbotron className="Container" id="Courses"></Jumbotron>
 						<Row>
 							<Col className="d-none d-lg-flex justify-content-center">
