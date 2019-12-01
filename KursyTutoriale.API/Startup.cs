@@ -82,7 +82,6 @@ namespace KursyTutoriale.API
         {
 
             #region identity
-            builder.RegisterType<MockUpUserProfileRepository>().As<IUserProfileRepository>();
             builder.RegisterType<MockUpApplicationUserRepository>().As<IApplicationUserRepository>();
             builder.RegisterType<AccountManagerService>().As<IAccountManagerService>();
             #endregion
