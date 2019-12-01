@@ -6,7 +6,7 @@ namespace KursyTutoriale.Application.DataTransferObjects.UserProfiles
     {
         public string Name { get; set; }
         public string SiteLink { get; set; }
-        public string AvatarPath { get; set; }
+        public int Age { get; set; }
         public Guid GenderId { get; set; }
     }
 }
