@@ -2,6 +2,7 @@
 using KursyTutoriale.Domain.Entities;
 using KursyTutoriale.Domain.Entities.Auth;
 using KursyTutoriale.Domain.Entities.Course;
+using KursyTutoriale.Domain.Entities.UserProfiles;
 using KursyTutoriale.Infrastructure.Configuration.DataModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -19,6 +20,7 @@ namespace KursyTutoriale.Infrastructure
         public DbSet<UserProfile> UserProfiles{ get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Course> Courses { get; set; }
+        public DbSet<Gender> Genders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -27,6 +29,7 @@ namespace KursyTutoriale.Infrastructure
             builder.ApplyConfiguration(new UserProfileConfiguration());
             builder.ApplyConfiguration(new TagConfiguration());
             builder.ApplyConfiguration(new CourseConfigurator());
+            builder.ApplyConfiguration(new GenderConfigurator());
         }
     }
 }
