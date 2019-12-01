@@ -83,6 +83,27 @@ namespace KursyTutoriale.API.Controllers
             return courseService.GetPagesOfCourses(firstPageNumber, lastPageNumber, pageSize);
         }
 
+        /// <summary>
+        /// Return pages of courses, as a list of courses.
+        /// </summary>
+        /// <param name="firstPageNumber"> Indicates with page is first in range</param>
+        /// <param name="lastPageNumber"> Indicates with page is last in range</param>
+        /// <param name="pageSize"> Indicates how many courses is on page</param>
+        /// <param name="isDescending"> Indicates if returned list should be in descending(if true) or ascending(if false) order</param>
+        /// <param name="lowestPrice"> Lowest price accepted in filter</param>
+        /// <param name="highestPrice"> Highest price accepted in filter.</param>
+        /// <param name="tags"> Indicates tags that must be in course to be included in list</param>
+        /// <returns>
+        /// Returns pages from firstPageNumber to lastPageNumber.
+        /// If for exemple firstPageNumber=1 and lastPageNumber=3, it will return courses from first page to third page.
+        /// </returns>
+        [HttpPost("GetPagesOfCoursesFiltered")]
+        public List<CourseBasicInformationsDTO> GetPagesOfCoursesFiltered(int firstPageNumber, int lastPageNumber, int pageSize,
+            bool isDescending, float lowestPrice, float ?highestPrice, ICollection<Guid> tags)
+        {
+            return courseService.GetPagesOfCoursesFiltered(firstPageNumber, lastPageNumber, pageSize, isDescending, lowestPrice, highestPrice,tags);
+        }
+
 
         /// <summary>
         /// Used to get number of courses
@@ -103,10 +124,11 @@ namespace KursyTutoriale.API.Controllers
         /// Returns course
         /// </returns>
         [HttpGet("GetCourse")]
-        public Course GetCourses(int id)
+        public Course GetCourses(Guid id)
         {
             return courseService.GetCourse(id);
         }
+
         /// <summary>
         /// Gets the featured courses, it contains: Recently Updated, New Popular, Now Popular, Discover
         /// </summary>
@@ -117,5 +139,6 @@ namespace KursyTutoriale.API.Controllers
         {
             return courseService.getFeaturesCourses(numberInEachCategory);
         }
+
     }
 }

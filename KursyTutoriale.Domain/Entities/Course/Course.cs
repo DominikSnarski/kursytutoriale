@@ -8,7 +8,7 @@ namespace KursyTutoriale.Domain.Entities.Course
     {
         public Course()
         {
-            Tags = new List<Tag>();
+            Tags = new List<CourseTag>();
             Modules = new List<CourseModule>();
         }
 
@@ -19,8 +19,8 @@ namespace KursyTutoriale.Domain.Entities.Course
         public DateTime DateOfLastEdit { get; set; }
         public int Popularity { get; set; }
         public double Rating { get; set; }
-
-        public ICollection<Tag>Tags { get; set; }
+        public float Price { get; set; }
+        public ICollection<CourseTag>Tags { get; set; }
         public ICollection<CourseModule> Modules { get; set; }
     }
 }

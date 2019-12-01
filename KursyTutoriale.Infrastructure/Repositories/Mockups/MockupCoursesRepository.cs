@@ -28,7 +28,8 @@ namespace KursyTutoriale.Infrastructure.Repositories.Mockups
                     Title = i.ToString(),
                     Popularity = i * 10,
                     Rating = i / 3,
-                    DateOfLastEdit = DateTime.Now
+                    DateOfLastEdit = DateTime.Now,
+                    Price = i
 
                 };
 
@@ -53,8 +54,8 @@ namespace KursyTutoriale.Infrastructure.Repositories.Mockups
                     course.Modules.Add(module);
                 }
 
-                course.Tags.Add(new Tag("Baking"));
-                course.Tags.Add(new Tag("Cooking"));
+                course.Tags.Add(new CourseTag() { CourseId = course.Id,Id = new Guid() });
+                course.Tags.Add(new CourseTag() { CourseId = course.Id, Id = new Guid() });
                 courses.Add(course);
                 
             }
@@ -63,6 +64,11 @@ namespace KursyTutoriale.Infrastructure.Repositories.Mockups
         public void Insert(Course item)
         {
             courses.Add(item);
+        }
+
+        public void InsertAgreggate(Course agreggate)
+        {
+            courses.Add(agreggate);
         }
 
         public IQueryable<Course> Queryable()
@@ -116,11 +122,6 @@ namespace KursyTutoriale.Infrastructure.Repositories.Mockups
         }
 
 
-        public void InsertAgreggate(Course aggregate)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task LoadPropertyAsync(Course item, Expression<Func<Course, object>> property, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
@@ -139,7 +140,8 @@ namespace KursyTutoriale.Infrastructure.Repositories.Mockups
 
         public void Update(Course item)
         {
-            throw new NotImplementedException();
+            courses.RemoveAll(c => c.Id == item.Id);
+            courses.Add(item);
         }
     }
 }

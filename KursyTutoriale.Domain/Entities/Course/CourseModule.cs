@@ -12,6 +12,7 @@ namespace KursyTutoriale.Domain.Entities.Course
         }
         public int Index { get; set; }
         public string Title { get; set; }
+        public Guid CourseId { get; set; }
         public ICollection<Lesson> Lessons { get; set; }
     }
 }

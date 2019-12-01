@@ -30,10 +30,48 @@ namespace KursyTutoriale.API.Controllers
         /// Version of course you want to add to database.
         /// </param>
         [HttpPost("AddCourse")]
-        public void AddCourse(CourseCreationDTO course)
+        public async Task AddCourse(CourseCreationDTO course)
         {
-            courseService.AddCourse(course);
+            var result = await courseService.AddCourse(course);
 
+        }
+
+        /// <summary>
+        /// Used to add module to course.
+        /// </summary>
+        /// <param name="module">
+        /// Version of module you want to add to course
+        /// </param>
+        [HttpPost("AddCourseModule")]
+        public async Task AddModule(CourseModuleCreationDTO module)
+        {
+            var result = await courseService.AddModule(module);
+
+        }
+
+        /// <summary>
+        /// Used to add lesson to course module
+        /// </summary>
+        /// <param name="lesson">
+        /// Version of lesson you want to add to module
+        /// </param>
+        [HttpPost("AddLesson")]
+        public async Task AddLesson(LessonCreationDTO lesson)
+        {
+            var result = await courseService.AddLesson(lesson);
+
+        }
+
+        /// <summary>
+        /// Used to add tag to course
+        /// </summary>
+        /// <param name="tag">
+        /// Version of tag you want to add to course
+        /// </param>
+        [HttpPost("AddTag")]
+        public async Task AddTag(TagCreationDTO tag)
+        {
+            var result = await courseService.AddTag(tag);
         }
 
         /// <summary>

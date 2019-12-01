@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using KursyTutoriale.Application;
 using KursyTutoriale.Application.DataTransferObjects;
+using KursyTutoriale.Application.DataTransferObjects.Course;
 using KursyTutoriale.Domain;
 using KursyTutoriale.Domain.Entities;
+using KursyTutoriale.Domain.Entities.Course;
 using KursyTutoriale.Infrastructure;
 using KursyTutoriale.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;

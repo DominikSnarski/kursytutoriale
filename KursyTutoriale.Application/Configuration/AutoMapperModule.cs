@@ -2,6 +2,7 @@
 using AutoMapper;
 using KursyTutoriale.Application.DataTransferObjects.Course;
 using KursyTutoriale.Application.DataTransferObjects.Tags;
+using KursyTutoriale.Domain.Entities;
 using KursyTutoriale.Domain.Entities.Course;
 
 namespace KursyTutoriale.Application.Configuration
@@ -13,7 +14,6 @@ namespace KursyTutoriale.Application.Configuration
             //Add new Maps for Data Transfer Object here
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<CourseCreationDTO, Course>();
 
                 cfg.CreateMap<Course, CourseBasicInformationsDTO>();
                 cfg.CreateMap<CourseModule, CourseModuleBasicInformationsDTO>();
@@ -29,6 +29,7 @@ namespace KursyTutoriale.Application.Configuration
                 cfg.CreateMap<Lesson, LessonForEditionDTO>();
 
                 cfg.CreateMap<Tag, TagDTO>();
+
 
             });
 
