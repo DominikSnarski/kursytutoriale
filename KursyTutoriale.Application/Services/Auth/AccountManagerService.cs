@@ -33,8 +33,8 @@ namespace KursyTutoriale.Infrastructure
         }
         public async Task<IdentityResult> CreateAccount(CreateUserRequestDto request)
         {
-            var userProfile = new UserProfile();
             var user = new ApplicationUser { UserName = request.Username, Email = request.Email };
+            var userProfile = new UserProfile(user.Id);
 
             user.UserProfileId = userProfile.Id;
 
