@@ -5,6 +5,7 @@ namespace KursyTutoriale.Application.Services.UserProfiles
 {
     class UserProfileService : IUserProfileService
     {
+        
         public void UpdateProfile(UpdateUserProfileDto request)
         {
             throw new NotImplementedException();
