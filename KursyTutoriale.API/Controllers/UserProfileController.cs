@@ -24,5 +24,11 @@ namespace KursyTutoriale.API.Controllers
         {
             await profileService.UpdateProfile(request);
         }
+
+        [HttpGet("/getProfile")]
+        public UserProfileDto GetProfile()
+        {
+            return profileService.GetProfile();
+        }
     }
 }

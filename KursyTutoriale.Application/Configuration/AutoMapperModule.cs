@@ -2,8 +2,9 @@
 using AutoMapper;
 using KursyTutoriale.Application.DataTransferObjects.Course;
 using KursyTutoriale.Application.DataTransferObjects.Tags;
-using KursyTutoriale.Domain.Entities;
+using KursyTutoriale.Application.DataTransferObjects.UserProfiles;
 using KursyTutoriale.Domain.Entities.Course;
+using KursyTutoriale.Domain.Entities.UserProfiles;
 
 namespace KursyTutoriale.Application.Configuration
 {
@@ -14,11 +15,9 @@ namespace KursyTutoriale.Application.Configuration
             //Add new Maps for Data Transfer Object here
             var config = new MapperConfiguration(cfg =>
             {
-
                 cfg.CreateMap<Course, CourseBasicInformationsDTO>();
                 cfg.CreateMap<CourseModule, CourseModuleBasicInformationsDTO>();
                 cfg.CreateMap<Lesson, LessonBasicInformationsDTO>();
-
 
                 cfg.CreateMap<Course, CourseDetailsDTO>();
                 cfg.CreateMap<CourseModule, CourseModuleDetailsDTO>();
@@ -29,11 +28,11 @@ namespace KursyTutoriale.Application.Configuration
                 cfg.CreateMap<Lesson, LessonForEditionDTO>();
 
                 cfg.CreateMap<Tag, TagDTO>();
-
-
+                cfg.CreateMap<UserProfile, UserProfileDto>()
+                    .ForMember(dto => dto.GenderName, opt => opt.MapFrom(up => up.Gender.Name));
             });
 
-            DTOMapper dtoMapper = new DTOMapper(config);
+            var dtoMapper = new DTOMapper(config);
 
             builder.RegisterInstance(dtoMapper).As<IDTOMapper>();
         }

@@ -2,7 +2,7 @@
 using KursyTutoriale.Application.DataTransferObjects.UserProfiles;
 using KursyTutoriale.Domain.Entities.UserProfiles;
 using KursyTutoriale.Infrastructure.Repositories;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using URF.Core.Abstractions;
@@ -15,17 +15,29 @@ namespace KursyTutoriale.Application.Services.UserProfiles
         private IExtendedRepository<UserProfile> profileRepository;
         private IExtendedRepository<Gender> genderRepository;
         private IUnitOfWork unitOfWork;
+        private IDTOMapper mapper;
 
         public UserProfileService(
             IExecutionContextAccessor executionContext,
             IExtendedRepository<UserProfile> profileRepository,
-            IExtendedRepository<Gender> genderRepository, 
-            IUnitOfWork unitOfWork)
+            IExtendedRepository<Gender> genderRepository,
+            IUnitOfWork unitOfWork,
+            IDTOMapper mapper)
         {
             this.executionContext = executionContext;
             this.profileRepository = profileRepository;
             this.genderRepository = genderRepository;
             this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
+        }
+
+        public UserProfileDto GetProfile()
+        {
+            var userId = executionContext.GetUserId();
+
+            var userProfile = profileRepository.Queryable().Include(up => up.Gender).Single(up => up.Id == userId);
+
+            return mapper.Map<UserProfileDto>(userProfile);
         }
 
         public async Task UpdateProfile(UpdateUserProfileDto request)
