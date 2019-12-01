@@ -1,6 +1,7 @@
 ﻿using KursyTutoriale.Application.DataTransferObjects.Auth;
 using KursyTutoriale.Domain.Entities;
 using KursyTutoriale.Domain.Entities.Auth;
+using KursyTutoriale.Domain.Entities.UserProfiles;
 using KursyTutoriale.Infrastructure.Repositories;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -18,12 +19,12 @@ namespace KursyTutoriale.Infrastructure
     public class AccountManagerService : IAccountManagerService
     {
         private UserManager<ApplicationUser> userManager;
-        private IUserProfileRepository userProfileRepository;
+        private IExtendedRepository<UserProfile> userProfileRepository;
         private IUnitOfWork unitOfWork;
 
         public AccountManagerService(
             UserManager<ApplicationUser> userManager,
-            IUserProfileRepository userProfileRepository, 
+            IExtendedRepository<UserProfile> userProfileRepository, 
             IUnitOfWork unitOfWork)
         {
             this.userManager = userManager;
@@ -32,8 +33,8 @@ namespace KursyTutoriale.Infrastructure
         }
         public async Task<IdentityResult> CreateAccount(CreateUserRequestDto request)
         {
-            var userProfile = new UserProfile();
             var user = new ApplicationUser { UserName = request.Username, Email = request.Email };
+            var userProfile = new UserProfile(user.Id);
 
             user.UserProfileId = userProfile.Id;
 
