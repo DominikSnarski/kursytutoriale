@@ -9,6 +9,10 @@ using KursyTutoriale.Application.DataTransferObjects.Course;
 
 namespace KursyTutoriale.Application.Services
 {
+    public interface ISearchService
+    {
+        public SearchResult Search(string phrase, int totalNumberOfResults);
+    }
     public class SearchResult
     {
         // true if anything was found
@@ -45,13 +49,13 @@ namespace KursyTutoriale.Application.Services
             var query = coursesRepository.Queryable()
                 .Where(c => c.Title.ToUpper().Contains(phrase.ToUpper()) ||
                             // check if any of the modules contain the searched phrase
-                            c.Modules.TakeWhile(t => !t.Title.ToUpper().Contains(phrase.ToUpper())).Count() != c.Modules.Count() ||
-                            // check if any of the tags contain the searched phrase
-                            c.Tags.TakeWhile(t => !t.Name.ToUpper().Contains(phrase.ToUpper())).Count() != c.Tags.Count());
-            if (totalNumberOfResults > query.Count())
-                return new SearchResult() {
+                            c.Modules.TakeWhile(t => !t.Title.ToUpper().Contains(phrase.ToUpper())).Count() != c.Modules.Count());
+            if (query.Count() == 0) return new SearchResult() { result = true };
+            else if (totalNumberOfResults > query.Count())
+                return new SearchResult()
+                {
                     result = true,
-                    foundCourses = mapper.MapQueryable<CourseBasicInformationsDTO,Course>(query)
+                    foundCourses = mapper.MapQueryable<CourseBasicInformationsDTO, Course>(query)
                 };
 
             List<WeightDecorator> searchList = new List<WeightDecorator>();
