@@ -26,7 +26,7 @@ namespace KursyTutoriale.API.Controllers
         }
 
         [HttpGet("/getProfile")]
-        public UserProfileDto GetProfile()
+        public UserProfileDTO GetProfile()
         {
             return profileService.GetProfile();
         }

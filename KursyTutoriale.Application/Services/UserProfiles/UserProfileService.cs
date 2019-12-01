@@ -31,13 +31,13 @@ namespace KursyTutoriale.Application.Services.UserProfiles
             this.mapper = mapper;
         }
 
-        public UserProfileDto GetProfile()
+        public UserProfileDTO GetProfile()
         {
             var userId = executionContext.GetUserId();
 
             var userProfile = profileRepository.Queryable().Include(up => up.Gender).Single(up => up.Id == userId);
 
-            return mapper.Map<UserProfileDto>(userProfile);
+            return mapper.Map<UserProfileDTO>(userProfile);
         }
 
         public async Task UpdateProfile(UpdateUserProfileDto request)

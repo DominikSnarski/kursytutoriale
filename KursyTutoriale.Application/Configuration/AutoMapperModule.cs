@@ -28,7 +28,7 @@ namespace KursyTutoriale.Application.Configuration
                 cfg.CreateMap<Lesson, LessonForEditionDTO>();
 
                 cfg.CreateMap<Tag, TagDTO>();
-                cfg.CreateMap<UserProfile, UserProfileDto>()
+                cfg.CreateMap<UserProfile, UserProfileDTO>()
                     .ForMember(dto => dto.GenderName, opt => opt.MapFrom(up => up.Gender.Name));
             });
 

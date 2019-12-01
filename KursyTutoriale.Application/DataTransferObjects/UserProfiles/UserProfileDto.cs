@@ -1,6 +1,6 @@
 ﻿namespace KursyTutoriale.Application.DataTransferObjects.UserProfiles
 {
-    public class UserProfileDto
+    public class UserProfileDTO
     {
         public string Name { get; set; }
         public string SiteLink { get; set; }
