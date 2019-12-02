@@ -20,7 +20,7 @@ namespace KursyTutoriale.Application.Services
         public IQueryable<CourseBasicInformationsDTO> foundCourses;
     }
 
-    public class SearchService
+    public class SearchService : ISearchService
     {
         ICoursesRepository coursesRepository;
         IDTOMapper mapper;
