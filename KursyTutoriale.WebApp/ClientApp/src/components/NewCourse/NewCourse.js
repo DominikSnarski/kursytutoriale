@@ -7,11 +7,11 @@ function NewCourse()
 {
 
   const AddNewCourseObject = {
-    createNewCourse: (title, /*tagsList,*/ description, ownerId, date, price) => {
+    createNewCourse: (date, /*tagsList,*/ description, ownerId,  price, title) => {
       apiClient.post(
             '/api/CourseCreator/AddCourse',
             {
-                title, /*tagsList,*/ description, ownerId, date, price
+              date, /*tagsList,*/ description, ownerId,  price, title
             });
     }
   }
@@ -74,7 +74,7 @@ function NewCourse()
       event.preventDefault();
       const formData = new FormData(event.target);
 
-      AddNewCourseObject.createNewCourse(formData.get('title'), formData.get('description'), formData.get('email'), formData.get('ownerId'), formData.get('date'), formData.get('price'));
+      AddNewCourseObject.createNewCourse(formData.get('title'), formData.get('description'), "3fa85f64-5717-4562-b3fc-2c963f66afa6", formData.get('date'), parseFloat(formData.get('price')));
     }
 
     return (
@@ -166,24 +166,13 @@ function NewCourse()
           <Row>           
             <Label sm={2} for="date">Date of adding course </Label>
             <Col sm={10}>
-                <Input type="text" name="date" id="exampleText"/> 
-            </Col>       
-          </Row>
-          </FormGroup>
-
-        <br/>
-        <FormGroup>
-          <Row>            
-            <Label sm={2} for="ownerId">Author ID </Label>
-            <Col sm={10}>
-                <p name="ownerId" value="3fa85f64-5717-4562-b3fc-2c963f66afa6">3fa85f64-5717-4562-b3fc-2c963f66afa6</p>
+                <Input type="datetime" name="date" id="exampleText"/> 
             </Col>       
           </Row>
           </FormGroup>
 
         <br/>
         
-
           <Row>
             <Col sm={10}>
             <Button>
