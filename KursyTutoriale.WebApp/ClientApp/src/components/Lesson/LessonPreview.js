@@ -74,7 +74,7 @@ class LessonPreview extends React.Component {
                             <Col >
                             </Col>
                             <Col className='text-right'>
-                            <Link to="/courseview"><Button color='secondary' onClick={this.props.toggleLesson}>Confirm and save</Button></Link>
+                            <Link to={{pathname:'/courseview', state:{courseID: "9334dec0-4e73-45bb-9f9b-d1304e85faf6"}}}><Button color='secondary' onClick={this.props.toggleLesson}>Confirm and save</Button></Link>
                             </Col>
                         </Row>
 
