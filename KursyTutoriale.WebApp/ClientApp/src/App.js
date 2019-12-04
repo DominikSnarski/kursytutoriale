@@ -18,6 +18,7 @@ import {InitialUserContext} from './components/Context/UserContext';
 import notfound from './components/404notfound';
 import Lesson from './components/Lesson/LessonView';
 import EditProfile from './components/User Profile/EditProfile'
+import LessonEdit from './components/Lesson/LessonEdit';
 
 const App = () => {
 
@@ -106,6 +107,22 @@ const App = () => {
             <main className="my-5 py-5" id="Home">
 			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
 			<EditProfile/>
+			<Footer />
+            </main>
+            )} />
+
+			<Route exact path="/lessonview" render={() => (
+            <main className="my-5 py-5" id="Home">
+			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
+			<Lesson />
+			<Footer />
+            </main>
+            )} />
+
+			<Route exact path="/editlesson" render={() => (
+            <main className="my-5 py-5" id="Home">
+			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
+			<LessonEdit />
 			<Footer />
             </main>
             )} />

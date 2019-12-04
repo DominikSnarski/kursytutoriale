@@ -4,6 +4,7 @@ import {
     CardText, CardTitle
 } from 'reactstrap';
 import './style.css';
+import { Link } from 'react-router-dom'
 
 
 const LessonsList = (props) => (
@@ -20,7 +21,7 @@ const LessonsList = (props) => (
                             <Card  body style={{ backgroundColor: '#7CC3D8', borderColor: '#7CC3D8' }} >
                                 <CardTitle>Lesson 1</CardTitle>
                                 <CardText className="card-height">You learn how to use reactstrap.</CardText>
-                                <Button onClick={props.toggleLesson}>Let's go</Button>
+                                <Link to="/lessonview"><Button fluid onClick={props.toggleLesson}>Let's go</Button></Link>
                             </Card>
                         </Col>
                     </Row>
@@ -30,7 +31,7 @@ const LessonsList = (props) => (
                             <Card body style={{ backgroundColor: '#7CC3D8', borderColor: '#7CC3D8' }}>
                                 <CardTitle>Lesson 2</CardTitle>
                                 <CardText className="card-height">You learn how to use reactstrap.</CardText>
-                                <Button onClick={props.toggleLesson}>Let's go</Button>
+                                <Link to="/lessonview"><Button fluid onClick={props.toggleLesson}>Let's go</Button></Link>
                             </Card>
                         </Col>
                     </Row>
@@ -40,7 +41,7 @@ const LessonsList = (props) => (
                             <Card body style={{ backgroundColor: '#7CC3D8', borderColor: '#7CC3D8' }}>
                                 <CardTitle>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt magni. <b>Lesson title max 100 characters</b></CardTitle>
                                 <CardText className="card-height">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt magni. Max. char in Lessons Lorem ipsum dolor sit amet consectetur length  <b>Set LessonDescriptionMaximumCharacters=250</b></CardText>
-                                <Button onClick={props.toggleLesson}>Let's go</Button>
+                                <Link to="/lessonview"><Button fluid onClick={props.toggleLesson}>Let's go</Button></Link>
                             </Card>
                         </Col>
                     </Row>

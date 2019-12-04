@@ -6,6 +6,7 @@ import { Fade } from 'react-reveal';
 import LessonEdit from './LessonEdit';
 import { DndProvider } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
+import { Link } from 'react-router-dom'
 
 class Lesson extends React.Component {
 
@@ -90,10 +91,11 @@ class Lesson extends React.Component {
 
                     <Row className='mt-5'>
                             <Col >
-                                <Button color='secondary' onClick={this.props.toggleLesson}>Leave lesson</Button>
+                                <Link to="/courseview"><Button color='secondary' onClick={this.props.toggleLesson}>Leave lesson</Button></Link>
                             </Col>
                             <Col className='text-right'>
-                                <Button color='secondary' onClick={this.toggleLessonEdit}>Edit lesson</Button>
+                                <Link to="/editlesson"><Button color='secondary' onClick={this.toggleLessonEdit}>Edit lesson</Button></Link>
+                                
                             </Col>
                         </Row>
 

@@ -3,6 +3,7 @@ import {
     Jumbotron, Button, Container, Col, Row, Alert
 } from 'reactstrap';
 import { Fade, Zoom } from 'react-reveal';
+import { Link } from 'react-router-dom'
 
 class LessonPreview extends React.Component {
 
@@ -73,7 +74,7 @@ class LessonPreview extends React.Component {
                             <Col >
                             </Col>
                             <Col className='text-right'>
-                                <Button color='secondary' onClick={this.props.toggleLessonPreview}>Confirm and save</Button>
+                            <Link to="/courseview"><Button color='secondary' onClick={this.props.toggleLesson}>Confirm and save</Button></Link>
                             </Col>
                         </Row>
 
