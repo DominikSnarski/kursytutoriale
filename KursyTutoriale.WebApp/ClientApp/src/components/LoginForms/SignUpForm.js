@@ -2,13 +2,20 @@ import React from 'react';
 // eslint-disable-next-line
 import { Button, Form, FormGroup, Label, Input, FormText, Nav, NavItem, NavLink, Row, Col, Container, Alert } from 'reactstrap';
 import AuthService from '../ApiServices/AuthService';
+import { Route, Link, BrowserRouter as Router, Redirect } from 'react-router-dom'
+import { useHistory } from "react-router-dom";
+
 
 const SignUpForm = (props) => {
+    
+    let history=useHistory();
+
     const handleSubmit=(event)=>{
         event.preventDefault();
         const formData = new FormData(event.target);
 
         AuthService.createAccount(formData.get('name'),formData.get('password'),formData.get('email'));
+        history.push("/editprofile");
     }
 
     return (
@@ -42,7 +49,7 @@ const SignUpForm = (props) => {
                         <Row style={{ marginTop: 20 }}>
                             <Col xs="auto">
                                 <Button color="primary">Sign up</Button>{' '}
-                                <Button href="#" outline color="primary">I already have an account</Button>{' '}
+                                <Link to="/signin"><Button outline color="primary">I already have an account</Button></Link>{' '}
                             </Col>
                         </Row>
                     </Form>

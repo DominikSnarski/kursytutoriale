@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
 
 import {
   Container, Row, Col, Form, Button, Navbar, Nav,
@@ -22,7 +22,7 @@ const NavBar = (props) => {
 
 
                 <NavItem className="d-flex align-items-center">
-                  <NavLink className="font-weight-bold" href="#Home">Home</NavLink>
+                  <Link to="/" className="font-weight-bold">Home</Link>
                 </NavItem>
 
                 <NavItem className="d-flex align-items-center">
@@ -40,12 +40,12 @@ const NavBar = (props) => {
 
               <Form inline>
 
-                <Button type="button" color="primary" outline onClick={props.toggleSignIn}>Sign in</Button>
+                <Link to="/signin"><Button type="button" color="primary" outline onClick={props.toggleSignIn}>Sign in</Button></Link>
               </Form>
 
               <Form inline>
 
-                <Button type="button" color="primary" outline onClick={props.toggleSignUp}>Register</Button>
+              <Link to="/register"><Button type="button" color="primary" outline onClick={props.toggleSignUp}>Register</Button></Link>
               </Form>
             </Col>
 
