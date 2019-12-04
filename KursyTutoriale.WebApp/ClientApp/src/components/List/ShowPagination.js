@@ -6,6 +6,7 @@ import { Fade } from 'react-reveal';
 import Filters from '../Filters/Filters';
 import apiClient from '../Auth/ApiClient';
 import axios from 'axios';
+import { Route, Link, BrowserRouter as Router, Switch } from 'react-router-dom'
 
 
 const API='https://localhost:44354/api/CoursesViewer';
@@ -91,7 +92,7 @@ class ShowPagination extends React.Component {
                         <Jumbotron fluid className="courses_bg">
                             <Details title="Item1" category="Cat1" tags={["tag1"]} price="free" />
                             <div class="float-right mr-4">
-                                <Button color="primary" onClick={this.props.toggleCourse}>Go to course's page</Button>{' '}
+                                <Link to="/courseview"><Button color="primary">Go to course's page</Button></Link>{' '}
                                 <Button color="secondary" onClick={this.toggle}>Back</Button>
                             </div>
                         </Jumbotron>
