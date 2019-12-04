@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react';
 import axios from 'axios';
 import { Container, Row, Col, Jumbotron } from 'reactstrap';
 import { Route, Link, BrowserRouter as Router, Switch } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 import NavBar from './components/NavBar/NavBar';
 import Search from './components/Search/Search';
@@ -95,10 +96,10 @@ const App = () => {
             </main>
             )} />
 
-			<Route exact path="/courseview" render={() => (
+			<Route path="/courseview" render={(props) => (
             <main className="my-5 py-5" id="Home">
 			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
-			<Course toggle={toggleCourse} toggleLesson={toggleLesson}/>
+			<Course {...props} toggle={toggleCourse} toggleLesson={toggleLesson}/>
 			<Footer />
             </main>
             )} />
@@ -134,4 +135,4 @@ const App = () => {
 		</UserContext.Provider>);
 }
 
-export default App;
+export default withRouter(App);

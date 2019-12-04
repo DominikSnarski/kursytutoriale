@@ -60,7 +60,7 @@ class Details extends React.Component {
 
         <Row>
           <Col className="additional">
-            Category: {this.state.category};  Tags:{this.state.tags.map(txt => <span> {txt.id}</span>)};  Price: {this.state.price}
+            Tags:{this.state.tags.map(txt => <span> {txt.id}</span>)};  Price: {this.state.price}
           </Col>
         </Row>
 

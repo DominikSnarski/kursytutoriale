@@ -88,7 +88,7 @@ class ShowPagination extends React.Component {
                         <Jumbotron fluid className="courses_bg">
                             <Details id="9334dec0-4e73-45bb-9f9b-d1304e85faf6"/>
                             <div class="float-right mr-4">
-                                <Link to="/courseview"><Button color="primary">Go to course's page</Button></Link>{' '}
+                                <Link to={{pathname:'/courseview', state:{courseID: "9334dec0-4e73-45bb-9f9b-d1304e85faf6"}}} ><Button color="primary">Go to course's page</Button></Link>{' '}
                                 <Button color="secondary" onClick={this.toggle}>Back</Button>
                             </div>
                         </Jumbotron>

@@ -8,8 +8,6 @@ export default function fetchDetails(courseID, caller){
         var ownerID = response.data.ownerId;
         var price = response.data.price;
         var tags = response.data.tags;
-        var example=[...Array().keys()].map(i => ({ id: (i + 1), tagsID: response.data[i].id}));
-        console.log('title:'+response.data);
         caller.setState({ title: title, isLoading: false, description: description, price:price, tags:tags});
 
         
