@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,7 +33,7 @@ namespace KursyTutoriale.Application.Services.Auth
             var user = await userManager.FindByNameAsync(username);
 
             if (user is null || !await userManager.CheckPasswordAsync(user, password))
-                throw new Exception("invalid username or password");
+                throw new AuthenticationException("Invalid username or password");
 
             var refreshToken = await userManager.GetAuthenticationTokenAsync(user, REFRESH_TOKEN_PROVIDER, REFRESH_TOKEN_KEY);
 
@@ -56,6 +57,10 @@ namespace KursyTutoriale.Application.Services.Auth
         public async Task<JWTTokenDto> RefreshTokenAsync(string username, string refreshToken)
         {
             var user = await userManager.FindByNameAsync(username);
+
+            if (user == null)
+                throw new AuthenticationException();
+
             var isTokenValid = await userManager.VerifyUserTokenAsync(user, REFRESH_TOKEN_PROVIDER, REFRESH_TOKEN_KEY, refreshToken);
 
             if (isTokenValid)
@@ -73,7 +78,7 @@ namespace KursyTutoriale.Application.Services.Auth
                 };
             }
 
-            throw new NotImplementedException();
+            throw new AuthenticationException();
         }
 
         private JwtSecurityToken GenerateAccessToken(ApplicationUser user)
