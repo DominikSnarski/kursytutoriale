@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using KursyTutoriale.API.Models;
-using KursyTutoriale.API.Models.Auth;
+﻿using KursyTutoriale.API.Models.Auth;
+using KursyTutoriale.API.Responses;
 using KursyTutoriale.Application.DataTransferObjects.Auth;
 using KursyTutoriale.Application.Services.Auth;
-using KursyTutoriale.Domain;
-using KursyTutoriale.Domain.Entities;
-using KursyTutoriale.Domain.Entities.Auth;
 using KursyTutoriale.Infrastructure;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
+using System.Security.Authentication;
+using System.Threading.Tasks;
 
 namespace KursyTutoriale.API.Controllers
 {
@@ -35,25 +30,50 @@ namespace KursyTutoriale.API.Controllers
         }
 
         [HttpPost("SignUp")]
-        public async Task SignUp([FromBody]CreateUserRequestDto request)
+        public async Task<GenericResponse> SignUp([FromBody]CreateUserRequestDto request)
         {
             var result = await accountManager.CreateAccount(request);
+
+            if(!result.Succeeded)
+                return new GenericResponse(400, result.Errors.Select(error => error.Description));
+
+            return new GenericResponse(200);
         }
 
         [HttpPost("SignIn")]
-        public async Task<JWTTokenDto> SignIn([FromBody] LoginRequest request)
+        public async Task<DtoBasedRsponse<JWTTokenDto>> SignIn([FromBody] LoginRequest request)
         {
-            var token = await authService.GenerateTokenAsync(request.Username,request.Password);
+            JWTTokenDto token;
+
+            try
+            {
+                 token = await authService.GenerateTokenAsync(request.Username, request.Password);
+            }
+            catch(AuthenticationException e)
+            {
+                return new DtoBasedRsponse<JWTTokenDto>(400, e.Message);
+            }
+
             logger.LogInformation($"User: {request.Username} signed in at {DateTime.UtcNow}");
-            return token;
+
+            return new DtoBasedRsponse<JWTTokenDto>(token);
         }
 
         [HttpPost("RefreshToken")]
-        public async Task<JWTTokenDto> RefreshToken([FromBody] RefreshTokenRequest request)
+        public async Task<DtoBasedRsponse<JWTTokenDto>> RefreshToken([FromBody] RefreshTokenRequest request)
         {
-            var token = await authService.RefreshTokenAsync(request.Username,request.RefreshToken);
+            JWTTokenDto token;
 
-            return token;
+            try
+            {
+                token = await authService.RefreshTokenAsync(request.Username, request.RefreshToken);
+            }
+            catch(AuthenticationException)
+            {
+                return new DtoBasedRsponse<JWTTokenDto>(400, "Token refresh failed");
+            }
+
+            return new DtoBasedRsponse<JWTTokenDto>(token);
         }
     }
 }
