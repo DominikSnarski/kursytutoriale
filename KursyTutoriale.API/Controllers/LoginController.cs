@@ -30,37 +30,37 @@ namespace KursyTutoriale.API.Controllers
         }
 
         [HttpPost("SignUp")]
-        public async Task<GenericResponse> SignUp([FromBody]CreateUserRequestDto request)
+        public async Task<ActionResult> SignUp([FromBody]CreateUserRequestDto request)
         {
             var result = await accountManager.CreateAccount(request);
 
             if(!result.Succeeded)
-                return new GenericResponse(400, result.Errors.Select(error => error.Description));
+                return StatusCode(400, ResponseHelper.GetErrorMessage(result.Errors.Select(e => e.Description)));
 
-            return new GenericResponse(200);
+            return Ok();
         }
 
         [HttpPost("SignIn")]
-        public async Task<DtoBasedRsponse<JWTTokenDto>> SignIn([FromBody] LoginRequest request)
+        public async Task<ActionResult<JWTTokenDto>> SignIn([FromBody] LoginRequest request)
         {
             JWTTokenDto token;
 
             try
             {
-                 token = await authService.GenerateTokenAsync(request.Username, request.Password);
+                token = await authService.GenerateTokenAsync(request.Username, request.Password);
             }
             catch(AuthenticationException e)
             {
-                return new DtoBasedRsponse<JWTTokenDto>(400, e.Message);
+                return StatusCode(400, e.Message);
             }
 
             logger.LogInformation($"User: {request.Username} signed in at {DateTime.UtcNow}");
 
-            return new DtoBasedRsponse<JWTTokenDto>(token);
+            return Ok(token);
         }
 
         [HttpPost("RefreshToken")]
-        public async Task<DtoBasedRsponse<JWTTokenDto>> RefreshToken([FromBody] RefreshTokenRequest request)
+        public async Task<ActionResult<JWTTokenDto>> RefreshToken([FromBody] RefreshTokenRequest request)
         {
             JWTTokenDto token;
 
@@ -70,10 +70,10 @@ namespace KursyTutoriale.API.Controllers
             }
             catch(AuthenticationException)
             {
-                return new DtoBasedRsponse<JWTTokenDto>(400, "Token refresh failed");
+                return StatusCode(400,"Token refresh failed");
             }
 
-            return new DtoBasedRsponse<JWTTokenDto>(token);
+            return Ok(token);
         }
     }
 }
