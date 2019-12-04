@@ -75,7 +75,7 @@ class Course extends React.Component {
                                 Author: {this.state.creator}
                             </Col>
                             <Col className="column-text">
-                                Price: {this.state.price==0 ? 'Free' : this.state.price}
+                                Price: {this.state.price == 0 ? 'Free' : this.state.price}
                             </Col>
                         </Row>
 
@@ -89,14 +89,16 @@ class Course extends React.Component {
                         </Row>
 
                         <Row className="d-flex justify-content-center mb-2">
-                            <Card fluid outline style={{ borderColor: '#9dd2e2' }}>
-                                <CardHeader className="spans">Course details</CardHeader>
-                                <CardBody style={{ backgroundColor: '#7CC3D8' }}>
-                                    <CardText>
-                                        {this.state.description}
-                                    </CardText>
-                                </CardBody>
-                            </Card>
+                            <Col>
+                                <Card fluid outline style={{ borderColor: '#9dd2e2' }}>
+                                    <CardHeader className="spans">Course details</CardHeader>
+                                    <CardBody style={{ backgroundColor: '#7CC3D8' }}>
+                                        <CardText>
+                                            {this.state.description}
+                                        </CardText>
+                                    </CardBody>
+                                </Card>
+                            </Col>
                         </Row>
 
                         <Row className="d-flex justify-content-center mb-2">
@@ -104,7 +106,11 @@ class Course extends React.Component {
                         </Row>
                         <Progress value="25" className="mb-4" />
 
-                        <Modules toggleLesson={this.props.toggleLesson} modules={this.state.modules}/>
+                        <Row >
+                            <h3>Modules</h3>
+                        </Row>
+
+                        <Modules toggleLesson={this.props.toggleLesson} modules={this.state.modules} />
                     </Jumbotron>
 
                     <Button color="secondary" onClick={this.props.toggle}>Back</Button>
