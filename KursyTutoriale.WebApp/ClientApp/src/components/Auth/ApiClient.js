@@ -1,6 +1,5 @@
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
-import UserContext from '../Context/UserContext';
 
 const apiClient = axios.create({
     baseURL: 'https://localhost:44354/',
@@ -28,7 +27,13 @@ apiClient.login = async (username, password)=>{
     var res = await apiClient.post("api/Login/SignIn", {
         username: username,
         password: password
-      });
+      })
+      .catch(e=>{
+          return new Promise((resolve,reject)=>{
+            reject(false);
+          });
+        }
+      );
 
       localStorage.setItem("access_token",res.data.accessToken);
       localStorage.setItem("refresh_token",res.data.refreshToken);
@@ -36,6 +41,10 @@ apiClient.login = async (username, password)=>{
       let name = jwtDecode(res.data.accessToken)["sub"];
       let nameid = jwtDecode(res.data.accessToken)["nameid"];
       apiClient.onLogin(name,nameid);
+
+      return new Promise((resolve,reject)=>{
+        resolve(true);
+      });
 }
 
 apiClient.logout = () =>{
@@ -59,6 +68,7 @@ apiClient.interceptors.response.use(
         
         if(response.status !== 401){
             return new Promise((resolve, reject) => {
+                apiClient.setGlobalMessage(response.data);
                 reject(error);
               });
         }
