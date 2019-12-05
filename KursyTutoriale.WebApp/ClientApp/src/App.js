@@ -22,24 +22,8 @@ import EditProfile from './components/User Profile/EditProfile'
 import LessonEdit from './components/Lesson/LessonEdit';
 
 const App = () => {
-
-	const [showCourse, setShowCourse] = useState(false);
-	const toggleCourse = () => setShowCourse(!showCourse);
-
-
-	const [showLesson, setShowLesson] = useState(false);
-	const toggleLesson = () => setShowLesson(!showLesson);
-
     const [showProfile, setShowProfile] = useState(false);
-
-	
-	const [showSignIn, setShowSignIn] = useState(false);
-	const toggleSignIn = () => {setShowSignIn(!showSignIn); setShowSignUp(false); setShowProfile(false);}
-	const [showSignUp, setShowSignUp] = useState(false);
-	const toggleSignUp = () => {setShowSignUp(!showSignUp); setShowSignIn(false); setShowProfile(false);}
-
-
-    const toggleProfile = () => {setShowProfile(!showProfile); setShowSignUp(false); setShowSignIn(false);}
+    const toggleProfile = () => {setShowProfile(!showProfile)}
 	const [userContext,setUserContext] = useState(InitialUserContext);
 
 	apiClient.onLogin = username =>{
@@ -63,15 +47,15 @@ const App = () => {
 			<Switch>
 			<Route exact path="/" render={() => (
             <main className="my-5 py-5" id="Home">
-			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
+			<NavBar toggleProfile={toggleProfile}/>
 			<Search />
 			<Container className="px-0">
 					<Jumbotron fluid className="Container">
-						<Featured toggleCourse={toggleCourse} />
+						<Featured  />
 						<Jumbotron className="Container" id="Courses"></Jumbotron>
 						<Row>
 							<Col className="d-none d-lg-flex justify-content-center">
-								<ShowPagination toggleCourse={toggleCourse}/>
+								<ShowPagination />
 							</Col>
 						</Row>
 					</Jumbotron>
@@ -82,7 +66,7 @@ const App = () => {
 
 			<Route exact path="/signin" render={() => (
             <main className="my-5 py-5" id="Home">
-			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
+			<NavBar toggleProfile={toggleProfile} />
 			<SignInForm />
 			<Footer />
             </main>
@@ -90,7 +74,7 @@ const App = () => {
 
 			<Route exact path="/register" render={() => (
             <main className="my-5 py-5" id="Home">
-			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
+			<NavBar toggleProfile={toggleProfile} />
 			<SignUpForm />
 			<Footer />
             </main>
@@ -98,15 +82,15 @@ const App = () => {
 
 			<Route path="/courseview" render={(props) => (
             <main className="my-5 py-5" id="Home">
-			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
-			<Course {...props} toggle={toggleCourse} toggleLesson={toggleLesson}/>
+			<NavBar toggleProfile={toggleProfile} />
+			<Course {...props} />
 			<Footer />
             </main>
             )} />
 
 			<Route exact path="/editprofile" render={() => (
             <main className="my-5 py-5" id="Home">
-			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
+			<NavBar toggleProfile={toggleProfile}/>
 			<EditProfile/>
 			<Footer />
             </main>
@@ -114,7 +98,7 @@ const App = () => {
 
 			<Route exact path="/lessonview" render={() => (
             <main className="my-5 py-5" id="Home">
-			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
+			<NavBar toggleProfile={toggleProfile} />
 			<Lesson />
 			<Footer />
             </main>
@@ -122,7 +106,7 @@ const App = () => {
 
 			<Route exact path="/editlesson" render={() => (
             <main className="my-5 py-5" id="Home">
-			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
+			<NavBar toggleProfile={toggleProfile}/>
 			<LessonEdit />
 			<Footer />
             </main>

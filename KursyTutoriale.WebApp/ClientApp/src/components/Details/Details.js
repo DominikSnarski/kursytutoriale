@@ -14,10 +14,10 @@ class Details extends React.Component {
       isLoading: false,
       error: false,
       title: '',
-      tags: [],
       price: '',
       description: '',
-      category: ''
+      category: '',
+      tags: ['yes']
     };
   }
 

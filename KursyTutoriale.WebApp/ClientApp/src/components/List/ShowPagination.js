@@ -86,9 +86,9 @@ class ShowPagination extends React.Component {
                             <span className="d-lg-flex justify-content-center d-block h2 text-dark">Course Details</span>
                         </Jumbotron>
                         <Jumbotron fluid className="courses_bg">
-                            <Details id="9334dec0-4e73-45bb-9f9b-d1304e85faf6"/>
+                            <Details id="8b2d822d-e85e-4dc9-91d2-55e83559e7c6"/>
                             <div class="float-right mr-4">
-                                <Link to={{pathname:'/courseview', state:{courseID: "9334dec0-4e73-45bb-9f9b-d1304e85faf6"}}} ><Button color="primary">Go to course's page</Button></Link>{' '}
+                                <Link to={{pathname:'/courseview', state:{courseID: "8b2d822d-e85e-4dc9-91d2-55e83559e7c6"}}} ><Button color="primary">Go to course's page</Button></Link>{' '}
                                 <Button color="secondary" onClick={this.toggle}>Back</Button>
                             </div>
                         </Jumbotron>
