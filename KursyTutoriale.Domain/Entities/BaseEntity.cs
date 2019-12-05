@@ -9,6 +9,11 @@ namespace KursyTutoriale.Domain.Entities
         {
             Id = Guid.NewGuid();
         }
+        protected BaseEntity(Guid id)
+        {
+            Id = id;
+        }
+
         [Key]
         public Guid Id { get; }
     }

@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import axios from 'axios';
 import { Container, Row, Col, Jumbotron } from 'reactstrap';
-
+import { Route, Link, BrowserRouter as Router, Switch } from 'react-router-dom'
 
 import NavBar from './components/NavBar/NavBar';
 import Search from './components/Search/Search';
@@ -15,14 +15,20 @@ import SignInForm from './components/LoginForms/SignInForm';
 import SignUpForm from './components/LoginForms/SignUpForm';
 import {UserContext} from './components/Context/UserContext';
 import {InitialUserContext} from './components/Context/UserContext';
+import notfound from './components/404notfound';
+import Lesson from './components/Lesson/LessonView';
+import EditProfile from './components/User Profile/EditProfile'
 
 import NewCourse from './components/NewCourse/NewCourse';
 
 const App = () => {
 
 	const [showCourse, setShowCourse] = useState(false);
+	const toggleCourse = () => setShowCourse(!showCourse);
 
-    const toggleCourse = () => setShowCourse(!showCourse);
+
+	const [showLesson, setShowLesson] = useState(false);
+	const toggleLesson = () => setShowLesson(!showLesson);
 
     const [showProfile, setShowProfile] = useState(false);
 
@@ -52,25 +58,16 @@ const App = () => {
 
 	return(
 		<UserContext.Provider value={userContext}>
+		<Router>
 		<Fragment>
+			<Switch>
+			<Route exact path="/" render={() => (
+            <main className="my-5 py-5" id="Home">
 			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
-			<main className="my-5 py-5" id="Home">
-				
-				{showProfile && <UserProfile username={userContext.username}/>}
-
-				<div className="App">
-					<NewCourse />
-				</div>
-
-				{showSignIn && !showSignUp && !showProfile && <SignInForm />}
-				{showSignUp && !showSignIn && !showProfile && <SignUpForm />}
-				{!showProfile && !showSignIn && !showSignUp &&
-				<Search />}
-				{showCourse && !showProfile && <Course toggle={toggleCourse}/>}
-				{!showProfile && !showCourse && !showSignIn && !showSignUp &&
-				<Container className="px-0">
+			<Search />
+			<Container className="px-0">
 					<Jumbotron fluid className="Container">
-						<Featured />
+						<Featured toggleCourse={toggleCourse} />
 						<Jumbotron className="Container" id="Courses"></Jumbotron>
 						<Row>
 							<Col className="d-none d-lg-flex justify-content-center">
@@ -78,12 +75,47 @@ const App = () => {
 							</Col>
 						</Row>
 					</Jumbotron>
-				</Container>}
-				
-			</main>
-
+				</Container>
 			<Footer />
+            </main>
+            )} />
+
+			<Route exact path="/signin" render={() => (
+            <main className="my-5 py-5" id="Home">
+			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
+			<SignInForm />
+			<Footer />
+            </main>
+            )} />
+
+			<Route exact path="/register" render={() => (
+            <main className="my-5 py-5" id="Home">
+			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
+			<SignUpForm />
+			<Footer />
+            </main>
+            )} />
+
+			<Route exact path="/courseview" render={() => (
+            <main className="my-5 py-5" id="Home">
+			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
+			<Course toggle={toggleCourse} toggleLesson={toggleLesson}/>
+			<Footer />
+            </main>
+            )} />
+
+			<Route exact path="/editprofile" render={() => (
+            <main className="my-5 py-5" id="Home">
+			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
+			<EditProfile/>
+			<Footer />
+            </main>
+            )} />
+			<Route component={notfound} />
+			</Switch>
+			
 		</Fragment>
+		</Router>
 		</UserContext.Provider>);
 }
 

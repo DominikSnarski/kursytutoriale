@@ -11,6 +11,8 @@ import { Fade } from 'react-reveal';
 import classnames from 'classnames';
 import TopCategories from '../Showcase/TopCategories/TopCategories';
 import TopMentors from '../Showcase/TopMentors/TopMentors';
+import { Route, Link, BrowserRouter as Router, Switch } from 'react-router-dom'
+
 
 
 const Featured = (props) => {
@@ -28,7 +30,7 @@ const Featured = (props) => {
 
     if (showDetails)
         return (
-            <Fade right>
+            <Fade right duration="200">
                 <div >
                     <Jumbotron fluid className="jumbotron_bg">
                         <span className="d-lg-flex justify-content-center d-block h2 text-dark">Course Details</span>
@@ -36,7 +38,7 @@ const Featured = (props) => {
                     <Jumbotron fluid className="courses_bg">
                         <Details title="Item1" category="Cat1" tags={["tag1"]} price="free" description="Lorem " />
                         <div class="float-right mr-4">
-                            <Button color="primary" onClick={props.toggleCourse}>Go to course's page</Button>{' '}
+                            <Link to="/courseview"><Button color="primary">Go to course's page</Button></Link>{' '}
                             <Button color="secondary" onClick={toggle}>Back</Button>
                         </div>
                     </Jumbotron>

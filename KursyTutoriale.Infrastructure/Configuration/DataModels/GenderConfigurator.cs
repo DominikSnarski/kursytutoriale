@@ -4,13 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace KursyTutoriale.Infrastructure.Configuration.DataModels
 {
-    class UserProfileConfiguration : IEntityTypeConfiguration<UserProfile>
+    class GenderConfigurator : IEntityTypeConfiguration<Gender>
     {
-        public void Configure(EntityTypeBuilder<UserProfile> builder)
+        public void Configure(EntityTypeBuilder<Gender> builder)
         {
-            builder.ToTable("KTUserProfile");
+            builder.ToTable("KTGender");
             builder.HasKey(up => up.Id);
-            builder.HasOne("Gender").WithMany();
         }
     }
 }

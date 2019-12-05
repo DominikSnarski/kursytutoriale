@@ -1,10 +1,9 @@
 import React from 'react';
-
+import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
 
 import {
-  Container, Row, Col, Form, Input, Button, Navbar, Nav,
-  NavbarBrand, NavLink, NavItem, UncontrolledDropdown,
-  DropdownToggle, DropdownMenu, DropdownItem
+  Container, Row, Col, Form, Button, Navbar, Nav,
+  NavLink, NavItem
 } from 'reactstrap';
 import { UserContext } from '../Context/UserContext';
 
@@ -12,7 +11,7 @@ import { UserContext } from '../Context/UserContext';
 const NavBar = (props) => {
   const userContext = React.useContext(UserContext)
 
-  return(
+  return (
     <header className="page">
       <Navbar fixed="top" color="light" light expand="xs" className="border-bottom border-gray bg-white" style={{ height: 80 }}>
         <Container>
@@ -23,7 +22,7 @@ const NavBar = (props) => {
 
 
                 <NavItem className="d-flex align-items-center">
-                  <NavLink className="font-weight-bold" href="#Home">Home</NavLink>
+                  <Link to="/" className="font-weight-bold">Home</Link>
                 </NavItem>
 
                 <NavItem className="d-flex align-items-center">
@@ -37,20 +36,20 @@ const NavBar = (props) => {
             <Col className="d-none d-lg-flex justify-content-end">
 
               {userContext.authenticated &&
-              <Button onClick={props.toggleProfile} color="warning" outline>{userContext.username}</Button>}
-            
+                <Button onClick={props.toggleProfile} color="warning" outline>{userContext.username}</Button>}
+
               <Form inline>
 
-                <Button type="button" color="primary" outline onClick={props.toggleSignIn}>Sign in</Button>
+                <Link to="/signin"><Button type="button" color="primary" outline onClick={props.toggleSignIn}>Sign in</Button></Link>
               </Form>
 
               <Form inline>
 
-                <Button type="button" color="primary" outline onClick={props.toggleSignUp}>Register</Button>
+              <Link to="/register"><Button type="button" color="primary" outline onClick={props.toggleSignUp}>Register</Button></Link>
               </Form>
             </Col>
 
-            
+
 
           </Row>
         </Container>
