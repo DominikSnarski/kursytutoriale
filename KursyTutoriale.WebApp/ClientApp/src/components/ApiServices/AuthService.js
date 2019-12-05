@@ -2,7 +2,7 @@ import apiClient from "../Auth/ApiClient"
 
 const AuthService = {
     createAccount: (username,password,email)=>{
-        apiClient.post(
+        return apiClient.post(
             '/api/Login/SignUp',
             {
                 username,password,email

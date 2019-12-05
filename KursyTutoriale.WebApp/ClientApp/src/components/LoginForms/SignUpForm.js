@@ -14,8 +14,9 @@ const SignUpForm = (props) => {
         event.preventDefault();
         const formData = new FormData(event.target);
 
-        AuthService.createAccount(formData.get('name'),formData.get('password'),formData.get('email'));
-        history.push("/editprofile");
+        AuthService
+            .createAccount(formData.get('name'),formData.get('password'),formData.get('email'))
+            .then(()=>history.push("/editprofile"));
     }
 
     return (
