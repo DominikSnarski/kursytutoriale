@@ -19,6 +19,8 @@ import notfound from './components/404notfound';
 import Lesson from './components/Lesson/LessonView';
 import EditProfile from './components/User Profile/EditProfile'
 
+import NewCourse from './components/NewCourse/NewCourse';
+
 const App = () => {
 
 	const [showCourse, setShowCourse] = useState(false);

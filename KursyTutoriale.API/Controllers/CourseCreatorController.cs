@@ -30,7 +30,7 @@ namespace KursyTutoriale.API.Controllers
         /// Version of course you want to add to database.
         /// </param>
         [HttpPost("AddCourse")]
-        public async Task AddCourse(CourseCreationDTO course)
+        public async Task AddCourse([FromBody]CourseCreationDTO course)
         {
             var result = await courseService.AddCourse(course);
 
