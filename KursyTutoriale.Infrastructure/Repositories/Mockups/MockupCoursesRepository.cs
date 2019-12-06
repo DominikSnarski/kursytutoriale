@@ -38,7 +38,8 @@ namespace KursyTutoriale.Infrastructure.Repositories.Mockups
                     CourseModule module = new CourseModule()
                     {
                         Index = j,
-                        Title = j.ToString()
+                        Title = j.ToString(),
+                        Description = j.ToString()
                     };
 
                     for (int k = 0; k < 5; k++)
