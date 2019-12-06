@@ -62,17 +62,6 @@ namespace KursyTutoriale.API.Controllers
 
         }
 
-        /// <summary>
-        /// Used to add tag to course
-        /// </summary>
-        /// <param name="tag">
-        /// Version of tag you want to add to course
-        /// </param>
-        [HttpPost("AddTag")]
-        public async Task AddTag(TagCreationDTO tag)
-        {
-            var result = await courseService.AddTag(tag);
-        }
 
         /// <summary>
         /// Used to get course you want to edit.
