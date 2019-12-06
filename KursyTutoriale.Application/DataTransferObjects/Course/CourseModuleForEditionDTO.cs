@@ -8,6 +8,7 @@ namespace KursyTutoriale.Application.DataTransferObjects.Course
     {
         public int Index { get; set; }
         public string Title { get; set; }
+        public string Description { get; set; }
         public ICollection<LessonBasicInformationsDTO> Lessons { get; set; }
     }
 }

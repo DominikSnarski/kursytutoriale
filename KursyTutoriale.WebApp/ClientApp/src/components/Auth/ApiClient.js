@@ -34,7 +34,8 @@ apiClient.login = async (username, password)=>{
       localStorage.setItem("refresh_token",res.data.refreshToken);
 
       let name = jwtDecode(res.data.accessToken)["sub"];
-      apiClient.onLogin(name);
+      let nameid = jwtDecode(res.data.accessToken)["nameid"];
+      apiClient.onLogin(name,nameid);
 }
 
 apiClient.logout = () =>{

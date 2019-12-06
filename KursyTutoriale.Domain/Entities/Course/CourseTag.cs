@@ -8,8 +8,8 @@ namespace KursyTutoriale.Domain.Entities.Course
     {
         public CourseTag()
         { }
-
         public Guid CourseId { get; set; }
         public Guid Id { get; set; }
+   
     }
 }

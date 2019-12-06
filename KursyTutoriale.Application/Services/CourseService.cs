@@ -21,7 +21,6 @@ namespace KursyTutoriale.Application.Services
         Task<int> AddCourse(CourseCreationDTO course);
         Task<int> AddModule(CourseModuleCreationDTO module);
         Task<int> AddLesson(LessonCreationDTO lesson);
-        Task<int> AddTag(TagCreationDTO tag);
         CourseForEditionDTO GetCourseForEdition(Guid courseId);
         int GetNumberOfCourses();
         LessonForEditionDTO GetLessonForEdition(Guid courseId, int moduleIndex, int lessonIndex);
@@ -201,6 +200,15 @@ namespace KursyTutoriale.Application.Services
                 Price = course.Price,
                 Title = course.Title
             };
+            foreach(TagCreationDTO tag in course.Tags)
+            {
+                c.Tags.Add(new CourseTag() 
+                { 
+                CourseId = c.Id,
+                Id = tag.Id
+                });
+            }
+            
             coursesRepository.InsertAgreggate(c);
             var result =  await unitOfWork.SaveChangesAsync();
             return result;
@@ -259,29 +267,6 @@ namespace KursyTutoriale.Application.Services
             return result;
 
 
-        }
-
-        /// <summary>
-        /// Used to add tag to course
-        /// </summary>
-        /// <param name="tag">
-        /// Version of tag you want to add to course
-        /// </param>
-        public async Task<int> AddTag(TagCreationDTO tag)
-        {
-            var query = coursesRepository.Queryable();
-            var course = query.Where(c => c.Id.Equals(tag.CourseId)).FirstOrDefault();
-
-            var t = new CourseTag()
-            {
-                Id = tag.Id,
-                CourseId = tag.CourseId
-            };
-
-            course.Tags.Add(t);
-            coursesRepository.Update(course);
-            var result = await unitOfWork.SaveChangesAsync();
-            return result;
         }
 
 
