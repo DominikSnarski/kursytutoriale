@@ -11,13 +11,7 @@ namespace KursyTutoriale.Application.Services
 {
     public interface ISearchService
     {
-        public SearchResult Search(string phrase, int totalNumberOfResults);
-    }
-    public class SearchResult
-    {
-        // true if anything was found
-        public bool result;
-        public IQueryable<CourseBasicInformationsDTO> foundCourses;
+        public IEnumerable<CourseBasicInformationsDTO> Search(string phrase, int totalNumberOfResults);
     }
 
     public class SearchService : ISearchService
@@ -44,29 +38,25 @@ namespace KursyTutoriale.Application.Services
             public Course unpack() { return course; }
         }
 
-        public SearchResult Search(string phrase, int totalNumberOfResults)
+        public IEnumerable<CourseBasicInformationsDTO> Search(string phrase, int totalNumberOfResults)
         {
             var query = coursesRepository.Queryable()
                 .Where(c => c.Title.ToUpper().Contains(phrase.ToUpper()) ||
                             // check if any of the modules contain the searched phrase
                             c.Modules.TakeWhile(t => !t.Title.ToUpper().Contains(phrase.ToUpper())).Count() != c.Modules.Count());
-            if (query.Count() == 0) return new SearchResult() { result = true };
+            if (query.Count() == 0) return null;
             else if (totalNumberOfResults > query.Count())
-                return new SearchResult()
-                {
-                    result = true,
-                    foundCourses = mapper.MapQueryable<CourseBasicInformationsDTO, Course>(query)
-                };
+                return mapper.Map<IEnumerable<CourseBasicInformationsDTO>>(query.AsEnumerable());
 
             List<WeightDecorator> searchList = new List<WeightDecorator>();
             foreach(Course course in query)
             {
                 searchList.Add(new WeightDecorator(course));
             }
-            searchList.OrderByDescending(c => c.course.Popularity)
-                .ThenBy(c => c.course.Rating);
-            int maxPopularity = searchList.First().course.Popularity;
-            double maxRating = searchList.First().course.Rating;
+            var mostPopular = searchList.OrderByDescending(c => c.course.Popularity)
+                .ThenBy(c => c.course.Rating).First();
+            double maxRating = mostPopular.course.Rating <= 0 ? mostPopular.course.Rating : 0.01f;
+            double maxPopularity = mostPopular.course.Popularity<=0 ? mostPopular.course.Popularity : 0.01f;
             foreach(WeightDecorator item in searchList)
             {
                 // add weight based on the popularity <0,15>
@@ -89,18 +79,19 @@ namespace KursyTutoriale.Application.Services
                 }
             }
             List<CourseBasicInformationsDTO> results = new List<CourseBasicInformationsDTO>();
-            var wQuery = searchList.AsQueryable()
-                            .OrderByDescending(c => c.weight)
-                            .Take(totalNumberOfResults);
-            foreach (WeightDecorator item in wQuery)
+            foreach (WeightDecorator item in searchList
+                .OrderByDescending(c=>c.weight)
+                .Take(totalNumberOfResults))
             {
                 results.Add(mapper.Map<CourseBasicInformationsDTO>(item.unpack()));
-            }
-            return new SearchResult()
-            {
-                result = true,
-                foundCourses = results.AsQueryable()
             };
+            return results.AsEnumerable();
         }
+    }
+    public class SearchResult
+    {
+        // true if anything was found
+        public bool result;
+        public IEnumerable<CourseBasicInformationsDTO> foundCourses;
     }
 }
