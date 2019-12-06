@@ -42,17 +42,20 @@ const App = () => {
     const toggleProfile = () => {setShowProfile(!showProfile); setShowSignUp(false); setShowSignIn(false);}
 	const [userContext,setUserContext] = useState(InitialUserContext);
 
-	apiClient.onLogin = username =>{
+	apiClient.onLogin = (username,userid) =>{
 		setUserContext({
 			authenticated:true,
-			username:username
+			username:username,
+			userid:userid,
+
 		});
 	};
 
 	apiClient.onLogout = () =>{
 		setUserContext({
 			authenticated:false,
-			username:null
+			username:null,
+			userid:null
 		});
 	}
 
