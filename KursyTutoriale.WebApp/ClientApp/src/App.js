@@ -32,6 +32,8 @@ const App = () => {
 
 	const [appContext,setAppContext] = useState(InitialAppContext);
 
+	const [addNewCourse, setaddNewCourse] = useState(false);
+
 	apiClient.onLogin = (username,userid) =>{
 		setUserContext({
 			authenticated:true,
@@ -129,7 +131,13 @@ const App = () => {
         			    )} />
 						<Route component={notfound} />
 						</Switch>
-						
+						<Route exact path="/addNewCourse" render={() => (
+           				<main className="my-5 py-5" id="Home">
+							<NavBar toggleProfile={toggleProfile}/>
+							<NewCourse/>
+							<Footer />
+           				</main>
+           				)} />
 					</Fragment>
 				</Router>
 				<GlobalErrorMessage

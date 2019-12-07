@@ -1,7 +1,9 @@
 import React, { useState } from 'react'; 
 import Tags from './Tags';
 import { Button, Container, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
-import apiClient from "../Auth/ApiClient"
+import apiClient from "../Auth/ApiClient";
+import { Route, Link, BrowserRouter as Router, Switch } from 'react-router-dom';
+
 
 function NewCourse()
 {
@@ -78,6 +80,7 @@ function NewCourse()
     }
 
     return (
+      <Router>
         <Container className="justify-content-center" style={{backgroundColor: "#7BC5DA"}}>
         <br/>
         <h1 style={{textAlign: "center"}}>Add a new course</h1>
@@ -184,7 +187,10 @@ function NewCourse()
 
         <br/>
 
+
+
         </Container>
+        </Router>
       );
 }
 
