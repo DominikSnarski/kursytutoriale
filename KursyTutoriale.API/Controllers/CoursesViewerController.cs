@@ -140,5 +140,15 @@ namespace KursyTutoriale.API.Controllers
             return courseService.getFeaturesCourses(numberInEachCategory);
         }
 
+        /// <summary>
+        /// Gets the list of user's created courses
+        /// </summary>
+        /// <returns>The list of a use's created courses</returns>
+        [HttpGet("GetUsersCourses")]
+        public IEnumerable<CourseBasicInformationsDTO> GetUsersCourses(Guid UserId)
+        {
+            return courseService.GetUsersCourses(UserId);
+        }
+
     }
 }
