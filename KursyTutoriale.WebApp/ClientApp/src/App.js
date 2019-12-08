@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react';
 import axios from 'axios';
 import { Container, Row, Col, Jumbotron } from 'reactstrap';
 import { Route, Link, BrowserRouter as Router, Switch } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 import NavBar from './components/NavBar/NavBar';
 import Search from './components/Search/Search';
@@ -18,28 +19,13 @@ import {InitialUserContext} from './components/Context/UserContext';
 import notfound from './components/404notfound';
 import Lesson from './components/Lesson/LessonView';
 import EditProfile from './components/User Profile/EditProfile'
+import LessonEdit from './components/Lesson/LessonEdit';
 
 import NewCourse from './components/NewCourse/NewCourse';
 
 const App = () => {
-
-	const [showCourse, setShowCourse] = useState(false);
-	const toggleCourse = () => setShowCourse(!showCourse);
-
-
-	const [showLesson, setShowLesson] = useState(false);
-	const toggleLesson = () => setShowLesson(!showLesson);
-
     const [showProfile, setShowProfile] = useState(false);
-
-	
-	const [showSignIn, setShowSignIn] = useState(false);
-	const toggleSignIn = () => {setShowSignIn(!showSignIn); setShowSignUp(false); setShowProfile(false);}
-	const [showSignUp, setShowSignUp] = useState(false);
-	const toggleSignUp = () => {setShowSignUp(!showSignUp); setShowSignIn(false); setShowProfile(false);}
-
-
-    const toggleProfile = () => {setShowProfile(!showProfile); setShowSignUp(false); setShowSignIn(false);}
+    const toggleProfile = () => {setShowProfile(!showProfile)}
 	const [userContext,setUserContext] = useState(InitialUserContext);
 
 	apiClient.onLogin = (username,userid) =>{
@@ -66,15 +52,15 @@ const App = () => {
 			<Switch>
 			<Route exact path="/" render={() => (
             <main className="my-5 py-5" id="Home">
-			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
+			<NavBar toggleProfile={toggleProfile}/>
 			<Search />
 			<Container className="px-0">
 					<Jumbotron fluid className="Container">
-						<Featured toggleCourse={toggleCourse} />
+						<Featured  />
 						<Jumbotron className="Container" id="Courses"></Jumbotron>
 						<Row>
 							<Col className="d-none d-lg-flex justify-content-center">
-								<ShowPagination toggleCourse={toggleCourse}/>
+								<ShowPagination />
 							</Col>
 						</Row>
 					</Jumbotron>
@@ -85,7 +71,7 @@ const App = () => {
 
 			<Route exact path="/signin" render={() => (
             <main className="my-5 py-5" id="Home">
-			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
+			<NavBar toggleProfile={toggleProfile} />
 			<SignInForm />
 			<Footer />
             </main>
@@ -93,24 +79,40 @@ const App = () => {
 
 			<Route exact path="/register" render={() => (
             <main className="my-5 py-5" id="Home">
-			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
+			<NavBar toggleProfile={toggleProfile} />
 			<SignUpForm />
 			<Footer />
             </main>
             )} />
 
-			<Route exact path="/courseview" render={() => (
+			<Route path="/courseview" render={(props) => (
             <main className="my-5 py-5" id="Home">
-			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
-			<Course toggle={toggleCourse} toggleLesson={toggleLesson}/>
+			<NavBar toggleProfile={toggleProfile} />
+			<Course {...props} />
 			<Footer />
             </main>
             )} />
 
 			<Route exact path="/editprofile" render={() => (
             <main className="my-5 py-5" id="Home">
-			<NavBar toggleProfile={toggleProfile} toggleSignIn={toggleSignIn} toggleSignUp={toggleSignUp}/>
+			<NavBar toggleProfile={toggleProfile}/>
 			<EditProfile/>
+			<Footer />
+            </main>
+            )} />
+
+			<Route exact path="/lessonview" render={() => (
+            <main className="my-5 py-5" id="Home">
+			<NavBar toggleProfile={toggleProfile} />
+			<Lesson />
+			<Footer />
+            </main>
+            )} />
+
+			<Route exact path="/editlesson" render={() => (
+            <main className="my-5 py-5" id="Home">
+			<NavBar toggleProfile={toggleProfile}/>
+			<LessonEdit />
 			<Footer />
             </main>
             )} />
@@ -122,4 +124,4 @@ const App = () => {
 		</UserContext.Provider>);
 }
 
-export default App;
+export default withRouter(App);

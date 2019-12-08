@@ -36,16 +36,16 @@ const NavBar = (props) => {
             <Col className="d-none d-lg-flex justify-content-end">
 
               {userContext.authenticated &&
-                <Button onClick={props.toggleProfile} color="warning" outline>{userContext.username}</Button>}
+                <Button color="warning" outline>{userContext.username}</Button>}
 
               <Form inline>
 
-                <Link to="/signin"><Button type="button" color="primary" outline onClick={props.toggleSignIn}>Sign in</Button></Link>
+                <Link to="/signin"><Button type="button" color="primary" outline >Sign in</Button></Link>
               </Form>
 
               <Form inline>
 
-              <Link to="/register"><Button type="button" color="primary" outline onClick={props.toggleSignUp}>Register</Button></Link>
+              <Link to="/register"><Button type="button" color="primary" outline >Register</Button></Link>
               </Form>
             </Col>
 

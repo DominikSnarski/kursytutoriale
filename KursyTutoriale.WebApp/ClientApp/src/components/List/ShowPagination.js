@@ -22,7 +22,8 @@ class ShowPagination extends React.Component {
             showDetails: false,
             isLoading: false,
             showFilters: false,
-            error: false
+            error: false,
+            courseID: ''
         };
         // an example array of items to be paged
         // bind function in constructor instead of render
@@ -45,15 +46,10 @@ class ShowPagination extends React.Component {
         this.setState({ pageOfItems: pageOfItems });
     }
 
-    toggle() {
+    toggle(id) {
         this.setState({
-            showDetails: !this.state.showDetails
-        });
-    }
-
-    toggle() {
-        this.setState({
-            showDetails: !this.state.showDetails
+            showDetails: !this.state.showDetails,
+            courseID: id
         });
     }
 
@@ -90,9 +86,9 @@ class ShowPagination extends React.Component {
                             <span className="d-lg-flex justify-content-center d-block h2 text-dark">Course Details</span>
                         </Jumbotron>
                         <Jumbotron fluid className="courses_bg">
-                            <Details title="Item1" category="Cat1" tags={["tag1"]} price="free" />
+                            <Details id="8b2d822d-e85e-4dc9-91d2-55e83559e7c6"/>
                             <div class="float-right mr-4">
-                                <Link to="/courseview"><Button color="primary">Go to course's page</Button></Link>{' '}
+                                <Link to={{pathname:'/courseview', state:{courseID: "8b2d822d-e85e-4dc9-91d2-55e83559e7c6"}}} ><Button color="primary">Go to course's page</Button></Link>{' '}
                                 <Button color="secondary" onClick={this.toggle}>Back</Button>
                             </div>
                         </Jumbotron>
@@ -123,7 +119,7 @@ class ShowPagination extends React.Component {
                             </thead>
                             {this.state.pageOfItems.map(item =>
                                 <tbody>
-                                    <tr onClick={this.toggle}
+                                    <tr onClick={() => this.toggle(item.id)}
                                         style={{ cursor: 'pointer' }}>
                                         <td>{item.id}</td>
                                         <td>

@@ -1,27 +1,65 @@
 import React from 'react';
 import {
     Jumbotron, Button, Container, Col, Row, Card, CardHeader, CardBody,
-    CardText, Progress
+    CardText, Progress, Alert, Spinner
 } from 'reactstrap';
 import { Fade } from 'react-reveal';
 import './style.css';
 import Modules from './Modules';
+import fetchCourse from '../ApiServices/CourseService';
+
 
 
 class Course extends React.Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            courseID: this.props.location.state.courseID,
+            name: '',
+            creator: '',
+            price: 0,
+            tags: [],
+            popularity: 0,
+            rating: 0,
+            description: '',
+            modules: [],
+            creationDate: '',
+            lastEditDate: '',
+            isLoading: false,
+            error: false
+        }
     }
 
+    componentDidMount() {
+        this.setState({ isLoading: true });
+        console.log(this.state.courseID)
+        fetchCourse(this.state.courseID, this);
+    }
 
     render() {
+
+        if (this.state.error)
+            return (
+                <Row><Col xs="6" sm="4"></Col>
+                    <Col sm="12" md={{ size: 10, offset: 1 }}><Alert color="danger">Something went terribly wrong.</Alert></Col>
+                    <Col sm="4"></Col></Row>
+            )
+
+        if (this.state.isLoading)
+            return (
+                <Row><Col xs="6" sm="4"></Col>
+                    <Col xs="6" sm="4"><Spinner className="d-lg-flex d-block h2" style={{ width: '3rem', height: '3rem' }} color="primary" /></Col>
+                    <Col sm="4"></Col></Row>
+            )
+
         return (
             <Container className="Container">
                 <Fade left duration="200">
 
                     <Jumbotron fluid className="jumbotron_bg">
-                        <span className="d-lg-flex justify-content-center d-block h2 text-dark">Course Name</span>
+                        <span className="d-lg-flex justify-content-center d-block h2 text-dark">{this.state.name}</span>
                     </Jumbotron>
 
                     <Row className="mb-4">
@@ -34,25 +72,33 @@ class Course extends React.Component {
 
                         <Row className="d-flex mb-3">
                             <Col className="column-text">
-                                Author: <a href="/">User1</a>
+                                Author: {this.state.creator}
                             </Col>
                             <Col className="column-text">
-                                Category: Frontend
+                                Price: {this.state.price == 0 ? 'Free' : this.state.price}
+                            </Col>
+                        </Row>
+
+                        <Row className="d-flex mb-3">
+                            <Col className="column-text">
+                                Tags: {this.state.tags.map(txt => <span> {txt.id}</span>)}
                             </Col>
                             <Col className="column-text">
-                                Number of completions: 1234
+                                Number of completions: {this.state.popularity}
                             </Col>
                         </Row>
 
                         <Row className="d-flex justify-content-center mb-2">
-                            <Card fluid outline style={{ borderColor: '#9dd2e2' }}>
-                                <CardHeader className="spans">Course details</CardHeader>
-                                <CardBody style={{ backgroundColor: '#7CC3D8' }}>
-                                    <CardText>
-                                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                                    </CardText>
-                                </CardBody>
-                            </Card>
+                            <Col>
+                                <Card fluid outline style={{ borderColor: '#9dd2e2' }}>
+                                    <CardHeader className="spans">Course details</CardHeader>
+                                    <CardBody style={{ backgroundColor: '#7CC3D8' }}>
+                                        <CardText>
+                                            {this.state.description}
+                                        </CardText>
+                                    </CardBody>
+                                </Card>
+                            </Col>
                         </Row>
 
                         <Row className="d-flex justify-content-center mb-2">
@@ -60,7 +106,11 @@ class Course extends React.Component {
                         </Row>
                         <Progress value="25" className="mb-4" />
 
-                        <Modules toggleLesson={this.props.toggleLesson}/>
+                        <Row >
+                            <h3>Modules</h3>
+                        </Row>
+
+                        <Modules toggleLesson={this.props.toggleLesson} modules={this.state.modules} />
                     </Jumbotron>
 
                     <Button color="secondary" onClick={this.props.toggle}>Back</Button>

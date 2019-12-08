@@ -1,35 +1,77 @@
 import React from 'react';
 import "./style.css"
-import { Container, Row, Col } from 'reactstrap';
+import { Container, Row, Col, Alert, Spinner } from 'reactstrap';
+import apiClient from '../Auth/ApiClient';
+import fetchDetails from '../ApiServices/DetailsService';
 
-const Details = (props) => (
-  <Container>
+const API = 'https://localhost:44354/api/CoursesViewer';
 
-    <Row>
-      <Col className="d-flex justify-content-center mb-2">
-        <h2>{props.title}</h2>
+class Details extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isLoading: false,
+      error: false,
+      title: '',
+      price: '',
+      description: '',
+      category: '',
+      tags: ['yes']
+    };
+  }
+
+  componentDidMount(){
+    this.setState({ isLoading: true });
+
+    fetchDetails(this.props.id, this);        
+}
+
+  render() {
+
+    if (this.state.error) 
+      return (
+        <Row><Col xs="6" sm="4"></Col>
+          <Col sm="12" md={{ size: 10, offset: 1 }}><Alert color="danger">Something went terribly wrong.</Alert></Col>
+          <Col sm="4"></Col></Row>
+      )
+
+    if (this.state.isLoading)
+      return (
+        <Row><Col xs="6" sm="4"></Col>
+          <Col xs="6" sm="4"><Spinner className="d-lg-flex d-block h2" style={{ width: '3rem', height: '3rem' }} color="primary" /></Col>
+          <Col sm="4"></Col></Row>
+      )
+
+    return (
+      <Container>
+
+        <Row>
+          <Col className="d-flex justify-content-center mb-2">
+            <h2>{this.state.title}</h2>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col className="d-flex justify-content-center mb-2">
+            <img src="https://via.placeholder.com/320x200" alt="Generic placeholder image" />
+          </Col>
+        </Row>
+
+        <Row>
+          <Col className="additional">
+            Tags:{this.state.tags.map(txt => <span> {txt.id}</span>)};  Price: {this.state.price}
+          </Col>
+        </Row>
+
+        <Row>
+          <Col className="d-flex justify-content-center mb-2">
+            {this.state.description}
       </Col>
-    </Row>
+        </Row>
 
-    <Row>
-      <Col className="d-flex justify-content-center mb-2">
-        <img src="https://via.placeholder.com/320x200" alt="Generic placeholder image" />
-      </Col>
-    </Row>
-
-    <Row>
-      <Col className="additional">
-        Category: {props.category};  Tags:{props.tags.map(txt => <span> {txt}</span>)};  Price: {props.price}
-      </Col>
-    </Row>
-
-    <Row>
-      <Col className="d-flex justify-content-center mb-2">
-      {props.description}Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-      </Col>
-    </Row>
-    
-  </Container>
-);
-
+      </Container>
+    );
+  }
+}
 export default Details;
