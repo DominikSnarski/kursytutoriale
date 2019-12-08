@@ -1,33 +1,29 @@
 using Autofac;
+using KursyTutoriale.Application.Configuration;
+using KursyTutoriale.Application.Configuration.DIModules;
+using KursyTutoriale.Application.Configuration.Options;
+using KursyTutoriale.Application.Services;
+using KursyTutoriale.Domain.Entities.Auth;
 using KursyTutoriale.Infrastructure;
+using KursyTutoriale.Infrastructure.Configuration;
 using KursyTutoriale.Infrastructure.Repositories;
+using KursyTutoriale.Infrastructure.Repositories.Interfaces;
+using KursyTutoriale.Infrastructure.Repositories.Mockups;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
-using KursyTutoriale.Infrastructure.Repositories.Interfaces;
-using KursyTutoriale.Infrastructure.Repositories.Mockups;
-using KursyTutoriale.Application.Services;
-using KursyTutoriale.Infrastructure.Configuration;
-using KursyTutoriale.Application.Configuration;
-using KursyTutoriale.Domain;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using KursyTutoriale.Domain.Entities.Auth;
-using System;
-using System.Threading.Tasks;
-using KursyTutoriale.Application.Configuration.DIModules;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System;
 using System.Collections.Generic;
-using Swashbuckle.AspNetCore.Swagger;
-using KursyTutoriale.Application.Configuration.Options;
-using KursyTutoriale.Infrastructure.Repositories.Implementations;
-using URF.Core.Abstractions;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace KursyTutoriale.API
 {
@@ -46,9 +42,18 @@ namespace KursyTutoriale.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson(opt =>
+                {
+                    opt.SerializerSettings.Error = (object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args) =>
+                    {
+                        throw args.ErrorContext.Error;
+                    };
+                });
+
             services = ConfigureCORS(services);
             services = ConfigureAuthentication(services);
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "KursyTutorialeAPI", Version = "v1" });

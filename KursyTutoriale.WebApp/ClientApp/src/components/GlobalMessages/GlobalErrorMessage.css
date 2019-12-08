@@ -1,0 +1,31 @@
+.message-box{
+    position: sticky;
+    bottom: 10px;
+    left: 10px;
+    background: red;
+    border-radius: 15px;
+    color: white;
+
+    margin: 0;
+    width: 300px;
+    padding: 10px;
+    overflow-wrap: break-word;
+}
+
+.message-box h2{
+    font-size: 25px;
+}
+
+.message-box button{
+    background: none;
+    border:none;
+    font-size: 30px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    margin: 0px;
+    padding: 0px;
+    line-height: 10px;
+    transform: rotate(45deg);
+    color: white;
+}

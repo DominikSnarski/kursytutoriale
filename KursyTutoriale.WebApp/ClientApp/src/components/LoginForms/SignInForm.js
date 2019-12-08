@@ -13,8 +13,8 @@ const SignInForm = (props) => {
         event.preventDefault();
         const formData = new FormData(event.target);
 
-        apiClient.login(formData.get('name'),formData.get('password'));
-        history.push("/");
+        apiClient.login(formData.get('name'),formData.get('password'))
+        .then(()=>history.push("/"));
     }
 
     return (

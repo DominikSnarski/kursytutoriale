@@ -20,6 +20,8 @@ import notfound from './components/404notfound';
 import Lesson from './components/Lesson/LessonView';
 import EditProfile from './components/User Profile/EditProfile'
 import LessonEdit from './components/Lesson/LessonEdit';
+import { AppContext, InitialAppContext } from './components/Context/AppContext';
+import { GlobalErrorMessage } from './components/GlobalMessages/GlobalErrorMessage';
 
 import NewCourse from './components/NewCourse/NewCourse';
 
@@ -28,14 +30,15 @@ const App = () => {
     const toggleProfile = () => {setShowProfile(!showProfile)}
 	const [userContext,setUserContext] = useState(InitialUserContext);
 
+	const [appContext,setAppContext] = useState(InitialAppContext);
+
 	apiClient.onLogin = (username,userid) =>{
 		setUserContext({
 			authenticated:true,
 			username:username,
-			userid:userid,
-
+			userid:userid
 		});
-	};
+	}
 
 	apiClient.onLogout = () =>{
 		setUserContext({
@@ -45,83 +48,97 @@ const App = () => {
 		});
 	}
 
+	apiClient.setGlobalMessage = (message)=>{
+		setAppContext({
+			globalErrorMessage:message,
+			isGlobalMessageShown:true
+		});
+	}
+
 	return(
-		<UserContext.Provider value={userContext}>
-		<Router>
-		<Fragment>
-			<Switch>
-			<Route exact path="/" render={() => (
-            <main className="my-5 py-5" id="Home">
-			<NavBar toggleProfile={toggleProfile}/>
-			<Search />
-			<Container className="px-0">
-					<Jumbotron fluid className="Container">
-						<Featured  />
-						<Jumbotron className="Container" id="Courses"></Jumbotron>
-						<Row>
-							<Col className="d-none d-lg-flex justify-content-center">
-								<ShowPagination />
-							</Col>
-						</Row>
-					</Jumbotron>
-				</Container>
-			<Footer />
-            </main>
-            )} />
+		<AppContext.Provider value ={appContext}>
+			<UserContext.Provider value={userContext}>
+				<Router>
+					<Fragment>
+						<Switch>
+						<Route exact path="/" render={() => (
+        			    <main className="my-5 py-5" id="Home">
+						<NavBar toggleProfile={toggleProfile}/>
+						<Search />
+						<Container className="px-0">
+								<Jumbotron fluid className="Container">
+									<Featured  />
+									<Jumbotron className="Container" id="Courses"></Jumbotron>
+									<Row>
+										<Col className="d-none d-lg-flex justify-content-center">
+											<ShowPagination />
+										</Col>
+									</Row>
+								</Jumbotron>
+							</Container>
+						<Footer />
+        			    </main>
+        			    )} />
 
-			<Route exact path="/signin" render={() => (
-            <main className="my-5 py-5" id="Home">
-			<NavBar toggleProfile={toggleProfile} />
-			<SignInForm />
-			<Footer />
-            </main>
-            )} />
+						<Route exact path="/signin" render={() => (
+        			    <main className="my-5 py-5" id="Home">
+						<NavBar toggleProfile={toggleProfile} />
+						<SignInForm />
+						<Footer />
+        			    </main>
+        			    )} />
 
-			<Route exact path="/register" render={() => (
-            <main className="my-5 py-5" id="Home">
-			<NavBar toggleProfile={toggleProfile} />
-			<SignUpForm />
-			<Footer />
-            </main>
-            )} />
+						<Route exact path="/register" render={() => (
+        			    <main className="my-5 py-5" id="Home">
+						<NavBar toggleProfile={toggleProfile} />
+						<SignUpForm />
+						<Footer />
+        			    </main>
+        			    )} />
 
-			<Route path="/courseview" render={(props) => (
-            <main className="my-5 py-5" id="Home">
-			<NavBar toggleProfile={toggleProfile} />
-			<Course {...props} />
-			<Footer />
-            </main>
-            )} />
+						<Route path="/courseview" render={(props) => (
+        			    <main className="my-5 py-5" id="Home">
+						<NavBar toggleProfile={toggleProfile} />
+						<Course {...props} />
+						<Footer />
+        			    </main>
+        			    )} />
 
-			<Route exact path="/editprofile" render={() => (
-            <main className="my-5 py-5" id="Home">
-			<NavBar toggleProfile={toggleProfile}/>
-			<EditProfile/>
-			<Footer />
-            </main>
-            )} />
+						<Route exact path="/editprofile" render={() => (
+        			    <main className="my-5 py-5" id="Home">
+						<NavBar toggleProfile={toggleProfile}/>
+						<EditProfile/>
+						<Footer />
+        			    </main>
+        			    )} />
 
-			<Route exact path="/lessonview" render={() => (
-            <main className="my-5 py-5" id="Home">
-			<NavBar toggleProfile={toggleProfile} />
-			<Lesson />
-			<Footer />
-            </main>
-            )} />
+						<Route exact path="/lessonview" render={() => (
+        			    <main className="my-5 py-5" id="Home">
+						<NavBar toggleProfile={toggleProfile} />
+						<Lesson />
+						<Footer />
+        			    </main>
+        			    )} />
 
-			<Route exact path="/editlesson" render={() => (
-            <main className="my-5 py-5" id="Home">
-			<NavBar toggleProfile={toggleProfile}/>
-			<LessonEdit />
-			<Footer />
-            </main>
-            )} />
-			<Route component={notfound} />
-			</Switch>
-			
-		</Fragment>
-		</Router>
-		</UserContext.Provider>);
+						<Route exact path="/editlesson" render={() => (
+        			    <main className="my-5 py-5" id="Home">
+						<NavBar toggleProfile={toggleProfile}/>
+						<LessonEdit />
+						<Footer />
+        			    </main>
+        			    )} />
+						<Route component={notfound} />
+						</Switch>
+						
+					</Fragment>
+				</Router>
+				<GlobalErrorMessage
+				 visible={appContext.isGlobalMessageShown}
+				 message={appContext.globalErrorMessage}
+				 handleClose={()=>setAppContext({isGlobalMessageShown:false,globalErrorMessage:""})}
+				 />
+			</UserContext.Provider>
+		</AppContext.Provider>);
 }
 
 export default withRouter(App);
