@@ -30,7 +30,7 @@ const NavBar = (props) => {
                 </NavItem>
 
                 <NavItem className="d-flex align-items-center">
-                  <NavLink className="font-weight-bold" href="addNewCourse">Add New Course</NavLink>
+                  <Link className="font-weight-bold" to={"/addNewCourse"}>Add New Course</Link>
                 </NavItem>
 
               </Nav>

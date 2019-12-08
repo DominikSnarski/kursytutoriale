@@ -19,3 +19,11 @@ export default function fetchCourse(courseID, caller){
        console.log('cojest: '+error);
    });
 }
+
+export const addCourse = (date, description, ownerId, tags, price, title) => {
+    return apiClient.post(
+          '/api/CourseCreator/AddCourse',
+          {
+            date, description, ownerId,  price, title, tags
+          });
+  }
