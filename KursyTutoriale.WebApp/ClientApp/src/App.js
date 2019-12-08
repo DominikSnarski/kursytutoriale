@@ -1,5 +1,4 @@
-import React, { Fragment, useState } from 'react';
-import axios from 'axios';
+import React, { Fragment, useState, useEffect } from 'react';
 import { Container, Row, Col, Jumbotron } from 'reactstrap';
 import { Route, Link, BrowserRouter as Router, Switch } from 'react-router-dom'
 import { withRouter } from 'react-router-dom'
@@ -9,7 +8,6 @@ import Search from './components/Search/Search';
 import Featured from './components/Main/Featured';
 import ShowPagination from './components/List/ShowPagination';
 import Course from './components/CourseView/Course';
-import UserProfile from './components/User Profile/UserProfile';
 import apiClient from './components/Auth/ApiClient';
 import Footer from './components/Footer/Footer';
 import SignInForm from './components/LoginForms/SignInForm';
@@ -24,6 +22,8 @@ import { AppContext, InitialAppContext } from './components/Context/AppContext';
 import { GlobalErrorMessage } from './components/GlobalMessages/GlobalErrorMessage';
 
 import NewCourse from './components/NewCourse/NewCourse';
+import AddModuleView from './components/Module/AddModuleView';
+import SystemService from './components/ApiServices/SystemService';
 
 const App = () => {
     const [showProfile, setShowProfile] = useState(false);
@@ -31,6 +31,9 @@ const App = () => {
 	const [userContext,setUserContext] = useState(InitialUserContext);
 
 	const [appContext,setAppContext] = useState(InitialAppContext);
+
+	const [addNewCourse, setaddNewCourse] = useState(false);
+
 
 	apiClient.onLogin = (username,userid) =>{
 		setUserContext({
@@ -80,56 +83,28 @@ const App = () => {
         			    </main>
         			    )} />
 
-						<Route exact path="/signin" render={() => (
-        			    <main className="my-5 py-5" id="Home">
-						<NavBar toggleProfile={toggleProfile} />
-						<SignInForm />
-						<Footer />
-        			    </main>
-        			    )} />
+						<AppRoute exact path="/signin" component={SignInForm}/>
 
-						<Route exact path="/register" render={() => (
-        			    <main className="my-5 py-5" id="Home">
-						<NavBar toggleProfile={toggleProfile} />
-						<SignUpForm />
-						<Footer />
-        			    </main>
-        			    )} />
+						<AppRoute exact path="/register" component={SignUpForm}/>
 
 						<Route path="/courseview" render={(props) => (
-        			    <main className="my-5 py-5" id="Home">
-						<NavBar toggleProfile={toggleProfile} />
-						<Course {...props} />
-						<Footer />
-        			    </main>
-        			    )} />
+        			    	<main className="my-5 py-5" id="Home">
+								<NavBar toggleProfile={toggleProfile} />
+								<Course {...props} />
+								<Footer />
+        			    	</main>
+        			    )}/>
 
-						<Route exact path="/editprofile" render={() => (
-        			    <main className="my-5 py-5" id="Home">
-						<NavBar toggleProfile={toggleProfile}/>
-						<EditProfile/>
-						<Footer />
-        			    </main>
-        			    )} />
+						<AppRoute exact path="/editprofile" component={EditProfile}/>
 
-						<Route exact path="/lessonview" render={() => (
-        			    <main className="my-5 py-5" id="Home">
-						<NavBar toggleProfile={toggleProfile} />
-						<Lesson />
-						<Footer />
-        			    </main>
-        			    )} />
+						<AppRoute exact path="/lessonview" component={Lesson}/>
 
-						<Route exact path="/editlesson" render={() => (
-        			    <main className="my-5 py-5" id="Home">
-						<NavBar toggleProfile={toggleProfile}/>
-						<LessonEdit />
-						<Footer />
-        			    </main>
-        			    )} />
+						<AppRoute exact path="/editlesson" component={LessonEdit}/>
+						<AppRoute exact path="/addNewCourse" component={NewCourse}/>
+						<AppRoute exact path="/addModule" component={AddModuleView}/>
+
 						<Route component={notfound} />
 						</Switch>
-						
 					</Fragment>
 				</Router>
 				<GlobalErrorMessage
@@ -139,6 +114,23 @@ const App = () => {
 				 />
 			</UserContext.Provider>
 		</AppContext.Provider>);
+}
+
+const AppRoute = props => {
+	const {component, ...routeProps} = props;
+	let Component = component;
+	return(
+		<Route
+		{...routeProps}
+		render={(props)=>
+			<main className="my-5 py-5" id="Home">
+				<NavBar/>
+				<Component {...props}/>
+				<Footer/>
+           	</main>
+		}
+		/>
+	);
 }
 
 export default withRouter(App);

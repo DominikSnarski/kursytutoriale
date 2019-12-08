@@ -1,33 +1,37 @@
-import React, { useState } from 'react'; 
+import React, { useState, useContext, useEffect } from 'react'; 
 import Tags from './Tags';
 import { Button, Container, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
-import apiClient from "../Auth/ApiClient"
+import { UserContext } from '../Context/UserContext';
+import { addCourse } from '../ApiServices/CourseService';
+import { useHistory } from "react-router-dom";
+import  SystemService  from "../ApiServices/SystemService";
+
 
 function NewCourse()
 {
-
-  const AddNewCourseObject = {
-    createNewCourse: (date, /*tagsList,*/ description, ownerId,  price, title) => {
-      apiClient.post(
-            '/api/CourseCreator/AddCourse',
-            {
-              date, /*tagsList,*/ description, ownerId,  price, title
-            });
-    }
-  }
     //table of tags
     //setTagsList is used to add tags dynamically
     //const [tagsList, setTagsList] = useState([]);
     //const [inputValue, setInputValue] = useState("");
-    const [tagsState, setTagsState] = useState({tagsList: [], inputValue: "", error: ""});
+    const [tags, setTags] = useState([]);
+    const [tagsState, setTagsState] = useState({tagsList: [], inputValue: {}, error: ""});
+    const userContext = useContext(UserContext);
+
+    const history = useHistory();
+    
+    useEffect(()=>{
+      SystemService.getCurseCreationDefinitions()
+      .then(resp => setTags(resp.data));
+    },[]);
 
     //onChanging tag
     const handleInputChange = (event) => {
-        const { value } = event.target;       
+        const { value } = event.target;    
         //setInputValue(value);
+        let newState = {...tagsState};
+        newState.inputValue = value;
         setTagsState({
-            ...tagsState,
-            inputValue: value
+          ...newState
         })
     }
 
@@ -54,7 +58,7 @@ function NewCourse()
 
         setTagsState({
             error: "",
-            tagsList: [...tagsList, inputValue],
+            tagsList: [...tagsList, {id: inputValue}],
             inputValue: ""
         })
     }
@@ -74,7 +78,17 @@ function NewCourse()
       event.preventDefault();
       const formData = new FormData(event.target);
 
-      AddNewCourseObject.createNewCourse(formData.get('date'), formData.get('description'), "3fa85f64-5717-4562-b3fc-2c963f66afa6", parseFloat(formData.get('price')), formData.get('title'));
+      addCourse(
+        new Date(),
+        formData.get('description'),
+        userContext.userid,
+        tagsList,
+        parseFloat(formData.get('price')),
+        formData.get('title')
+      )
+      .then(resp=>{
+        history.push('/addModule')
+      });
     }
 
     return (
@@ -92,7 +106,7 @@ function NewCourse()
                 <Input type="text" name="title" id="title" placeholder="Set title" />         
             </Col>          
           </Row>
-          </FormGroup>
+        </FormGroup>
 
         <br/>
 
@@ -104,19 +118,16 @@ function NewCourse()
                     type="select" 
                     name="tags" 
                     id="tags"
-                    value={inputValue}
+                    value={inputValue.name}
                     onChange={handleInputChange}>
                         <option value=""></option>
-                        <option value="programming">programming</option>
-                        <option value="cooking">cooking</option>
-                        <option value="sport">sport</option>
-                        <option value="music">music</option>
+                        {tags.map((v)=><option value={v.id}>{v.name}</option>)}
                 </Input>
                 {tagsList.map((tag) => (
                     <Tags 
                         name = "tagsList"
                         key={tag}
-                        tag={tag}
+                        tag={tags.find(t=> t.id === tag.id).name}
                         handleCloseClick={handleTagRemove}
                     />
                 ))}            
@@ -183,7 +194,6 @@ function NewCourse()
           </Form>
 
         <br/>
-
         </Container>
       );
 }

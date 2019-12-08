@@ -29,6 +29,10 @@ const NavBar = (props) => {
                   <NavLink className="font-weight-bold" href="#Courses">Courses</NavLink>
                 </NavItem>
 
+                <NavItem className="d-flex align-items-center">
+                  <Link className="font-weight-bold" to={"/addNewCourse"}>Add New Course</Link>
+                </NavItem>
+
               </Nav>
             </Col>
 

@@ -3,6 +3,7 @@ import React from 'react';
 function Tags(props)
 {
     const { tag, handleCloseClick } = props;
+    
     return(
         <div>
         <div style={{backgroundColor: "#348DA6", position: "relative", padding: "0.25rem", marginTop: "1rem"}}>
