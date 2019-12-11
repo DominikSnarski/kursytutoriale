@@ -42,9 +42,6 @@ const AddModuleView = () => {
                         </FormGroup>
                     </Col>
                 </Row>
-                <Row className="justify-content-center text-dark">
-                    Learn more about our policies <a href="#" className="alert-link">{' '}here</a>.
-                </Row>
                 <Row className="justify-content-center mt-2">
                     <Button color="primary">Create module</Button>
                 </Row>

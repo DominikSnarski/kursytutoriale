@@ -6,7 +6,7 @@ export default function fetchDetails(courseID, caller){
    .then(response => {
         var title = response.data.title;
         var description = response.data.description;
-        var ownerID = response.data.ownerId;
+        //var ownerID = response.data.ownerId;
         var price = response.data.price;
         var tags = response.data.tags;
         console.log(response.data)

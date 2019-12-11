@@ -2,10 +2,10 @@ import React from 'react';
 import { Fade } from 'react-reveal';
 import { Link } from 'react-router-dom';
 import { Alert, Button, Col, Container, Jumbotron, Media, Row, Spinner, Table } from 'reactstrap';
-import apiClient from '../../Api/ApiClient';
 import Details from '../Details/Details';
 import Filters from '../Filters/Filters';
 import Pagination from './Pagination';
+import { CourseService } from '../../Api/Services/CourseService';
 
 class ShowPagination extends React.Component {
     constructor() {
@@ -34,7 +34,10 @@ class ShowPagination extends React.Component {
     componentDidMount(){
         this.setState({ isLoading: true });
 
-        apiClient.fetchCourses(0,4, this);        
+        CourseService.getCoursePages(0,4)
+            .then(data=>this.setState({example:data, isLoading: false}));
+
+        //apiClient.fetchCourses(0,4, this);
     }
 
     onChangePage(pageOfItems) {

@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import Tags from './Tags';
 import { Button, Container, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { UserContext } from '../Context/UserContext';
-import { addCourse } from '../../Api/Services/CourseService';
+import { CourseService } from '../../Api/Services/CourseService';
 import { useHistory } from "react-router-dom";
 import  SystemService  from "../../Api/Services/SystemService";
 
@@ -78,7 +78,7 @@ function NewCourse()
       event.preventDefault();
       const formData = new FormData(event.target);
 
-      addCourse(
+      CourseService.addCourse(
         new Date(),
         formData.get('description'),
         userContext.userid,

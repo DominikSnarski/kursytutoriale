@@ -6,7 +6,7 @@ import {
 import { Fade } from 'react-reveal';
 import './style.css';
 import Modules from './Modules';
-import fetchCourse from '../../Api/Services/CourseService';
+import {CourseService} from '../../Api/Services/CourseService';
 
 
 
@@ -34,8 +34,21 @@ class Course extends React.Component {
 
     componentDidMount() {
         this.setState({ isLoading: true });
-        console.log(this.state.courseID)
-        fetchCourse(this.state.courseID, this);
+        
+        CourseService.getCourse(this.state.courseID)
+        .then(response=> this.setState({
+            name: response.data.title, 
+            isLoading: false, 
+            description: response.data.description, 
+            price:response.data.price, 
+            tags:response.data.tags, 
+            creator: response.data.ownerId,
+            popularity: response.data.popularity,
+            rating: response.data.rating,
+            modules: response.data.modules,
+            creationDate: response.data.date,
+            lastEditDate: response.data.dateOfLastEdit})
+        );
     }
 
     render() {
