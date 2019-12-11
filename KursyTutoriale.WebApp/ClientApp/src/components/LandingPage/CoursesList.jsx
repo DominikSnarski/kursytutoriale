@@ -3,11 +3,11 @@ import { Fade } from 'react-reveal';
 import { Link } from 'react-router-dom';
 import { Alert, Button, Col, Container, Jumbotron, Media, Row, Spinner, Table } from 'reactstrap';
 import Details from '../Details/Details';
-import Filters from '../Filters/Filters';
-import Pagination from './Pagination';
+import Filters from './Filters';
+import Pagination from '../Shared/Pagination';
 import { CourseService } from '../../Api/Services/CourseService';
 
-class ShowPagination extends React.Component {
+class CoursesList extends React.Component {
     constructor() {
         super();
         var exampleItems = [...Array(1)].map(i => ({ id: (i + 1), name: i, date:i }));
@@ -139,4 +139,4 @@ class ShowPagination extends React.Component {
     }
 }
 
-export default ShowPagination;
+export default CoursesList;

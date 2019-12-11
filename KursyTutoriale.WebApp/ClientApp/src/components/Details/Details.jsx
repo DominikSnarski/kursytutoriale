@@ -1,5 +1,5 @@
 import React from 'react';
-import "./style.css"
+import "./Details.css"
 import { Container, Row, Col, Alert, Spinner } from 'reactstrap';
 import fetchDetails from '../../Api/Services/DetailsService';
 

@@ -24,10 +24,14 @@ export const CourseService = {
         return apiClient.get('api/CoursesViewer/GetCourse?id='+courseId);
     },
     addCourse: () => (date, description, ownerId, tags, price, title) => {
-        return apiClient.post(
-              '/api/CourseCreator/AddCourse',
-              {
-                date, description, ownerId,  price, title, tags
-              });
+        return new Promise((resolve, reject)=> 
+            apiClient.post(
+                '/api/CourseCreator/AddCourse',
+                {
+                    date, description, ownerId,  price, title, tags
+                })
+                .then(resp => resolve(resp))
+                .catch(error => reject(error))
+            )
     }
 }

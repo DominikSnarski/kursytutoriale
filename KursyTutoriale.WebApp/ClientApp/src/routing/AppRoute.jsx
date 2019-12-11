@@ -1,16 +1,16 @@
-import { NavBar } from "../components/NavBar/NavBar";
+import React from "react";
+import { Route } from "react-router-dom";
+
 export const AppRoute = props => {
-	const {component, ...routeProps} = props;
-	let Component = component;
+	const {component: Component,layout: Layout,  ...routeProps} = props;
+	
 	return(
 		<Route
 		{...routeProps}
 		render={(props)=>
-			<main className="my-5 py-5" id="Home">
-				<NavBar/>
+			<Layout>
 				<Component {...props}/>
-				<Footer/>
-           	</main>
+			</Layout>
 		}
 		/>
 	);

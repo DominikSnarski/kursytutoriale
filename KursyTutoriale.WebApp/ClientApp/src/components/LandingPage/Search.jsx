@@ -1,7 +1,7 @@
 import React from 'react';
 import Zoom from 'react-reveal/Zoom';
 import { Button, Col, Container, Form, Input, Jumbotron, Row } from 'reactstrap';
-import './style.css';
+import './Search.css';
 
 const Search = () => (
   

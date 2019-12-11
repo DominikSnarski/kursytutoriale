@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'; 
 import Tags from './Tags';
 import { Button, Container, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
-import { UserContext } from '../Context/UserContext';
+import { UserContext } from '../../contexts/UserContext';
 import { CourseService } from '../../Api/Services/CourseService';
 import { useHistory } from "react-router-dom";
 import  SystemService  from "../../Api/Services/SystemService";
@@ -85,8 +85,7 @@ function NewCourse()
         tagsList,
         parseFloat(formData.get('price')),
         formData.get('title')
-      )
-      .then(resp=>{
+      ).then(()=>{
         history.push('/addModule')
       });
     }

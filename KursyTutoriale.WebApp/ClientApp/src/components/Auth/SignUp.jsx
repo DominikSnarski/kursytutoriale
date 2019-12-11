@@ -5,7 +5,7 @@ import { Alert, Button, Col, Container, Form, FormGroup, Input, Label, Row } fro
 import AuthService from '../../Api/Services/AuthService';
 
 
-const SignUpForm = (props) => {
+const SignUp = (props) => {
     
     let history=useHistory();
 
@@ -60,4 +60,4 @@ const SignUpForm = (props) => {
     );
 }
 
-export default SignUpForm;
+export default SignUp;

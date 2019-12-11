@@ -5,7 +5,7 @@ import apiClient from '../../Api/ApiClient';
 import { Link } from 'react-router-dom'
 import { useHistory } from "react-router-dom";
 
-const SignInForm = (props) => {
+const SignIn = (props) => {
 
     let history=useHistory();
 
@@ -48,4 +48,4 @@ const SignInForm = (props) => {
     );
 }
 
-export default SignInForm;
+export default SignIn;

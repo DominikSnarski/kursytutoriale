@@ -2,7 +2,7 @@ import React from 'react';
 
 // eslint-disable-next-line
 import { Button, Form, FormGroup, FormFeedback, Input, Row, Col, Container, Alert } from 'reactstrap';
-const AddModuleView = () => {
+const NewModule = () => {
     return (
         <Container>
             <Form>
@@ -53,4 +53,4 @@ const AddModuleView = () => {
     
 }
 
-export default AddModuleView;
+export default NewModule;
