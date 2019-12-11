@@ -1,28 +1,26 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import { Container, Row, Col, Jumbotron } from 'reactstrap';
-import { Route, Link, BrowserRouter as Router, Switch } from 'react-router-dom'
-import { withRouter } from 'react-router-dom'
-
-import NavBar from './components/NavBar/NavBar';
-import Search from './components/Search/Search';
-import Featured from './components/Main/Featured';
-import ShowPagination from './components/List/ShowPagination';
-import Course from './components/CourseView/Course';
+import React, { Fragment, useState } from 'react';
+import { BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-dom';
+import { Col, Container, Jumbotron, Row } from 'reactstrap';
 import apiClient from './Api/ApiClient';
+import notfound from './components/404notfound';
+import { AppContext, InitialAppContext } from './components/Context/AppContext';
+import { InitialUserContext, UserContext } from './components/Context/UserContext';
+import Course from './components/CourseView/Course';
 import Footer from './components/Footer/Footer';
+import { GlobalErrorMessage } from './components/GlobalMessages/GlobalErrorMessage';
+import LessonEdit from './components/Lesson/LessonEdit';
+import Lesson from './components/Lesson/LessonView';
+import ShowPagination from './components/List/ShowPagination';
 import SignInForm from './components/LoginForms/SignInForm';
 import SignUpForm from './components/LoginForms/SignUpForm';
-import {UserContext} from './components/Context/UserContext';
-import {InitialUserContext} from './components/Context/UserContext';
-import notfound from './components/404notfound';
-import Lesson from './components/Lesson/LessonView';
-import EditProfile from './components/User Profile/EditProfile'
-import LessonEdit from './components/Lesson/LessonEdit';
-import { AppContext, InitialAppContext } from './components/Context/AppContext';
-import { GlobalErrorMessage } from './components/GlobalMessages/GlobalErrorMessage';
-
-import NewCourse from './components/NewCourse/NewCourse';
+import Featured from './components/Main/Featured';
 import AddModuleView from './components/Module/AddModuleView';
+import NavBar from './components/NavBar/NavBar';
+import NewCourse from './components/NewCourse/NewCourse';
+import Search from './components/Search/Search';
+import EditProfile from './components/User Profile/EditProfile';
+
+
 
 const App = () => {
     const [showProfile, setShowProfile] = useState(false);
@@ -30,10 +28,7 @@ const App = () => {
 	const [userContext,setUserContext] = useState(InitialUserContext);
 
 	const [appContext,setAppContext] = useState(InitialAppContext);
-
-	const [addNewCourse, setaddNewCourse] = useState(false);
-
-
+	
 	apiClient.onLogin = (username,userid) =>{
 		setUserContext({
 			authenticated:true,

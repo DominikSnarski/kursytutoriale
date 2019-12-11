@@ -1,11 +1,6 @@
-import React, { Fragment } from 'react';
-import { Button, ButtonGroup, ButtonToolbar, Container } from 'reactstrap';
-import {Zoom, Fade} from 'react-reveal';
-
-const defaultProps = {
-    initialPage: 1
-}
-
+import React from 'react';
+import { Fade } from 'react-reveal';
+import { Button, ButtonGroup, Container } from 'reactstrap';
 
 class Pagination extends React.Component {
     constructor(props) {

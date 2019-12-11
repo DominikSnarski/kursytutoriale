@@ -68,7 +68,7 @@ function NewCourse()
         setTagsState({
             ...tagsState,
             //return tags which is not like tag toRemove
-            tagsList: tagsList.filter(tag => tag != tagValue )
+            tagsList: tagsList.filter(tag => tag !== tagValue )
         })
     }
 

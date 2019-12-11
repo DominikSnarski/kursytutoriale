@@ -1,10 +1,7 @@
 import React from 'react';
-import {
-    Container, Row, Col, Button,
-    ListGroup, ListGroupItem, UncontrolledCollapse
-} from 'reactstrap';
-import './style.css';
+import { Button, Col, Container, ListGroup, Row, UncontrolledCollapse } from 'reactstrap';
 import LessonsList from './LessonsList';
+import './style.css';
 
 
 const Modules = (props) => (

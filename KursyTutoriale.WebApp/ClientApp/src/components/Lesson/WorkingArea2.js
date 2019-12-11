@@ -31,7 +31,7 @@ class WorkingArea2 extends React.Component {
                 <TargetArea>
                     {this.props.list.map(item =>
                         <div>
-                            {item.type == 'textarea' && <Input type='textarea' />}{' '}
+                            {item.type === 'textarea' && <Input type='textarea' />}{' '}
                         </div>)}
                 </TargetArea>
             </Container>

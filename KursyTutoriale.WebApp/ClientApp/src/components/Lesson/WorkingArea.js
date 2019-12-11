@@ -18,7 +18,7 @@ function WorkingArea(props) {
         <div ref={drop} className="working-area">
             {props.items.map(item =>
                 <div>
-                    {item.type == 'textarea' && <Input type='textarea'/>}{' '}
+                    {item.type === 'textarea' && <Input type='textarea'/>}{' '}
                 </div>)}
         </div>
     )

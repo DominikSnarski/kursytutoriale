@@ -1,11 +1,8 @@
 import React from 'react';
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
-
-import {
-  Container, Row, Col, Form, Button, Navbar, Nav,
-  NavLink, NavItem
-} from 'reactstrap';
+import { Link } from 'react-router-dom';
+import { Button, Col, Container, Form, Nav, Navbar, NavItem, NavLink, Row } from 'reactstrap';
 import { UserContext } from '../Context/UserContext';
+
 
 
 const NavBar = (props) => {

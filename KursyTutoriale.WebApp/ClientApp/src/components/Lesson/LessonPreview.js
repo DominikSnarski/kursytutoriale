@@ -35,9 +35,9 @@ class LessonPreview extends React.Component {
 
                             <div>
                                 
-                                {item.name == 'text' && item.value}{' '}
+                                {item.name === 'text' && item.value}{' '}
                                 
-                                {item.name == 'image' &&
+                                {item.name === 'image' &&
                                     <Row>
                                         <Col className="d-flex justify-content-center mb-2">
                                             <img src={item.value} alt={item.alt} />
@@ -45,7 +45,7 @@ class LessonPreview extends React.Component {
                                     </Row>
                                 }
 
-                                {item.name == 'video' &&
+                                {item.name === 'video' &&
                                     <Row>
                                         <Col className="d-flex justify-content-center mb-2">
                                             <video width="480" controls>

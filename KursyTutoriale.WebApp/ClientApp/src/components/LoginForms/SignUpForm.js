@@ -1,9 +1,8 @@
 import React from 'react';
+import { Link, useHistory } from 'react-router-dom';
 // eslint-disable-next-line
-import { Button, Form, FormGroup, Label, Input, FormText, Nav, NavItem, NavLink, Row, Col, Container, Alert } from 'reactstrap';
+import { Alert, Button, Col, Container, Form, FormGroup, Input, Label, Row } from 'reactstrap';
 import AuthService from '../../Api/Services/AuthService';
-import { Route, Link, BrowserRouter as Router, Redirect } from 'react-router-dom'
-import { useHistory } from "react-router-dom";
 
 
 const SignUpForm = (props) => {

@@ -1,11 +1,11 @@
-import React, { Fragment } from 'react';
-import Pagination from './Pagination';
-import { Table, Media, Jumbotron, Container, Button, Spinner, Col, Row, Alert } from 'reactstrap';
-import Details from '../Details/Details';
+import React from 'react';
 import { Fade } from 'react-reveal';
-import Filters from '../Filters/Filters';
+import { Link } from 'react-router-dom';
+import { Alert, Button, Col, Container, Jumbotron, Media, Row, Spinner, Table } from 'reactstrap';
 import apiClient from '../../Api/ApiClient';
-import { Route, Link, BrowserRouter as Router, Switch } from 'react-router-dom'
+import Details from '../Details/Details';
+import Filters from '../Filters/Filters';
+import Pagination from './Pagination';
 
 class ShowPagination extends React.Component {
     constructor() {

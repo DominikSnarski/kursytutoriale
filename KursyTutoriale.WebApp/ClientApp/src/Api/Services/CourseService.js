@@ -1,6 +1,4 @@
-import apiClient from "../ApiClient"
-import { resolve } from "dns";
-import { reject } from "q";
+import apiClient from "../ApiClient";
 
 export default function fetchCourse(courseID, caller){
     apiClient.get('api/CoursesViewer/GetCourse?id='+courseID)

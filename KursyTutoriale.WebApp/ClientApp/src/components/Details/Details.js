@@ -3,8 +3,6 @@ import "./style.css"
 import { Container, Row, Col, Alert, Spinner } from 'reactstrap';
 import fetchDetails from '../../Api/Services/DetailsService';
 
-const API = 'https://localhost:44354/api/CoursesViewer';
-
 class Details extends React.Component {
   constructor(props) {
     super(props);
@@ -53,7 +51,7 @@ class Details extends React.Component {
 
         <Row>
           <Col className="d-flex justify-content-center mb-2">
-            <img src="https://via.placeholder.com/320x200" alt="Generic placeholder image" />
+            <img src="https://via.placeholder.com/320x200" alt="Generic placeholder"/>
           </Col>
         </Row>
 

@@ -1,17 +1,13 @@
+import classnames from 'classnames';
 import React, { useState } from 'react';
-import './style.css';
-import {
-    Card, CardImg, CardText, Jumbotron, CardImgOverlay,
-    CardTitle, Button, Container, Col, Row,
-    TabContent, TabPane, Nav, NavItem, NavLink
-} from 'reactstrap';
+import { Fade } from 'react-reveal';
+import { Link } from 'react-router-dom';
+import { Button, Container, Jumbotron, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap';
 import Details from '../Details/Details';
 import Featured2 from '../Showcase/Featured/Featured';
-import { Fade } from 'react-reveal';
-import classnames from 'classnames';
 import TopCategories from '../Showcase/TopCategories/TopCategories';
 import TopMentors from '../Showcase/TopMentors/TopMentors';
-import { Route, Link, BrowserRouter as Router, Switch } from 'react-router-dom'
+import './style.css';
 
 
 

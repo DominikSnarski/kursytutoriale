@@ -64,7 +64,7 @@ class Course extends React.Component {
 
                     <Row className="mb-4">
                         <Col sm="12" md={{ size: 6, offset: 3 }}>
-                            <img src="https://via.placeholder.com/480x320" alt="Generic placeholder image" />
+                            <img src="https://via.placeholder.com/480x320" alt="Generic placeholder" />
                         </Col>
                     </Row>
 
@@ -75,7 +75,7 @@ class Course extends React.Component {
                                 Author: {this.state.creator}
                             </Col>
                             <Col className="column-text">
-                                Price: {this.state.price == 0 ? 'Free' : this.state.price}
+                                Price: {this.state.price === 0 ? 'Free' : this.state.price}
                             </Col>
                         </Row>
 

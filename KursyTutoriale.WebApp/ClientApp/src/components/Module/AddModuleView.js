@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
+
 // eslint-disable-next-line
-import { Button, ButtonGroup, Form, FormGroup, FormFeedback, Label, Input, FormText, Nav, NavItem, NavLink, Row, Col, Container, Alert } from 'reactstrap';
-const AddModuleView = (props) => {
+import { Button, Form, FormGroup, FormFeedback, Input, Row, Col, Container, Alert } from 'reactstrap';
+const AddModuleView = () => {
     return (
         <Container>
             <Form>
@@ -49,9 +50,7 @@ const AddModuleView = (props) => {
                 </Row>
             </Form>
         </Container>
-
-        
-    );
+        );
 
 
     

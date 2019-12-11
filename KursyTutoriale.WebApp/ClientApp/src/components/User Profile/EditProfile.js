@@ -1,14 +1,7 @@
-import React from 'react';
-import {
-  Container, Row, Col, Form, Input, Button, Navbar, Nav,
-  NavbarBrand, NavLink, NavItem, UncontrolledDropdown,
-  DropdownToggle, DropdownMenu, DropdownItem, Jumbotron, Media, Badge,
-  TabContent, TabPane, Card, CardTitle, CardText, Progress, Label, CustomInput
-} from 'reactstrap';
-import './style.css';
-import Zoom from 'react-reveal/Zoom';
 import classnames from 'classnames';
-import { UserContext } from '../Context/UserContext';
+import React from 'react';
+import { Badge, Button, Col, Container, CustomInput, Input, Jumbotron, Label, Media, Nav, NavItem, NavLink, Row, TabContent, TabPane } from 'reactstrap';
+import './style.css';
 
 
 class EditProfile extends React.Component {
@@ -157,7 +150,7 @@ class EditProfile extends React.Component {
             className={classnames({ active: this.state.activeTab === '1' })}
             onClick={() => { this.toggle('1'); }}
           >
-            <l class="stats">👤 About</l>
+            <l class="stats"><span role="img" aria-label="">👤</span> About</l>
           </NavLink>
         </NavItem>
       </Nav>
