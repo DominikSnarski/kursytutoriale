@@ -1,8 +1,7 @@
 import React from 'react';
 import "./style.css"
 import { Container, Row, Col, Alert, Spinner } from 'reactstrap';
-import apiClient from '../Auth/ApiClient';
-import fetchDetails from '../ApiServices/DetailsService';
+import fetchDetails from '../../Api/Services/DetailsService';
 
 const API = 'https://localhost:44354/api/CoursesViewer';
 

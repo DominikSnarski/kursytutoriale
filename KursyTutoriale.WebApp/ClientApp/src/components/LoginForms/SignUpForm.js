@@ -1,7 +1,7 @@
 import React from 'react';
 // eslint-disable-next-line
 import { Button, Form, FormGroup, Label, Input, FormText, Nav, NavItem, NavLink, Row, Col, Container, Alert } from 'reactstrap';
-import AuthService from '../ApiServices/AuthService';
+import AuthService from '../../Api/Services/AuthService';
 import { Route, Link, BrowserRouter as Router, Redirect } from 'react-router-dom'
 import { useHistory } from "react-router-dom";
 

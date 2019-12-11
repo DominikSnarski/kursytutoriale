@@ -1,4 +1,6 @@
-import apiClient from "../Auth/ApiClient"
+import apiClient from "../ApiClient"
+import { resolve } from "dns";
+import { reject } from "q";
 
 export default function fetchCourse(courseID, caller){
     apiClient.get('api/CoursesViewer/GetCourse?id='+courseID)
@@ -12,8 +14,6 @@ export default function fetchCourse(courseID, caller){
         creationDate: response.data.date,
         lastEditDate: response.data.dateOfLastEdit});
 
-        
-        //var example=[...Array(nrOfCourses).keys()].map(i => ({ id: (i + 1), name: response.data[i].title, date: response.data[i].date })); 
    }, error => {caller.setState({ error, isLoading: false })})
    .catch(function(error){
        console.log('cojest: '+error);
@@ -27,3 +27,22 @@ export const addCourse = (date, description, ownerId, tags, price, title) => {
             date, description, ownerId,  price, title, tags
           });
   }
+
+export const CourseService = {
+    getCoursePages: (firstPage,lastPage) => {
+        apiClient.get('api/CoursesViewer/GetNumberOfCourses')
+        .then(response => {  
+            var nrOfCourses=response.data;
+            var nrOfPages=Math.ceil(response.data/4)-1;
+
+            return apiClient
+            .get('api/CoursesViewer/GetPagesOfCourses?firstPageNumber='+firstPage+'&lastPageNumber='+lastPage+'&pageSize=4')
+            // .then(response => {  
+            //     var example=[...Array(nrOfCourses).keys()].map(i => ({ id: (i + 1), name: response.data[i].title, date: response.data[i].date }));
+            //     caller.setState({ exampleItems: example, isLoading: false });  
+    
+            // });
+    
+        }, error => {return new Promise((resolve,reject)=>reject(error))});
+    }
+}

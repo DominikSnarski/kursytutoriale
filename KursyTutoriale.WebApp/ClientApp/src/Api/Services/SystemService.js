@@ -1,4 +1,4 @@
-import apiClient from "../Auth/ApiClient"
+import apiClient from "../ApiClient"
 
 const SystemService = {
     getCurseCreationDefinitions: ()=>{

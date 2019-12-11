@@ -6,7 +6,7 @@ import {
 import { Fade } from 'react-reveal';
 import './style.css';
 import Modules from './Modules';
-import fetchCourse from '../ApiServices/CourseService';
+import fetchCourse from '../../Api/Services/CourseService';
 
 
 

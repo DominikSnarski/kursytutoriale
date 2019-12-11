@@ -8,7 +8,7 @@ import Search from './components/Search/Search';
 import Featured from './components/Main/Featured';
 import ShowPagination from './components/List/ShowPagination';
 import Course from './components/CourseView/Course';
-import apiClient from './components/Auth/ApiClient';
+import apiClient from './Api/ApiClient';
 import Footer from './components/Footer/Footer';
 import SignInForm from './components/LoginForms/SignInForm';
 import SignUpForm from './components/LoginForms/SignUpForm';
@@ -23,7 +23,6 @@ import { GlobalErrorMessage } from './components/GlobalMessages/GlobalErrorMessa
 
 import NewCourse from './components/NewCourse/NewCourse';
 import AddModuleView from './components/Module/AddModuleView';
-import SystemService from './components/ApiServices/SystemService';
 
 const App = () => {
     const [showProfile, setShowProfile] = useState(false);

@@ -4,12 +4,8 @@ import { Table, Media, Jumbotron, Container, Button, Spinner, Col, Row, Alert } 
 import Details from '../Details/Details';
 import { Fade } from 'react-reveal';
 import Filters from '../Filters/Filters';
-import apiClient from '../Auth/ApiClient';
-import axios from 'axios';
+import apiClient from '../../Api/ApiClient';
 import { Route, Link, BrowserRouter as Router, Switch } from 'react-router-dom'
-
-
-const API='https://localhost:44354/api/CoursesViewer';
 
 class ShowPagination extends React.Component {
     constructor() {
