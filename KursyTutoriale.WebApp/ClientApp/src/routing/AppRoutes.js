@@ -1,4 +1,4 @@
-const AppRoutes = {
+export const AppRoutes = {
     Signin: "/signin",
     EditProfile:"/editprofile",
     Lesson: "/lessonview",

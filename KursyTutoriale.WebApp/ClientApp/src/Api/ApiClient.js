@@ -1,5 +1,5 @@
-import axios from './node_modules/axios';
-import jwtDecode from './node_modules/jwt-decode';
+import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 
 const apiClient = axios.create({
     baseURL: 'https://localhost:44354/',

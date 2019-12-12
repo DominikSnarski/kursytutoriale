@@ -1,13 +1,13 @@
 import React, { Fragment, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-dom';
-import apiClient from './Api/ApiClient';
+import apiClient from './api/ApiClient';
 import notfound from './components/404notfound';
 import { AppContext, InitialAppContext } from './contexts/AppContext';
 import { InitialUserContext, UserContext } from './contexts/UserContext';
 import Course from './components/Courses/Course';
 import { GlobalErrorMessage } from './components/GlobalMessages/GlobalErrorMessage';
-import LessonEdit from './components/Lesson/LessonEdit';
-import Lesson from './components/Lesson/LessonView';
+import LessonEdit from './components/CreateLesson/LessonEdit';
+import Lesson from './components/CreateLesson/LessonView';
 import LandingPage from './components/LandingPage/LandingPage';
 import SignIn from './components/Auth/SignIn';
 import SignUp from './components/Auth/SignUp';
@@ -16,6 +16,7 @@ import NewCourse from './components/NewCourse/NewCourse';
 import EditProfile from './components/User Profile/EditProfile';
 import { MainLayout } from "./layouts/MainLayout";
 import { AppRoute } from "./routing/AppRoute";
+import { AppRoutes } from "./routing/AppRoutes";
 
 const App = () => {
 	const [userContext,setUserContext] = useState(InitialUserContext);
