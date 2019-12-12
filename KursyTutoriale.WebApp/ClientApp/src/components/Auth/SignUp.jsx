@@ -49,7 +49,7 @@ const SignUp = (props) => {
                         <Row style={{ marginTop: 20 }}>
                             <Col xs="auto">
                                 <Button color="primary">Sign up</Button>{' '}
-                                <Link to="/signin"><Button outline color="primary">I already have an account</Button></Link>{' '}
+                                <Link to={AppRoutes.Signin}><Button outline color="primary">I already have an account</Button></Link>{' '}
                             </Col>
                         </Row>
                     </Form>

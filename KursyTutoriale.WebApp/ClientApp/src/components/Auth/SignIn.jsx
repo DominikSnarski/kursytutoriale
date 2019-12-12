@@ -1,7 +1,7 @@
 import React from 'react';
 // eslint-disable-next-line
 import { Button, Form, FormGroup, Label, Input, Row, Col, Container, Alert } from 'reactstrap';
-import apiClient from '../../Api/ApiClient';
+import apiClient from '../../api/ApiClient';
 import { Link } from 'react-router-dom'
 import { useHistory } from "react-router-dom";
 
@@ -40,7 +40,7 @@ const SignIn = (props) => {
                 <Row>
                     <Col xs="auto">
                         <Button color="primary">Sign in</Button>{' '}
-                        <Link to="/register"><Button outline color="primary">I don't have an account</Button></Link>{' '}
+                        <Link to={AppRoutes.Register}><Button outline color="primary">I don't have an account</Button></Link>{' '}
                     </Col>
                 </Row>
             </Form>

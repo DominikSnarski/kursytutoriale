@@ -51,15 +51,15 @@ const App = () => {
 				<Router>
 					<Fragment>
 						<Switch>
-						<AppRoute exact path="/" component={LandingPage} layout={MainLayout}/>
-						<AppRoute exact path="/signin" component={SignIn} layout={MainLayout}/>
-						<AppRoute exact path="/register" component={SignUp} layout={MainLayout}/>
-						<AppRoute path="/courseview" component={Course} layout={MainLayout}/>
-						<AppRoute exact path="/editprofile" component={EditProfile} layout={MainLayout}/>
-						<AppRoute exact path="/lessonview" component={Lesson} layout={MainLayout}/>
-						<AppRoute exact path="/editlesson" component={LessonEdit} layout={MainLayout}/>
-						<AppRoute exact path="/addNewCourse" component={NewCourse} layout={MainLayout}/>
-						<AppRoute exact path="/addModule" component={NewModule} layout={MainLayout}/>
+						<AppRoute exact path={AppRoutes.Home} component={LandingPage} layout={MainLayout}/>
+						<AppRoute exact path={AppRoutes.Signin} component={SignIn} layout={MainLayout}/>
+						<AppRoute exact path={AppRoutes.Register} component={SignUp} layout={MainLayout}/>
+						<AppRoute path={AppRoutes.Courseview} component={Course} layout={MainLayout}/>
+						<AppRoute exact path={AppRoutes.EditProfile} component={EditProfile} layout={MainLayout}/>
+						<AppRoute exact path={AppRoutes.Lesson} component={Lesson} layout={MainLayout}/>
+						<AppRoute exact path={AppRoutes.EditLesson} component={LessonEdit} layout={MainLayout}/>
+						<AppRoute exact path={AppRoutes.AddNewCourse} component={NewCourse} layout={MainLayout}/>
+						<AppRoute exact path={AppRoutes.AddModule} component={NewModule} layout={MainLayout}/>
 
 						<Route component={notfound} layout={MainLayout}/>
 						</Switch>
