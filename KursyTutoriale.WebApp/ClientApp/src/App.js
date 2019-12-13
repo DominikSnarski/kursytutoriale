@@ -19,7 +19,7 @@ import { AppRoute } from "./routing/AppRoute";
 import { AppRoutes } from "./routing/AppRoutes";
 
 const App = () => {
-	const [userContext,setUserContext] = useState(InitialUserContext);
+	const [userContext,setUserContext] = useState(JSON.parse(localStorage.getItem('user')) || InitialUserContext);
 
 	const [appContext,setAppContext] = useState(InitialAppContext);
 	
@@ -29,6 +29,13 @@ const App = () => {
 			username:username,
 			userid:userid
 		});
+		let temp = {
+			authenticated: true,
+			username:username,
+			userid:userid
+		}
+		localStorage.setItem( 'user', JSON.stringify(temp) );
+		console.log(localStorage);
 	}
 
 	apiClient.onLogout = () =>{
@@ -37,6 +44,7 @@ const App = () => {
 			username:null,
 			userid:null
 		});
+		localStorage.removeItem('user');
 	}
 
 	apiClient.setGlobalMessage = (message)=>{
