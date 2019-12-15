@@ -16,6 +16,7 @@ namespace KursyTutoriale.Infrastructure.Configuration.DataModels
                // m.WithOwner().HasForeignKey("CourseId");
                // m.HasKey("Index");
                 m.ToTable("KTCourseModule");
+
                 m.OwnsMany(module => module.Lessons, l =>
                 {
                    // l.WithOwner().HasForeignKey("Index");

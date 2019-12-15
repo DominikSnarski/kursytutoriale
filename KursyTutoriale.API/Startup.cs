@@ -9,6 +9,7 @@ using KursyTutoriale.Infrastructure.Configuration;
 using KursyTutoriale.Infrastructure.Repositories;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using KursyTutoriale.Infrastructure.Repositories.Mockups;
+using KursyTutoriale.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -90,9 +91,11 @@ namespace KursyTutoriale.API
             builder.RegisterType<MockUpApplicationUserRepository>().As<IApplicationUserRepository>();
             builder.RegisterType<AccountManagerService>().As<IAccountManagerService>();
             #endregion
-            builder.RegisterType<MockupCoursesRepository>().As<ICoursesRepository>().SingleInstance();
+            //builder.RegisterType<MockupCoursesRepository>().As<ICoursesRepository>().SingleInstance();
+
             builder.RegisterType<CourseService>().As<ICourseService>();
             builder.RegisterType<SearchService>().As<ISearchService>();
+            builder.RegisterType<FileService>().As<IFileService>();
 
             builder.RegisterModule(new DataAccessModule(Configuration.GetConnectionString("default")));
 

@@ -6,7 +6,6 @@ namespace KursyTutoriale.Application.DataTransferObjects.Course
 {
     public class LessonCreationDTO
     {
-        public int Index { get; set; }
         public Guid CourseId { get; set; }
         public int CourseModuleIndex { get; set; }
         public string Title { get; set; }
