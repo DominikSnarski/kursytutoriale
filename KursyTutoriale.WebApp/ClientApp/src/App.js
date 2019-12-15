@@ -52,7 +52,7 @@ const App = () => {
 				<Router>
 					<Fragment>
 						<Switch>
-						<AppRoute exact path={AppRoutes.Home} component={LandingPage} layout={MainLayout}/>
+						<AppRoute exact path={AppRoutes.Home} component={LandingPage} layout={MainLayout}/>						
 						<AppRoute exact path={AppRoutes.Signin} component={SignIn} layout={MainLayout}/>
 						<AppRoute exact path={AppRoutes.Register} component={SignUp} layout={MainLayout}/>
 						<AppRoute path={AppRoutes.Courseview} component={Course} layout={MainLayout}/>
