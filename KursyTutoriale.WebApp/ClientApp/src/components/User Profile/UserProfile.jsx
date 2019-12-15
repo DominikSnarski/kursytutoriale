@@ -48,7 +48,7 @@ class UserProfile extends React.Component {
     }
     componentWillMount(){
       this.toggle('1');
-      UserService.getUserFromContext().then(
+      UserService.getUserProfileById(this.state.userid).then(
         result => this.setState({isLoading:false,user:result}),
         error => console.log(error)
       )
