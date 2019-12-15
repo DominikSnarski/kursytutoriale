@@ -23,7 +23,7 @@ export const CourseService = {
     getCourse: (courseId) => {
         return apiClient.get('api/CoursesViewer/GetCourse?id='+courseId);
     },
-    addCourse: () => (date, description, ownerId, tags, price, title) => {
+    addCourse: (date, description, ownerId, tags, price, title) => {
         return new Promise((resolve, reject)=> 
             apiClient.post(
                 '/api/CourseCreator/AddCourse',
