@@ -2,9 +2,9 @@ import React, { useState, useContext, useEffect } from 'react';
 import Tags from './Tags';
 import { Button, Container, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { UserContext } from '../../contexts/UserContext';
-import { CourseService } from '../../Api/Services/CourseService';
+import { CourseService } from '../../api/Services/CourseService';
 import { useHistory } from "react-router-dom";
-import  SystemService  from "../../Api/Services/SystemService";
+import  SystemService  from "../../api/Services/SystemService";
 import NewModule from "./NewModule";
 import shallowEqual from 'shallowequal';
 

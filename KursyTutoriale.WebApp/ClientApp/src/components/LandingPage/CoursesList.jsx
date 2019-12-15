@@ -5,7 +5,7 @@ import { Alert, Button, Col, Container, Jumbotron, Media, Row, Spinner, Table } 
 import Details from '../Details/Details';
 import Filters from './Filters';
 import Pagination from '../Shared/Pagination';
-import { CourseService } from '../../Api/Services/CourseService';
+import { CourseService } from '../../api/Services/CourseService';
 
 class CoursesList extends React.Component {
     constructor() {

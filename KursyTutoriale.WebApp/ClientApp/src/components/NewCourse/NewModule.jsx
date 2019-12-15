@@ -1,5 +1,5 @@
 import React from 'react';
-import { CourseService } from '../../Api/Services/CourseService';
+import { CourseService } from '../../api/Services/CourseService';
 import { Button, Form, FormGroup, FormFeedback, Input, Row, Col, Container, Alert } from 'reactstrap';
 const AddModuleView = (props) => {
 
