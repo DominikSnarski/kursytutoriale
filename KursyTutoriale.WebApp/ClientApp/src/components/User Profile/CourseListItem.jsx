@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardTitle, CardText} from 'reactstrap';
 import {AppRoutes} from '../../routing/AppRoutes';
 import {Link} from 'react-router-dom';
+import moment from 'moment';
 
 function CourseListItem(props){
     return(
@@ -13,7 +14,7 @@ function CourseListItem(props){
                         <span>{props.course.price}</span>}</span>
                 </CardTitle>
             </Link>
-            <CardText></CardText>
+            <CardText style={{fontSize:"14px"}}>{new moment(props.course.date).fromNow()}</CardText>
             <CardText>{props.course.description}</CardText>
         </Card>
     );
