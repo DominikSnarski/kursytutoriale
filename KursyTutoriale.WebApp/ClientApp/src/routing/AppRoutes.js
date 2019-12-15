@@ -7,5 +7,6 @@ export const AppRoutes = {
     AddModule: "/addModule",
     Courseview: "/courseview",
     Register: "/register",
-    Home: "/"
+    Home: "/", 
+    Logout: "/"
 }
