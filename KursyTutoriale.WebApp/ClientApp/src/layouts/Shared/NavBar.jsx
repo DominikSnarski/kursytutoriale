@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { Button, Col, Container, Form, Nav, Navbar, NavItem, NavLink, Row } from 'reactstrap';
 import { UserContext } from '../../contexts/UserContext';
 import apiClient from '../../api/ApiClient';
+import { AppRoutes } from "../../routing/AppRoutes";
+
 
 
 const NavBar = (props) => {
@@ -24,7 +26,7 @@ const NavBar = (props) => {
               <Nav className="mrx-auto" navbar>
 
                 <NavItem className="d-flex align-items-center">
-                  <Link to="/" className="font-weight-bold">Home</Link>
+                  <Link to={AppRoutes.Home} className="font-weight-bold">Home</Link>
                 </NavItem>
 
                 <NavItem className="d-flex align-items-center">
@@ -32,7 +34,7 @@ const NavBar = (props) => {
                 </NavItem>
 
                 <NavItem className="d-flex align-items-center">
-                  <Link className="font-weight-bold" to={"/addNewCourse"}>Add New Course</Link>
+                  <Link className="font-weight-bold" to={AppRoutes.AddNewCourse}>Add New Course</Link>
                 </NavItem>
 
               </Nav>
@@ -45,14 +47,14 @@ const NavBar = (props) => {
             </Form>
 
               {userContext.authenticated &&
-                <Button color="warning" outline>{userContext.username}</Button>}
+                <Link to={"/userProfile/"+userContext.userid}><Button color="warning" outline>{userContext.username}</Button></Link>}
 
               <Form inline>
-                <Link to="/signin"><Button type="button" color="primary" outline >Sign in</Button></Link>
+                <Link to={AppRoutes.Signin}><Button type="button" color="primary" outline >Sign in</Button></Link>
               </Form>
 
               <Form inline>
-                <Link to="/register"><Button type="button" color="primary" outline >Register</Button></Link>
+                <Link to={AppRoutes.Register}><Button type="button" color="primary" outline >Register</Button></Link>
               </Form>
             </Col>
           </Row>

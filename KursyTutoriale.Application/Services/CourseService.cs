@@ -1,4 +1,5 @@
 ﻿
+using KursyTutoriale.Application.Contracts;
 using KursyTutoriale.Application.DataTransferObjects.Course;
 using KursyTutoriale.Domain.Entities;
 using KursyTutoriale.Domain.Entities.Course;
@@ -31,7 +32,7 @@ namespace KursyTutoriale.Application.Services
             bool isDescending, float lowestPrice, float ?highestPrice, ICollection<Guid> tags);
         FeaturedCoursesDTO getFeaturesCourses(int numberInEachCategory);
         Course GetCourse(Guid id);
-
+        IEnumerable<CourseBasicInformationsDTO> GetUsersCourses(Guid UserId);
     }
 
     public class CourseService : ICourseService
@@ -40,17 +41,19 @@ namespace KursyTutoriale.Application.Services
         private IDTOMapper mapper;
         private IExtendedRepository<Course> coursesRepository;
         private IFileService fileService;
-        // private ICoursesRepository coursesRepository;
+        private IExecutionContextAccessor executionContext;
         public CourseService(
             IUnitOfWork unitOfWork,
             IDTOMapper mapper,
             IExtendedRepository<Course> coursesRepository,
-            IFileService fileService)
+            IFileService fileService,
+            IExecutionContextAccessor executionContext)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             this.coursesRepository = coursesRepository;
             this.fileService = fileService;
+            this.executionContext = executionContext;
         }
 
 
@@ -439,6 +442,30 @@ namespace KursyTutoriale.Application.Services
             featuredCourses.Discover = discover;
 
             return featuredCourses;
+        }
+
+        /// <summary>
+        /// Gets the courses of the user
+        /// </summary>
+        /// <param name="UserId">ID of the user who is the owner of the courses</param>
+        /// <returns>the list of user's owned courses</returns>
+        public IEnumerable<CourseBasicInformationsDTO> GetUsersCourses(Guid UserId)
+        {
+            if (UserId == executionContext.GetUserId())
+            {
+                //TODO return both public and private courses
+            }
+
+            List<CourseBasicInformationsDTO> result = new List<CourseBasicInformationsDTO>();
+
+            foreach (Course course in coursesRepository
+                .Queryable()
+                .Where(c => c.OwnerId == UserId))
+            { 
+                result.Add(mapper.Map<CourseBasicInformationsDTO>(course));
+            }
+
+            return result.AsEnumerable();
         }
     }
 }

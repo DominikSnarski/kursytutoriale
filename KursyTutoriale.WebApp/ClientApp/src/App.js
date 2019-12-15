@@ -14,6 +14,7 @@ import SignUp from './components/Auth/SignUp';
 import NewModule from './components/NewCourse/NewModule';
 import NewCourse from './components/NewCourse/NewCourse';
 import EditProfile from './components/User Profile/EditProfile';
+import UserProfile from './components/User Profile/UserProfile';
 import { MainLayout } from "./layouts/MainLayout";
 import { AppRoute } from "./routing/AppRoute";
 import { AppRoutes } from "./routing/AppRoutes";
@@ -61,6 +62,7 @@ const App = () => {
 						<AppRoute exact path={AppRoutes.EditLesson} component={LessonEdit} layout={MainLayout}/>
 						<AppRoute exact path={AppRoutes.AddNewCourse} component={NewCourse} layout={MainLayout}/>
 						<AppRoute exact path={AppRoutes.AddModule} component={NewModule} layout={MainLayout}/>
+						<AppRoute exact path={AppRoutes.UserProfile} component={UserProfile} layout={MainLayout}/>
 
 						<Route component={notfound} layout={MainLayout}/>
 						</Switch>

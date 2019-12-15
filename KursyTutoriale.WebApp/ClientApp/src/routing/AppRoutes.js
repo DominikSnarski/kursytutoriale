@@ -8,5 +8,6 @@ export const AppRoutes = {
     Courseview: "/courseview",
     Register: "/register",
     Home: "/", 
-    Logout: "/"
+    Logout: "/",
+    UserProfile: "/userProfile/:id"
 }

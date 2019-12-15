@@ -14,14 +14,15 @@ namespace KursyTutoriale.API
             this.httpContext = httpContext;
         }
 
-        public Guid GetUserId()
+        public Guid? GetUserId()
         {
-            return Guid.Parse(
-                httpContext
-                .HttpContext
-                .User
-                .Claims
-                .FirstOrDefault(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value);
+            var userId = httpContext
+                            .HttpContext
+                            .User
+                            .Claims
+                            .FirstOrDefault(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+            if (userId == null) return null;
+            else return Guid.Parse(userId.Value);
         }
     }
 }

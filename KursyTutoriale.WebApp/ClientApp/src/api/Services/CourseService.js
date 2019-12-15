@@ -33,5 +33,12 @@ export const CourseService = {
                 .then(resp => resolve(resp))
                 .catch(error => reject(error))
             )
+    },
+    getUsersCourses: id => {
+        return new Promise((resolve,reject)=>
+            apiClient.get('api/CoursesViewer/GetUsersCourses?UserId='+id)
+            .then(response => resolve(response.data))
+            .catch(error => reject(error))
+        )
     }
 }
