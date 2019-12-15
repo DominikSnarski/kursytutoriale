@@ -2,12 +2,14 @@ import React, { useState, useContext, useEffect } from 'react';
 import Tags from './Tags';
 import { Button, Container, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { UserContext } from '../../contexts/UserContext';
-import { CourseService } from '../../api/Services/CourseService';
+import { CourseService } from '../../Api/Services/CourseService';
 import { useHistory } from "react-router-dom";
-import  SystemService  from "../../api/Services/SystemService";
+import  SystemService  from "../../Api/Services/SystemService";
+import NewModule from "./NewModule";
+import shallowEqual from 'shallowequal';
 
 
-function NewCourse()
+function NewCourse(props)
 {
     //table of tags
     //setTagsList is used to add tags dynamically
@@ -86,8 +88,10 @@ function NewCourse()
         parseFloat(formData.get('price')),
         formData.get('title')
       ).then(()=>{
-        history.push('/addModule')
+        props.show(false);
       });
+      props.setCourseId()
+      
     }
 
     return (

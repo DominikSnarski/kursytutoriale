@@ -5,6 +5,19 @@ import {
 import { Fade, Zoom } from 'react-reveal';
 import { Link } from 'react-router-dom'
 
+const handleLessonPost = () => {
+    CourseService.addLesson(
+        nrOfLessons,
+        props.courseId,
+        props.moduleId,
+        props.title,
+        props.items
+      ).then(()=>{
+        lesson.toggleLesson
+      });
+
+}
+
 class LessonPreview extends React.Component {
 
     constructor(props) {
@@ -12,6 +25,7 @@ class LessonPreview extends React.Component {
 
         console.log(this.props.items);
     }
+    
 
     render() {
         return (
@@ -74,7 +88,7 @@ class LessonPreview extends React.Component {
                             <Col >
                             </Col>
                             <Col className='text-right'>
-                            <Link to={{pathname:'/courseview', state:{courseID: "8b2d822d-e85e-4dc9-91d2-55e83559e7c6"}}}><Button color='secondary' onClick={this.props.toggleLesson}>Confirm and save</Button></Link>
+                            <Link to={{pathname:'/courseview', state:{courseID: "8b2d822d-e85e-4dc9-91d2-55e83559e7c6"}}}><Button color='secondary' onClick={() => { handleLessonPost() }}>Confirm and save</Button></Link>
                             </Col>
                         </Row>
 

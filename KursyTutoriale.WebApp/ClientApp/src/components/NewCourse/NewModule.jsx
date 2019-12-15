@@ -1,11 +1,28 @@
 import React from 'react';
-
-// eslint-disable-next-line
+import { CourseService } from '../../Api/Services/CourseService';
 import { Button, Form, FormGroup, FormFeedback, Input, Row, Col, Container, Alert } from 'reactstrap';
-const NewModule = () => {
+const AddModuleView = (props) => {
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+  
+        CourseService.addModule(
+          props.courseId,
+          nrOfModules,
+          formData.get('title'),
+          formData.get('description')
+        ).then(()=>{
+            props.setModuleId()
+            props.show(true);
+        });
+  
+        
+      }
+
     return (
-        <Container>
-            <Form>
+        <Container style={{backgroundColor: "#7BC5DA"}}>
+            <Form onSubmit={(e)=>handleSubmit(e)}>
                 <Row>
                     <Col>
                         <Alert color="primary" className="text-center">
@@ -30,7 +47,7 @@ const NewModule = () => {
                     <Col className="text-dark">
                         2. What will you learn in this module?
                         <FormGroup className="mt-2">
-                            <Input type="textarea" name="text" id="exampleText" placeholder="e.g. In this module you will learn how..." />
+                            <Input type="textarea" name="description" id="description" placeholder="e.g. In this module you will learn how..." />
                         </FormGroup>
                     </Col>
                 </Row>
@@ -42,15 +59,20 @@ const NewModule = () => {
                         </FormGroup>
                     </Col>
                 </Row>
+                <Row className="justify-content-center text-dark">
+                    Learn more about our policies <a href="#" className="alert-link">{' '}here</a>.
+                </Row>
                 <Row className="justify-content-center mt-2">
                     <Button color="primary">Create module</Button>
                 </Row>
             </Form>
         </Container>
-        );
+
+        
+    );
 
 
     
 }
 
-export default NewModule;
+export default AddModuleView;

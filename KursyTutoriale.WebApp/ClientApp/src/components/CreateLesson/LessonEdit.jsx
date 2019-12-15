@@ -87,13 +87,15 @@ class LessonEdit extends React.Component {
         {
             return(
                 <Container>
-                    <LessonPreview toggleLessonPreview={this.toggleLessonPreview} items={this.state.list} title={this.state.lessonTitle}/>
+                    <LessonPreview toggleLessonPreview={this.toggleLessonPreview} items={this.state.list} title={this.state.lessonTitle} courseId={this.props.courseId} moduleId={this.props.moduleId}/>
                 </Container>
             )
         }
 
+
         return (
             <Container className='Container'>
+                <Form onSubmit={(e)=>handleSubmit(e)}>
                 <Zoom left duration="200">
                     <Alert color="primary" className="text-center">
                         Create lesson
@@ -151,7 +153,7 @@ class LessonEdit extends React.Component {
                                 <Button color='secondary' onClick={this.toggleLessonPreview}>Next</Button>
                             </Col>
                         </Row>
-
+                        </Form>
             </Container>
         );
     }

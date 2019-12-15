@@ -1,7 +1,7 @@
 import React from 'react';
 import "./Details.css"
 import { Container, Row, Col, Alert, Spinner } from 'reactstrap';
-import fetchDetails from '../../api/Services/DetailsService';
+import fetchDetails from '../../Api/Services/DetailsService';
 
 class Details extends React.Component {
   constructor(props) {

@@ -5,7 +5,7 @@ import { Alert, Button, Col, Container, Jumbotron, Media, Row, Spinner, Table } 
 import Details from '../Details/Details';
 import Filters from './Filters';
 import Pagination from '../Shared/Pagination';
-import { CourseService } from '../../api/Services/CourseService';
+import { CourseService } from '../../Api/Services/CourseService';
 
 class CoursesList extends React.Component {
     constructor() {
@@ -52,6 +52,12 @@ class CoursesList extends React.Component {
         });
     }
 
+    changeValues(id_){
+        this.setState({
+            id: id_,
+        });
+    }
+
     toggleFilters() {
         this.setState({
             showFilters: !this.state.showFilters
@@ -85,9 +91,9 @@ class CoursesList extends React.Component {
                             <span className="d-lg-flex justify-content-center d-block h2 text-dark">Course Details</span>
                         </Jumbotron>
                         <Jumbotron fluid className="courses_bg">
-                            <Details id="8b2d822d-e85e-4dc9-91d2-55e83559e7c6"/>
+                            <Details id={this.state.courseID}/>
                             <div class="float-right mr-4">
-                                <Link to={{pathname:'/courseview', state:{courseID: "8b2d822d-e85e-4dc9-91d2-55e83559e7c6"}}} ><Button color="primary">Go to course's page</Button></Link>{' '}
+                                <Link to={{pathname:'/courseview', state:{courseID: this.state.courseID}}} ><Button color="primary">Go to course's page</Button></Link>{' '}
                                 <Button color="secondary" onClick={this.toggle}>Back</Button>
                             </div>
                         </Jumbotron>

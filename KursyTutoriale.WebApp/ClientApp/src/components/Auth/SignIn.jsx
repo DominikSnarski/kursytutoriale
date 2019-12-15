@@ -1,7 +1,7 @@
 import React from 'react';
 // eslint-disable-next-line
 import { Button, Form, FormGroup, Label, Input, Row, Col, Container, Alert } from 'reactstrap';
-import apiClient from '../../api/ApiClient';
+import apiClient from '../../Api/ApiClient';
 import { Link } from 'react-router-dom'
 import { useHistory } from "react-router-dom";
 import { AppRoutes } from "../../routing/AppRoutes";
