@@ -2,7 +2,9 @@
 using KursyTutoriale.Application.DataTransferObjects.Course;
 using KursyTutoriale.Domain.Entities;
 using KursyTutoriale.Domain.Entities.Course;
+using KursyTutoriale.Infrastructure.Repositories;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
+using KursyTutoriale.Infrastructure.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +20,7 @@ namespace KursyTutoriale.Application.Services
         CourseModuleDetailsDTO GetCourseModuleDetails(Guid courseId, int moduleIndex);
         LessonDetailsDTO GetLessonDetails(Guid courseId, int moduleIndex, int lessonIndex);
         List<CourseBasicInformationsDTO> GetPagesOfCourses(int firstPageNumber, int lastPageNumber, int pageSize);
-        Task<int> AddCourse(CourseCreationDTO course);
+        Task<Guid> AddCourse(CourseCreationDTO course);
         Task<int> AddModule(CourseModuleCreationDTO module);
         Task<int> AddLesson(LessonCreationDTO lesson);
         CourseForEditionDTO GetCourseForEdition(Guid courseId);
@@ -36,15 +38,19 @@ namespace KursyTutoriale.Application.Services
     {
         private IUnitOfWork unitOfWork;
         private IDTOMapper mapper;
-        private ICoursesRepository coursesRepository;
+        private IExtendedRepository<Course> coursesRepository;
+        private IFileService fileService;
+        // private ICoursesRepository coursesRepository;
         public CourseService(
             IUnitOfWork unitOfWork,
             IDTOMapper mapper,
-            ICoursesRepository coursesRepository)
+            IExtendedRepository<Course> coursesRepository,
+            IFileService fileService)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             this.coursesRepository = coursesRepository;
+            this.fileService = fileService;
         }
 
 
@@ -84,7 +90,11 @@ namespace KursyTutoriale.Application.Services
             {
                 var result = query.FirstOrDefault().Modules.Where(m => m.Index == moduleIndex).FirstOrDefault();
                 if (result != null)
-                    return mapper.Map<CourseModuleDetailsDTO>(result);
+                {
+                    var course = mapper.Map<CourseModuleDetailsDTO>(result);
+                    course.Image = fileService.ByteArrayToImage(result.ImageByteArray);
+                    return course;
+                }
                 else throw new Exception("Error 1004! GetCourseModuleDetails service returned null");
 
             }
@@ -190,7 +200,7 @@ namespace KursyTutoriale.Application.Services
         /// <param name="course">
         /// Version of course you want to add to database.
         /// </param>
-        public async Task<int> AddCourse(CourseCreationDTO course)
+        public async Task<Guid> AddCourse(CourseCreationDTO course)
         {
             var c = new Course()
             {
@@ -211,7 +221,7 @@ namespace KursyTutoriale.Application.Services
             
             coursesRepository.InsertAgreggate(c);
             var result =  await unitOfWork.SaveChangesAsync();
-            return result;
+            return c.Id;
 
         }
 
@@ -226,17 +236,22 @@ namespace KursyTutoriale.Application.Services
             var query = coursesRepository.Queryable();
             var course = query.Where(c => c.Id.Equals(module.CourseId)).FirstOrDefault();
 
+
+
             var m = new CourseModule()
             {
-               CourseId = module.CourseId,
-               Index = module.Index,
-               Title = module.Title
-            };
+                CourseId = module.CourseId,
+                Index = course.Modules.Count + 1,
+                Title = module.Title,
+                Description = module.Description,
+                ImageByteArray = fileService.ImageToByteArray(module.Image)
+
+        };
 
             course.Modules.Add(m);
             coursesRepository.Update(course);
             var result = await unitOfWork.SaveChangesAsync();
-            return result;
+            return m.Index;
 
 
         }
@@ -251,20 +266,20 @@ namespace KursyTutoriale.Application.Services
         {
             var query = coursesRepository.Queryable();
             var course = query.Where(c => c.Id.Equals(lesson.CourseId)).FirstOrDefault();
+            var index = course.Modules.Where(m => m.Index.Equals(lesson.CourseModuleIndex)).FirstOrDefault().Lessons.Count + 1;
 
             var l = new Lesson()
             {
                 Title = lesson.Title,
-                Index = lesson.Index,
+                Index = index,
                 Content = lesson.Content,
                 CourseId = lesson.CourseId,
                 CourseModuleIndex = lesson.CourseModuleIndex
             };
-
             course.Modules.Where(m => m.Index.Equals(lesson.CourseModuleIndex)).FirstOrDefault().Lessons.Add(l);
             coursesRepository.Update(course);
             var result = await unitOfWork.SaveChangesAsync();
-            return result;
+            return index;
 
 
         }

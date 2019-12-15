@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using KursyTutoriale.Application.DataTransferObjects.Course;
+using KursyTutoriale.Infrastructure.Repositories;
 
 namespace KursyTutoriale.Application.Services
 {
@@ -16,10 +17,10 @@ namespace KursyTutoriale.Application.Services
 
     public class SearchService : ISearchService
     {
-        ICoursesRepository coursesRepository;
+        IExtendedRepository<Course> coursesRepository;
         IDTOMapper mapper;
         public SearchService(
-            ICoursesRepository coursesRepository,
+            IExtendedRepository<Course> coursesRepository,
             IDTOMapper mapper)
         {
             this.coursesRepository = coursesRepository;
