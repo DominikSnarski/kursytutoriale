@@ -41,9 +41,9 @@ const NavBar = (props) => {
             </Col>
             <Col className="d-none d-lg-flex justify-content-end">
 
-            <Form onSubmit={e=>handleSubmit()}>
+            <Form onSubmit={handleSubmit}>
             {userContext.authenticated &&
-              <Button className="font-weight-bold" outline>Logout</Button>}
+              <Button className="font-weight-bold" type="submit" outline>Logout</Button>}
             </Form>
 
               {userContext.authenticated &&
