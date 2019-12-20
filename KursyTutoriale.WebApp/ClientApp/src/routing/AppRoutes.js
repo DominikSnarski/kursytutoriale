@@ -9,5 +9,6 @@ export const AppRoutes = {
     Register: "/register",
     Home: "/", 
     Logout: "/",
-    UserProfile: "/userProfile/:id"
+    UserProfile: "/userProfile/:id",
+    CourseRejectionForm: "/courseRejectionForm"
 }
