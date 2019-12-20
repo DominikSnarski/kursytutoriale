@@ -9,11 +9,11 @@ const AddModuleView = (props) => {
   
         CourseService.addModule(
           props.courseId,
-          nrOfModules,
           formData.get('title'),
-          formData.get('description')
-        ).then(()=>{
-            props.setModuleId()
+          formData.get('description'),
+          formData.get('image')
+        ).then(response=>{
+            props.setModuleId(response.data)
             props.show(true);
         });
   
@@ -55,7 +55,7 @@ const AddModuleView = (props) => {
                     <Col className="mt-2">
                         3. Select a module profile photo
                         <FormGroup className="mt-2">                     
-                            <Input type="file" getRef="attachments" />
+                            <Input name="image" type="file" getRef="attachments" />
                         </FormGroup>
                     </Col>
                 </Row>

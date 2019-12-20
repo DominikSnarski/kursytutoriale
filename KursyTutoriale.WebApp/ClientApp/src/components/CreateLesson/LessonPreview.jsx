@@ -3,17 +3,17 @@ import {
     Jumbotron, Button, Container, Col, Row, Alert
 } from 'reactstrap';
 import { Fade, Zoom } from 'react-reveal';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { CourseService } from '../../api/Services/CourseService';
 
 const handleLessonPost = () => {
     CourseService.addLesson(
-        nrOfLessons,
-        props.courseId,
-        props.moduleId,
-        props.title,
-        props.items
+        this.props.courseId,
+        this.props.moduleId,
+        this.props.title,
+        this.props.items
       ).then(()=>{
-        lesson.toggleLesson
+        this.props.toggleLessonPreview()
       });
 
 }

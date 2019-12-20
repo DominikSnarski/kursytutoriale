@@ -6,11 +6,10 @@ import {
 import { Zoom } from 'react-reveal';
 import LessonPreview from './LessonPreview';
 
-
 class LessonEdit extends React.Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             lessonTitle: '',
@@ -81,6 +80,7 @@ class LessonEdit extends React.Component {
         });
     };
 
+    
     render() {
 
         if(this.state.showPreview)
@@ -95,7 +95,7 @@ class LessonEdit extends React.Component {
 
         return (
             <Container className='Container'>
-                <Form onSubmit={(e)=>handleSubmit(e)}>
+                
                 <Zoom left duration="200">
                     <Alert color="primary" className="text-center">
                         Create lesson
@@ -153,7 +153,7 @@ class LessonEdit extends React.Component {
                                 <Button color='secondary' onClick={this.toggleLessonPreview}>Next</Button>
                             </Col>
                         </Row>
-                        </Form>
+                        
             </Container>
         );
     }

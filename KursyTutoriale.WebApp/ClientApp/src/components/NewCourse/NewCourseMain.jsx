@@ -14,7 +14,7 @@ const NewCourseMain = () => {
     return (
 
         <Jumbotron fluid className="jumbotron_bg">
-            {showNewCourse && <NewCourse show={setShowNewCourse} setCourseId={setCourseId}/>}
+            {showNewCourse && <NewCourse showCourse={setShowNewCourse} setCourseId={setCourseId}/>}
             {!showNewCourse && !showLesson && <NewModule show={setShowLesson} courseId={courseId} setModuleId={setModuleId}/>}
             {showLesson && <LessonEdit courseId={courseId} moduleId={moduleId}/>}
         </Jumbotron>

@@ -5,12 +5,8 @@ import { UserContext } from '../../contexts/UserContext';
 import { CourseService } from '../../api/Services/CourseService';
 import { useHistory } from "react-router-dom";
 import  SystemService  from "../../api/Services/SystemService";
-import NewModule from "./NewModule";
-import shallowEqual from 'shallowequal';
 
-
-function NewCourse(props)
-{
+const  NewCourse = (props)=>{
     //table of tags
     //setTagsList is used to add tags dynamically
     //const [tagsList, setTagsList] = useState([]);
@@ -78,8 +74,8 @@ function NewCourse(props)
 
     const handleSubmit = (event) => {
       event.preventDefault();
-      const formData = new FormData(event.target);
 
+      const formData = new FormData(event.target);
       CourseService.addCourse(
         new Date(),
         formData.get('description'),
@@ -87,13 +83,12 @@ function NewCourse(props)
         tagsList,
         parseFloat(formData.get('price')),
         formData.get('title')
-      ).then(()=>{
-        props.show(false);
+      ).then(response=>{
+        props.showCourse(false);
+        props.setCourseId(response.data)
       });
-      props.setCourseId()
       
     }
-
     return (
         <Container className="justify-content-center" style={{backgroundColor: "#7BC5DA"}}>
         <br/>
