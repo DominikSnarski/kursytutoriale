@@ -18,6 +18,7 @@ import UserProfile from './components/User Profile/UserProfile';
 import { MainLayout } from "./layouts/MainLayout";
 import { AppRoute } from "./routing/AppRoute";
 import { AppRoutes } from "./routing/AppRoutes";
+import ProtectedRoute from "./routing/ProtectedRoute";
 
 const App = () => {
 	const [userContext,setUserContext] = useState(JSON.parse(localStorage.getItem('user')) || InitialUserContext);
@@ -65,12 +66,12 @@ const App = () => {
 						<AppRoute exact path={AppRoutes.Signin} component={SignIn} layout={MainLayout}/>
 						<AppRoute exact path={AppRoutes.Register} component={SignUp} layout={MainLayout}/>
 						<AppRoute path={AppRoutes.Courseview} component={Course} layout={MainLayout}/>
-						<AppRoute exact path={AppRoutes.EditProfile} component={EditProfile} layout={MainLayout}/>
+						<ProtectedRoute exact path={AppRoutes.EditProfile} component={EditProfile} layout={MainLayout}/>
 						<AppRoute exact path={AppRoutes.Lesson} component={Lesson} layout={MainLayout}/>
-						<AppRoute exact path={AppRoutes.EditLesson} component={LessonEdit} layout={MainLayout}/>
-						<AppRoute exact path={AppRoutes.AddNewCourse} component={NewCourse} layout={MainLayout}/>
-						<AppRoute exact path={AppRoutes.AddModule} component={NewModule} layout={MainLayout}/>
-						<AppRoute exact path={AppRoutes.UserProfile} component={UserProfile} layout={MainLayout}/>
+						<ProtectedRoute exact path={AppRoutes.EditLesson} component={LessonEdit} layout={MainLayout}/>
+						<ProtectedRoute exact path={AppRoutes.AddNewCourse} component={NewCourse} layout={MainLayout}/>
+						<ProtectedRoute exact path={AppRoutes.AddModule} component={NewModule} layout={MainLayout}/>
+						<ProtectedRoute exact path={AppRoutes.UserProfile} component={UserProfile} layout={MainLayout}/>
 
 						<Route component={notfound} layout={MainLayout}/>
 						</Switch>
