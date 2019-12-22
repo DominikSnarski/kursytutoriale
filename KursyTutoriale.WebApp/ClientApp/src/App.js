@@ -15,6 +15,7 @@ import NewModule from './components/NewCourse/NewModule';
 import NewCourse from './components/NewCourse/NewCourse';
 import EditProfile from './components/User Profile/EditProfile';
 import UserProfile from './components/User Profile/UserProfile';
+import CourseRejectionForm from './components/AdminPanel/CourseRejectionForm';
 import { MainLayout } from "./layouts/MainLayout";
 import { AppRoute } from "./routing/AppRoute";
 import { AppRoutes } from "./routing/AppRoutes";
@@ -72,7 +73,7 @@ const App = () => {
 						<ProtectedRoute exact path={AppRoutes.AddNewCourse} component={NewCourse} layout={MainLayout}/>
 						<ProtectedRoute exact path={AppRoutes.AddModule} component={NewModule} layout={MainLayout}/>
 						<ProtectedRoute exact path={AppRoutes.UserProfile} component={UserProfile} layout={MainLayout}/>
-
+						<AppRoute exact path={AppRoutes.CourseRejectionForm} component={CourseRejectionForm} layout={MainLayout}/>
 						<Route component={notfound} layout={MainLayout}/>
 						</Switch>
 					</Fragment>
