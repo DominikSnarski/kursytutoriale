@@ -66,8 +66,8 @@ const App = () => {
 						<AppRoute exact path={AppRoutes.Home} component={LandingPage} layout={MainLayout}/>						
 						<AppRoute exact path={AppRoutes.Signin} component={SignIn} layout={MainLayout}/>
 						<AppRoute exact path={AppRoutes.Register} component={SignUp} layout={MainLayout}/>
-						<AppRoute path={AppRoutes.Courseview} component={Course} layout={MainLayout}/>
 						<ProtectedRoute exact path={AppRoutes.EditProfile} component={EditProfile} layout={MainLayout}/>
+						<AppRoute path={AppRoutes.CourseviewId} component={Course} layout={MainLayout}/>
 						<AppRoute exact path={AppRoutes.Lesson} component={Lesson} layout={MainLayout}/>
 						<ProtectedRoute exact path={AppRoutes.EditLesson} component={LessonEdit} layout={MainLayout}/>
 						<ProtectedRoute exact path={AppRoutes.AddNewCourse} component={NewCourse} layout={MainLayout}/>

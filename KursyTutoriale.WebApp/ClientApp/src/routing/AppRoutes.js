@@ -5,6 +5,7 @@ export const AppRoutes = {
     EditLesson: "/editlesson",
     AddNewCourse: "/addNewCourse",
     AddModule: "/addModule",
+    CourseviewId: "/courseview/:id",
     Courseview: "/courseview",
     Register: "/register",
     Home: "/", 
