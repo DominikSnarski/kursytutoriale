@@ -15,6 +15,9 @@ export const CourseService = {
     getCourse: (courseId) => {
         return apiClient.get('api/CoursesViewer/GetCourse?id='+courseId);
     },
+    getCourseUnverified: (courseId) => {
+        return apiClient.get('api/CourseVerification/GetCoursesForVerification?NrOfCourses='+courseId);
+    },
     addCourse: (date, description, ownerId, tags, price, title) => {
         return new Promise((resolve, reject)=> 
             apiClient.post(
