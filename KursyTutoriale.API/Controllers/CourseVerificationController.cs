@@ -25,9 +25,9 @@ namespace KursyTutoriale.API.Controllers
         /// <param name="CourseId">Id of the course in question</param>
         /// <returns>Index of the verified course</returns>
         [HttpPost("Verify")]
-        public async Task<int> Verify(Guid CourseId)
+        public async Task<int> Accept(Guid CourseId)
         {
-            var stamp = await courseService.Verify(CourseId);
+            var stamp = await courseService.Accept(CourseId);
             return stamp.Index;
         }
         /// <summary>
@@ -37,7 +37,7 @@ namespace KursyTutoriale.API.Controllers
         /// <param name="CourseId">Id of the course in question</param>
         /// <returns>Index of the rejected course</returns>
         [HttpPost("Reject")]
-        public async Task<int> Verify([FromBody]RejectionDTO request,Guid CourseId)
+        public async Task<int> Reject([FromBody]RejectionDTO request,Guid CourseId)
         {
             var stamp = await courseService.Reject(CourseId,request);
             return stamp.Index;

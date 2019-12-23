@@ -34,7 +34,7 @@ namespace KursyTutoriale.Application.Services
         FeaturedCoursesDTO getFeaturesCourses(int numberInEachCategory);
         Course GetCourse(Guid id);
         IEnumerable<CourseBasicInformationsDTO> GetUsersCourses(Guid UserId);
-        Task<VerificationStamp> Verify(Guid CourseId);
+        Task<VerificationStamp> Accept(Guid CourseId);
         Task<VerificationStamp> Reject(Guid CourseId, RejectionDTO Dto);
         IEnumerable<CourseBasicInformationsDTO> GetCoursesForVerification(int NrOfCourses);
     }
@@ -486,7 +486,7 @@ namespace KursyTutoriale.Application.Services
         /// </summary>
         /// <param name="CourseId">Id of the course in question</param>
         /// <returns>Created Verification Stamp</returns>
-        public async Task<VerificationStamp> Verify(Guid CourseId)
+        public async Task<VerificationStamp> Accept(Guid CourseId)
         {
             var query = coursesRepository.Queryable();
             var course = query.Where(c => c.Id.Equals(CourseId)).FirstOrDefault();
