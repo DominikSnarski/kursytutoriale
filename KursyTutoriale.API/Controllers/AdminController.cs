@@ -1,4 +1,5 @@
 ﻿using KursyTutoriale.Application.Services.Admin;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace KursyTutoriale.API.Controllers
 {
+    [Authorize(Policy = "PowerUser")]
     [Route("api/[controller]")]
     public class AdminController : Controller
     {

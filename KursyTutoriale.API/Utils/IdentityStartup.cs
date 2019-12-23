@@ -18,6 +18,7 @@ namespace KursyTutoriale.API.Utils
         public static IServiceCollection ConfigureAuthentication(IServiceCollection services, IConfiguration configuration)
         {
             services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
+                .AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -77,7 +78,8 @@ namespace KursyTutoriale.API.Utils
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("ApiUser", policy => policy.RequireClaim("Role", "ApiUser"));
+                options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+                options.AddPolicy("PowerUser", policy => policy.RequireRole("Admin", "Moderator"));
             });
 
             return services;
