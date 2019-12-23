@@ -46,5 +46,27 @@ namespace KursyTutoriale.Application.Services.Admin
             
             return true;
         }
+
+        public async Task<bool> RemoveModerator(Guid moderatorId)
+        {
+            var moderatorProfile = moderatorRepo.Queryable().SingleOrDefault(m => m.UserId == moderatorId);
+
+            if (moderatorProfile == null)
+                return false;
+
+            moderatorRepo.Delete(moderatorProfile);
+
+            var user = await userManager.FindByIdAsync(moderatorId.ToString());
+
+            if (user == null)
+                return false;
+
+            await userManager.RemoveFromRoleAsync(user, "Moderator");
+            await userManager.AddToRoleAsync(user, "User");
+
+            await unitOfWork.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

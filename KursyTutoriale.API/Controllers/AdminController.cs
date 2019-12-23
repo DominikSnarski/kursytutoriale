@@ -29,5 +29,16 @@ namespace KursyTutoriale.API.Controllers
 
             return Ok();
         }
+
+        [HttpDelete("RemoveModerator")]
+        public async Task<IActionResult> RemoveModerator(Guid moderatorId)
+        {
+            var success = await adminService.RemoveModerator(moderatorId);
+
+            if (!success)
+                return StatusCode(400);
+
+            return Ok();
+        }
     }
 }
