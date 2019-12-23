@@ -45,7 +45,7 @@ namespace KursyTutoriale.Application.Services.Auth
                 await userManager.SetAuthenticationTokenAsync(user, REFRESH_TOKEN_PROVIDER, REFRESH_TOKEN_KEY, refreshToken);
             }
 
-            var accessToken = GenerateAccessToken(user);
+            var accessToken = await GenerateAccessToken(user);
 
             return new JWTTokenDto
             {
@@ -69,7 +69,7 @@ namespace KursyTutoriale.Application.Services.Auth
                 refreshToken = await userManager.GenerateUserTokenAsync(user, REFRESH_TOKEN_PROVIDER, REFRESH_TOKEN_KEY);
                 await userManager.SetAuthenticationTokenAsync(user, REFRESH_TOKEN_PROVIDER, REFRESH_TOKEN_KEY, refreshToken);
 
-                var accessToken = GenerateAccessToken(user);
+                var accessToken = await GenerateAccessToken(user);
 
                 return new JWTTokenDto
                 {
@@ -81,16 +81,20 @@ namespace KursyTutoriale.Application.Services.Auth
             throw new AuthenticationException();
         }
 
-        private JwtSecurityToken GenerateAccessToken(ApplicationUser user)
+        private async Task<JwtSecurityToken> GenerateAccessToken(ApplicationUser user)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Secret));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             List<Claim> claims = new List<Claim>() {
                     new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
                     new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim("Role","ApiUser")
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 };
+
+            var roles = await userManager.GetRolesAsync(user);
+
+            foreach (var role in roles)
+                claims.Add(new Claim(ClaimTypes.Role, role));
 
             return new JwtSecurityToken(
                 issuer: jwtOptions.Issuer,
