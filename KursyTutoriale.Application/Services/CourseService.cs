@@ -1,6 +1,7 @@
 ﻿
 using KursyTutoriale.Application.Contracts;
 using KursyTutoriale.Application.DataTransferObjects.Course;
+using KursyTutoriale.Application.DataTransferObjects.Course.Verification;
 using KursyTutoriale.Domain.Entities;
 using KursyTutoriale.Domain.Entities.Course;
 using KursyTutoriale.Infrastructure.Repositories;
@@ -33,6 +34,9 @@ namespace KursyTutoriale.Application.Services
         FeaturedCoursesDTO getFeaturesCourses(int numberInEachCategory);
         Course GetCourse(Guid id);
         IEnumerable<CourseBasicInformationsDTO> GetUsersCourses(Guid UserId);
+        Task<VerificationStamp> Verify(Guid CourseId);
+        Task<VerificationStamp> Reject(Guid CourseId, RejectionDTO Dto);
+        IEnumerable<CourseBasicInformationsDTO> GetCoursesForVerification(int NrOfCourses);
     }
 
     public class CourseService : ICourseService
@@ -466,6 +470,74 @@ namespace KursyTutoriale.Application.Services
             }
 
             return result.AsEnumerable();
+        }
+        /// <summary>
+        /// Verifies the course
+        /// </summary>
+        /// <param name="CourseId">Id of the course in question</param>
+        /// <returns>Created Verification Stamp</returns>
+        public async Task<VerificationStamp> Verify(Guid CourseId)
+        {
+            var query = coursesRepository.Queryable();
+            var course = query.Where(c => c.Id.Equals(CourseId)).FirstOrDefault();
+
+            var stamp = new VerificationStamp()
+            {
+                Index = course.VerificationStamps.Count + 1,
+                Status = VerificationStamp.StampStatus.verified,
+                Date = DateTime.UtcNow.AddHours(1),
+                CourseId = course.Id
+            };
+
+            course.VerificationStamps.Add(stamp);
+            coursesRepository.Update(course);
+            var result = await unitOfWork.SaveChangesAsync();
+            return stamp;
+        }
+        /// <summary>
+        /// Rejects verification of the course
+        /// </summary>
+        /// <param name="CourseId">Id of the course in question</param>
+        /// <param name="Dto">Object containing notes about rejection</param>
+        /// <returns>Created Verification Stamp</returns>
+        public async Task<VerificationStamp> Reject(Guid CourseId, RejectionDTO Dto)
+        {
+            var query = coursesRepository.Queryable();
+            var course = query.Where(c => c.Id.Equals(CourseId)).FirstOrDefault();
+
+            var stamp = new VerificationStamp()
+            {
+                Index = course.VerificationStamps.Count + 1,
+                Status = VerificationStamp.StampStatus.rejected,
+                Date = DateTime.UtcNow.AddHours(1),
+                CourseId = course.Id,
+                Note = Dto.Note
+            };
+
+            course.VerificationStamps.Add(stamp);
+            coursesRepository.Update(course);
+            var result = await unitOfWork.SaveChangesAsync();
+            return stamp;
+        }
+        /// <summary>
+        /// Returns the list of courses that are waiting to be verified, ordered from the oldest
+        /// </summary>
+        /// <param name="NrOfCourses">number of courses returned</param>
+        /// <returns>List of courses waiting for verification</returns>
+        public IEnumerable<CourseBasicInformationsDTO> GetCoursesForVerification(int NrOfCourses)
+        {
+            List<CourseBasicInformationsDTO> result = new List<CourseBasicInformationsDTO>();
+            foreach(Course course in 
+                coursesRepository.Queryable()
+                .Where(c => c.VerificationStamps
+                    .OrderByDescending(s => s.Index)
+                    .First().Status == VerificationStamp.StampStatus.pending)
+                .OrderByDescending(s => s.Date)
+                .Take(NrOfCourses))
+            {
+                result.Add(mapper.Map<CourseBasicInformationsDTO>(course));
+            }
+            return result;
         }
     }
 }
