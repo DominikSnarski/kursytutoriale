@@ -24,21 +24,26 @@ namespace KursyTutoriale.Infrastructure
 
         public AccountManagerService(
             UserManager<ApplicationUser> userManager,
-            IExtendedRepository<UserProfile> userProfileRepository, 
+            IExtendedRepository<UserProfile> userProfileRepository,
             IUnitOfWork unitOfWork)
         {
             this.userManager = userManager;
             this.userProfileRepository = userProfileRepository;
             this.unitOfWork = unitOfWork;
         }
+
         public async Task<IdentityResult> CreateAccount(CreateUserRequestDto request)
         {
             var user = new ApplicationUser { UserName = request.Username, Email = request.Email };
+            
+
             var userProfile = new UserProfile(user.Id);
 
             user.UserProfileId = userProfile.Id;
 
             var result = await userManager.CreateAsync(user, request.Password);
+            await userManager.AddToRoleAsync(user, "User");
+
             userProfileRepository.Insert(userProfile);
 
             await unitOfWork.SaveChangesAsync();
