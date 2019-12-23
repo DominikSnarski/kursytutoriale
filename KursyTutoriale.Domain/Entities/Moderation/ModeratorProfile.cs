@@ -2,7 +2,7 @@
 
 namespace KursyTutoriale.Domain.Entities.Moderation
 {
-    public class ModeratorProfile: BaseEntity
+    public class ModeratorProfile
     {
         public ModeratorProfile(Guid userId)
         {

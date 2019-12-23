@@ -9,7 +9,7 @@ namespace KursyTutoriale.Infrastructure.Configuration.DataModels
         public void Configure(EntityTypeBuilder<ModeratorProfile> builder)
         {
             builder.ToTable("KTModeratorProfile");
-            builder.HasKey(up => up.Id);
+            builder.HasKey(up => up.UserId);
         }
     }
 }
