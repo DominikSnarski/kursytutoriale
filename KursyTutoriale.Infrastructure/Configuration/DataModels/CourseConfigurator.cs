@@ -28,6 +28,10 @@ namespace KursyTutoriale.Infrastructure.Configuration.DataModels
             {
                 t.ToTable("KTCourseTags");
             });
+            builder.OwnsMany(c => c.VerificationStamps, t =>
+            {
+                t.ToTable("KTVerificationStamps");
+            });
         }
     }
 }
