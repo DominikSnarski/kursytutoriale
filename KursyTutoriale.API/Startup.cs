@@ -1,30 +1,17 @@
 using Autofac;
+using KursyTutoriale.API.Utils;
 using KursyTutoriale.Application.Configuration;
 using KursyTutoriale.Application.Configuration.DIModules;
-using KursyTutoriale.Application.Configuration.Options;
 using KursyTutoriale.Application.Services;
-using KursyTutoriale.Domain.Entities.Auth;
-using KursyTutoriale.Infrastructure;
 using KursyTutoriale.Infrastructure.Configuration;
-using KursyTutoriale.Infrastructure.Repositories;
-using KursyTutoriale.Infrastructure.Repositories.Interfaces;
-using KursyTutoriale.Infrastructure.Repositories.Mockups;
 using KursyTutoriale.Infrastructure.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Logging;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KursyTutoriale.API
 {
@@ -53,7 +40,7 @@ namespace KursyTutoriale.API
                 });
 
             services = ConfigureCORS(services);
-            services = ConfigureAuthentication(services);
+            services = IdentityStartup.ConfigureAuthentication(services, Configuration);
 
             services.AddSwaggerGen(c =>
             {
@@ -86,13 +73,6 @@ namespace KursyTutoriale.API
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-
-            #region identity
-            builder.RegisterType<MockUpApplicationUserRepository>().As<IApplicationUserRepository>();
-            builder.RegisterType<AccountManagerService>().As<IAccountManagerService>();
-            #endregion
-            //builder.RegisterType<MockupCoursesRepository>().As<ICoursesRepository>().SingleInstance();
-
             builder.RegisterType<CourseService>().As<ICourseService>();
             builder.RegisterType<SearchService>().As<ISearchService>();
             builder.RegisterType<FileService>().As<IFileService>();
@@ -105,73 +85,6 @@ namespace KursyTutoriale.API
             builder.RegisterModule(new ServiceModule());
         }
 
-        private IServiceCollection ConfigureAuthentication(IServiceCollection services)
-        {
-            services.AddIdentity<ApplicationUser, UserRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
-
-            IdentityModelEventSource.ShowPII = true;
-
-            services.Configure<IdentityOptions>(op =>
-            {
-                op.Password.RequireDigit = false;
-                op.Password.RequiredLength = 5;
-                op.Password.RequireLowercase = true;
-                op.Password.RequireUppercase = false;
-                op.Password.RequireNonAlphanumeric = false;
-
-                op.User.RequireUniqueEmail = false;
-            });
-
-            var jwtConfig = Configuration.GetSection("JwtConfiguration");
-            services.Configure<JWTOptions>(opt =>
-            {
-                opt.Issuer = jwtConfig["issuer"];
-                opt.Audience = jwtConfig["audience"];
-                opt.Secret = jwtConfig["secret"];
-            });
-
-            var key = Encoding.UTF8.GetBytes(jwtConfig["secret"]);
-
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(x =>
-            {
-                x.ClaimsIssuer = "KursyTutoriale";
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidIssuer = jwtConfig["issuer"],
-                    ValidateAudience = false,
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ClockSkew = TimeSpan.Zero
-                };
-                x.Events = new JwtBearerEvents
-                {
-                    OnAuthenticationFailed = context =>
-                    {
-                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-                        {
-                            context.Response.Headers.Add("Token-Expired", "true");
-                        }
-                        return Task.CompletedTask;
-                    }
-                };
-            });
-
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("ApiUser", policy => policy.RequireClaim("Role", "ApiUser"));
-            });
-
-            return services;
-        }
         private IServiceCollection ConfigureCORS(IServiceCollection services)
         {
             services.AddCors(options =>
