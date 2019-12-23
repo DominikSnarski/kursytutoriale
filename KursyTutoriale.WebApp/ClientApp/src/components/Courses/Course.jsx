@@ -16,38 +16,22 @@ class Course extends React.Component {
         super(props);
 
         this.state = {
-            courseID: this.props.location.state.courseID,
-            name: '',
-            creator: '',
-            price: 0,
-            tags: [],
-            popularity: 0,
-            rating: 0,
-            description: '',
-            modules: [],
-            creationDate: '',
-            lastEditDate: '',
-            isLoading: false,
+            courseid: props.match.params.id,
+            course: null,
+            courseLoaded: false,
             error: false
         }
+        console.log(props.match.params.id);
     }
 
     componentDidMount() {
         this.setState({ isLoading: true });
         
-        CourseService.getCourse(this.state.courseID)
+        CourseService.getCourse(this.state.courseid)
         .then(response=> this.setState({
-            name: response.data.title, 
-            isLoading: false, 
-            description: response.data.description, 
-            price:response.data.price, 
-            tags:response.data.tags, 
-            creator: response.data.ownerId,
-            popularity: response.data.popularity,
-            rating: response.data.rating,
-            modules: response.data.modules,
-            creationDate: response.data.date,
-            lastEditDate: response.data.dateOfLastEdit})
+            course:response.data,
+            courseLoaded: true
+        })
         );
     }
 
@@ -60,7 +44,7 @@ class Course extends React.Component {
                     <Col sm="4"></Col></Row>
             )
 
-        if (this.state.isLoading)
+        if (!this.state.courseLoaded)
             return (
                 <Row><Col xs="6" sm="4"></Col>
                     <Col xs="6" sm="4"><Spinner className="d-lg-flex d-block h2" style={{ width: '3rem', height: '3rem' }} color="primary" /></Col>
@@ -72,7 +56,7 @@ class Course extends React.Component {
                 <Fade left duration="200">
 
                     <Jumbotron fluid className="jumbotron_bg">
-                        <span className="d-lg-flex justify-content-center d-block h2 text-dark">{this.state.name}</span>
+                        <span className="d-lg-flex justify-content-center d-block h2 text-dark">{this.state.course.title}</span>
                     </Jumbotron>
 
                     <Row className="mb-4">
@@ -85,19 +69,19 @@ class Course extends React.Component {
 
                         <Row className="d-flex mb-3">
                             <Col className="column-text">
-                                Author: {this.state.creator}
+                                Author: {this.state.course.ownerId}
                             </Col>
                             <Col className="column-text">
-                                Price: {this.state.price === 0 ? 'Free' : this.state.price}
+                                Price: {this.state.course.price === 0 ? 'Free' : this.state.price}
                             </Col>
                         </Row>
 
                         <Row className="d-flex mb-3">
                             <Col className="column-text">
-                                Tags: {this.state.tags.map(txt => <span> {txt.id}</span>)}
+                                Tags: {this.state.course.tags.map(txt => <span> {txt.id}</span>)}
                             </Col>
                             <Col className="column-text">
-                                Number of completions: {this.state.popularity}
+                                Number of completions: {this.state.course.popularity}
                             </Col>
                         </Row>
 
@@ -107,7 +91,7 @@ class Course extends React.Component {
                                     <CardHeader className="spans">Course details</CardHeader>
                                     <CardBody style={{ backgroundColor: '#7CC3D8' }}>
                                         <CardText>
-                                            {this.state.description}
+                                            {this.state.course.description}
                                         </CardText>
                                     </CardBody>
                                 </Card>
@@ -123,7 +107,7 @@ class Course extends React.Component {
                             <h3>Modules</h3>
                         </Row>
 
-                        <Modules toggleLesson={this.props.toggleLesson} modules={this.state.modules} />
+                        <Modules toggleLesson={this.props.toggleLesson} modules={this.state.course.modules} />
                     </Jumbotron>
 
                     <Button color="secondary" onClick={this.props.toggle}>Back</Button>

@@ -7,7 +7,7 @@ import moment from 'moment';
 function CourseListItem(props){
     return(
         <Card body>
-            <Link to={{pathname: AppRoutes.Courseview, state:{courseID: props.course.id}}}>
+            <Link to={AppRoutes.Courseview+"/"+this.props.course.id}>
                 <CardTitle>{props.course.title}<span style={{fontSize:"9px",marginLeft:"5px"}}>
                     {props.course.price === 0 ? 
                         <span>free</span> : 
