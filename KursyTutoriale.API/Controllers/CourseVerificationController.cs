@@ -9,7 +9,7 @@ using KursyTutoriale.Application.DataTransferObjects.Course;
 
 namespace KursyTutoriale.API.Controllers
 {
-    [Authorize]
+    [Authorize (Policy = "PowerUser")]
     [Route("api/[controller]")]
     [ApiController]
     public class CourseVerificationController : ControllerBase
