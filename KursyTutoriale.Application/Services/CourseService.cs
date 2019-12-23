@@ -215,15 +215,15 @@ namespace KursyTutoriale.Application.Services
                 Description = course.Description,
                 OwnerId = course.OwnerId,
                 Price = course.Price,
-                Title = course.Title
+                Title = course.Title,
+                VerificationStamps = new List<VerificationStamp>()
             };
-            c.VerificationStamps = new List<VerificationStamp>();
             c.VerificationStamps.Add(
                     new VerificationStamp()
                     {
                         CourseId = c.Id,
                         Status = VerificationStamp.StampStatus.pending,
-                        Date = DateTime.UtcNow.AddHours(1),
+                        Date = DateTime.UtcNow,
                         Index = c.VerificationStamps.Count + 1
                     });
 
@@ -495,7 +495,7 @@ namespace KursyTutoriale.Application.Services
             {
                 Index = course.VerificationStamps.Count + 1,
                 Status = VerificationStamp.StampStatus.verified,
-                Date = DateTime.UtcNow.AddHours(1),
+                Date = DateTime.UtcNow,
                 CourseId = course.Id
             };
 
@@ -519,7 +519,7 @@ namespace KursyTutoriale.Application.Services
             {
                 Index = course.VerificationStamps.Count + 1,
                 Status = VerificationStamp.StampStatus.rejected,
-                Date = DateTime.UtcNow.AddHours(1),
+                Date = DateTime.UtcNow,
                 CourseId = course.Id,
                 Note = Dto.Note
             };
