@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace KursyTutoriale.API.Controllers
 {
-    [Authorize(Policy = "PowerUser")]
+    [Authorize(Policy = "Admin")]
     [Route("api/[controller]")]
     public class AdminController : Controller
     {
