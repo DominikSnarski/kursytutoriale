@@ -217,7 +217,17 @@ namespace KursyTutoriale.Application.Services
                 Price = course.Price,
                 Title = course.Title
             };
-            foreach(TagCreationDTO tag in course.Tags)
+            c.VerificationStamps = new List<VerificationStamp>();
+            c.VerificationStamps.Add(
+                    new VerificationStamp()
+                    {
+                        CourseId = c.Id,
+                        Status = VerificationStamp.StampStatus.pending,
+                        Date = DateTime.UtcNow.AddHours(1),
+                        Index = c.VerificationStamps.Count + 1
+                    });
+
+            foreach (TagCreationDTO tag in course.Tags)
             {
                 c.Tags.Add(new CourseTag() 
                 { 
