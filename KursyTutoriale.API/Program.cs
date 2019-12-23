@@ -1,5 +1,7 @@
 using Autofac.Extensions.DependencyInjection;
+using KursyTutoriale.API.Utils;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
@@ -16,7 +18,25 @@ namespace KursyTutoriale.API
             try
             {
                 logger.Debug("init main");
-                CreateWebHostBuilder(args).Build().Run();
+                var webHost = CreateWebHostBuilder(args).Build();
+
+                using(var lifetimeScope = webHost.Services.CreateScope())
+                {
+                    var serviceProvider = lifetimeScope.ServiceProvider;
+
+                    try
+                    {
+                        IdentityStartup.CreateRoles(serviceProvider).Wait();
+                        IdentityStartup.CreatePowerUsers(serviceProvider).Wait();
+                    }
+                    catch(Exception e)
+                    {
+                        logger.Error(e, "An error occured while initializing Identity authentication");
+                    }
+                }
+
+                webHost.Run();
+
             }
             catch (Exception exception)
             {
@@ -26,7 +46,6 @@ namespace KursyTutoriale.API
             }
             finally
             {
-                // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
                 NLog.LogManager.Shutdown();
             }
         }
