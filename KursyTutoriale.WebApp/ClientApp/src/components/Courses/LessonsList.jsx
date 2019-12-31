@@ -5,6 +5,7 @@ import {
 } from 'reactstrap';
 import './style.css';
 import { Link } from 'react-router-dom'
+import {AppRoutes} from '../../routing/AppRoutes';
 
 
 const LessonsList = (props) => (
@@ -23,7 +24,7 @@ const LessonsList = (props) => (
                         <Card body style={{ backgroundColor: '#7CC3D8', borderColor: '#7CC3D8' }} >
                             <CardTitle>{item.title}</CardTitle>
                             <CardText className="card-height">{item.content}</CardText>
-                            <Link to="/lessonview"><Button fluid onClick={props.toggleLesson}>Let's go</Button></Link>
+                            <Link to={AppRoutes.Courseview}><Button fluid onClick={props.toggleLesson}>Let's go</Button></Link>
                         </Card>
                     </Col>
                 </Row>

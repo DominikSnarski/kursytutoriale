@@ -5,6 +5,7 @@ import notfound from './components/404notfound';
 import { AppContext, InitialAppContext } from './contexts/AppContext';
 import { InitialUserContext, UserContext } from './contexts/UserContext';
 import Course from './components/Courses/Course';
+import CourseUnverified from './components/Courses/CourseUnverified';
 import { GlobalErrorMessage } from './components/GlobalMessages/GlobalErrorMessage';
 import LessonEdit from './components/CreateLesson/LessonEdit';
 import Lesson from './components/CreateLesson/LessonView';
@@ -70,6 +71,7 @@ const App = () => {
 						<AppRoute path={AppRoutes.CourseviewId} component={Course} layout={MainLayout}/>
 						<AppRoute exact path={AppRoutes.Lesson} component={Lesson} layout={MainLayout}/>
 						<ProtectedRoute exact path={AppRoutes.EditLesson} component={LessonEdit} layout={MainLayout}/>
+						<ProtectedRoute exact path={AppRoutes.CourseUnverifiedView} component={CourseUnverified} layout={MainLayout}/>
 						<ProtectedRoute exact path={AppRoutes.AddNewCourse} component={NewCourse} layout={MainLayout}/>
 						<ProtectedRoute exact path={AppRoutes.AddModule} component={NewModule} layout={MainLayout}/>
 						<ProtectedRoute exact path={AppRoutes.UserProfile} component={UserProfile} layout={MainLayout}/>

@@ -7,6 +7,7 @@ export const AppRoutes = {
     AddModule: "/addModule",
     CourseviewId: "/courseview/:id",
     Courseview: "/courseview",
+    CourseUnverifiedView: "/courseUnverified",
     Register: "/register",
     Home: "/", 
     Logout: "/",
