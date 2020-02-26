@@ -2,6 +2,7 @@
 
 namespace KursyTutoriale.Tests
 {
+    //
     public class FailnigTest
     {
         [Fact]

@@ -3,11 +3,12 @@ variables:
     NUGET_PACKAGES_DIRECTORY: ".nuget"
     SERVER_DOCKER_PATH: "mcr.microsoft.com/dotnet/core/sdk:3.0"
     WEB_DOCKER_PATH: "node:latest"
+    API_SOLUTION_DIRECTORY: "KursyTutoriale.API"
     WEB_APP_DIRECTORY: "KursyTutoriale.WebApp/ClientApp"
     NODE_MODULES_DIRECTORY: "$WEB_APP_DIRECTORY/node_modules"
 
 .before_server_script: &before_server_script |
-    dotnet restore --packages $NUGET_PACKAGES_DIRECTORY
+    cd $API_SOLUTION_DIRECTORY && dotnet restore --packages $NUGET_PACKAGES_DIRECTORY
     
 stages:
     - build
@@ -51,6 +52,7 @@ build-web:
         - "cd $WEB_APP_DIRECTORY"
         - "npm install"
     script:
+        - "cd $API_SOLUTION_DIRECTORY"
         - "npm run build"
     only:
         changes:
