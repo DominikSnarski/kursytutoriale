@@ -31,7 +31,7 @@ build-api:
         - "dotnet build --no-restore"
     except:
         changes:
-            - BillAppDDD.Web/app/**/*
+            - KursyTutoriale.Web/ClientApp/**/*
     
 test-api:
     stage: test
@@ -43,7 +43,7 @@ test-api:
         - "dotnet test --no-restore"
     except:
         changes:
-            - BillAppDDD.Web/app/**/*
+            - KursyTutoriale.Web/ClientApp/**/*
         
 build-web:
     stage: build
@@ -52,7 +52,6 @@ build-web:
         - "cd $WEB_APP_DIRECTORY"
         - "npm install"
     script:
-        - "cd $API_SOLUTION_DIRECTORY"
         - "npm run build"
     only:
         changes:
