@@ -4,6 +4,7 @@ namespace KursyTutoriale.Tests
 {
     public class FailnigTest
     {
+        //
         [Fact]
         public void Fail()
         {
