@@ -57,15 +57,15 @@ build-web:
         changes:
             - KursyTutoriale.WebApp/ClientApp/**/*
 
-test-web:
-    stage: test
-    needs: ["build-web"]
-    image: $WEB_DOCKER_PATH
-    before_script:
-        - "cd $WEB_APP_DIRECTORY"
-        - "npm install"
-    script:
-        - "npm run test"
-    only:
-        changes:
-            - KursyTutoriale.WebApp/ClientApp/**/*
+# test-web:
+#     stage: test
+#     needs: ["build-web"]
+#     image: $WEB_DOCKER_PATH
+#     before_script:
+#         - "cd $WEB_APP_DIRECTORY"
+#         - "npm install"
+#     script:
+#         - "npm run test"
+#     only:
+#         changes:
+#             - KursyTutoriale.WebApp/ClientApp/**/*
