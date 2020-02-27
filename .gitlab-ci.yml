@@ -1,0 +1,71 @@
+variables:
+    OBJECTS_DIRECTORY: "obj"
+    NUGET_PACKAGES_DIRECTORY: ".nuget"
+    SERVER_DOCKER_PATH: "mcr.microsoft.com/dotnet/core/sdk:3.0"
+    WEB_DOCKER_PATH: "node:latest"
+    API_SOLUTION_DIRECTORY: "KursyTutoriale.API"
+    WEB_APP_DIRECTORY: "KursyTutoriale.WebApp/ClientApp"
+    NODE_MODULES_DIRECTORY: "$WEB_APP_DIRECTORY/node_modules"
+
+.before_server_script: &before_server_script |
+    cd $API_SOLUTION_DIRECTORY && dotnet restore --packages $NUGET_PACKAGES_DIRECTORY
+    
+stages:
+    - build
+    - test
+    
+cache:
+    key: "$CI_JOB_STAGE-$CI_COMMIT_REF_SLUG"
+    paths:
+        - "$NUGET_PACKAGES_DIRECTORY"
+        - "$NODE_MODULES_DIRECTORY"
+    policy: pull-push
+    
+    
+build-api:
+    stage: build
+    image: "$SERVER_DOCKER_PATH"
+    before_script:
+        - *before_server_script
+    script:
+        - "dotnet build --no-restore"
+    except:
+        changes:
+            - KursyTutoriale.Web/ClientApp/**/*
+    
+test-api:
+    stage: test
+    needs: ["build-api"]
+    image: "$SERVER_DOCKER_PATH"
+    before_script:
+        - *before_server_script
+    script: 
+        - "dotnet test --no-restore"
+    except:
+        changes:
+            - KursyTutoriale.Web/ClientApp/**/*
+        
+build-web:
+    stage: build
+    image: $WEB_DOCKER_PATH
+    before_script:
+        - "cd $WEB_APP_DIRECTORY"
+        - "npm install"
+    script:
+        - "npm run build"
+    only:
+        changes:
+            - KursyTutoriale.WebApp/ClientApp/**/*
+
+# test-web:
+#     stage: test
+#     needs: ["build-web"]
+#     image: $WEB_DOCKER_PATH
+#     before_script:
+#         - "cd $WEB_APP_DIRECTORY"
+#         - "npm install"
+#     script:
+#         - "npm run test"
+#     only:
+#         changes:
+#             - KursyTutoriale.WebApp/ClientApp/**/*

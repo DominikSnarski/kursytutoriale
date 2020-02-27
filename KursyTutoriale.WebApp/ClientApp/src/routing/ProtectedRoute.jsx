@@ -5,7 +5,7 @@ import { InitialUserContext} from '../contexts/UserContext';
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
 
-    const [userContext,setUserContext] = useState(JSON.parse(localStorage.getItem('user')) || InitialUserContext);
+    const [userContext] = useState(JSON.parse(localStorage.getItem('user')) || InitialUserContext);
   
 return (
     <Route
