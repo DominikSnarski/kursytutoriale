@@ -5,11 +5,11 @@ export const CourseService = {
         return apiClient.get('api/CoursesViewer/GetNumberOfCourses')
             .then(response => {
                 var nrOfPages=Math.ceil(response.data/4)-1;
-                apiClient.get('api/CoursesViewer/GetPagesOfCourses?firstPageNumber='+firstPage+'&lastPageNumber='+nrOfPages+'&pageSize=4')
+                
+                return new Promise((resolve)=>resolve(apiClient.get('api/CoursesViewer/GetPagesOfCourses?firstPageNumber='+firstPage+'&lastPageNumber='+nrOfPages+'&pageSize=1')
                 .then(res => {  
                     return new Promise((resolve)=>resolve(res.data));
-                });
-
+                })));
             }, error => {return new Promise((resolve,reject)=>reject(error))});
     },
     getCourse: (courseId) => {

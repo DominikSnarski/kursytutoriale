@@ -15,7 +15,7 @@ class CoursesList extends React.Component {
             exampleItems: exampleItems,
             pageOfItems: [],
             showDetails: false,
-            isLoading: false,
+            isLoading: true,
             showFilters: false,
             error: false,
             courseID: ''
@@ -34,7 +34,7 @@ class CoursesList extends React.Component {
         this.setState({ isLoading: true });
 
         CourseService.getCoursePages(0,4)
-            .then(data=>this.setState({example:data, isLoading: false}));
+            .then(data=>{this.setState({exampleItems:data, isLoading: false})});
 
         //apiClient.fetchCourses(0,4, this);
     }
@@ -76,7 +76,7 @@ class CoursesList extends React.Component {
                 <Col xs="6" sm="4"><Spinner className="d-lg-flex d-block h2" style={{ width: '3rem', height: '3rem' }} color="primary" /></Col>
                 <Col sm="4"></Col></Row>
         )
-        return (
+        else { return (
             <Container>
                 <Fade left duration="200">
                     <Jumbotron fluid className="jumbotron_bg">
@@ -107,6 +107,7 @@ class CoursesList extends React.Component {
                 </Fade>
             </Container>
         );
+        }
     }
 }
 
