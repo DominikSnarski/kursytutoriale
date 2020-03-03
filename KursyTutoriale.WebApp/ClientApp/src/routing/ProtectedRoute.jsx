@@ -1,27 +1,28 @@
-import React, {useState} from "react";
-import { Route, Redirect } from "react-router-dom";
-import { InitialUserContext} from '../contexts/UserContext';
-
+/* eslint-disable react/prop-types */
+import React, { useState } from 'react';
+import { Route, Redirect } from 'react-router-dom';
+import { InitialUserContext } from '../contexts/UserContext';
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
+  const [userContext] = useState(
+    JSON.parse(localStorage.getItem('user')) || InitialUserContext,
+  );
 
-    const [userContext] = useState(JSON.parse(localStorage.getItem('user')) || InitialUserContext);
-  
-return (
+  return (
     <Route
       {...rest}
-      render={props => {
-        return userContext.authenticated ? (
+      render={(props) =>
+        userContext.authenticated ? (
           <Component {...props} />
         ) : (
           <Redirect
             to={{
-              pathname: "/signin",
-              state: { from: props.location }
+              pathname: '/signin',
+              state: { from: props.location },
             }}
           />
-        );
-      }}
+        )
+      }
     />
   );
 };

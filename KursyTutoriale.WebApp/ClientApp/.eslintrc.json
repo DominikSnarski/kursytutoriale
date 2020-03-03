@@ -1,0 +1,40 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "extends": [
+        "eslint-config-airbnb-base",
+        "plugin:react/recommended",
+        "prettier/react",
+        "prettier"
+    ],
+    "parser": "babel-eslint",
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    },
+    "rules": {
+        "linebreak-style": [2,"windows"],
+        "implicit-arrow-linebreak": "off",
+        "import/extensions": "off",
+        "import/no-unresolved": "off",
+        "react/prop-types": "off",
+        "object-curly-newline": "off"
+    }
+}
