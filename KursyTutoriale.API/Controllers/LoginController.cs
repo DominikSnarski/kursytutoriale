@@ -32,12 +32,19 @@ namespace KursyTutoriale.API.Controllers
         [HttpPost("SignUp")]
         public async Task<ActionResult> SignUp([FromBody]CreateUserRequestDto request)
         {
-            var result = await accountManager.CreateAccount(request);
+            if (ModelState.IsValid)
+            {
+                var result = await accountManager.CreateAccount(request);
 
-            if(!result.Succeeded)
-                return StatusCode(400, ResponseHelper.GetErrorMessage(result.Errors.Select(e => e.Description)));
+                if (!result.Succeeded)
+                    return StatusCode(400, ResponseHelper.GetErrorMessage(result.Errors.Select(e => e.Description)));
 
-            return Ok();
+                return Ok();
+            }
+            else
+            {
+                return null;
+            }
         }
 
         [HttpPost("SignIn")]
