@@ -7,6 +7,7 @@ using KursyTutoriale.Domain.Entities.Course;
 using KursyTutoriale.Infrastructure.Repositories;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using KursyTutoriale.Infrastructure.Services;
+using KursyTutoriale.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -222,7 +223,7 @@ namespace KursyTutoriale.Application.Services
                     new VerificationStamp()
                     {
                         CourseId = c.Id,
-                        Status = VerificationStamp.StampStatus.pending,
+                        Status = StampStatus.pending,
                         Date = DateTime.UtcNow,
                         Index = c.VerificationStamps.Count + 1
                     });
@@ -494,7 +495,7 @@ namespace KursyTutoriale.Application.Services
             var stamp = new VerificationStamp()
             {
                 Index = course.VerificationStamps.Count + 1,
-                Status = VerificationStamp.StampStatus.verified,
+                Status = StampStatus.verified,
                 Date = DateTime.UtcNow,
                 CourseId = course.Id
             };
@@ -518,7 +519,7 @@ namespace KursyTutoriale.Application.Services
             var stamp = new VerificationStamp()
             {
                 Index = course.VerificationStamps.Count + 1,
-                Status = VerificationStamp.StampStatus.rejected,
+                Status = StampStatus.rejected,
                 Date = DateTime.UtcNow,
                 CourseId = course.Id,
                 Note = Dto.Note
@@ -541,7 +542,7 @@ namespace KursyTutoriale.Application.Services
                 coursesRepository.Queryable()
                 .Where(c => c.VerificationStamps
                     .OrderByDescending(s => s.Index)
-                    .First().Status == VerificationStamp.StampStatus.pending)
+                    .First().Status == StampStatus.pending)
                 .OrderBy(s => s.VerificationStamps
                     .OrderByDescending(s => s.Index)
                     .First().Date)
