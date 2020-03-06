@@ -8,7 +8,6 @@ function WorkingArea(props) {
     accept: 'textarea',
     drop: () => props.addTextField(),
   });
-  console.log(props.items);
 
   return (
     <div ref={drop} className="working-area">

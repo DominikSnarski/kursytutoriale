@@ -16,7 +16,7 @@ import {
 import { Fade } from 'react-reveal';
 import './style.css';
 import Modules from './Modules';
-import CourseService from '../../api/Services/CourseService';
+import {CourseService} from '../../api/Services/CourseService';
 
 class Course extends React.Component {
   constructor(props) {

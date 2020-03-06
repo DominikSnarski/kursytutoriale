@@ -13,7 +13,7 @@ import {
 import { useHistory } from 'react-router-dom';
 import Tags from './Tags';
 import { UserContext } from '../../contexts/UserContext';
-import CourseService from '../../api/Services/CourseService';
+import {CourseService} from '../../api/Services/CourseService';
 import SystemService from '../../api/Services/SystemService';
 
 function NewCourse() {
