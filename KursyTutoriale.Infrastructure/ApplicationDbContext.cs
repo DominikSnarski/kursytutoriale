@@ -3,6 +3,7 @@ using KursyTutoriale.Domain.Entities.Course;
 using KursyTutoriale.Domain.Entities.Moderation;
 using KursyTutoriale.Domain.Entities.UserProfiles;
 using KursyTutoriale.Infrastructure.Configuration.DataModels;
+using KursyTutoriale.Infrastructure.EventSourcing;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,8 @@ namespace KursyTutoriale.Infrastructure
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Gender> Genders { get; set; }
+        public DbSet<CourseJsonEvent> CourseEvents{ get; set; }
+        
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

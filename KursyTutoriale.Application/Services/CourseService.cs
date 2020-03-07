@@ -2,16 +2,13 @@
 using KursyTutoriale.Application.Contracts;
 using KursyTutoriale.Application.DataTransferObjects.Course;
 using KursyTutoriale.Application.DataTransferObjects.Course.Verification;
-using KursyTutoriale.Domain.Entities;
 using KursyTutoriale.Domain.Entities.Course;
 using KursyTutoriale.Infrastructure.Repositories;
-using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using KursyTutoriale.Infrastructure.Services;
 using KursyTutoriale.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using URF.Core.Abstractions;
 
@@ -119,19 +116,21 @@ namespace KursyTutoriale.Application.Services
         /// </returns>
         public LessonDetailsDTO GetLessonDetails(Guid courseId, int moduleIndex, int lessonIndex)
         {
-            var query = coursesRepository.Queryable();
-            query = query.Where(q => q.Id.Equals(courseId));
-            if (query != null)
-            {
-                var result = query.FirstOrDefault()
-                    .Modules.Where(m => m.Index == moduleIndex).FirstOrDefault()
-                    .Lessons.Where(l => l.Index.Equals(lessonIndex)).FirstOrDefault();
-                if (result != null)
-                    return mapper.Map<LessonDetailsDTO>(result);
-                else throw new Exception("Error 1006! GetLessonDetails service returned null");
+            throw new Exception();
+            //TO CHANGE
+            //var query = coursesRepository.Queryable();
+            //query = query.Where(q => q.Id.Equals(courseId));
+            //if (query != null)
+            //{
+            //    var result = query.FirstOrDefault()
+            //        .Modules.Where(m => m.Index == moduleIndex).FirstOrDefault()
+            //        .Lessons.Where(l => l.Index.Equals(lessonIndex)).FirstOrDefault();
+            //    if (result != null)
+            //        return mapper.Map<LessonDetailsDTO>(result);
+            //    else throw new Exception("Error 1006! GetLessonDetails service returned null");
 
-            }
-            else throw new Exception("Error 1007! GetLessonDetails service returned null");
+            //}
+            //else throw new Exception("Error 1007! GetLessonDetails service returned null");
         }
 
         /// <summary>
@@ -282,24 +281,24 @@ namespace KursyTutoriale.Application.Services
         /// </param>
         public async Task<int> AddLesson(LessonCreationDTO lesson)
         {
-            var query = coursesRepository.Queryable();
-            var course = query.Where(c => c.Id.Equals(lesson.CourseId)).FirstOrDefault();
-            var index = course.Modules.Where(m => m.Index.Equals(lesson.CourseModuleIndex)).FirstOrDefault().Lessons.Count + 1;
+            //var query = coursesRepository.Queryable();
+            //var course = query.Where(c => c.Id.Equals(lesson.CourseId)).FirstOrDefault();
+            //var index = course.Modules.Where(m => m.Index.Equals(lesson.CourseModuleIndex)).FirstOrDefault().Lessons.Count + 1;
 
-            var l = new Lesson()
-            {
-                Title = lesson.Title,
-                Index = index,
-                Content = lesson.Content,
-                CourseId = lesson.CourseId,
-                CourseModuleIndex = lesson.CourseModuleIndex
-            };
-            course.Modules.Where(m => m.Index.Equals(lesson.CourseModuleIndex)).FirstOrDefault().Lessons.Add(l);
-            coursesRepository.Update(course);
-            var result = await unitOfWork.SaveChangesAsync();
-            return index;
+            //var l = new Lesson()
+            //{
+            //    Title = lesson.Title,
+            //    //Index = index,
+            //    Content = lesson.Content,
+            //    CourseId = lesson.CourseId,
+            //    CourseModuleIndex = lesson.CourseModuleIndex
+            //};
+            //course.Modules.Where(m => m.Index.Equals(lesson.CourseModuleIndex)).FirstOrDefault().Lessons.Add(l);
+            //coursesRepository.Update(course);
+            //var result = await unitOfWork.SaveChangesAsync();
+            //return index;
 
-
+            return 1;
         }
 
 
@@ -356,19 +355,22 @@ namespace KursyTutoriale.Application.Services
         /// </returns>
         public LessonForEditionDTO GetLessonForEdition(Guid courseId, int moduleIndex, int lessonIndex)
         {
-            var query = coursesRepository.Queryable();
-            query = query.Where(q => q.Id.Equals(courseId));
-            if (query != null)
-            {
-                var result = query.FirstOrDefault()
-                    .Modules.Where(m => m.Index == moduleIndex).FirstOrDefault()
-                    .Lessons.Where(l => l.Index.Equals(lessonIndex)).FirstOrDefault();
-                if (result != null)
-                    return mapper.Map<LessonForEditionDTO>(result);
-                else throw new Exception("Error 1002! GetCourseModuleForEdition service returned null");
+            throw new Exception();
 
-            }
-            else throw new Exception("Error 1003! GetCourseModuleForEdition service returned null");
+            //TO CHANGE
+            //var query = coursesRepository.Queryable();
+            //query = query.Where(q => q.Id.Equals(courseId));
+            //if (query != null)
+            //{
+            //    var result = query.FirstOrDefault()
+            //        .Modules.Where(m => m.Index == moduleIndex).FirstOrDefault()
+            //        .Lessons.Where(l => l.Index.Equals(lessonIndex)).FirstOrDefault();
+            //    if (result != null)
+            //        return mapper.Map<LessonForEditionDTO>(result);
+            //    else throw new Exception("Error 1002! GetCourseModuleForEdition service returned null");
+
+            //}
+            //else throw new Exception("Error 1003! GetCourseModuleForEdition service returned null");
         }
 
         /// <summary>

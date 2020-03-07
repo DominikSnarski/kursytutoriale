@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace KursyTutoriale.Infrastructure.EventSourcing
 {
-    public class JsonEvent
+    public abstract class JsonEvent
     {
         public JsonEvent()
         {

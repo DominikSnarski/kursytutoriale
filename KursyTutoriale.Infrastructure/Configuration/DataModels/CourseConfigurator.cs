@@ -17,12 +17,12 @@ namespace KursyTutoriale.Infrastructure.Configuration.DataModels
                // m.HasKey("Index");
                 m.ToTable("KTCourseModule");
 
-                m.OwnsMany(module => module.Lessons, l =>
-                {
-                   // l.WithOwner().HasForeignKey("Index");
-                   // l.HasKey("Index");
-                    l.ToTable("KTLesson");  
-                });
+                //m.OwnsMany(module => module.Lessons, l =>
+                //{
+                //   // l.WithOwner().HasForeignKey("Index");
+                //   // l.HasKey("Index");
+                //    l.ToTable("KTLesson");  
+                //});
             });
             builder.OwnsMany(c => c.Tags, t =>
             {

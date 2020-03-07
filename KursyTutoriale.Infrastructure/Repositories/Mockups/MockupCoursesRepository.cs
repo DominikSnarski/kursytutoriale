@@ -44,12 +44,13 @@ namespace KursyTutoriale.Infrastructure.Repositories.Mockups
 
                     for (int k = 0; k < 5; k++)
                     {
-                        module.Lessons.Add(new Lesson()
-                        {
-                            Index = k,
-                            Content = k.ToString(),
-                            Title = k.ToString()
-                        }) ;
+
+                        //module.Lessons.Add(new Lesson()
+                        //{
+                        //    Index = k,
+                        //    Content = k.ToString(),
+                        //    Title = k.ToString()
+                        //}) ;
                     }
 
                     course.Modules.Add(module);

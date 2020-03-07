@@ -22,6 +22,11 @@ namespace KursyTutoriale.Infrastructure.Configuration
 
             builder.RegisterGeneric(typeof(ExtendedRepository<>)).As(typeof(IExtendedRepository<>)).InstancePerLifetimeScope();
 
+            builder.RegisterAssemblyTypes(ThisAssembly)
+                .Where(t => t.Name.EndsWith("Repository"))
+                .AsImplementedInterfaces()
+                .InstancePerLifetimeScope();
+
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
 
             builder.Register<ApplicationDbContext>(ctx =>
