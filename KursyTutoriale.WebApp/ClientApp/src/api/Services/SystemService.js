@@ -1,9 +1,7 @@
-import apiClient from "../ApiClient"
+import apiClient from '../ApiClient';
 
 const SystemService = {
-    getCurseCreationDefinitions: ()=>{
-        return apiClient.get('/api/System/GetTags');
-    }
-}
+  getCurseCreationDefinitions: () => apiClient.get('/api/System/GetTags'),
+};
 
 export default SystemService;
