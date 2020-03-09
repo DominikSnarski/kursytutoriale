@@ -1,8 +1,8 @@
-import React from 'react';
-import "./Details.css"
-import { Container, Row, Col, Collapse,Media } from 'reactstrap';
-import {AppRoutes} from '../../routing/AppRoutes';
-import {Link} from 'react-router-dom';
+import React from "react";
+import "./Details.css";
+import { Container, Row, Col, Collapse, Media } from "reactstrap";
+import { AppRoutes } from "../../routing/AppRoutes";
+import { Link } from "react-router-dom";
 
 class Details extends React.Component {
   constructor(props) {
@@ -11,28 +11,29 @@ class Details extends React.Component {
     this.state = {
       course: this.props.course,
       isOpen: false
-    }
+    };
   }
 
-  toggle(){ this.setState({isOpen:!this.state.isOpen}); }
+  toggle() {
+    this.setState({ isOpen: !this.state.isOpen });
+  }
 
   render() {
     return (
       <tbody>
-          <tr onClick={() => this.toggle()}
-              style={{ cursor: 'pointer' }}>
-              <td>
-                  <Media src="https://jakewilson.gallerycdn.vsassets.io/extensions/jakewilson/vscode-placeholder-images/0.1.0/1499508629226/Microsoft.VisualStudio.Services.Icons.Default" />
-              </td>
-              <Link to={AppRoutes.Courseview+"/"+this.state.course.id}><td>{this.state.course.title}</td></Link>
-              <td>{this.state.course.date}</td>
-          </tr>
-          <Collapse isOpen={this.state.isOpen}>
+        <tr onClick={() => this.toggle()} style={{ cursor: "pointer" }}>
+          <td>
+            <Media src="https://jakewilson.gallerycdn.vsassets.io/extensions/jakewilson/vscode-placeholder-images/0.1.0/1499508629226/Microsoft.VisualStudio.Services.Icons.Default" />
+          </td>
+          <Link to={AppRoutes.Courseview + "/" + this.state.course.id}>
+            <td>{this.state.course.title}</td>
+          </Link>
+          <td>{this.state.course.date}</td>
+        </tr>
+        <Collapse isOpen={this.state.isOpen}>
           <Container>
             <Row>
-              <Col className="additional">
-                Price: {this.state.course.price}
-              </Col>
+              <Col className="additional">Price: {this.state.course.price}</Col>
             </Row>
 
             <Row>
@@ -41,10 +42,8 @@ class Details extends React.Component {
               </Col>
             </Row>
           </Container>
-          </Collapse>
+        </Collapse>
       </tbody>
-
-
     );
   }
 }
