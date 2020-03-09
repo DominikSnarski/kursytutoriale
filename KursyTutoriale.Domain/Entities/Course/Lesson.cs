@@ -4,7 +4,7 @@ namespace KursyTutoriale.Domain.Entities.Course
 {
     public class Lesson
     {
-        public Lesson()
+        private Lesson()
         {
 
         }
@@ -13,10 +13,21 @@ namespace KursyTutoriale.Domain.Entities.Course
         {
             Id = id;
         }
+
+        public Lesson(int courseModuleIndex, string title, string content, int index)
+        {
+            Id = Guid.NewGuid();
+            CourseModuleIndex = courseModuleIndex;
+            Title = title;
+            Content = content;
+            Index = index;
+        }
+
         public Guid Id { get; set; }
         public Guid CourseId { get; set; }
         public int CourseModuleIndex { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
+        public int Index { get; set; }
     }
 }

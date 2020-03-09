@@ -250,26 +250,26 @@ namespace KursyTutoriale.Application.Services
         /// </param>
         public async Task<int> AddModule(CourseModuleCreationDTO module)
         {
-            var query = coursesRepository.Queryable();
-            var course = query.Where(c => c.Id.Equals(module.CourseId)).FirstOrDefault();
+            //    var query = coursesRepository.Queryable();
+            //    var course = query.Where(c => c.Id.Equals(module.CourseId)).FirstOrDefault();
 
 
 
-            var m = new CourseModule()
-            {
-                CourseId = module.CourseId,
-                Index = course.Modules.Count + 1,
-                Title = module.Title,
-                Description = module.Description,
-                ImageByteArray = fileService.ImageToByteArray(module.Image)
+            //    var m = new CourseModule()
+            //    {
+            //        CourseId = module.CourseId,
+            //        Index = course.Modules.Count + 1,
+            //        Title = module.Title,
+            //        Description = module.Description,
+            //        ImageByteArray = fileService.ImageToByteArray(module.Image)
 
-        };
+            //};
 
-            course.Modules.Add(m);
-            coursesRepository.Update(course);
-            var result = await unitOfWork.SaveChangesAsync();
-            return m.Index;
-
+            //    course.Modules.Add(m);
+            //    coursesRepository.Update(course);
+            //    var result = await unitOfWork.SaveChangesAsync();
+            //    return m.Index;
+            return 1;
 
         }
 
