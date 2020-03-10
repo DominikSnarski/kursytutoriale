@@ -15,6 +15,7 @@ import Tags from './Tags';
 import { UserContext } from '../../contexts/UserContext';
 import {CourseService} from '../../api/Services/CourseService';
 import SystemService from '../../api/Services/SystemService';
+import backgroundImage from '../../images/search_background.jpg';
 
 function NewCourse() {
   // table of tags
@@ -103,18 +104,22 @@ function NewCourse() {
   };
 
   return (
+    <div style={{backgroundimage: 'search_background.jpg'}}>
     <Container
       className="justify-content-center"
-      style={{ backgroundColor: '#7BC5DA' }}
-    >
+      style={{ backgroundColor: '#7BC5DA', backgroundImage: `url(${backgroundImage})`,
+  backgroundPosition: 'center',
+  backgroundSize: 'cover',
+  backgroundRepeat: 'no-repeat'}}>
       <br />
-      <h1 style={{ textAlign: 'center' }}>Add a new course</h1>
+      <h1 style={{ textAlign: 'center', fontSize: '80px',
+	fontWeight: '4000'}}>Add a new course</h1>
 
       <Form onSubmit={(e) => handleSubmit(e)}>
         <br />
         <FormGroup>
           <Row>
-            <Label sm={2} for="title">
+            <Label sm={2} for="title" >
               Title
             </Label>
             <Col sm={10}>
@@ -161,7 +166,7 @@ function NewCourse() {
             </Col>
 
             <Col sm={1}>
-              <Button onClick={handleButtonAddClick}>Add</Button>
+              <Button onClick={handleButtonAddClick} style={{ backgroundColor: '#ffb606' }}>Add</Button>
             </Col>
           </Row>
 
@@ -228,13 +233,14 @@ function NewCourse() {
 
         <Row>
           <Col sm={10}>
-            <Button>Submit</Button>
+            <Button style={{ backgroundColor: '#ffb606' }}>Submit</Button>
           </Col>
         </Row>
       </Form>
 
       <br />
     </Container>
+    </div>
   );
 }
 
