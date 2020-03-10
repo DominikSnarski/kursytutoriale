@@ -1,13 +1,12 @@
-import apiClient from "../ApiClient"
+import apiClient from '../ApiClient';
 
 const AuthService = {
-    createAccount: (username,password,email)=>{
-        return apiClient.post(
-            '/api/Login/SignUp',
-            {
-                username,password,email
-            });
-    }
-}
+  createAccount: (username, password, email) =>
+    apiClient.post('/api/Login/SignUp', {
+      username,
+      password,
+      email,
+    }),
+};
 
 export default AuthService;

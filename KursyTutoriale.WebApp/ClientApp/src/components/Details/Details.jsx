@@ -1,8 +1,8 @@
-import React from "react";
-import "./Details.css";
-import { Container, Row, Col, Collapse, Media } from "reactstrap";
-import { AppRoutes } from "../../routing/AppRoutes";
-import { Link } from "react-router-dom";
+import React from 'react';
+import './Details.css';
+import { Container, Row, Col, Collapse, Media } from 'reactstrap';
+import { Link } from 'react-router-dom';
+import AppRoutes from '../../routing/AppRoutes';
 
 class Details extends React.Component {
   constructor(props) {
@@ -10,7 +10,7 @@ class Details extends React.Component {
 
     this.state = {
       course: this.props.course,
-      isOpen: false
+      isOpen: false,
     };
   }
 
@@ -21,11 +21,11 @@ class Details extends React.Component {
   render() {
     return (
       <tbody>
-        <tr onClick={() => this.toggle()} style={{ cursor: "pointer" }}>
+        <tr onClick={() => this.toggle()} style={{ cursor: 'pointer' }}>
           <td>
             <Media src="https://jakewilson.gallerycdn.vsassets.io/extensions/jakewilson/vscode-placeholder-images/0.1.0/1499508629226/Microsoft.VisualStudio.Services.Icons.Default" />
           </td>
-          <Link to={AppRoutes.Courseview + "/" + this.state.course.id}>
+          <Link to={`${AppRoutes.Courseview}/${this.state.course.id}`}>
             <td>{this.state.course.title}</td>
           </Link>
           <td>{this.state.course.date}</td>
