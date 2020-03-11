@@ -31,6 +31,7 @@ import AppRoutes from './routing/AppRoutes';
 import ProtectedRoute from './routing/ProtectedRoute';
 import ModPanel from './components/ModPanel/ModPanel';
 import ModRoute from './routing/ModRoute';
+import AdminMainPanel from './components/AdminPanel/AdminMainPanel';
 
 const App = () => {
   const [userContext, setUserContext] = useState(
@@ -161,10 +162,17 @@ const App = () => {
                 component={CourseRejectionForm}
                 layout={MainLayout}
               />
+<<<<<<< HEAD
               <ModRoute
                 exact
                 path={AppRoutes.ModPanel}
                 component={ModPanel}
+=======
+                <AppRoute
+                exact
+                path={AppRoutes.AdminMainPanel}
+                component={AdminMainPanel}
+>>>>>>> Added panel with users
                 layout={MainLayout}
               />
               <Route component={notfound} layout={MainLayout} />

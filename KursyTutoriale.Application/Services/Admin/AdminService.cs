@@ -3,13 +3,14 @@ using KursyTutoriale.Domain.Entities.Moderation;
 using KursyTutoriale.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using URF.Core.Abstractions;
 
 namespace KursyTutoriale.Application.Services.Admin
 {
-    class AdminService : IAdminService
+    public class AdminService : IAdminService
     {
         UserManager<ApplicationUser> userManager;
         IExtendedRepository<ModeratorProfile> moderatorRepo;
@@ -68,6 +69,15 @@ namespace KursyTutoriale.Application.Services.Admin
             await unitOfWork.SaveChangesAsync();
 
             return true;
+        }
+
+        public List<ApplicationUser> GetListOfUsers()
+        {
+            var listOfUsers =  userManager.Users.ToList();
+
+            if (listOfUsers == null) listOfUsers = new List<ApplicationUser>();
+
+            return listOfUsers;
         }
     }
 }

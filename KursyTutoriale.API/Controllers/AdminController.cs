@@ -1,14 +1,16 @@
 ﻿using KursyTutoriale.Application.Services.Admin;
+using KursyTutoriale.Domain.Entities.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace KursyTutoriale.API.Controllers
 {
-    [Authorize(Policy = "Admin")]
+   // [Authorize(Policy = "Admin")]
     [Route("api/[controller]")]
     public class AdminController : Controller
     {
@@ -39,6 +41,12 @@ namespace KursyTutoriale.API.Controllers
                 return StatusCode(400);
 
             return Ok();
+        }
+
+        [HttpGet("GetListOfUsers")]
+        public List<ApplicationUser> GetListOfUsers()
+        {
+            return adminService.GetListOfUsers();
         }
     }
 }
