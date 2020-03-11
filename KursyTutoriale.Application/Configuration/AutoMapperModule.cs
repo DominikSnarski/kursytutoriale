@@ -5,6 +5,7 @@ using KursyTutoriale.Application.DataTransferObjects.Tags;
 using KursyTutoriale.Application.DataTransferObjects.UserProfiles;
 using KursyTutoriale.Domain.Entities.Course;
 using KursyTutoriale.Domain.Entities.UserProfiles;
+using System.Linq;
 
 namespace KursyTutoriale.Application.Configuration
 {
@@ -30,11 +31,20 @@ namespace KursyTutoriale.Application.Configuration
                 cfg.CreateMap<Tag, TagDTO>();
                 cfg.CreateMap<UserProfile, UserProfileDTO>()
                     .ForMember(dto => dto.GenderName, opt => opt.MapFrom(up => up.Gender.Name));
+
+
+                cfg.CreateMap<Course, CourseReadModel>()
+                .ForMember(t => t.Tags, opt => opt.Ignore());
+
+                cfg.CreateMap<Lesson, LessonReadModel>();
+                cfg.CreateMap<CourseModule, CourseModuleReadModel>();
             });
 
             var dtoMapper = new DTOMapper(config);
+            var mapper = new Mapper(config);
 
             builder.RegisterInstance(dtoMapper).As<IDTOMapper>();
+            builder.RegisterInstance(mapper).As<IMapper>();
         }
     }
 }

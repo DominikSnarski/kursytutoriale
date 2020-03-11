@@ -4,6 +4,13 @@ namespace KursyTutoriale.Domain.Base
 {
     public abstract class BaseEvent<TEntity> 
     {
+        protected BaseEvent(Guid entityId)
+        {
+            EntityId = entityId;
+            Id = Guid.NewGuid();
+            OccuranceDate = DateTime.UtcNow;
+        }
+
         protected BaseEvent(Guid id, DateTime date, Guid entityId)
         {
             Id = id;

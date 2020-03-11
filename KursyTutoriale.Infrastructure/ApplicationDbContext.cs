@@ -20,9 +20,10 @@ namespace KursyTutoriale.Infrastructure
         public DbSet<UserProfile> UserProfiles{ get; set; }
         public DbSet<ModeratorProfile> ModeratorProfiles { get; set; }
         public DbSet<Tag> Tags { get; set; }
-        public DbSet<Course> Courses { get; set; }
         public DbSet<Gender> Genders { get; set; }
         public DbSet<CourseJsonEvent> CourseEvents{ get; set; }
+
+        public DbSet<CourseReadModel> Courses { get; set; }
         
 
         protected override void OnModelCreating(ModelBuilder builder)

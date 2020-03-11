@@ -3,9 +3,12 @@ using KursyTutoriale.Application.Contracts;
 using KursyTutoriale.Application.DataTransferObjects.Course;
 using KursyTutoriale.Application.DataTransferObjects.Course.Verification;
 using KursyTutoriale.Domain.Entities.Course;
+using KursyTutoriale.Domain.Entities.Course.Events;
 using KursyTutoriale.Infrastructure.Repositories;
+using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using KursyTutoriale.Infrastructure.Services;
 using KursyTutoriale.Shared;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +33,7 @@ namespace KursyTutoriale.Application.Services
         List<CourseBasicInformationsDTO> GetPagesOfCoursesFiltered(int firstPageNumber, int lastPageNumber, int pageSize,
             bool isDescending, float lowestPrice, float ?highestPrice, ICollection<Guid> tags);
         FeaturedCoursesDTO getFeaturesCourses(int numberInEachCategory);
-        Course GetCourse(Guid id);
+        CourseReadModel GetCourse(Guid id);
         IEnumerable<CourseBasicInformationsDTO> GetUsersCourses(Guid UserId);
         Task<VerificationStamp> Accept(Guid CourseId);
         Task<VerificationStamp> Reject(Guid CourseId, RejectionDTO Dto);
@@ -41,21 +44,27 @@ namespace KursyTutoriale.Application.Services
     {
         private IUnitOfWork unitOfWork;
         private IDTOMapper mapper;
-        private IExtendedRepository<Course> coursesRepository;
+        private IExtendedRepository<CourseReadModel> coursesRepository;
+        private IExtendedRepository<Tag> tagsRepository;
+        private ICourseRepository courseRepository;
         private IFileService fileService;
         private IExecutionContextAccessor executionContext;
         public CourseService(
             IUnitOfWork unitOfWork,
             IDTOMapper mapper,
-            IExtendedRepository<Course> coursesRepository,
+            IExtendedRepository<CourseReadModel> coursesRepository,
             IFileService fileService,
-            IExecutionContextAccessor executionContext)
+            IExecutionContextAccessor executionContext,
+            ICourseRepository courseRepository, 
+            IExtendedRepository<Tag> tagsRepository)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             this.coursesRepository = coursesRepository;
             this.fileService = fileService;
             this.executionContext = executionContext;
+            this.courseRepository = courseRepository;
+            this.tagsRepository = tagsRepository;
         }
 
 
@@ -97,7 +106,6 @@ namespace KursyTutoriale.Application.Services
                 if (result != null)
                 {
                     var course = mapper.Map<CourseModuleDetailsDTO>(result);
-                    course.Image = fileService.ByteArrayToImage(result.ImageByteArray);
                     return course;
                 }
                 else throw new Exception("Error 1004! GetCourseModuleDetails service returned null");
@@ -149,7 +157,7 @@ namespace KursyTutoriale.Application.Services
             query = query.Skip(firstPageNumber * pageSize).Take(pageSize * (lastPageNumber - firstPageNumber + 1));
             var queryList = query.ToList();
             List<CourseBasicInformationsDTO> list = new List<CourseBasicInformationsDTO>();
-            foreach (Course c in queryList)
+            foreach (var c in queryList)
             {
                 list.Add(mapper.Map<CourseBasicInformationsDTO>(c));
             }
@@ -173,73 +181,57 @@ namespace KursyTutoriale.Application.Services
         public List<CourseBasicInformationsDTO> GetPagesOfCoursesFiltered(int firstPageNumber, int lastPageNumber, int pageSize,
             bool isDescending, float lowestPrice, float ?highestPrice, ICollection<Guid> tags)
         {
-            var query = coursesRepository.Queryable();
+            //var query = coursesRepository.Queryable();
 
-            if(tags.Count > 0)
-                foreach (Guid id in tags)
-                    query = query.Where(c => c.Tags.Any(t => t.Id.Equals(id)));
+            //if(tags.Count > 0)
+            //    foreach (Guid id in tags)
+            //        query = query.Where(c => c.Tags.Any(t => t.Id.Equals(id)));
 
-            if (lowestPrice < 0) lowestPrice = 0;
+            //if (lowestPrice < 0) lowestPrice = 0;
 
-            if (highestPrice != null)
-            {
-                if (highestPrice < 0)
-                    query = query.Where(c => c.Price >= lowestPrice);
-                else
-                    query = query.Where(c => c.Price >= lowestPrice && c.Price <= highestPrice);
-            }else query = query.Where(c => c.Price >= lowestPrice);
-            query = query.Skip(firstPageNumber * pageSize).Take(pageSize * (lastPageNumber - firstPageNumber + 1));
-            if (isDescending) query = query.OrderByDescending(c => c.Price);
-            else query = query.OrderBy(c => c.Price);
-            var queryList = query.ToList();
-            List<CourseBasicInformationsDTO> list = new List<CourseBasicInformationsDTO>();
-            foreach (Course c in queryList)
-            {
-                list.Add(mapper.Map<CourseBasicInformationsDTO>(c));
-            }
-            return list;
+            //if (highestPrice != null)
+            //{
+            //    if (highestPrice < 0)
+            //        query = query.Where(c => c.Price >= lowestPrice);
+            //    else
+            //        query = query.Where(c => c.Price >= lowestPrice && c.Price <= highestPrice);
+            //}else query = query.Where(c => c.Price >= lowestPrice);
+            //query = query.Skip(firstPageNumber * pageSize).Take(pageSize * (lastPageNumber - firstPageNumber + 1));
+            //if (isDescending) query = query.OrderByDescending(c => c.Price);
+            //else query = query.OrderBy(c => c.Price);
+            //var queryList = query.ToList();
+            //List<CourseBasicInformationsDTO> list = new List<CourseBasicInformationsDTO>();
+            //foreach (Course c in queryList)
+            //{
+            //    list.Add(mapper.Map<CourseBasicInformationsDTO>(c));
+            //}
+            //return list;
+            return null;
         }
 
 
         /// <summary>
         /// Used to create course.
         /// </summary>
-        /// <param name="course">
+        /// <param name="request">
         /// Version of course you want to add to database.
         /// </param>
-        public async Task<Guid> AddCourse(CourseCreationDTO course)
+        public async Task<Guid> AddCourse(CourseCreationDTO request)
         {
-            var c = new Course()
-            {
-                Date = course.Date,
-                Description = course.Description,
-                OwnerId = course.OwnerId,
-                Price = course.Price,
-                Title = course.Title,
-                VerificationStamps = new List<VerificationStamp>()
-            };
-            c.VerificationStamps.Add(
-                    new VerificationStamp()
-                    {
-                        CourseId = c.Id,
-                        Status = StampStatus.pending,
-                        Date = DateTime.UtcNow,
-                        Index = c.VerificationStamps.Count + 1
-                    });
+            var tagsIds = request.Tags.Select(t => t.Id).ToList();
+            tagsIds = tagsRepository.Queryable()
+                .Where(t => tagsIds.Contains(t.Id))
+                .Select(t => t.Id)
+                .ToList();
 
-            foreach (TagCreationDTO tag in course.Tags)
-            {
-                c.Tags.Add(new CourseTag() 
-                { 
-                CourseId = c.Id,
-                Id = tag.Id
-                });
-            }
-            
-            coursesRepository.InsertAgreggate(c);
-            var result =  await unitOfWork.SaveChangesAsync();
-            return c.Id;
+            var userId = executionContext.GetUserId();
+            var @event = new CourseCreated(Guid.NewGuid(), request.Title, request.Description, userId, request.Date, request.Price, tagsIds);
 
+            var course = courseRepository.HandleEvent(@event, new Course());
+
+            await unitOfWork.SaveChangesAsync();
+
+            return course.Id;
         }
 
         /// <summary>
@@ -250,27 +242,17 @@ namespace KursyTutoriale.Application.Services
         /// </param>
         public async Task<int> AddModule(CourseModuleCreationDTO module)
         {
-            //    var query = coursesRepository.Queryable();
-            //    var course = query.Where(c => c.Id.Equals(module.CourseId)).FirstOrDefault();
+            var @event = new ModuleAdded(module.CourseId, module.Title, module.Description);
 
+            var course = courseRepository.Find(module.CourseId);
 
+            if (course.Id == Guid.Empty)
+                throw new Exception($"Course with id: {module.CourseId} doesnt exist");
 
-            //    var m = new CourseModule()
-            //    {
-            //        CourseId = module.CourseId,
-            //        Index = course.Modules.Count + 1,
-            //        Title = module.Title,
-            //        Description = module.Description,
-            //        ImageByteArray = fileService.ImageToByteArray(module.Image)
+            courseRepository.HandleEvent(@event, course);
 
-            //};
-
-            //    course.Modules.Add(m);
-            //    coursesRepository.Update(course);
-            //    var result = await unitOfWork.SaveChangesAsync();
-            //    return m.Index;
+            await unitOfWork.SaveChangesAsync();
             return 1;
-
         }
 
         /// <summary>
@@ -391,9 +373,13 @@ namespace KursyTutoriale.Application.Services
         /// <returns>
         /// Returns course
         /// </returns>
-        public Course GetCourse(Guid id)
+        public CourseReadModel GetCourse(Guid id)
         {
-            var query = coursesRepository.Queryable().Where(c => c.Id.Equals(id)).FirstOrDefault();
+            var query = coursesRepository.Queryable()
+                .Include(c => c.Modules)
+                .ThenInclude(m=>m.Lessons)
+                .Where(c => c.Id.Equals(id))
+                .FirstOrDefault();
             return query;
         }
 
@@ -413,7 +399,7 @@ namespace KursyTutoriale.Application.Services
             FeaturedCoursesDTO featuredCourses = new FeaturedCoursesDTO();
 
             List<CourseBasicInformationsDTO> newPopular = new List<CourseBasicInformationsDTO>();
-            foreach(Course course in query
+            foreach(var course in query
             //Take all courses that have been realesed in the relevant period of days
                 .Where(course => DateTime.Compare(course.Date.AddDays(daysRelevant), DateTime.Today) >= 0)
                 .OrderByDescending(course => course.Popularity)
@@ -425,7 +411,7 @@ namespace KursyTutoriale.Application.Services
             featuredCourses.NewPopular = newPopular;
 
             List<CourseBasicInformationsDTO> recentlyUpdated = new List<CourseBasicInformationsDTO>();
-            foreach (Course course in query
+            foreach (var course in query
             //Take all courses that's last edit have had happened in the last relevant period of days
                 .Where(course => DateTime.Compare(course.Date.AddDays(daysRelevant), DateTime.Today) <= 0 &&
                 DateTime.Compare(course.DateOfLastEdit.AddDays(daysRelevant), DateTime.Today) >= 0)
@@ -438,7 +424,7 @@ namespace KursyTutoriale.Application.Services
             featuredCourses.RecentlyUpdated = recentlyUpdated;
 
             List<CourseBasicInformationsDTO> nowPopular = new List<CourseBasicInformationsDTO>();
-            foreach (Course course in query
+            foreach (var course in query
                 .OrderByDescending(course => course.Popularity)
                 .ThenBy(course => course.Rating)
                 .Take(numberInEachCategory))
@@ -448,7 +434,7 @@ namespace KursyTutoriale.Application.Services
             featuredCourses.NowPopular = nowPopular;
 
             List<CourseBasicInformationsDTO> discover = new List<CourseBasicInformationsDTO>();
-            foreach (Course course in query
+            foreach (var course in query
             //Take all courses that have been realesed in the relevant period of days
                 .Where(course => DateTime.Compare(course.Date.AddDays(daysRelevant), DateTime.Today) >= 0)
                 .OrderBy(course => course.Popularity)
@@ -475,7 +461,7 @@ namespace KursyTutoriale.Application.Services
 
             List<CourseBasicInformationsDTO> result = new List<CourseBasicInformationsDTO>();
 
-            foreach (Course course in coursesRepository
+            foreach (var course in coursesRepository
                 .Queryable()
                 .Where(c => c.OwnerId == UserId))
             { 
@@ -540,7 +526,7 @@ namespace KursyTutoriale.Application.Services
         public IEnumerable<CourseBasicInformationsDTO> GetCoursesForVerification(int NrOfCourses)
         {
             List<CourseBasicInformationsDTO> result = new List<CourseBasicInformationsDTO>();
-            foreach (Course course in
+            foreach (var course in
                 coursesRepository.Queryable()
                 .Where(c => c.VerificationStamps
                     .OrderByDescending(s => s.Index)

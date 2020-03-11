@@ -12,7 +12,7 @@ namespace KursyTutoriale.Domain.Entities.Course
 
         public Course()
         {
-            Tags = new List<CourseTag>();
+            Tags = new List<Guid>();
             modules = new List<CourseModule>();
             lessons = new List<Lesson>();
         }
@@ -32,7 +32,7 @@ namespace KursyTutoriale.Domain.Entities.Course
         public int Popularity { get; set; }
         public double Rating { get; set; }
         public float Price { get; set; }
-        public ICollection<CourseTag> Tags { get; set; }
+        public ICollection<Guid> Tags { get; set; }
         public IReadOnlyCollection<Lesson> Lessons { get => lessons.AsReadOnly(); }
         public IReadOnlyCollection<CourseModule> Modules { get => modules.AsReadOnly(); }
         public ICollection<VerificationStamp> VerificationStamps { get; set; }

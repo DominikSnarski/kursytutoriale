@@ -8,10 +8,10 @@ namespace KursyTutoriale.Domain.Entities.Course
     {
         private List<Lesson> lessons;
 
-        public virtual Guid Id { get; set; }
+        public virtual Guid Id { get; private set; }
         public int Index { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
+        public string Title { get; private set; }
+        public string Description { get; private set; }
         public Guid CourseId { get; set; }
         public byte[] ImageByteArray { get; set; }
         public IReadOnlyCollection<Lesson> Lessons { get => lessons.AsReadOnly(); }
@@ -24,6 +24,14 @@ namespace KursyTutoriale.Domain.Entities.Course
         public CourseModule(Guid id)
         {
             Id = id;
+            lessons = new List<Lesson>();
+        }
+
+        public CourseModule(Guid id, string title, string description)
+        {
+            Id = id;
+            Title = title;
+            Description = description;
             lessons = new List<Lesson>();
         }
 

@@ -10,8 +10,9 @@ namespace KursyTutoriale.Domain.Entities.Course.Events
             int index,
             string title,
             string content,
-            Guid moduleId)
-            : base(Guid.NewGuid(),DateTime.UtcNow, Guid.NewGuid())
+            Guid moduleId,
+            Guid courseId)
+            : base(courseId)
         {
             ModuleId = moduleId;
             CourseModuleIndex = courseModuleIndex;
@@ -38,7 +39,7 @@ namespace KursyTutoriale.Domain.Entities.Course.Events
 
         public override Course Revert(Course entity)
         {
-            return entity;
+            throw new NotImplementedException();
         }
     }
 }

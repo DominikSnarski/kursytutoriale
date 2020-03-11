@@ -9,6 +9,6 @@ namespace KursyTutoriale.Infrastructure.Repositories.Interfaces
     {
         ICollection<Course> GetAll();
         Course Find(Guid id);
-        Course HandleEvent(BaseEvent<Course> @event, Course surplus);
+        Course HandleEvent(BaseEvent<Course> @event, Course entity);
     }
 }
