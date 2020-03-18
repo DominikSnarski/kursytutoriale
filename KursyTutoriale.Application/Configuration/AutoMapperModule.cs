@@ -16,17 +16,17 @@ namespace KursyTutoriale.Application.Configuration
             //Add new Maps for Data Transfer Object here
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<Course, CourseBasicInformationsDTO>();
-                cfg.CreateMap<CourseModule, CourseModuleBasicInformationsDTO>();
-                cfg.CreateMap<Lesson, LessonBasicInformationsDTO>();
+                cfg.CreateMap<CourseReadModel, CourseBasicInformationsDTO>();
+                cfg.CreateMap<CourseModuleReadModel, CourseModuleBasicInformationsDTO>();
+                cfg.CreateMap<LessonReadModel, LessonBasicInformationsDTO>();
 
-                cfg.CreateMap<Course, CourseDetailsDTO>();
-                cfg.CreateMap<CourseModule, CourseModuleDetailsDTO>();
-                cfg.CreateMap<Lesson, LessonDetailsDTO>();
+                cfg.CreateMap<CourseReadModel, CourseDetailsDTO>();
+                cfg.CreateMap<CourseModuleReadModel, CourseModuleDetailsDTO>();
+                cfg.CreateMap<LessonReadModel, LessonDetailsDTO>();
 
-                cfg.CreateMap<Course, CourseForEditionDTO>();
-                cfg.CreateMap<CourseModule, CourseModuleForEditionDTO>();
-                cfg.CreateMap<Lesson, LessonForEditionDTO>();
+                cfg.CreateMap<CourseReadModel, CourseForEditionDTO>();
+                cfg.CreateMap<CourseModuleReadModel, CourseModuleForEditionDTO>();
+                cfg.CreateMap<LessonReadModel, LessonForEditionDTO>();
 
                 cfg.CreateMap<Tag, TagDTO>();
                 cfg.CreateMap<UserProfile, UserProfileDTO>()

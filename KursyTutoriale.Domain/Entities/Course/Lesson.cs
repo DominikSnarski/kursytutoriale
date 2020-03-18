@@ -14,9 +14,9 @@ namespace KursyTutoriale.Domain.Entities.Course
             Id = id;
         }
 
-        public Lesson(int courseModuleIndex, string title, string content, int index)
+        public Lesson(Guid id, int courseModuleIndex, string title, string content, int index)
         {
-            Id = Guid.NewGuid();
+            Id = id;
             CourseModuleIndex = courseModuleIndex;
             Title = title;
             Content = content;

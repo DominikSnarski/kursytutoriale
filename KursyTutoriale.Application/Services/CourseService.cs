@@ -21,22 +21,17 @@ namespace KursyTutoriale.Application.Services
     {
         CourseDetailsDTO GetCourseDetails(Guid courseId);
         CourseModuleDetailsDTO GetCourseModuleDetails(Guid courseId, int moduleIndex);
-        LessonDetailsDTO GetLessonDetails(Guid courseId, int moduleIndex, int lessonIndex);
         List<CourseBasicInformationsDTO> GetPagesOfCourses(int firstPageNumber, int lastPageNumber, int pageSize);
         Task<Guid> AddCourse(CourseCreationDTO course);
         Task<int> AddModule(CourseModuleCreationDTO module);
         Task<int> AddLesson(LessonCreationDTO lesson);
         CourseForEditionDTO GetCourseForEdition(Guid courseId);
         int GetNumberOfCourses();
-        LessonForEditionDTO GetLessonForEdition(Guid courseId, int moduleIndex, int lessonIndex);
-        CourseModuleForEditionDTO GetCourseModuleForEdition(Guid courseId, int moduleIndex);
         List<CourseBasicInformationsDTO> GetPagesOfCoursesFiltered(int firstPageNumber, int lastPageNumber, int pageSize,
             bool isDescending, float lowestPrice, float ?highestPrice, ICollection<Guid> tags);
         FeaturedCoursesDTO getFeaturesCourses(int numberInEachCategory);
         CourseReadModel GetCourse(Guid id);
         IEnumerable<CourseBasicInformationsDTO> GetUsersCourses(Guid UserId);
-        Task<VerificationStamp> Accept(Guid CourseId);
-        Task<VerificationStamp> Reject(Guid CourseId, RejectionDTO Dto);
         IEnumerable<CourseBasicInformationsDTO> GetCoursesForVerification(int NrOfCourses);
     }
 
@@ -44,7 +39,6 @@ namespace KursyTutoriale.Application.Services
     {
         private IUnitOfWork unitOfWork;
         private IDTOMapper mapper;
-        private IExtendedRepository<CourseReadModel> coursesRepository;
         private IExtendedRepository<Tag> tagsRepository;
         private ICourseRepository courseRepository;
         private IFileService fileService;
@@ -60,7 +54,6 @@ namespace KursyTutoriale.Application.Services
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
-            this.coursesRepository = coursesRepository;
             this.fileService = fileService;
             this.executionContext = executionContext;
             this.courseRepository = courseRepository;
@@ -77,7 +70,7 @@ namespace KursyTutoriale.Application.Services
         /// </returns>
         public CourseDetailsDTO GetCourseDetails(Guid courseId)
         {
-            var query = coursesRepository.Queryable();
+            var query = courseRepository.Queryable();
             query = query.Where(q => q.Id.Equals(courseId));
             if (query != null)
             {
@@ -98,7 +91,7 @@ namespace KursyTutoriale.Application.Services
         /// </returns>
         public CourseModuleDetailsDTO GetCourseModuleDetails(Guid courseId, int moduleIndex)
         {
-            var query = coursesRepository.Queryable();
+            var query = courseRepository.Queryable();
             query = query.Where(q => q.Id.Equals(courseId));
             if (query != null)
             {
@@ -113,33 +106,6 @@ namespace KursyTutoriale.Application.Services
             }
             else throw new Exception("Error 1005! GetCourseModuleDetails service returned null");
         }
-        /// <summary>
-        /// Used to get lesson details
-        /// </summary>
-        /// <param name="courseId">Id of course you want to get</param>
-        /// <param name="moduleIndex">Index of course module you want to get</param>
-        /// <param name="lessonIndex">Index of lesson you want to get</param>
-        /// <returns>
-        /// Returns lesson details
-        /// </returns>
-        public LessonDetailsDTO GetLessonDetails(Guid courseId, int moduleIndex, int lessonIndex)
-        {
-            throw new Exception();
-            //TO CHANGE
-            //var query = coursesRepository.Queryable();
-            //query = query.Where(q => q.Id.Equals(courseId));
-            //if (query != null)
-            //{
-            //    var result = query.FirstOrDefault()
-            //        .Modules.Where(m => m.Index == moduleIndex).FirstOrDefault()
-            //        .Lessons.Where(l => l.Index.Equals(lessonIndex)).FirstOrDefault();
-            //    if (result != null)
-            //        return mapper.Map<LessonDetailsDTO>(result);
-            //    else throw new Exception("Error 1006! GetLessonDetails service returned null");
-
-            //}
-            //else throw new Exception("Error 1007! GetLessonDetails service returned null");
-        }
 
         /// <summary>
         /// Return pages of courses, as a list of courses.
@@ -153,7 +119,7 @@ namespace KursyTutoriale.Application.Services
         /// </returns>
         public List<CourseBasicInformationsDTO> GetPagesOfCourses(int firstPageNumber, int lastPageNumber, int pageSize)
         {
-            var query = coursesRepository.Queryable();
+            var query = courseRepository.Queryable();
             query = query.Skip(firstPageNumber * pageSize).Take(pageSize * (lastPageNumber - firstPageNumber + 1));
             var queryList = query.ToList();
             List<CourseBasicInformationsDTO> list = new List<CourseBasicInformationsDTO>();
@@ -263,22 +229,16 @@ namespace KursyTutoriale.Application.Services
         /// </param>
         public async Task<int> AddLesson(LessonCreationDTO lesson)
         {
-            //var query = coursesRepository.Queryable();
-            //var course = query.Where(c => c.Id.Equals(lesson.CourseId)).FirstOrDefault();
-            //var index = course.Modules.Where(m => m.Index.Equals(lesson.CourseModuleIndex)).FirstOrDefault().Lessons.Count + 1;
+            var @event = new LessonAdded(0, 0, lesson.Title, "", lesson.ModuleId, lesson.CourseId);
 
-            //var l = new Lesson()
-            //{
-            //    Title = lesson.Title,
-            //    //Index = index,
-            //    Content = lesson.Content,
-            //    CourseId = lesson.CourseId,
-            //    CourseModuleIndex = lesson.CourseModuleIndex
-            //};
-            //course.Modules.Where(m => m.Index.Equals(lesson.CourseModuleIndex)).FirstOrDefault().Lessons.Add(l);
-            //coursesRepository.Update(course);
-            //var result = await unitOfWork.SaveChangesAsync();
-            //return index;
+            var course = courseRepository.Find(lesson.CourseId);
+
+            if (course.Id == Guid.Empty)
+                throw new Exception($"Course with id: {lesson.CourseId} doesnt exist");
+
+            courseRepository.HandleEvent(@event, course);
+
+            await unitOfWork.SaveChangesAsync();
 
             return 1;
         }
@@ -293,7 +253,7 @@ namespace KursyTutoriale.Application.Services
         /// </returns>
         public CourseForEditionDTO GetCourseForEdition(Guid courseId)
         {
-            var query = coursesRepository.Queryable();
+            var query = courseRepository.Queryable();
             query = query.Where(q => q.Id.Equals(courseId));
             if (query != null)
             {
@@ -304,58 +264,6 @@ namespace KursyTutoriale.Application.Services
         }
 
         /// <summary>
-        /// Used to get course module for edition
-        /// </summary>
-        /// <param name="courseId">Id of course you want to get</param>
-        /// <param name="moduleIndex">Index of course module you want to get</param>
-        /// <returns>
-        /// Returns version of module viable for edition
-        /// </returns>
-        public CourseModuleForEditionDTO GetCourseModuleForEdition(Guid courseId,int moduleIndex)
-        {
-            var query = coursesRepository.Queryable();
-            query = query.Where(q => q.Id.Equals(courseId));
-            if (query != null)
-            {
-                var result = query.FirstOrDefault().Modules.Where(m => m.Index == moduleIndex).FirstOrDefault();
-                if (result != null)
-                return mapper.Map<CourseModuleForEditionDTO>(result);
-                else throw new Exception("Error 1002! GetCourseModuleForEdition service returned null");
-
-            }
-            else throw new Exception("Error 1003! GetCourseModuleForEdition service returned null");
-        }
-
-        /// <summary>
-        /// Used to get lesson for edition
-        /// </summary>
-        /// <param name="courseId">Id of course you want to get</param>
-        /// <param name="moduleIndex">Index of course module you want to get</param>
-        /// <param name="lessonIndex">Index of lesson you want to get</param>
-        /// <returns>
-        /// Returns version of lesson viable for edition
-        /// </returns>
-        public LessonForEditionDTO GetLessonForEdition(Guid courseId, int moduleIndex, int lessonIndex)
-        {
-            throw new Exception();
-
-            //TO CHANGE
-            //var query = coursesRepository.Queryable();
-            //query = query.Where(q => q.Id.Equals(courseId));
-            //if (query != null)
-            //{
-            //    var result = query.FirstOrDefault()
-            //        .Modules.Where(m => m.Index == moduleIndex).FirstOrDefault()
-            //        .Lessons.Where(l => l.Index.Equals(lessonIndex)).FirstOrDefault();
-            //    if (result != null)
-            //        return mapper.Map<LessonForEditionDTO>(result);
-            //    else throw new Exception("Error 1002! GetCourseModuleForEdition service returned null");
-
-            //}
-            //else throw new Exception("Error 1003! GetCourseModuleForEdition service returned null");
-        }
-
-        /// <summary>
         /// Used to get number of courses
         /// </summary>
         /// <returns>
@@ -363,7 +271,7 @@ namespace KursyTutoriale.Application.Services
         /// </returns>
         public int GetNumberOfCourses()
         {
-            var query = coursesRepository.Queryable();
+            var query = courseRepository.Queryable();
             return query.Count();
         }
 
@@ -375,7 +283,7 @@ namespace KursyTutoriale.Application.Services
         /// </returns>
         public CourseReadModel GetCourse(Guid id)
         {
-            var query = coursesRepository.Queryable()
+            var query = courseRepository.Queryable()
                 .Include(c => c.Modules)
                 .ThenInclude(m=>m.Lessons)
                 .Where(c => c.Id.Equals(id))
@@ -394,7 +302,7 @@ namespace KursyTutoriale.Application.Services
         {
             // number of days for a course to be published in to still be relevant in the context of this service
             int daysRelevant = 7;
-            var query = coursesRepository.Queryable();
+            var query = courseRepository.Queryable();
             if(query.Count() < numberInEachCategory) return null;
             FeaturedCoursesDTO featuredCourses = new FeaturedCoursesDTO();
 
@@ -461,7 +369,7 @@ namespace KursyTutoriale.Application.Services
 
             List<CourseBasicInformationsDTO> result = new List<CourseBasicInformationsDTO>();
 
-            foreach (var course in coursesRepository
+            foreach (var course in courseRepository
                 .Queryable()
                 .Where(c => c.OwnerId == UserId))
             { 
@@ -470,54 +378,7 @@ namespace KursyTutoriale.Application.Services
 
             return result.AsEnumerable();
         }
-        /// <summary>
-        /// Verifies the course
-        /// </summary>
-        /// <param name="CourseId">Id of the course in question</param>
-        /// <returns>Created Verification Stamp</returns>
-        public async Task<VerificationStamp> Accept(Guid CourseId)
-        {
-            var query = coursesRepository.Queryable();
-            var course = query.Where(c => c.Id.Equals(CourseId)).FirstOrDefault();
-
-            var stamp = new VerificationStamp()
-            {
-                Index = course.VerificationStamps.Count + 1,
-                Status = StampStatus.verified,
-                Date = DateTime.UtcNow,
-                CourseId = course.Id
-            };
-
-            course.VerificationStamps.Add(stamp);
-            coursesRepository.Update(course);
-            var result = await unitOfWork.SaveChangesAsync();
-            return stamp;
-        }
-        /// <summary>
-        /// Rejects verification of the course
-        /// </summary>
-        /// <param name="CourseId">Id of the course in question</param>
-        /// <param name="Dto">Object containing notes about rejection</param>
-        /// <returns>Created Verification Stamp</returns>
-        public async Task<VerificationStamp> Reject(Guid CourseId, RejectionDTO Dto)
-        {
-            var query = coursesRepository.Queryable();
-            var course = query.Where(c => c.Id.Equals(CourseId)).FirstOrDefault();
-
-            var stamp = new VerificationStamp()
-            {
-                Index = course.VerificationStamps.Count + 1,
-                Status = StampStatus.rejected,
-                Date = DateTime.UtcNow,
-                CourseId = course.Id,
-                Note = Dto.Note
-            };
-
-            course.VerificationStamps.Add(stamp);
-            coursesRepository.Update(course);
-            var result = await unitOfWork.SaveChangesAsync();
-            return stamp;
-        }
+       
         /// <summary>
         /// Returns the list of courses that are waiting to be verified, ordered from the oldest
         /// </summary>
@@ -527,7 +388,7 @@ namespace KursyTutoriale.Application.Services
         {
             List<CourseBasicInformationsDTO> result = new List<CourseBasicInformationsDTO>();
             foreach (var course in
-                coursesRepository.Queryable()
+                courseRepository.Queryable()
                 .Where(c => c.VerificationStamps
                     .OrderByDescending(s => s.Index)
                     .First().Status == StampStatus.pending)

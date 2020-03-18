@@ -27,12 +27,16 @@ namespace KursyTutoriale.Domain.Entities.Course.Events
         public string Content { get; private set; }
 
         public Guid ModuleId { get; set; }
+        public Guid LessonId { get; set; }
 
         public override Course Apply(Course entity)
         {
-            var lesson = new Lesson(CourseModuleIndex, Title, Content, Index);
+            var newLessonId = LessonId == Guid.Empty ? Guid.NewGuid() : LessonId;
+            var lesson = new Lesson(newLessonId, CourseModuleIndex, Title, Content, Index);
 
             entity.AddLesson(lesson, ModuleId);
+
+            LessonId = newLessonId;
 
             return entity;
         }

@@ -19,29 +19,7 @@ namespace KursyTutoriale.API.Controllers
         {
             this.courseService = courseService;
         }
-        /// <summary>
-        /// Verifies the course
-        /// </summary>
-        /// <param name="CourseId">Id of the course in question</param>
-        /// <returns>Index of the verified course</returns>
-        [HttpPost("Verify")]
-        public async Task<int> Accept(Guid CourseId)
-        {
-            var stamp = await courseService.Accept(CourseId);
-            return stamp.Index;
-        }
-        /// <summary>
-        /// Rejects the verification of the course
-        /// </summary>
-        /// <param name="request">Object containing the information about the rejection</param>
-        /// <param name="CourseId">Id of the course in question</param>
-        /// <returns>Index of the rejected course</returns>
-        [HttpPost("Reject")]
-        public async Task<int> Reject([FromBody]RejectionDTO request,Guid CourseId)
-        {
-            var stamp = await courseService.Reject(CourseId,request);
-            return stamp.Index;
-        }
+
         /// <summary>
         /// Fetches the courses that require verification, Ordered by the oldest
         /// </summary>

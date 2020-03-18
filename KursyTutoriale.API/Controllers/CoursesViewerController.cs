@@ -52,20 +52,6 @@ namespace KursyTutoriale.API.Controllers
             return courseService.GetCourseModuleDetails(courseId, moduleIndex);
         }
 
-        /// <summary>
-        /// Used to get lesson details
-        /// </summary>
-        /// <param name="courseId">Id of course you want to get</param>
-        /// <param name="moduleIndex">Index of course module you want to get</param>
-        /// <param name="lessonIndex">Index of lesson you want to get</param>
-        /// <returns>
-        /// Returns lesson details
-        /// </returns>
-        [HttpGet("GetLessonDetails")]
-        public LessonDetailsDTO GetLessonDetails(Guid courseId, int moduleIndex, int lessonIndex)
-        {
-            return courseService.GetLessonDetails(courseId, moduleIndex, lessonIndex);
-        }
 
         /// <summary>
         /// Return pages of courses, as a list of courses.

@@ -61,6 +61,11 @@ namespace KursyTutoriale.Infrastructure.Repositories.Implementations
             return entity;
         }
 
+        public IQueryable<CourseReadModel> Queryable()
+        {
+            return dbContext.Courses;
+        }
+
         private static Course BuildCourse(IQueryable<CourseJsonEvent> query, Course aggregate)
         {
             var aggregateEvents = query
@@ -118,20 +123,47 @@ namespace KursyTutoriale.Infrastructure.Repositories.Implementations
                 readModel.Description = course.Description;
                 readModel.Date = course.Date;
                 readModel.DateOfLastEdit = course.DateOfLastEdit;
-                readModel.Modules = course.Modules.Select(m=>new CourseModuleReadModel {
-                    Description = m.Description,
-                    CourseId = course.Id,
-                    Index = m.Index,
-                    Lessons = m.Lessons.Select(l=> new LessonReadModel
+                readModel.Modules = course.Modules.Select( m =>
+                {
+                    var module = new CourseModuleReadModel
                     {
-                        Title = l.Title,
-                        Index = l.Index,
-                        Content = l.Content,
-                        CourseModuleIndex = l.CourseModuleIndex,
-                        CourseId = course.Id
-                    })
-                    .ToList(),
-                    Title = m.Title
+                        Id = m.Id,
+                        Description = m.Description,
+                        CourseId = course.Id,
+                        Index = m.Index,
+                        Lessons = m.Lessons.Select(l =>
+                        {
+                            var lesson = new LessonReadModel
+                            {
+                                Id = l.Id,
+                                Title = l.Title,
+                                Index = l.Index,
+                                Content = l.Content,
+                                CourseModuleIndex = l.CourseModuleIndex,
+                                CourseId = course.Id
+                            };
+
+                            if (!dbContext.ChangeTracker.Entries<LessonReadModel>().Any(e => e.Entity.Id == lesson.Id))
+                            {
+                                var e = dbContext.Entry(lesson);
+
+                                e.State = EntityState.Added;
+                            }
+
+                            return lesson;
+                        })
+                        .ToList(),
+                        Title = m.Title
+                    };
+
+                    if (!dbContext.ChangeTracker.Entries<CourseModuleReadModel>().Any(e => e.Entity.Id == module.Id))
+                    {
+                        var e = dbContext.Entry(module);
+
+                        e.State = EntityState.Added;
+                    }
+
+                    return module;
                 })
                 .ToList();
 
@@ -139,6 +171,7 @@ namespace KursyTutoriale.Infrastructure.Repositories.Implementations
                                            .ToList();
             }
         }
+
 
         private class AllPropertiesContractResolver : DefaultContractResolver
         {

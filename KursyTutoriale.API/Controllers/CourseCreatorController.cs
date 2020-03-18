@@ -22,7 +22,6 @@ namespace KursyTutoriale.API.Controllers
             this.courseService = courseService;
         }
 
-
         /// <summary>
         /// Used to create course.
         /// </summary>
@@ -75,35 +74,6 @@ namespace KursyTutoriale.API.Controllers
         public CourseForEditionDTO GetCourseForEdition(Guid courseId)
         {
             return courseService.GetCourseForEdition(courseId);
-        }
-
-        /// <summary>
-        /// Used to get course module for edition
-        /// </summary>
-        /// <param name="courseId">Id of course you want to get</param>
-        /// <param name="moduleIndex">Index of course module you want to get</param>
-        /// <returns>
-        /// Returns version of module viable for edition
-        /// </returns>
-        [HttpGet("GetCourseModuleForEdition")]
-        public CourseModuleForEditionDTO GetCourseModuleForEdition(Guid courseId, int moduleIndex)
-        {
-            return courseService.GetCourseModuleForEdition(courseId, moduleIndex);
-        }
-
-        /// <summary>
-        /// Used to get lesson for edition
-        /// </summary>
-        /// <param name="courseId">Id of course you want to get</param>
-        /// <param name="moduleIndex">Index of course module you want to get</param>
-        /// <param name="lessonIndex">Index of lesson you want to get</param>
-        /// <returns>
-        /// Returns version of lesson viable for edition
-        /// </returns>
-        [HttpGet("GetLessonForEdition")]
-        public LessonForEditionDTO GeLessonForEdition(Guid courseId, int moduleIndex, int lessonIndex)
-        {
-            return courseService.GetLessonForEdition(courseId, moduleIndex, lessonIndex);
         }
     }
 }
