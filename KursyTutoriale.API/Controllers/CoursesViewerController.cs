@@ -83,7 +83,7 @@ namespace KursyTutoriale.API.Controllers
         /// Returns pages from firstPageNumber to lastPageNumber.
         /// If for exemple firstPageNumber=1 and lastPageNumber=3, it will return courses from first page to third page.
         /// </returns>
-        [HttpPost("GetPagesOfCoursesFiltered")]
+        [HttpGet("GetPagesOfCoursesFiltered")]
         public List<CourseBasicInformationsDTO> GetPagesOfCoursesFiltered(int firstPageNumber, int lastPageNumber, int pageSize,
             bool isDescending, float lowestPrice, float ?highestPrice, ICollection<Guid> tags)
         {

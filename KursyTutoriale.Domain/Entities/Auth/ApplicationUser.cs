@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using KursyTutoriale.Domain.Entities.Course;
+using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 
 namespace KursyTutoriale.Domain.Entities.Auth
 {

@@ -22,9 +22,8 @@ namespace KursyTutoriale.Infrastructure
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Gender> Genders { get; set; }
         public DbSet<CourseJsonEvent> CourseEvents{ get; set; }
-
         public DbSet<CourseReadModel> Courses { get; set; }
-        
+        public DbSet<Report> Reports { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -35,6 +34,7 @@ namespace KursyTutoriale.Infrastructure
             builder.ApplyConfiguration(new TagConfiguration());
             builder.ApplyConfiguration(new CourseConfigurator());
             builder.ApplyConfiguration(new GenderConfigurator());
+            builder.ApplyConfiguration(new ReportConfiguration());
         }
     }
 }
