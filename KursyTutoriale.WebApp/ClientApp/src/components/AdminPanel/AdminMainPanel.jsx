@@ -1,92 +1,112 @@
+import classnames from 'classnames';
+import React, { useState } from 'react';
 
-import React from 'react';
-import { Fade } from 'react-reveal';
 import {
-  Alert,
   // Button,
-  Col,
   Container,
   // Jumbotron,
-  Row,
-  Spinner,
-  Table,
+  Nav,
+  NavItem,
+  NavLink,
+  TabContent,
+  TabPane,
 } from 'reactstrap';
-import UserDetails from './UserDetails';
-// import Filters from './Filters';
-// import Pagination from '../Shared/Pagination';
-import { AdminService } from '../../api/Services/AdminService';
+import AdminUsersPanel from './AdminUsersPanel';
+import AdminModeratorsPanel from './AdminModeratorsPanel';
+
+const AdminMainPanel = () => {
+  const [activeTab, setActiveTab] = useState('1');
+
+  const toggleTabs = (tab) => {
+    if (activeTab !== tab) setActiveTab(tab);
+  };
 
 
-class AdminMainPanel extends React.Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-        listOfUsers: [],
-        numberOfUsers: 0,
-        isLoading: true,
-        error: false
-    }
-}
+  return (
+    <Container className="Container">
+      <Nav tabs>
+        <NavItem>
+          <NavLink
+            className={classnames({ active: activeTab === '1' })}
+            onClick={() => {
+              toggleTabs('1');
+            }}
+          >
+            Users
+          </NavLink>
+        </NavItem>
 
-  componentDidMount() {
-    this.setState({ isLoading: true });
+        <NavItem>
+          <NavLink
+            className={classnames({ active: activeTab === '2' })}
+            onClick={() => {
+              toggleTabs('2');
+            }}
+          >
+            Moderators
+          </NavLink>
+        </NavItem>
 
-    AdminService.getUsersList().then((data) => {
-      this.setState({ listOfUsers: data, isLoading: false });
-    });
+        <NavItem>
+          <NavLink
+            className={classnames({ active: activeTab === '3' })}
+            onClick={() => {
+              toggleTabs('3');
+            }}
+          >
+            Reported comments
+          </NavLink>
+        </NavItem>
 
-    console.log(this.state.listOfUsers);
-  }
+      <NavItem>
+          <NavLink
+            className={classnames({ active: activeTab === '4' })}
+            onClick={() => {
+              toggleTabs('4');
+            }}
+          >
+            Reported courses
+          </NavLink>
+        </NavItem>
 
-  render() {
-    if (this.state.error) {
-      return (
-        <Row>
-          <Col xs="6" sm="4"></Col>
-          <Col sm="12" md={{ size: 10, offset: 1 }}>
-            <Alert color="danger">Something went terribly wrong.</Alert>
-          </Col>
-          <Col sm="4"></Col>
-        </Row>
-      );
-    }
-    if (this.state.isLoading)
-      return (
-        <Row>
-          <Col xs="6" sm="4"></Col>
-          <Col xs="6" sm="4">
-            <Spinner
-              className="d-lg-flex d-block h2"
-              style={{ width: '3rem', height: '3rem' }}
-              color="primary"
-            />
-          </Col>
-          <Col sm="4"></Col>
-        </Row>
-      );
-    return (
-      <Container>
-        <Fade left duration="200">
-          <div>
-            <Table className="courses_bg">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Title</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
-              {this.state.listOfUsers.map((item, i) => (
-                <UserDetails key={i} user={item} />
-              ))}
-            </Table>
+        
+        <NavItem>
+          <NavLink
+            className={classnames({ active: activeTab === '5' })}
+            onClick={() => {
+              toggleTabs('5');
+            }}
+          >
+            Statistics
+          </NavLink>
+        </NavItem>
+      </Nav>
 
-          </div>
-          <hr />
-        </Fade>
-      </Container>
-    );
-  }
-}
+      <TabContent activeTab={activeTab}>
+        <TabPane tabId="1">
+          <AdminUsersPanel />
+        </TabPane>
+      </TabContent>
+
+      <TabContent activeTab={activeTab}>
+        <TabPane tabId="2">
+         <AdminModeratorsPanel />
+        </TabPane>
+      </TabContent>
+
+      <TabContent activeTab={activeTab}>
+        <TabPane tabId="3">
+
+        </TabPane>
+      </TabContent>
+
+      <TabContent activeTab={activeTab}>
+        <TabPane tabId="4">
+
+        </TabPane>
+      </TabContent>
+    </Container>
+  );
+};
 export default AdminMainPanel;

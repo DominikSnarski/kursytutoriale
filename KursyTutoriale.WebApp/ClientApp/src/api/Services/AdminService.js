@@ -8,6 +8,24 @@ export const AdminService = {
         .then((res) => resolve(res.data))
         .catch((error) => reject(error)),
     ),
+
+    promoteToModerator: (userId) => {
+      return new Promise((resolve, reject) =>
+        apiClient
+          .post(`/api/Admin/PromoteToModerator?userId=${userId}`)
+          .then((resp) => resolve(resp))
+          .catch((error) => reject(error)),
+      );
+    },
+
+    removeModerator: (moderatorId) => {
+      return new Promise((resolve, reject) =>
+        apiClient
+          .delete(`/api/Admin/RemoveModerator?moderatorId=${moderatorId}`)
+          .then((resp) => resolve(resp))
+          .catch((error) => reject(error)),
+      );
+    },
 };
 
 export default AdminService;

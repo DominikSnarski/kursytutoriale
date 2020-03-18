@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { Container, Row, Col, Collapse, Media, Button } from 'reactstrap';
 import { AdminService } from '../../api/Services/AdminService';
 
-    const UserDetails = (props) => {
+    const ModeratorDetails = (props) => {
       const history = useHistory();
       const [isOpen, setIsOpen] = useState(false);
 
@@ -12,8 +12,8 @@ import { AdminService } from '../../api/Services/AdminService';
           setIsOpen(!isOpen);
       };
 
-      const handleButtonPromoteClick = () => {
-        AdminService.promoteToModerator(props.user.id).then(() => history.push('/adminMainPanel'));
+      const handleButtonRemoveClick = () => {
+        AdminService.removeModerator(props.user.id).then(() => history.push('/adminMainPanel'));
       };
     
 
@@ -40,7 +40,7 @@ return (
             </Row>
             <Row>
               <Col className="d-flex justify-content-center mb-2">
-                <Button onClick={() => handleButtonPromoteClick()}>Promote to moderator</Button>
+                <Button onClick={() => handleButtonRemoveClick()}>Remove moderator</Button>
               </Col>
             </Row>
           </Container>
@@ -49,4 +49,4 @@ return (
 );
 };
 
-export default UserDetails;
+export default ModeratorDetails;
