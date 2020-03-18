@@ -29,6 +29,7 @@ namespace KursyTutoriale.API.Controllers
         /// </summary>
         /// <param name="report"></param>
         /// <returns>id of a created report</returns>
+        [ProducesResponseType(200,Type = typeof(Guid))]
         [HttpPost("ReportCourse")]
         public async Task<IActionResult> ReportCourse([FromBody]ReportRequestDTO report)
         {
