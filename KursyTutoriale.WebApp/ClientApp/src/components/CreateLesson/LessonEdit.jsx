@@ -1,197 +1,119 @@
-import React from 'react';
+/* eslint-disable prefer-template */
+import React, { useState } from 'react';
 import {
-  Alert,
-  Button,
-  Container,
-  Col,
-  Row,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  FormText,
-  FormGroup,
+    Alert, Button, Container, Col, Row, Input,
+    FormGroup
 } from 'reactstrap';
+import { Link, useHistory } from 'react-router-dom';
 import { Zoom } from 'react-reveal';
+import { CourseService } from '../../api/Services/CourseService';
 import LessonPreview from './LessonPreview';
+import Footer from '../../layouts/Shared/Footer';
+import Kit from './Kit/Kit';
+import './style.css';
 
-class LessonEdit extends React.Component {
-  constructor() {
-    super();
 
-    this.state = {
-      lessonTitle: '',
-      list: [],
-      areaText: '',
-      file: '',
-      imagePreviewURL: null,
-      showPreview: false,
-    };
+function LessonEdit (props) {
 
-    this.titleChange = this.titleChange.bind(this);
-    this.textAreaChange = this.textAreaChange.bind(this);
-    this.addText = this.addText.bind(this);
-    this.addFile = this.addFile.bind(this);
-    this.fileChange = this.fileChange.bind(this);
-    this.toggleLessonPreview = this.toggleLessonPreview.bind(this);
-  }
+    const [lessonTitle, setLessonTitle] = useState('');
+    const [items, setItems] = useState([{name: 'text0', content: ''}]);
+    const [areaText, setAreaText] = useState('');
+    const [showPreview, setShowPreview] = useState(false);
 
-  toggleLessonPreview() {
-    this.addText();
-    this.addFile();
-    this.setState({ showPreview: !this.state.showPreview });
-  }
+    const history = useHistory();
 
-  titleChange(event) {
-    this.setState({ lessonTitle: event.target.value });
-  }
-
-  textAreaChange(event) {
-    this.setState({ areaText: event.target.value });
-  }
-
-  addText = () => {
-    this.setState((state) => {
-      const list = [...state.list, { name: 'text', value: state.areaText }];
-      return {
-        list,
-        areaText: '',
-      };
-    });
-  };
-
-  fileChange = (event) => {
-    this.setState({
-      selectedFile: event.target.files[0],
-    });
-
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      this.setState({
-        imagePreviewUrl: reader.result,
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      
+      const formData = new FormData(event.target);
+  
+      CourseService.addLesson(
+        props.courseId,
+        formData.get('title'),
+        formData.get('description'),
+        items
+      ).then(() => {
+        history.push(`/courseview/${props.courseID}`)
       });
     };
 
-    reader.readAsDataURL(event.target.files[0]);
-  };
+        if (showPreview) {
+            return <Container>
+                    <LessonPreview toggleLessonPreview={() => setShowPreview(!showPreview)} items={items} title={lessonTitle} />
+                </Container>
+        }
 
-  addFile = () => {
-    this.setState((state) => {
-      const list = [
-        ...state.list,
-        { name: 'image', value: 'https://via.placeholder.com/480x320' },
-      ];
-      return {
-        list,
-        file: '',
-      };
-    });
-  };
+        return <Container fluid>
+                <Row>
+                    <Col > </Col>
 
-  render() {
-    if (this.state.showPreview) {
-      return (
-        <Container>
-          <LessonPreview
-            toggleLessonPreview={this.toggleLessonPreview}
-            items={this.state.list}
-            title={this.state.lessonTitle}
-          />
-        </Container>
-      );
-    }
+                    <Col xs={6}>
+                        <Container className='Container'>
+                            <Zoom left duration="200">
+                                <Alert color="primary" className="text-center">
+                                    Use the toolkit to customize your lesson!
+                                </Alert>
+                            </Zoom>
 
-    return (
-      <Container className="Container">
-        <Zoom left duration="200">
-          <Alert color="primary" className="text-center">
-            Create lesson
-          </Alert>
-        </Zoom>
+                            <h4>Lesson information</h4>
+                            <Row className="mb-2">
+                                <Col>
+                                    <Zoom left duration="200">
+                                        <Input type="text" name="title" value={lessonTitle} id="titleField" placeholder="Lesson's title. Max. 100 characters" onChange={(event) => setLessonTitle(event.target.value)} />
+                                    </Zoom>
+                                </Col>
+                            </Row>
 
-        <h4>Lesson&apos;s information</h4>
-        <Row className="mb-2">
-          <Col>
-            <Zoom left duration="200">
-              <Input
-                type="text"
-                name="title"
-                value={this.state.lessonTitle}
-                id="titleField"
-                placeholder="Lesson's title. Max. 100 characters"
-                onChange={this.titleChange}
-              />
-            </Zoom>
-          </Col>
-        </Row>
+                            <Row className="mb-2">
+                                <Col>
+                                    <Zoom left duration="200">
+                                        <Input type="textarea" name="description" id="descriptionField" placeholder="Lesson's description. Max. 250 characters" />
+                                    </Zoom>
+                                </Col>
+                            </Row>
 
-        <Row className="mb-2">
-          <Col>
-            <Zoom left duration="200">
-              <Input
-                type="textarea"
-                name="description"
-                id="descriptionField"
-                placeholder="Lesson's description. Max. 250 characters"
-              />
-            </Zoom>
-          </Col>
-        </Row>
+                            <h4>Lesson content</h4>
 
-        <h4>Lesson&apos;s content</h4>
-        <Row className="mb-2">
-          <Col>
-            <Zoom left duration="200">
-              <FormGroup>
-                <Input
-                  type="textarea"
-                  name="text"
-                  id="exampleText"
-                  areaText={this.state.areaText}
-                  onChange={this.textAreaChange}
-                />
-              </FormGroup>
-            </Zoom>
-          </Col>
-        </Row>
+                            <Row className="mb-2">
+                                <Col>
+                                    {items.length === 0 && <Alert className="text-center" color='danger'>The lesson is empty!</Alert>}
+                                    {items.map((item) => {
+                                        if(item.name.substring(0, 4) === 'text') 
+                                            return <FormGroup className="mt-2">
+                                                <Input type="textarea" name="text" id="exampleText" areaText={areaText} onChange={(event) => setAreaText(event.target.value)} placeholder={'Lesson content'}/>
+                                            </FormGroup>
+                                            // eslint-disable-next-line react/jsx-key
+                                            return <img src={item.content} alt='Something, somewhere went terribly wrong'/>
+                                    })}
+                                </Col>
+                            </Row>
 
-        <Row className="mb-2">
-          <Col>
-            <Zoom left duration="200">
-              <InputGroup>
-                <Input
-                  type="file"
-                  name="file"
-                  multiple
-                  onChange={this.fileChange}
-                />
-                <InputGroupAddon addonType="prepend">
-                  <Button onClick={this.addFIle}>Add file</Button>
-                </InputGroupAddon>
-                <FormText color="muted">
-                  Choose a .JPG .MP4 file. Your files will appear at the bottom
-                  of the lesson.
-                </FormText>
-              </InputGroup>
-            </Zoom>
-          </Col>
-        </Row>
+                            <Row className="mb-2">
+                                <Col>
+                                </Col>
+                            </Row>
 
-        <Row className="mt-5">
-          <Col>
-            <Button color="secondary" onClick={this.props.toggleLessonEdit}>
-              Back
-            </Button>
-          </Col>
-          <Col className="text-right">
-            <Button color="secondary" onClick={this.toggleLessonPreview}>
-              Next
-            </Button>
-          </Col>
-        </Row>
-      </Container>
-    );
-  }
+                            <Row className='mt-5'>
+                                <Col >
+                                <Link to={`/courseview/${props.courseID}`}>
+                                    <Button color='secondary'>Back</Button>
+                                  </Link>
+                                </Col>
+                                <Col className='text-right'>
+                                  <Button color='secondary' onClick={(e) => handleSubmit(e)}>Next</Button>
+                                </Col>
+                            </Row>
+                        </Container>
+                    </Col>
+
+                    <Col className="mt-5">
+                        <Container className="stickyToolKit">
+                            <Kit addTextField={() => setItems([...items, {name: "text"+items.length.toString(), content: areaText}])} addImage={(event) => { const file = event.target.files[0]; setItems([...items, {name: "image"+items.length.toString(), content: URL.createObjectURL(file)}])}} clearLesson={() => setItems([])}/>
+                        </Container>
+                    </Col>
+                </Row>
+                <Footer />
+            </Container>
 }
 
 export default LessonEdit;

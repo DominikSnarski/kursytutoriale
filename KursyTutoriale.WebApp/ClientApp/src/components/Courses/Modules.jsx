@@ -7,8 +7,10 @@ import {
   Row,
   UncontrolledCollapse,
 } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import LessonsList from './LessonsList';
 import './style.css';
+import AppRoutes from '../../routing/AppRoutes';
 
 const Modules = (props) => (
   <Container fluid>
@@ -23,11 +25,23 @@ const Modules = (props) => (
               <LessonsList
                 toggleLesson={props.toggleLesson}
                 lessons={item.lessons}
+                courseID = {props.courseID}
               />
             </UncontrolledCollapse>
           </Col>
         </Row>
       ))}
+      <Row className="d-flex justify-content-center mb-2">
+          <Col>
+          <Link to={{
+            pathname: AppRoutes.AddModule, 
+            courseID: props.courseID}}>
+            <Button color="success" size="lg" block>
+              Add new module
+            </Button>
+          </Link>
+          </Col>
+        </Row>
     </ListGroup>
   </Container>
 );
