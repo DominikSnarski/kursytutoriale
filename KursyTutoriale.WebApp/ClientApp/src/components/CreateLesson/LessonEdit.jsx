@@ -25,7 +25,6 @@ function LessonEdit (props) {
         }
 
         return <Container fluid>
-
                 <Row>
                     <Col > </Col>
 

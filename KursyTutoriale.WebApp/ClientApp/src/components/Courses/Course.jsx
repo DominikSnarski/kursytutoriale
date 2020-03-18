@@ -134,6 +134,7 @@ class Course extends React.Component {
             <Modules
               toggleLesson={this.props.toggleLesson}
               modules={this.state.course.modules}
+              courseID={this.state.courseID}
             />
           </Jumbotron>
 

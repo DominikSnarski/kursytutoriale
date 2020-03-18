@@ -11,6 +11,7 @@ import {
 } from 'reactstrap';
 import './style.css';
 import { Link } from 'react-router-dom';
+import AppRoutes from '../../routing/AppRoutes';
 
 const LessonsList = (props) => (
   <Container fluid>
@@ -40,6 +41,14 @@ const LessonsList = (props) => (
           </Col>
         </Row>
       ))}
+      <Link to={{
+        pathname: AppRoutes.EditLesson,
+        courseID: props.courseID
+        }}>
+      <Button color="success" size="lg" block>
+              Add new lesson
+      </Button>
+      </Link>
     </Card>
   </Container>
 );
