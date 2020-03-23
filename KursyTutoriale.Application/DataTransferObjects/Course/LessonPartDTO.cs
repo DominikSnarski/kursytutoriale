@@ -4,11 +4,10 @@ using System.Text;
 
 namespace KursyTutoriale.Application.DataTransferObjects.Course
 {
-    public class LessonCreationDTO
+    public class LessonPartDTO
     {
-        public Guid CourseId { get; set; }
-        public int CourseModuleIndex { get; set; }
-        public string Title { get; set; }
+        public string Name { get; set; }
         public string Content { get; set; }
+        public int Index { get; set; }
     }
 }
