@@ -42,8 +42,6 @@ const App = () => {
       userRoles,
     });
 
-    console.log(userRoles);
-
     const temp = {
       authenticated: true,
       username,
