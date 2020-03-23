@@ -23,6 +23,9 @@ namespace KursyTutoriale.Domain.Entities.Course.Events
             Tags = tags;
         }
 
+        public Guid DefaultModuleId { get;  set; }
+        public Guid DefaultLessonId { get;  set; }
+
         public string Title { get; private set; }
         public string Description { get; private set; }
         public Guid OwnerId { get; private set; }
@@ -41,6 +44,14 @@ namespace KursyTutoriale.Domain.Entities.Course.Events
                 Tags = Tags,
                 OwnerId = OwnerId
             };
+
+            DefaultModuleId = DefaultModuleId == Guid.Empty ? Guid.NewGuid() : DefaultModuleId;
+            var module = new CourseModule(DefaultModuleId, "Default title", "Default description");
+            entity.AddModule(module);
+
+            DefaultLessonId = DefaultLessonId == Guid.Empty ? Guid.NewGuid() : DefaultLessonId;
+            var lesson = new Lesson(DefaultLessonId, 0, "Default title", 0);
+            module.AddLesson(lesson);
 
             return entity;
         }

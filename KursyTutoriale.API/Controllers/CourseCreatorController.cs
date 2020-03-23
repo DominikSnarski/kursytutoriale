@@ -56,7 +56,7 @@ namespace KursyTutoriale.API.Controllers
         /// Version of lesson you want to add to module
         /// </param>
         [HttpPost("AddLesson")]
-        public async Task<int> AddLesson([FromBody]LessonCreationDTO lesson)
+        public async Task<int> AddLesson([FromBody]AddLessonRequest lesson)
         {
             var index = await courseService.AddLesson(lesson);
             return index;

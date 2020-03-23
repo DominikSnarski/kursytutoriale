@@ -1,5 +1,6 @@
 ﻿using KursyTutoriale.Domain.Base;
 using System;
+using System.Collections.Generic;
 
 namespace KursyTutoriale.Domain.Entities.Course.Events
 {
@@ -9,30 +10,32 @@ namespace KursyTutoriale.Domain.Entities.Course.Events
             int courseModuleIndex,
             int index,
             string title,
-            string content,
             Guid moduleId,
-            Guid courseId)
+            Guid courseId,
+            List<LessonPart> lessonParts)
             : base(courseId)
         {
             ModuleId = moduleId;
             CourseModuleIndex = courseModuleIndex;
             Index = index;
             Title = title;
-            Content = content;
+            LessonParts = lessonParts;
         }
 
         public int CourseModuleIndex { get; private set; }
         public int Index { get; private set; }
         public string Title { get; private set; }
-        public string Content { get; private set; }
 
         public Guid ModuleId { get; set; }
         public Guid LessonId { get; set; }
+        public List<LessonPart> LessonParts { get; set; }
 
         public override Course Apply(Course entity)
         {
             var newLessonId = LessonId == Guid.Empty ? Guid.NewGuid() : LessonId;
-            var lesson = new Lesson(newLessonId, CourseModuleIndex, Title, Content, Index);
+            var lesson = new Lesson(newLessonId, CourseModuleIndex, Title, Index);
+
+            lesson.AddPartRange(LessonParts);
 
             entity.AddLesson(lesson, ModuleId);
 

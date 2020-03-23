@@ -138,7 +138,7 @@ namespace KursyTutoriale.Infrastructure.Repositories.Implementations
                                 Id = l.Id,
                                 Title = l.Title,
                                 Index = l.Index,
-                                Content = l.Content,
+                                Content = JsonConvert.SerializeObject(l.Content,Formatting.Indented),
                                 CourseModuleIndex = l.CourseModuleIndex,
                                 CourseId = course.Id
                             };

@@ -24,7 +24,7 @@ namespace KursyTutoriale.Application.Services
         List<CourseBasicInformationsDTO> GetPagesOfCourses(int firstPageNumber, int lastPageNumber, int pageSize);
         Task<Guid> AddCourse(CourseCreationDTO course);
         Task<int> AddModule(CourseModuleCreationDTO module);
-        Task<int> AddLesson(LessonCreationDTO lesson);
+        Task<int> AddLesson(AddLessonRequest lesson);
         CourseForEditionDTO GetCourseForEdition(Guid courseId);
         int GetNumberOfCourses();
         List<CourseBasicInformationsDTO> GetPagesOfCoursesFiltered(int firstPageNumber, int lastPageNumber, int pageSize,
@@ -227,9 +227,13 @@ namespace KursyTutoriale.Application.Services
         /// <param name="lesson">
         /// Version of lesson you want to add to module
         /// </param>
-        public async Task<int> AddLesson(LessonCreationDTO lesson)
+        public async Task<int> AddLesson(AddLessonRequest lesson)
         {
-            var @event = new LessonAdded(0, 0, lesson.Title, "", lesson.ModuleId, lesson.CourseId);
+            var lessonParts = lesson.Content.OrderBy(part => part.Index)
+                .Select(part => new LessonPart(part.Name, part.Content))
+                .ToList();
+
+            var @event = new LessonAdded(0, 0, lesson.Title, lesson.ModuleId, lesson.CourseId, lessonParts);
 
             var course = courseRepository.Find(lesson.CourseId);
 
