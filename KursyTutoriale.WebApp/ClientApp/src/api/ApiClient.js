@@ -48,9 +48,8 @@ apiClient.login = async (username, password) => {
   localStorage.setItem('access_token', res.data.accessToken);
   localStorage.setItem('refresh_token', res.data.refreshToken);
 
-  const name = jwtDecode(res.data.accessToken).sub;
-  const { nameid } = jwtDecode(res.data.accessToken);
-  apiClient.onLogin(name, nameid);
+  const { sub, nameid, roles } = jwtDecode(res.data.accessToken);
+  apiClient.onLogin(sub, nameid, roles);
 
   return new Promise((resolve) => {
     resolve(true);
