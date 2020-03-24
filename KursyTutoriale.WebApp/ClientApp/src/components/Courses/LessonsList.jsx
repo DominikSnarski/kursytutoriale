@@ -17,10 +17,7 @@ const LessonsList = (props) => (
   <Container fluid>
     <Card>
       <CardBody>
-        {/* module description */}
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt magni,
-        voluptas debitis similique porro a molestias consequuntur earum odio
-        officiis natus, amet hic, iste sed dignissimos esse fuga! Minus, alias.
+        { props.moduleDescription }
       </CardBody>
 
       {props.lessons.map((item, i) => (

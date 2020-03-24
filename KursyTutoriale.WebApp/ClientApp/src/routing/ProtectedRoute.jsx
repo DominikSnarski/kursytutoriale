@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { InitialUserContext } from '../contexts/UserContext';
 
-const ProtectedRoute = ({ component: Component, ...rest }) => {
+const ProtectedRoute = ({ component: Component, layout: Layout, ...rest }) => {
   const [userContext] = useState(
     JSON.parse(localStorage.getItem('user')) || InitialUserContext,
   );
@@ -13,7 +13,9 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
       {...rest}
       render={(props) =>
         userContext.authenticated ? (
-          <Component {...props} />
+          <Layout>
+            <Component {...props} />
+          </Layout>
         ) : (
           <Redirect
             to={{

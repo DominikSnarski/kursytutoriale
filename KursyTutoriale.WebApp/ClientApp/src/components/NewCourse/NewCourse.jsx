@@ -1,5 +1,6 @@
 /* eslint-disable no-use-before-define */
 import React, { useState, useContext, useEffect } from 'react';
+import Zoom from 'react-reveal/Zoom';
 import {
   Button,
   Container,
@@ -9,6 +10,7 @@ import {
   Input,
   Row,
   Col,
+  Jumbotron
 } from 'reactstrap';
 import { useHistory } from 'react-router-dom';
 import Tags from './Tags';
@@ -105,6 +107,8 @@ function NewCourse() {
 
 
   return (
+    <Jumbotron fluid className="jumbotron_bg">
+      <Zoom duration="200">
     <Container
       className="justify-content-center"
       style={{ backgroundColor: '#7BC5DA' }}
@@ -228,6 +232,8 @@ function NewCourse() {
 
       <br />
     </Container>
+    </Zoom>
+    </Jumbotron>
   );
 }
 

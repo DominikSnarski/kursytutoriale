@@ -29,6 +29,7 @@ function Modules (props){
                 lessons={item.lessons}
                 courseid = {props.courseid}
                 moduleid = {item.id}
+                moduleDescription = {item.description}
               />
             </UncontrolledCollapse>
           </Col>
@@ -40,8 +41,7 @@ function Modules (props){
           <Link to={{
             pathname: AppRoutes.AddModule, 
             state: {
-              courseid: props.courseid,
-              moduleid: "czej"
+              courseid: props.courseid
             }
             }}>
             <Button color="success" size="lg" block>

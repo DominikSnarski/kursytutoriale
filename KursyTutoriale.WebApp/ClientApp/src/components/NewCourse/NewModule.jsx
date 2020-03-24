@@ -59,7 +59,7 @@ function NewModule (props) {
             <FormGroup className="mt-2">
               <Input
                 type="textarea"
-                name="text"
+                name="description"
                 id="exampleText"
                 placeholder="e.g. In this module you will learn how..."
               />

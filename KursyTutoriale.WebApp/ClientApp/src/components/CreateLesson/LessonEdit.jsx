@@ -15,17 +15,23 @@ import {
 import { Zoom } from 'react-reveal';
 import { LessonService } from '../../api/Services/LessonService';
 import LessonPreview from './LessonPreview';
-import Footer from '../../layouts/Shared/Footer';
 import Kit from './Kit/Kit';
 import './style.css';
 
 function LessonEdit(props) {
   const history = useHistory();
 
+  const blankTextInput = {name: 'text', content:''}
+
   const [lessonTitle, setLessonTitle] = useState('');
-  const [items, setItems] = useState([{ name: 'text0', content: '' }]);
-  const [areaText, setAreaText] = useState('');
+  const [items, setItems] = useState([{ ...blankTextInput  }]);
   const [showPreview, setShowPreview] = useState(false);
+
+  const handleTextChange = (e) => {
+    const updatedText = [...items];
+    updatedText[e.target.dataset.idx].content = e.target.value;
+    setItems(updatedText);
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -111,18 +117,16 @@ function LessonEdit(props) {
                     </Alert>
                   )}
                   {items.map((item, key) => {
-                    if (item.name.substring(0, 4) === 'text')
+                    if (item.name === 'text')
                       return (
                         <FormGroup className="mt-2">
                           <Input
-                            type="textarea"
-                            name="text"
-                            id="exampleText"
-                            areaText={areaText}
-                            onChange={(event) =>
-                              setAreaText(event.target.value)
-                            }
-                            placeholder={'Lesson content'}
+                            type='text'
+                            name={`text${key}`}
+                            id={item.index}
+                            data-idx={key}
+                            value={items[key].content}
+                            onChange={handleTextChange}
                           />
                         </FormGroup>
                       );
@@ -166,9 +170,8 @@ function LessonEdit(props) {
                   setItems([
                     ...items,
                     {
-                      name: 'text' + items.length.toString(),
-                      content: areaText,
-                    },
+                      ...blankTextInput
+                    }
                   ])
                 }
                 addImage={(event) => {
@@ -176,8 +179,9 @@ function LessonEdit(props) {
                   setItems([
                     ...items,
                     {
-                      name: 'image' + items.length.toString(),
+                      name: 'image',
                       content: URL.createObjectURL(file),
+                      index: items.length,
                     },
                   ]);
                 }}
@@ -186,7 +190,6 @@ function LessonEdit(props) {
             </Container>
           </Col>
         </Row>
-        <Footer />
       </Form>
     </Container>
   );
