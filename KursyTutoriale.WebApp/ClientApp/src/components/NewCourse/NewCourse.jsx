@@ -1,22 +1,22 @@
 /* eslint-disable no-use-before-define */
-import React, { useState, useContext, useEffect } from 'react';
 import Zoom from 'react-reveal/Zoom';
+import React, { useState, useContext, useEffect } from 'react';
 import {
-  Button,
   Container,
   Form,
   FormGroup,
   Label,
-  Input,
   Row,
   Col,
-  Jumbotron
+  Jumbotron,
 } from 'reactstrap';
 import { useHistory } from 'react-router-dom';
 import Tags from './Tags';
 import { UserContext } from '../../contexts/UserContext';
 import {CourseService} from '../../api/Services/CourseService';
 import SystemService from '../../api/Services/SystemService';
+import Button from '../../layouts/CSS/Button/Button';
+import Input from '../../layouts/CSS/InputField/InputField';
 
 function NewCourse() {
   // table of tags
@@ -110,7 +110,7 @@ function NewCourse() {
     <Jumbotron fluid className="jumbotron_bg">
       <Zoom duration="200">
     <Container
-      className="justify-content-center"
+      className="justify-content-center Container"
       style={{ backgroundColor: '#7BC5DA' }}
     >
       <br />
@@ -167,7 +167,7 @@ function NewCourse() {
             </Col>
 
             <Col sm={1}>
-              <Button onClick={handleButtonAddClick}>Add</Button>
+              <Button text="Add" onClick={handleButtonAddClick} width="60px"></Button>
             </Col>
           </Row>
 
@@ -222,10 +222,10 @@ function NewCourse() {
 
         <Row className="mt-5">
           <Col>
-            <Button onClick={() => {history.goBack()}}>Back</Button>
+            <Button text="Back" onClick={() => {history.goBack()}}></Button>
           </Col>
           <Col className="text-right">
-            <Button color="primary">Submit</Button>
+            <Button text="Submit"></Button>
           </Col>
         </Row>
       </Form>

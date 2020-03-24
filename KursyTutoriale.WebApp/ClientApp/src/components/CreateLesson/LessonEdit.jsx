@@ -3,11 +3,9 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   Alert,
-  Button,
   Container,
   Col,
   Row,
-  Input,
   FormGroup,
   Form,
   FormFeedback,
@@ -17,21 +15,22 @@ import { LessonService } from '../../api/Services/LessonService';
 import LessonPreview from './LessonPreview';
 import Kit from './Kit/Kit';
 import './style.css';
+import Button from '../../layouts/CSS/Button/Button';
+import Input from '../../layouts/CSS/InputField/InputField';
 
 function LessonEdit(props) {
   const history = useHistory();
 
-  const blankTextInput = {name: 'text', content:''}
-
   const [lessonTitle, setLessonTitle] = useState('');
-  const [items, setItems] = useState([{ ...blankTextInput  }]);
+  const blankTextInput = {name: 'text', content:''}
   const [showPreview, setShowPreview] = useState(false);
-
+  const [items, setItems] = useState([{ ...blankTextInput  }]);
   const handleTextChange = (e) => {
     const updatedText = [...items];
     updatedText[e.target.dataset.idx].content = e.target.value;
     setItems(updatedText);
   };
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -67,12 +66,7 @@ function LessonEdit(props) {
           <Col> </Col>
 
           <Col xs={6}>
-            <Container className="Container">
-              <Zoom left duration="200">
-                <Alert color="primary" className="text-center">
-                  Use the toolkit to customize your lesson!
-                </Alert>
-              </Zoom>
+            <Container className="Container" >
 
               <h4>Lesson information</h4>
               <Row className="mb-2">
@@ -127,7 +121,7 @@ function LessonEdit(props) {
                             data-idx={key}
                             value={items[key].content}
                             onChange={handleTextChange}
-                          />
+/>
                         </FormGroup>
                       );
                     // eslint-disable-next-line react/jsx-key
@@ -152,12 +146,12 @@ function LessonEdit(props) {
                     onClick={() => {
                       history.goBack();
                     }}
+                    text="Back"
                   >
-                    Back
                   </Button>
                 </Col>
                 <Col className="text-right">
-                  <Button color="primary">Submit</Button>
+                  <Button text="Submit"></Button>
                 </Col>
               </Row>
             </Container>
@@ -171,7 +165,7 @@ function LessonEdit(props) {
                     ...items,
                     {
                       ...blankTextInput
-                    }
+                    },
                   ])
                 }
                 addImage={(event) => {
@@ -181,7 +175,6 @@ function LessonEdit(props) {
                     {
                       name: 'image',
                       content: URL.createObjectURL(file),
-                      index: items.length,
                     },
                   ]);
                 }}

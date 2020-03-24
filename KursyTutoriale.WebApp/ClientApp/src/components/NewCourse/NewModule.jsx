@@ -4,16 +4,16 @@ import { ModuleService } from '../../api/Services/ModuleService';
 
 // eslint-disable-next-line
 import {
-  Button,
   Form,
   FormGroup,
   FormFeedback,
-  Input,
   Row,
   Col,
   Container
 } from 'reactstrap';
 
+import Button from '../../layouts/CSS/Button/Button';
+import Input from '../../layouts/CSS/InputField/InputField';
 
 function NewModule (props) {
 
@@ -35,7 +35,7 @@ function NewModule (props) {
   };
 
   return (
-    <Container style={{ backgroundColor: '#7BC5DA' }}>
+    <Container className="Container">
       <Form onSubmit={(e) => handleSubmit(e)}>
         <Row>
         </Row>
@@ -69,11 +69,10 @@ function NewModule (props) {
 
         <Row className="mt-5">
           <Col>
-            <Button onClick={() => {history.goBack()}}>Back</Button>
+            <Button text="Back" onClick={() => {history.goBack()}}></Button>
           </Col>
           <Col className="text-right">
-            <Button color="secondary">
-              Submit
+            <Button text="Submit">
             </Button>
           </Col>
         </Row>
