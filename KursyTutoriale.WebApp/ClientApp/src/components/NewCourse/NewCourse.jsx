@@ -167,7 +167,7 @@ function NewCourse() {
             </Col>
 
             <Col sm={1}>
-              <Button onClick={handleButtonAddClick} text='Add' width='20'/>
+              <Button onClick={handleButtonAddClick} text='Add' width='20px'/>
             </Col>
           </Row>
 
