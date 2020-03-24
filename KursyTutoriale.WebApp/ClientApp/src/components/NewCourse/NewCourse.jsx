@@ -1,23 +1,24 @@
 /* eslint-disable no-use-before-define */
-import Zoom from 'react-reveal/Zoom';
 import React, { useState, useContext, useEffect } from 'react';
 import {
   Container,
   Form,
   FormGroup,
+  Input,
   Label,
   Row,
   Col,
-  Jumbotron,
-  Input,
 } from 'reactstrap';
 import { useHistory } from 'react-router-dom';
 import Tags from './Tags';
 import { UserContext } from '../../contexts/UserContext';
 import {CourseService} from '../../api/Services/CourseService';
 import SystemService from '../../api/Services/SystemService';
+import { InputField } from '../../layouts/CSS/InputField/InputField';
 import Button from '../../layouts/CSS/Button/Button';
-import InputField from '../../layouts/CSS/InputField/InputField';
+
+import backgroundImage from '../../Images/BookBackground.jpg';
+
 
 function NewCourse() {
   // table of tags
@@ -92,30 +93,31 @@ function NewCourse() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    
+
     CourseService.addCourse(
       new Date(),
       formData.get('description'),
       userContext.userid,
       tagsList,
       parseFloat(formData.get('price')),
-      formData.get('title')
-    ).then(response=>{
-      history.push(`/courseview/${response.data}`);
+      formData.get('title'),
+    ).then(() => {
+      history.push('/addModule');
     });
-    
-  }
-
+  };
 
   return (
-    <Jumbotron fluid className="jumbotron_bg">
-      <Zoom duration="200">
-    <Container
-      className="justify-content-center Container"
-      style={{ backgroundColor: '#7BC5DA' }}
-    >
+    <Container className="justify-content-center">
+      <Container className="justify-content-center"
+      style={{ backgroundColor: '#7BC5DA', backgroundImage: `url(${backgroundImage})`,
+  backgroundPosition: 'center',
+  backgroundSize: 'cover',
+  backgroundRepeat: 'no-repeat', opaciy: '0.5'}}>
+
+
+  
       <br />
-      <h1 style={{ textAlign: 'center' }}>Add a new course</h1>
+      <h1 id='title' style={{ textAlign: 'center', color: '#ffb606', fontSize: '60px', fontWeight: '800', opacity: '1.0'}}>Add a new course</h1>
 
       <Form onSubmit={(e) => handleSubmit(e)}>
         <br />
@@ -126,6 +128,7 @@ function NewCourse() {
             </Label>
             <Col sm={10}>
               <InputField
+                className="input_field"
                 type="text"
                 name="title"
                 id="title"
@@ -144,12 +147,12 @@ function NewCourse() {
             </Label>
             <Col sm={9}>
               <Input
+                className="input_field"
                 type="select"
                 name="tags"
                 id="tags"
                 value={inputValue.name}
                 onChange={handleInputChange}
-                className="input_field"
               >
                 <option value=""></option>
                 {tags.map((v, i) => (
@@ -169,7 +172,7 @@ function NewCourse() {
             </Col>
 
             <Col sm={1}>
-              <Button text="Add" onClick={handleButtonAddClick} width="60px"></Button>
+              <Button onClick={handleButtonAddClick} text='Add' width='60px'/>
             </Col>
           </Row>
 
@@ -221,21 +224,33 @@ function NewCourse() {
         </FormGroup>
 
         <br />
+        <FormGroup>
+          <Row>
+            <Label sm={2} for="date">
+              Date of adding course{' '}
+            </Label>
+            <Col sm={10}>
+              <InputField type="datetime" name="date" id="exampleText" />
+            </Col>
+          </Row>
+        </FormGroup>
 
-        <Row className="mt-5">
-          <Col>
-            <Button text="Back" onClick={() => {history.goBack()}}></Button>
+        <br />
+
+        <Row>
+          <Col sm={10}>
+            <Button text='Back'/>
           </Col>
-          <Col className="text-right">
-            <Button text="Submit"></Button>
+          <Col sm={25}>
+            <Button text='Next'/>
           </Col>
         </Row>
       </Form>
 
       <br />
+      </Container>
+
     </Container>
-    </Zoom>
-    </Jumbotron>
   );
 }
 
