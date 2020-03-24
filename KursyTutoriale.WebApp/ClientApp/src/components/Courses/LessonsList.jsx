@@ -11,15 +11,13 @@ import {
 } from 'reactstrap';
 import './style.css';
 import { Link } from 'react-router-dom';
+import AppRoutes from '../../routing/AppRoutes';
 
 const LessonsList = (props) => (
   <Container fluid>
     <Card>
       <CardBody>
-        {/* module description */}
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt magni,
-        voluptas debitis similique porro a molestias consequuntur earum odio
-        officiis natus, amet hic, iste sed dignissimos esse fuga! Minus, alias.
+        { props.moduleDescription }
       </CardBody>
 
       {props.lessons.map((item, i) => (
@@ -30,16 +28,38 @@ const LessonsList = (props) => (
               style={{ backgroundColor: '#7CC3D8', borderColor: '#7CC3D8' }}
             >
               <CardTitle>{item.title}</CardTitle>
-              <CardText className="card-height">{item.content}</CardText>
-              <Link to="/lessonview">
-                <Button fluid onClick={props.toggleLesson}>
-                  Let`&apos`s go
+              <CardText className="card-height">{'temp description'}</CardText>
+              <Link
+                to={{
+                  pathname: AppRoutes.Lesson,
+                  state: {
+                    title: item.title,
+                    content: item.content,
+                  },
+                }}>
+                <Button color="primary">
+                  Lets go
                 </Button>
               </Link>
             </Card>
           </Col>
         </Row>
       ))}
+
+      <Link
+        className="m-2"
+        to={{
+          pathname: AppRoutes.EditLesson,
+          state: {
+            courseid: props.courseid,
+            moduleid: props.moduleid,
+          },
+        }}
+      >
+        <Button color="success" size="lg" block>
+          Add new lesson
+        </Button>
+      </Link>
     </Card>
   </Container>
 );

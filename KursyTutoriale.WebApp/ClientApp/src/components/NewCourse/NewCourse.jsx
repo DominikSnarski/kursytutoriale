@@ -1,5 +1,6 @@
 /* eslint-disable no-use-before-define */
 import React, { useState, useContext, useEffect } from 'react';
+import Zoom from 'react-reveal/Zoom';
 import {
   Button,
   Container,
@@ -9,6 +10,7 @@ import {
   Input,
   Row,
   Col,
+  Jumbotron
 } from 'reactstrap';
 import { useHistory } from 'react-router-dom';
 import Tags from './Tags';
@@ -89,20 +91,24 @@ function NewCourse() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-
+    
     CourseService.addCourse(
       new Date(),
       formData.get('description'),
       userContext.userid,
       tagsList,
       parseFloat(formData.get('price')),
-      formData.get('title'),
-    ).then(() => {
-      history.push('/addModule');
+      formData.get('title')
+    ).then(response=>{
+      history.push(`/courseview/${response.data}`);
     });
-  };
+    
+  }
+
 
   return (
+    <Jumbotron fluid className="jumbotron_bg">
+      <Zoom duration="200">
     <Container
       className="justify-content-center"
       style={{ backgroundColor: '#7BC5DA' }}
@@ -213,28 +219,21 @@ function NewCourse() {
         </FormGroup>
 
         <br />
-        <FormGroup>
-          <Row>
-            <Label sm={2} for="date">
-              Date of adding course{' '}
-            </Label>
-            <Col sm={10}>
-              <Input type="datetime" name="date" id="exampleText" />
-            </Col>
-          </Row>
-        </FormGroup>
 
-        <br />
-
-        <Row>
-          <Col sm={10}>
-            <Button>Submit</Button>
+        <Row className="mt-5">
+          <Col>
+            <Button onClick={() => {history.goBack()}}>Back</Button>
+          </Col>
+          <Col className="text-right">
+            <Button color="primary">Submit</Button>
           </Col>
         </Row>
       </Form>
 
       <br />
     </Container>
+    </Zoom>
+    </Jumbotron>
   );
 }
 
