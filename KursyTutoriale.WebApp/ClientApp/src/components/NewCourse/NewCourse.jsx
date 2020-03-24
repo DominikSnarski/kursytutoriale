@@ -1,12 +1,11 @@
 /* eslint-disable no-use-before-define */
 import React, { useState, useContext, useEffect } from 'react';
 import {
-  Button,
   Container,
   Form,
   FormGroup,
-  Label,
   Input,
+  Label,
   Row,
   Col,
 } from 'reactstrap';
@@ -15,6 +14,11 @@ import Tags from './Tags';
 import { UserContext } from '../../contexts/UserContext';
 import {CourseService} from '../../api/Services/CourseService';
 import SystemService from '../../api/Services/SystemService';
+import { InputField } from '../../layouts/CSS/InputField/InputField';
+import { Button } from '../../layouts/CSS/Button/Button';
+
+// import backgroundImage from '../../Images/Book_background.jpg';
+
 
 function NewCourse() {
   // table of tags
@@ -105,10 +109,10 @@ function NewCourse() {
   return (
     <Container
       className="justify-content-center"
-      style={{ backgroundColor: '#7BC5DA' }}
-    >
+      style={{ backgroundColor: '#f5f5f5'}}>
+  
       <br />
-      <h1 style={{ textAlign: 'center' }}>Add a new course</h1>
+      <h1 id='title' style={{ textAlign: 'center', color: '#ffb606', fontSize: '50px', fontWeight: '700'}}>Add a new course</h1>
 
       <Form onSubmit={(e) => handleSubmit(e)}>
         <br />
@@ -118,7 +122,8 @@ function NewCourse() {
               Title
             </Label>
             <Col sm={10}>
-              <Input
+              <InputField
+                className="input_field"
                 type="text"
                 name="title"
                 id="title"
@@ -137,6 +142,7 @@ function NewCourse() {
             </Label>
             <Col sm={9}>
               <Input
+                className="input_field"
                 type="select"
                 name="tags"
                 id="tags"
@@ -161,7 +167,7 @@ function NewCourse() {
             </Col>
 
             <Col sm={1}>
-              <Button onClick={handleButtonAddClick}>Add</Button>
+              <Button onClick={handleButtonAddClick} text='Add' width='20'/>
             </Col>
           </Row>
 
@@ -185,7 +191,7 @@ function NewCourse() {
               Description{' '}
             </Label>
             <Col sm={10}>
-              <Input
+              <InputField
                 type="textarea"
                 name="description"
                 id="exampleText"
@@ -202,7 +208,7 @@ function NewCourse() {
               Price (in $){' '}
             </Label>
             <Col sm={10}>
-              <Input
+              <InputField
                 type="number"
                 name="price"
                 id="exampleText"
@@ -219,7 +225,7 @@ function NewCourse() {
               Date of adding course{' '}
             </Label>
             <Col sm={10}>
-              <Input type="datetime" name="date" id="exampleText" />
+              <InputField type="datetime" name="date" id="exampleText" />
             </Col>
           </Row>
         </FormGroup>
@@ -228,7 +234,7 @@ function NewCourse() {
 
         <Row>
           <Col sm={10}>
-            <Button>Submit</Button>
+            <Button text='Submit'/>
           </Col>
         </Row>
       </Form>

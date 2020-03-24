@@ -3,7 +3,7 @@ import "./Button.css";
 
 export const Button = props => {
   return (
-    <div class="button text-center" style={{ background: props.color }}>
+    <div className="button text-center" style={{ background: props.color }}>
       <a href={props.link}>{props.text}</a>
     </div>
   );
