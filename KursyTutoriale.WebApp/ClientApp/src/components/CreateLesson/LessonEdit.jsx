@@ -4,11 +4,10 @@ import { useHistory } from 'react-router-dom';
 import {
   Alert,
   Container,
-  Col,
-  Row,
   FormGroup,
   Form,
   FormFeedback,
+  Input
 } from 'reactstrap';
 import { Zoom } from 'react-reveal';
 import { LessonService } from '../../api/Services/LessonService';
@@ -16,23 +15,24 @@ import LessonPreview from './LessonPreview';
 import Kit from './Kit/Kit';
 import './style.css';
 import Button from '../../layouts/CSS/Button/Button';
-import Input from '../../layouts/CSS/InputField/InputField';
+import InputField from '../../layouts/CSS/InputField/InputField';
+import './Kit.css';
 
 function LessonEdit(props) {
   const history = useHistory();
 
   const [lessonTitle, setLessonTitle] = useState('');
-  const blankTextInput = {name: 'text', content:''}
+  const blankTextInput = { name: 'text', content: '' };
   const [showPreview, setShowPreview] = useState(false);
-  const [items, setItems] = useState([{ ...blankTextInput  }]);
+  const [items, setItems] = useState([{ ...blankTextInput }]);
   const handleTextChange = (e) => {
     const updatedText = [...items];
     updatedText[e.target.dataset.idx].content = e.target.value;
     setItems(updatedText);
   };
 
-
   const handleSubmit = (event) => {
+    console.log(items)
     event.preventDefault();
 
     const formData = new FormData(event.target);
@@ -62,18 +62,12 @@ function LessonEdit(props) {
   return (
     <Container fluid>
       <Form onSubmit={(e) => handleSubmit(e)}>
-        <Row>
-          <Col> </Col>
-
-          <Col xs={6}>
-            <Container className="Container" >
-
+        <div>
+            <Container className="Container">
               <h4>Lesson information</h4>
-              <Row className="mb-2">
-                <Col>
                   <Zoom left duration="200">
                     <FormGroup className="mt-2">
-                      <Input
+                      <InputField
                         type="text"
                         name="title"
                         id="titleField"
@@ -85,26 +79,18 @@ function LessonEdit(props) {
                       </FormFeedback>
                     </FormGroup>
                   </Zoom>
-                </Col>
-              </Row>
-
-              <Row className="mb-2">
-                <Col>
+                  
                   <Zoom left duration="200">
-                    <Input
+                    <InputField
                       type="textarea"
                       name="description"
                       id="descriptionField"
                       placeholder="Lesson's description. Max. 250 characters"
                     />
                   </Zoom>
-                </Col>
-              </Row>
 
               <h4>Lesson content</h4>
 
-              <Row className="mb-2">
-                <Col>
                   {items.length === 0 && (
                     <Alert className="text-center" color="danger">
                       The lesson is empty!
@@ -113,16 +99,15 @@ function LessonEdit(props) {
                   {items.map((item, key) => {
                     if (item.name === 'text')
                       return (
-                        <FormGroup className="mt-2">
                           <Input
-                            type='text'
+                            className="input_field"
+                            type="text"
                             name={`text${key}`}
                             id={item.index}
                             data-idx={key}
                             value={items[key].content}
                             onChange={handleTextChange}
-/>
-                        </FormGroup>
+                          />
                       );
                     // eslint-disable-next-line react/jsx-key
                     return (
@@ -133,57 +118,40 @@ function LessonEdit(props) {
                       />
                     );
                   })}
-                </Col>
-              </Row>
-
-              <Row className="mb-2">
-                <Col></Col>
-              </Row>
-
-              <Row className="mt-5">
-                <Col>
+                  
                   <Button
                     onClick={() => {
                       history.goBack();
                     }}
                     text="Back"
-                  >
-                  </Button>
-                </Col>
-                <Col className="text-right">
+                  ></Button>
                   <Button text="Submit"></Button>
-                </Col>
-              </Row>
             </Container>
-          </Col>
-
-          <Col className="mt-5">
-            <Container className="stickyToolKit">
-              <Kit
-                addTextField={() =>
-                  setItems([
-                    ...items,
-                    {
-                      ...blankTextInput
-                    },
-                  ])
-                }
-                addImage={(event) => {
-                  const file = event.target.files[0];
-                  setItems([
-                    ...items,
-                    {
-                      name: 'image',
-                      content: URL.createObjectURL(file),
-                    },
-                  ]);
-                }}
-                clearLesson={() => setItems([])}
-              />
-            </Container>
-          </Col>
-        </Row>
+            </div>
       </Form>
+      <div className="sidenav">
+      <Kit 
+        addTextField={() =>
+          setItems([
+            ...items,
+            {
+              ...blankTextInput,
+            },
+          ])
+        }
+        addImage={(event) => {
+          const file = event.target.files[0];
+          setItems([
+            ...items,
+            {
+              name: 'image',
+              content: URL.createObjectURL(file),
+            },
+          ]);
+        }}
+        clearLesson={() => setItems([])}
+      />
+      </div>
     </Container>
   );
 }

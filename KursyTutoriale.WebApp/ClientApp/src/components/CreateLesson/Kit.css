@@ -1,0 +1,19 @@
+.sidenav {
+    width: 350px;
+    position: fixed;
+    z-index: 1;
+    top: 150px;
+    right: 10px;
+    background: #eee;
+    overflow-x: hidden;
+    padding: 8px 0;
+  }
+
+  .wrapper{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .lesson{
+    justify-content: center;
+  }

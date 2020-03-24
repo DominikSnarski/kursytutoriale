@@ -9,6 +9,7 @@ import {
   Row,
   Col,
   Jumbotron,
+  Input,
 } from 'reactstrap';
 import { useHistory } from 'react-router-dom';
 import Tags from './Tags';
@@ -16,7 +17,7 @@ import { UserContext } from '../../contexts/UserContext';
 import {CourseService} from '../../api/Services/CourseService';
 import SystemService from '../../api/Services/SystemService';
 import Button from '../../layouts/CSS/Button/Button';
-import Input from '../../layouts/CSS/InputField/InputField';
+import InputField from '../../layouts/CSS/InputField/InputField';
 
 function NewCourse() {
   // table of tags
@@ -124,7 +125,7 @@ function NewCourse() {
               Title
             </Label>
             <Col sm={10}>
-              <Input
+              <InputField
                 type="text"
                 name="title"
                 id="title"
@@ -148,6 +149,7 @@ function NewCourse() {
                 id="tags"
                 value={inputValue.name}
                 onChange={handleInputChange}
+                className="input_field"
               >
                 <option value=""></option>
                 {tags.map((v, i) => (
@@ -191,7 +193,7 @@ function NewCourse() {
               Description{' '}
             </Label>
             <Col sm={10}>
-              <Input
+              <InputField
                 type="textarea"
                 name="description"
                 id="exampleText"
@@ -208,7 +210,7 @@ function NewCourse() {
               Price (in $){' '}
             </Label>
             <Col sm={10}>
-              <Input
+              <InputField
                 type="number"
                 name="price"
                 id="exampleText"
