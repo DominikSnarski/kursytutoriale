@@ -30,6 +30,8 @@ namespace KursyTutoriale.Application.Configuration
                 cfg.CreateMap<Tag, TagDTO>();
                 cfg.CreateMap<UserProfile, UserProfileDTO>()
                     .ForMember(dto => dto.GenderName, opt => opt.MapFrom(up => up.Gender.Name));
+
+                cfg.CreateMap<UserProfile, UserProfileForAdminDTO>();
             });
 
             var dtoMapper = new DTOMapper(config);
