@@ -1,5 +1,6 @@
 import React from 'react';
-import { Container, Col, Row, Card, CardHeader, Button } from 'reactstrap';
+import { Container, Col, Row, Card, CardHeader } from 'reactstrap';
+import Button2 from '../../../layouts/CSS/Button/Button';
 
 function Kit(props) {
   return (
@@ -10,13 +11,11 @@ function Kit(props) {
             <CardHeader className="mb-3" style={{ textAlign: 'center' }}>
               Tools kit
             </CardHeader>
-            <Button
-              className="mb-3 ml-2 mr-2"
-              color="success"
-              onClick={props.addTextField}
-            >
-              Add text area
-            </Button>
+            <Button2
+              width='auto'
+              text="Add text area"
+              onClick={props.addTextField}>
+            </Button2>
             <div className="input-group mb-3">
               <div className="input-group-prepend">
                 <span className="input-group-text" id="inputGroupFileAddon01">
@@ -36,13 +35,13 @@ function Kit(props) {
                 </label>
               </div>
             </div>
-            <Button
+            <Button2
+              width='auto'
               className="mb-3 ml-2 mr-2"
               color="danger"
               onClick={props.clearLesson}
-            >
-              Clear
-            </Button>
+              text='Clear'>
+            </Button2>
           </Card>
         </Col>
       </Row>

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800|Roboto:400,500,700");
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800|Roboto:400,500,700');
 
 a,
 a:hover,
@@ -21,6 +21,7 @@ a:link {
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
   background: #000000;
   transition: all 200ms ease;
+  cursor: pointer;
 }
 .button a {
   line-height: 50px;
@@ -28,4 +29,7 @@ a:link {
   font-size: 15px;
   font-weight: 700;
   color: #ffffff;
+}
+.button a:hover{
+  color:#ffffff
 }
