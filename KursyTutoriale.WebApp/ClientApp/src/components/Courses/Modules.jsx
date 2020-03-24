@@ -12,7 +12,9 @@ import LessonsList from './LessonsList';
 import './style.css';
 import AppRoutes from '../../routing/AppRoutes';
 
-const Modules = (props) => (
+
+function Modules (props){
+  return(
   <Container fluid>
     <ListGroup style={{ borderColor: '#9dd2e2' }}>
       {props.modules.map((item, i) => (
@@ -25,25 +27,33 @@ const Modules = (props) => (
               <LessonsList
                 toggleLesson={props.toggleLesson}
                 lessons={item.lessons}
-                courseID = {props.courseID}
+                courseid = {props.courseid}
+                moduleid = {item.id}
               />
             </UncontrolledCollapse>
           </Col>
         </Row>
       ))}
+
       <Row className="d-flex justify-content-center mb-2">
           <Col>
           <Link to={{
             pathname: AppRoutes.AddModule, 
-            courseID: props.courseID}}>
+            state: {
+              courseid: props.courseid,
+              moduleid: "czej"
+            }
+            }}>
             <Button color="success" size="lg" block>
               Add new module
             </Button>
           </Link>
           </Col>
         </Row>
+
     </ListGroup>
   </Container>
 );
+          }
 
 export default Modules;

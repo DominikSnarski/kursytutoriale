@@ -1,7 +1,6 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { CourseService } from '../../api/Services/CourseService';
-import AppRoutes from '../../routing/AppRoutes'
+import { useHistory } from 'react-router-dom';
+import { ModuleService } from '../../api/Services/ModuleService';
 
 // eslint-disable-next-line
 import {
@@ -16,7 +15,7 @@ import {
 } from 'reactstrap';
 
 
-const NewModule = (props) => {
+function NewModule (props) {
 
   const history = useHistory();
   
@@ -25,15 +24,13 @@ const NewModule = (props) => {
     
     const formData = new FormData(event.target);
 
-    CourseService.addModule(
-      props.courseId,
+    ModuleService.addModule(
+      props.location.state.courseid,
       formData.get('title'),
       formData.get('description'),
-      formData.get('image'),
+      "there will be no image here. Please delete me!"
     ).then(() => {
-      // props.setModuleId(response.data);
-      history.push(`/courseview/${props.courseID}`)
-      // props.show(true);
+      history.push(`/courseview/${props.location.state.courseid}`)
     });
   };
 
@@ -69,18 +66,10 @@ const NewModule = (props) => {
             </FormGroup>
           </Col>
         </Row>
-        <Row>
-          <Col className="mt-2">
-            3. Select a module profile photo
-            <FormGroup className="mt-2">
-              <Input type="file" getRef="attachments" />
-            </FormGroup>
-          </Col>
-        </Row>
 
         <Row className="mt-5">
           <Col>
-            <Link to={AppRoutes.Home} className="font-weight-bold" ><Button>Back</Button></Link>
+            <Button onClick={() => {history.goBack()}}>Back</Button>
           </Col>
           <Col className="text-right">
             <Button color="secondary">

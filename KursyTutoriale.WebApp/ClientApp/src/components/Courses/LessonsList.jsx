@@ -31,23 +31,37 @@ const LessonsList = (props) => (
               style={{ backgroundColor: '#7CC3D8', borderColor: '#7CC3D8' }}
             >
               <CardTitle>{item.title}</CardTitle>
-              <CardText className="card-height">{item.content}</CardText>
-              <Link to="/lessonview">
-                <Button fluid onClick={props.toggleLesson}>
-                  Let`&apos`s go
+              <CardText className="card-height">{'temp description'}</CardText>
+              <Link
+                to={{
+                  pathname: AppRoutes.Lesson,
+                  state: {
+                    title: item.title,
+                    content: item.content,
+                  },
+                }}>
+                <Button color="primary">
+                  Lets go
                 </Button>
               </Link>
             </Card>
           </Col>
         </Row>
       ))}
-      <Link to={{
-        pathname: AppRoutes.EditLesson,
-        courseID: props.courseID
-        }}>
-      <Button color="success" size="lg" block>
-              Add new lesson
-      </Button>
+
+      <Link
+        className="m-2"
+        to={{
+          pathname: AppRoutes.EditLesson,
+          state: {
+            courseid: props.courseid,
+            moduleid: props.moduleid,
+          },
+        }}
+      >
+        <Button color="success" size="lg" block>
+          Add new lesson
+        </Button>
       </Link>
     </Card>
   </Container>

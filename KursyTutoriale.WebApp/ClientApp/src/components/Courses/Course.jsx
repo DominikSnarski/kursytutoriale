@@ -27,6 +27,7 @@ class Course extends React.Component {
       course: null,
       courseLoaded: false,
       error: false,
+      modules: null
     };
   }
 
@@ -37,8 +38,10 @@ class Course extends React.Component {
       this.setState({
         course: response.data,
         courseLoaded: true,
+        modules: response.data.modules
       }),
     );
+
   }
 
   render() {
@@ -95,7 +98,7 @@ class Course extends React.Component {
               </Col>
               <Col className="column-text">
                 Price:{' '}
-                {this.state.course.price === 0 ? 'Free' : this.state.price}
+                {this.state.course.price === 0 ? 'Free' : this.state.course.price}$
               </Col>
             </Row>
 
@@ -134,7 +137,7 @@ class Course extends React.Component {
             <Modules
               toggleLesson={this.props.toggleLesson}
               modules={this.state.course.modules}
-              courseID={this.state.courseID}
+              courseid = {this.state.courseid}
             />
           </Jumbotron>
 
