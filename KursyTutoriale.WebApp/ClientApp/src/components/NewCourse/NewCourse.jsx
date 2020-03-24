@@ -107,7 +107,6 @@ function NewCourse() {
   };
 
   return (
-    <Container className="justify-content-center">
       <Container className="justify-content-center"
       style={{ backgroundColor: '#7BC5DA', backgroundImage: `url(${backgroundImage})`,
   backgroundPosition: 'center',
@@ -249,8 +248,6 @@ function NewCourse() {
 
       <br />
       </Container>
-
-    </Container>
   );
 }
 
