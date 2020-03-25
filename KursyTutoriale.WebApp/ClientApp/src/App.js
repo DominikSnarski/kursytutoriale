@@ -33,6 +33,8 @@ import ProtectedRoute from './routing/ProtectedRoute';
 import ModPanel from './components/ModPanel/ModPanel';
 import ModRoute from './routing/ModRoute';
 import AdminMainPanel from './components/AdminPanel/AdminMainPanel';
+import AdminRoute from './routing/AdminRoute';
+
 
 const App = () => {
   const [userContext, setUserContext] = useState(
@@ -169,7 +171,7 @@ const App = () => {
                 component={ModPanel}
                 layout={MainLayout}
                 />
-                <ProtectedRoute
+                <AdminRoute
                 exact
                 path={AppRoutes.AdminMainPanel}
                 component={AdminMainPanel}

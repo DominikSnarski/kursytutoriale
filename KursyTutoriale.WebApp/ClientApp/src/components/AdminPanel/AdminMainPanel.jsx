@@ -19,6 +19,7 @@ const AdminMainPanel = () => {
 
   const toggleTabs = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
+
   };
 
 
