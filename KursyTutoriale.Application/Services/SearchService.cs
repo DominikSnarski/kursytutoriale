@@ -30,14 +30,14 @@ namespace KursyTutoriale.Application.Services
 
         protected class WeightDecorator
         {
-            public WeightDecorator(Course course) {
+            public WeightDecorator(CourseReadModel course) {
                 this.course = course;
                 weight = 0;
             }
-            public Course course;
+            public CourseReadModel course;
             public double weight;
             public void AddWeight(double w) { weight += w; }
-            public Course unpack() { return course; }
+            public CourseReadModel unpack() { return course; }
         }
 
         public IEnumerable<CourseBasicInformationsDTO> Search(string phrase, int totalNumberOfResults)
@@ -54,7 +54,7 @@ namespace KursyTutoriale.Application.Services
                 return mapper.Map<IEnumerable<CourseBasicInformationsDTO>>(query.AsEnumerable());
 
             List<WeightDecorator> searchList = new List<WeightDecorator>();
-            foreach (Course course in query)
+            foreach (CourseReadModel course in query)
             {
                 searchList.Add(new WeightDecorator(course));
             }
@@ -72,11 +72,11 @@ namespace KursyTutoriale.Application.Services
                 double lessonWeight = 7f / 4;
                 if (item.course.Title.ToUpper().Contains(phrase.ToUpper()))
                     item.AddWeight(10);
-                foreach (CourseModule module in item.course.Modules)
+                foreach (CourseModuleReadModel module in item.course.Modules)
                 {
                     if (module.Title.ToUpper().Contains(phrase.ToUpper()))
                         item.AddWeight(moduleWeight /= 3f / 2);
-                    foreach (Lesson lesson in module.Lessons)
+                    foreach (LessonReadModel lesson in module.Lessons)
                     {
                         if (lesson.Title.ToUpper().Contains(phrase.ToUpper()))
                             item.AddWeight(lessonWeight /= 3f / 2);
