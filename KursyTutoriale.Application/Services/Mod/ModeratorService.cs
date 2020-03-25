@@ -78,6 +78,8 @@ namespace KursyTutoriale.Application.Services.Mod
                 r.DateOfModAssignment = DateTime.MinValue;
             }
 
+            await unitOfWork.SaveChangesAsync();
+
             var query = reportRepository.Queryable()
                 .Where(r => r.ReportStatus == ReportStatusType.Unresolved &&
                     DateTime.Compare(r.DateOfModAssignment.AddHours(1), DateTime.UtcNow) < 0)
@@ -231,6 +233,8 @@ namespace KursyTutoriale.Application.Services.Mod
                 r.VerificationStamp.ModAssigneeId = Guid.Empty;
                 r.VerificationStamp.DateOfModAssignment = DateTime.MinValue;
             }
+
+            await unitOfWork.SaveChangesAsync();
 
             List<CourseBasicInformationsDTO> result = new List<CourseBasicInformationsDTO>();
             foreach (var course in
