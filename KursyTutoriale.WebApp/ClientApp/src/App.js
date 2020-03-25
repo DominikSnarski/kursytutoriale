@@ -169,7 +169,7 @@ const App = () => {
                 component={ModPanel}
                 layout={MainLayout}
                 />
-                <AppRoute
+                <ProtectedRoute
                 exact
                 path={AppRoutes.AdminMainPanel}
                 component={AdminMainPanel}
