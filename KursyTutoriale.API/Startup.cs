@@ -77,7 +77,6 @@ namespace KursyTutoriale.API
             builder.RegisterType<CourseService>().As<ICourseService>();
             builder.RegisterType<SearchService>().As<ISearchService>();
             builder.RegisterType<FileService>().As<IFileService>();
-            builder.RegisterType<AdminService>().As<IAdminService>();
 
             builder.RegisterModule(new DataAccessModule(Configuration.GetConnectionString("default")));
 
