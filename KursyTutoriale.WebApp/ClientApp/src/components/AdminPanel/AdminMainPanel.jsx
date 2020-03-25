@@ -13,6 +13,7 @@ import {
 } from 'reactstrap';
 import AdminUsersPanel from './AdminUsersPanel';
 import AdminModeratorsPanel from './AdminModeratorsPanel';
+import AdminUnverifiedCoursesPanel from './AdminUnverfiedCoursesPanel';
 
 const AdminMainPanel = () => {
   const [activeTab, setActiveTab] = useState('1');
@@ -56,15 +57,26 @@ const AdminMainPanel = () => {
               toggleTabs('3');
             }}
           >
+            Unverified courses
+          </NavLink>
+        </NavItem>
+
+        <NavItem>
+          <NavLink
+            className={classnames({ active: activeTab === '4' })}
+            onClick={() => {
+              toggleTabs('4');
+            }}
+          >
             Reported comments
           </NavLink>
         </NavItem>
 
       <NavItem>
           <NavLink
-            className={classnames({ active: activeTab === '4' })}
+            className={classnames({ active: activeTab === '5' })}
             onClick={() => {
-              toggleTabs('4');
+              toggleTabs('5');
             }}
           >
             Reported courses
@@ -74,9 +86,9 @@ const AdminMainPanel = () => {
         
         <NavItem>
           <NavLink
-            className={classnames({ active: activeTab === '5' })}
+            className={classnames({ active: activeTab === '6' })}
             onClick={() => {
-              toggleTabs('5');
+              toggleTabs('6');
             }}
           >
             Statistics
@@ -98,7 +110,7 @@ const AdminMainPanel = () => {
 
       <TabContent activeTab={activeTab}>
         <TabPane tabId="3">
-
+            <AdminUnverifiedCoursesPanel/>
         </TabPane>
       </TabContent>
 
@@ -107,7 +119,20 @@ const AdminMainPanel = () => {
 
         </TabPane>
       </TabContent>
+
+      <TabContent activeTab={activeTab}>
+        <TabPane tabId="5">
+
+        </TabPane>
+      </TabContent>
+
+      <TabContent activeTab={activeTab}>
+        <TabPane tabId="6">
+
+        </TabPane>
+      </TabContent>
     </Container>
+    
   );
 };
 export default AdminMainPanel;
