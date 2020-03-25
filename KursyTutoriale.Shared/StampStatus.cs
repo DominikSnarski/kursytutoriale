@@ -8,6 +8,7 @@ namespace KursyTutoriale.Shared
     {
         pending = 0,
         verified = 1,
-        rejected = 2
+        rejected = 2,
+        blocked = 3
     }
 }

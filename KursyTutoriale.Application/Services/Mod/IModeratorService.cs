@@ -12,12 +12,14 @@ namespace KursyTutoriale.Application.Services.Mod
 {
     public interface IModeratorService
     {
-        Task<VerificationStamp> AcceptCourse(Guid CourseId);
-        Task<VerificationStamp> RejectCourse(Guid CourseId, RejectionDTO Dto);
+        Task<int> AcceptCourse(Guid CourseId);
+        Task<int> RejectCourse(Guid CourseId, RejectionDTO Dto);
+        Task<IEnumerable<CourseBasicInformationsDTO>> GetAndAssignCoursesRequiringVerification(int NrOfCourses);
         IEnumerable<CourseBasicInformationsDTO> GetCoursesForVerification(int NrOfCourses);
         IEnumerable<ReportDTO> GetUnresolvedReports(int count);
+        Task<IEnumerable<ReportDTO>> AssignAndGetUnresolvedReports(int count);
         void ResolveReport(Guid reportId, ReportStatusType resolve, string resolverComment);
-        Guid BlockCourse(Guid courseId);
+        Task<int> BlockCourse(Guid courseId,string note);
         ReportDTO GetReport(Guid reportId);
     }
 }

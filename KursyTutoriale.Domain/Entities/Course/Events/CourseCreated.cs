@@ -42,7 +42,8 @@ namespace KursyTutoriale.Domain.Entities.Course.Events
                 Date = Date,
                 Price = Price,
                 Tags = Tags,
-                OwnerId = OwnerId
+                OwnerId = OwnerId,
+                VerificationStamp = new VerificationStamp()
             };
 
             DefaultModuleId = DefaultModuleId == Guid.Empty ? Guid.NewGuid() : DefaultModuleId;

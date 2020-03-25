@@ -169,6 +169,11 @@ namespace KursyTutoriale.Infrastructure.Repositories.Implementations
 
                 readModel.Tags = course.Tags.Select(t => new CourseTag { CourseId = course.Id, Id = t })
                                            .ToList();
+
+                readModel.VerificationStamp.Status = course.VerificationStamp.Status;
+                readModel.VerificationStamp.Note = course.VerificationStamp.Note;
+                readModel.VerificationStamp.ModVerifierId = course.VerificationStamp.ModVerifierId;
+                readModel.VerificationStamp.Date = course.VerificationStamp.Date;
             }
         }
 

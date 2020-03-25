@@ -29,11 +29,10 @@ namespace KursyTutoriale.API.Controllers
         /// </summary>
         /// <param name="CourseId">Id of the course in question</param>
         /// <returns>Index of the verified course</returns>
-        [HttpPost("VerifyCourse")]
+        [HttpPut("VerifyCourse")]
         public async Task<int> Accept(Guid CourseId)
         {
-            var stamp = await moderatorService.AcceptCourse(CourseId);
-            return stamp.Index;
+            return await moderatorService.AcceptCourse(CourseId);
         }
         /// <summary>
         /// Rejects the verification of the course
@@ -41,17 +40,17 @@ namespace KursyTutoriale.API.Controllers
         /// <param name="request">Object containing the information about the rejection</param>
         /// <param name="CourseId">Id of the course in question</param>
         /// <returns>Index of the rejected course</returns>
-        [HttpPost("RejectCourse")]
+        [HttpPut("RejectCourse")]
         public async Task<int> Reject([FromBody]RejectionDTO request,Guid CourseId)
         {
-            var stamp = await moderatorService.RejectCourse(CourseId,request);
-            return stamp.Index;
+            return await moderatorService.RejectCourse(CourseId,request);
         }
         /// <summary>
         /// Fetches the courses that require verification, Ordered by the oldest
         /// </summary>
         /// <param name="NrOfCourses">Number of courses to be fetched</param>
         /// <returns>The list of the courses that require verification</returns>
+        [Authorize(Policy ="Admin")]
         [HttpGet("GetCoursesForVerification")]
         public IEnumerable<CourseBasicInformationsDTO> GetCoursesForVerification(int NrOfCourses)
         {
@@ -60,18 +59,38 @@ namespace KursyTutoriale.API.Controllers
         /// <summary>
         /// Fetches the courses that require verification, Ordered by the oldest
         /// </summary>
-        /// <param name="NrOfCourses">Number of courses to be fetched</param>
         /// <returns>The list of the courses that require verification</returns>
+        [HttpGet("AssignCoursesRequiringVerification")]
+        public Task<IEnumerable<CourseBasicInformationsDTO>> GetAndAssignCoursesRequiringVerification()
+        {
+            return moderatorService.GetAndAssignCoursesRequiringVerification(3);
+        }
+        /// <summary>
+        /// Fetches reports ordered by the oldest
+        /// </summary>
+        /// <param name="NrOfCourses">Number of reports to be fetched</param>
+        /// <returns>The list of reports</returns>
+        [Authorize(Policy = "Admin")]
         [HttpGet("GetUnresolvedReports")]
         public IEnumerable<ReportDTO> GetUnresolvedReports(int count)
         {
             return moderatorService.GetUnresolvedReports(count);
         }
         /// <summary>
-        /// Fetches the courses that require verification, Ordered by the oldest
+        /// Fetches reports ordered by the oldest, assigns them to moderator
+        /// </summary>
+        /// <returns>The list of reports</returns>
+        [HttpGet("AssignReports")]
+        public Task<IEnumerable<ReportDTO>> GetAndAssignReports()
+        {
+            return moderatorService.AssignAndGetUnresolvedReports(3);
+        }
+        /// <summary>
+        /// Fetches the report 
         /// </summary>
         /// <param name="NrOfCourses">Number of courses to be fetched</param>
         /// <returns>The list of the courses that require verification</returns>
+        [Authorize(Policy ="Admin")]
         [HttpGet("GetReport")]
         public ReportDTO GetReport(Guid reportId)
         {

@@ -12,7 +12,7 @@ namespace KursyTutoriale.Domain.Entities.Course
             this.ReporterId = ReporterId;
             ReportStatus = ReportStatusType.Unresolved;
             ReportType = ReportType.Other;    //Default Type
-            ReportedDate = DateTime.Now;
+            ReportedDate = DateTime.UtcNow;
         }
 
         public Guid ReporterId { get; set; }
@@ -24,5 +24,7 @@ namespace KursyTutoriale.Domain.Entities.Course
         public Guid ResolverId { get; set; }
         public string ResolverComment { get; set; }
         public ReportStatusType ReportStatus { get; set; }
+        public DateTime DateOfModAssignment { get; set; }
+        public Guid ModAssigneeId { get; set; }
     }
 }

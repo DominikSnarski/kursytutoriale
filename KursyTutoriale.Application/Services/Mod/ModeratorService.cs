@@ -4,11 +4,15 @@ using KursyTutoriale.Application.DataTransferObjects.Course.Report;
 using KursyTutoriale.Application.DataTransferObjects.Course.Verification;
 using KursyTutoriale.Domain.Entities.Auth;
 using KursyTutoriale.Domain.Entities.Course;
+using KursyTutoriale.Domain.Entities.Course.Events;
 using KursyTutoriale.Infrastructure.Repositories;
+using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using KursyTutoriale.Shared;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using URF.Core.Abstractions;
@@ -19,14 +23,14 @@ namespace KursyTutoriale.Application.Services.Mod
     {
         private IExtendedRepository<Report> reportRepository;
         private IExtendedRepository<ApplicationUser> userRepository;
-        private IExtendedRepository<Course> courseRepository;
+        private ICourseRepository courseRepository;
         private IUnitOfWork unitOfWork;
         private IExecutionContextAccessor executionContext;
         private IDTOMapper mapper;
 
         public ModeratorService(IExtendedRepository<Report> reportRepository,
             IExtendedRepository<ApplicationUser> userRepository,
-            IExtendedRepository<Course> courseRepository,
+            ICourseRepository courseRepository,
             IUnitOfWork unitOfWork,
             IExecutionContextAccessor executionContext,
             IDTOMapper mapper)
@@ -39,21 +43,56 @@ namespace KursyTutoriale.Application.Services.Mod
             this.mapper = mapper;
         }
 
-        public Guid BlockCourse(Guid courseId)
+        public async Task<int> BlockCourse(Guid courseId,string note)
         {
-            throw new NotImplementedException();
+            var course = courseRepository.Find(courseId);
+
+            var userId = executionContext.GetUserId();
+            var @event = new VerificationChanged(courseId, StampStatus.blocked, note, userId);
+
+            courseRepository.HandleEvent(@event, course);
+
+            await unitOfWork.SaveChangesAsync();
+
+            return 0;
         }
 
         public IEnumerable<ReportDTO> GetUnresolvedReports(int count)
         {
             var query = reportRepository.Queryable()
                 .Where(r => r.ReportStatus == ReportStatusType.Unresolved)
-                .OrderBy(r => r.ReportedDate);
+                .OrderBy(r => r.ReportedDate)
+                .Take(count);
 
-            if (count > query.Count())
-                count = query.Count();
+            var result = mapper.Map<IEnumerable<ReportDTO>>(query.AsEnumerable());
 
-            var result = mapper.Map<IEnumerable<ReportDTO>>(query.Take(count).AsEnumerable());
+            return result;
+        }
+        public async Task<IEnumerable<ReportDTO>> AssignAndGetUnresolvedReports(int count)
+        {
+            //reset moderator's assignments
+            foreach(Report r in reportRepository.Queryable()
+                .Where(r => r.ModAssigneeId == executionContext.GetUserId()))
+            {
+                r.ModAssigneeId = Guid.Empty;
+                r.DateOfModAssignment = DateTime.MinValue;
+            }
+
+            var query = reportRepository.Queryable()
+                .Where(r => r.ReportStatus == ReportStatusType.Unresolved &&
+                    DateTime.Compare(r.DateOfModAssignment.AddHours(1), DateTime.UtcNow) < 0)
+                .OrderBy(r => r.ReportedDate)
+                .Take(count);
+
+            foreach (Report report in query)
+            {
+                report.ModAssigneeId = executionContext.GetUserId();
+                report.DateOfModAssignment = DateTime.UtcNow;
+            }
+
+            var result = mapper.Map<IEnumerable<ReportDTO>>(query.AsEnumerable());
+
+            await unitOfWork.SaveChangesAsync();
 
             return result;
         }
@@ -82,16 +121,24 @@ namespace KursyTutoriale.Application.Services.Mod
         {
             var report = reportRepository.Queryable().First(r => r.Id == reportId);
 
+            if (report.ModAssigneeId != executionContext.GetUserId() &&
+                !executionContext.GetUserRoles().Contains("Admin"))
+                throw new UnauthorizedAccessException("Moderator not assigned to resolvement of this report");
+
             if (resolve == ReportStatusType.Unresolved)
                 throw new ArgumentException("New status can't be 'unresolved' when resolving","resolve");
             if (report == null)
                 throw new ArgumentException("reportId not found","reportId");
-            if (executionContext.GetUserId() == null)
-                throw new UnauthorizedAccessException();
 
-            report.ResolvedDate = DateTime.Now;
+            if(resolve == ReportStatusType.CourseBlocked)
+            {
+                await BlockCourse(report.CourseId, report.ResolverComment);
+                return;
+            }
+
+            report.ResolvedDate = DateTime.UtcNow;
             report.ReportStatus = resolve;
-            report.ResolverId = (Guid)executionContext.GetUserId();
+            report.ResolverId = executionContext.GetUserId();
             report.ResolverComment = resolverComment;
 
             reportRepository.Update(report);
@@ -103,23 +150,26 @@ namespace KursyTutoriale.Application.Services.Mod
          /// </summary>
          /// <param name="CourseId">Id of the course in question</param>
          /// <returns>Created Verification Stamp</returns>
-        public async Task<VerificationStamp> AcceptCourse(Guid CourseId)
+        public async Task<int> AcceptCourse(Guid CourseId)
         {
-            var query = courseRepository.Queryable();
-            var course = query.Where(c => c.Id.Equals(CourseId)).FirstOrDefault();
-
-            var stamp = new VerificationStamp()
+            if(courseRepository.Queryable()
+                .FirstOrDefault(c => c.Id == CourseId)
+                .VerificationStamp.ModAssigneeId != executionContext.GetUserId()
+                && !executionContext.GetUserRoles().Contains("Admin"))
             {
-                Index = course.VerificationStamps.Count + 1,
-                Status = StampStatus.verified,
-                Date = DateTime.UtcNow,
-                CourseId = course.Id
-            };
+                throw new Exception("Moderator not assigned to the verification of this course");
+            }
 
-            course.VerificationStamps.Add(stamp);
-            courseRepository.Update(course);
-            var result = await unitOfWork.SaveChangesAsync();
-            return stamp;
+            var course = courseRepository.Find(CourseId);
+
+            var userId = executionContext.GetUserId();
+            var @event = new VerificationChanged(CourseId,StampStatus.verified,null,userId);
+
+            courseRepository.HandleEvent(@event, course);
+
+            await unitOfWork.SaveChangesAsync();
+
+            return 0;
         }
         /// <summary>
         /// Rejects verification of the course
@@ -127,24 +177,26 @@ namespace KursyTutoriale.Application.Services.Mod
         /// <param name="CourseId">Id of the course in question</param>
         /// <param name="Dto">Object containing notes about rejection</param>
         /// <returns>Created Verification Stamp</returns>
-        public async Task<VerificationStamp> RejectCourse(Guid CourseId, RejectionDTO Dto)
+        public async Task<int> RejectCourse(Guid CourseId, RejectionDTO Dto)
         {
-            var query = courseRepository.Queryable();
-            var course = query.Where(c => c.Id.Equals(CourseId)).FirstOrDefault();
-
-            var stamp = new VerificationStamp()
+            if (courseRepository.Queryable()
+                .FirstOrDefault(c => c.Id == CourseId)
+                .VerificationStamp.ModAssigneeId != executionContext.GetUserId()
+                && !executionContext.GetUserRoles().Contains("Admin"))
             {
-                Index = course.VerificationStamps.Count + 1,
-                Status = StampStatus.rejected,
-                Date = DateTime.UtcNow,
-                CourseId = course.Id,
-                Note = Dto.Note
-            };
+                throw new Exception("Moderator not assigned to the verification of this course");
+            }
 
-            course.VerificationStamps.Add(stamp);
-            courseRepository.Update(course);
-            var result = await unitOfWork.SaveChangesAsync();
-            return stamp;
+            var course = courseRepository.Find(CourseId);
+
+            var userId = executionContext.GetUserId();
+            var @event = new VerificationChanged(CourseId, StampStatus.rejected, Dto.Note, userId);
+
+            courseRepository.HandleEvent(@event, course);
+
+            await unitOfWork.SaveChangesAsync();
+
+            return 0;
         }
         /// <summary>
         /// Returns the list of courses that are waiting to be verified, ordered from the oldest
@@ -154,18 +206,46 @@ namespace KursyTutoriale.Application.Services.Mod
         public IEnumerable<CourseBasicInformationsDTO> GetCoursesForVerification(int NrOfCourses)
         {
             List<CourseBasicInformationsDTO> result = new List<CourseBasicInformationsDTO>();
-            foreach (Course course in
+            foreach (var course in
                 courseRepository.Queryable()
-                .Where(c => c.VerificationStamps
-                    .OrderByDescending(s => s.Index)
-                    .First().Status == StampStatus.pending)
-                .OrderBy(s => s.VerificationStamps
-                    .OrderByDescending(s => s.Index)
-                    .First().Date)
+                .Include(c => c.VerificationStamp)
+                .OrderBy(s => s.VerificationStamp.Date)
                 .Take(NrOfCourses))
             {
                 result.Add(mapper.Map<CourseBasicInformationsDTO>(course));
             }
+
+            return result;
+        }
+        /// <summary>
+        /// Returns the list of courses that are waiting to be verified, ordered from the oldest, assigns moderators to the verification of the course for 1 hour
+        /// </summary>
+        /// <param name="NrOfCourses">number of courses returned</param>
+        /// <returns>List of courses waiting for verification</returns>
+        public async Task<IEnumerable<CourseBasicInformationsDTO>> GetAndAssignCoursesRequiringVerification(int NrOfCourses)
+        {
+            //reset moderator's assignments
+            foreach (CourseReadModel r in courseRepository.Queryable()
+                .Where(r => r.VerificationStamp.ModAssigneeId == executionContext.GetUserId()))
+            {
+                r.VerificationStamp.ModAssigneeId = Guid.Empty;
+                r.VerificationStamp.DateOfModAssignment = DateTime.MinValue;
+            }
+
+            List<CourseBasicInformationsDTO> result = new List<CourseBasicInformationsDTO>();
+            foreach (var course in
+                courseRepository.Queryable()
+                .Include(c => c.VerificationStamp)
+                .Where(c => DateTime.Compare(c.VerificationStamp.DateOfModAssignment.AddHours(1), DateTime.UtcNow) < 0)
+                .OrderBy(s => s.VerificationStamp.Date)
+                .Take(NrOfCourses))
+            {
+                course.VerificationStamp.DateOfModAssignment = DateTime.UtcNow;
+                course.VerificationStamp.ModAssigneeId = executionContext.GetUserId();
+                result.Add(mapper.Map<CourseBasicInformationsDTO>(course));
+            }
+            await unitOfWork.SaveChangesAsync();
+
             return result;
         }
     }

@@ -32,11 +32,8 @@ namespace KursyTutoriale.Application.Services
         FeaturedCoursesDTO getFeaturesCourses(int numberInEachCategory);
         CourseReadModel GetCourse(Guid id);
         IEnumerable<CourseBasicInformationsDTO> GetUsersCourses(Guid UserId);
-<<<<<<< HEAD
         IEnumerable<CourseBasicInformationsDTO> GetCoursesForVerification(int NrOfCourses);
-=======
         Task<Guid> ReportCourse(Guid CourseId, ReportType type, string reporterComment);
->>>>>>> added moderator methods - backend
     }
 
     public class CourseService : ICourseService
@@ -54,23 +51,17 @@ namespace KursyTutoriale.Application.Services
             IExtendedRepository<CourseReadModel> coursesRepository,
             IFileService fileService,
             IExecutionContextAccessor executionContext,
-<<<<<<< HEAD
             ICourseRepository courseRepository, 
-            IExtendedRepository<Tag> tagsRepository)
-=======
+            IExtendedRepository<Tag> tagsRepository,
             IExtendedRepository<Report> reportRepository)
->>>>>>> added moderator methods - backend
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             this.fileService = fileService;
             this.executionContext = executionContext;
-<<<<<<< HEAD
             this.courseRepository = courseRepository;
             this.tagsRepository = tagsRepository;
-=======
             this.reportRepository = reportRepository;
->>>>>>> added moderator methods - backend
         }
 
 
@@ -395,8 +386,7 @@ namespace KursyTutoriale.Application.Services
 
             return result.AsEnumerable();
         }
-<<<<<<< HEAD
-       
+
         /// <summary>
         /// Returns the list of courses that are waiting to be verified, ordered from the oldest
         /// </summary>
@@ -404,17 +394,8 @@ namespace KursyTutoriale.Application.Services
         /// <returns>List of courses waiting for verification</returns>
         public IEnumerable<CourseBasicInformationsDTO> GetCoursesForVerification(int NrOfCourses)
         {
-            List<CourseBasicInformationsDTO> result = new List<CourseBasicInformationsDTO>();
-            foreach (var course in
-                courseRepository.Queryable()
-                .Where(c => c.VerificationStamps
-                    .OrderByDescending(s => s.Index)
-                    .First().Status == StampStatus.pending)
-                .OrderBy(s => s.VerificationStamps
-                    .OrderByDescending(s => s.Index)
-                    .First().Date)
-                .Take(NrOfCourses))
-=======
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// Creates a report for a course, takes user report it from execution context
@@ -426,9 +407,8 @@ namespace KursyTutoriale.Application.Services
 
         public async Task<Guid> ReportCourse(Guid courseId,ReportType type, string reporterComment)
         {
-            Course course = coursesRepository.Queryable().First(c => c.Id == courseId);
+            CourseReadModel course = courseRepository.Queryable().First(c => c.Id == courseId);
             if (course == null)
->>>>>>> added moderator methods - backend
             {
                 throw new ArgumentException("courseId not found","courseId");
             }
@@ -436,7 +416,7 @@ namespace KursyTutoriale.Application.Services
             {
                 throw new UnauthorizedAccessException();
             }
-            Report report = new Report((Guid)executionContext.GetUserId(), courseId);
+            Report report = new Report(executionContext.GetUserId(), courseId);
             report.ReportType = type;
             report.ReporterComment = reporterComment;
 
