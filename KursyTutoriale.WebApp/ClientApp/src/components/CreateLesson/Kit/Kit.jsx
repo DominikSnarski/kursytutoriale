@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Col, Row, Card, CardHeader } from 'reactstrap';
 import Button2 from '../../../layouts/CSS/Button/Button';
+import '../Kit.css'
 
 function Kit(props) {
   return (
@@ -8,7 +9,7 @@ function Kit(props) {
       <Row>
         <Col>
           <Card>
-            <CardHeader className="mb-3" style={{ textAlign: 'center' }}>
+            <CardHeader className="mb-3 handle" style={{ textAlign: 'center' }}>
               Tools kit
             </CardHeader>
             <Button2
