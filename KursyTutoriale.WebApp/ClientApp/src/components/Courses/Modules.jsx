@@ -8,12 +8,16 @@ import {
   UncontrolledCollapse,
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../../contexts/UserContext';
 import LessonsList from './LessonsList';
 import './style.css';
 import AppRoutes from '../../routing/AppRoutes';
 
 
 function Modules (props){
+
+  const userContext = React.useContext(UserContext);
+
   return(
   <Container fluid>
     <ListGroup style={{ borderColor: '#9dd2e2' }}>
@@ -27,21 +31,23 @@ function Modules (props){
               <LessonsList
                 toggleLesson={props.toggleLesson}
                 lessons={item.lessons}
-                courseid = {props.courseid}
+                courseid = {props.courseID}
                 moduleid = {item.id}
                 moduleDescription = {item.description}
+                ownerID = {props.ownerID}
               />
             </UncontrolledCollapse>
           </Col>
         </Row>
       ))}
 
-      <Row className="d-flex justify-content-center mb-2">
+        
+      {userContext.userid === props.ownerID && <Row className="d-flex justify-content-center mb-2">
           <Col>
           <Link to={{
             pathname: AppRoutes.AddModule, 
             state: {
-              courseid: props.courseid
+              courseid: props.courseID
             }
             }}>
             <Button color="success" size="lg" block>
@@ -49,7 +55,8 @@ function Modules (props){
             </Button>
           </Link>
           </Col>
-        </Row>
+      </Row>}
+      
 
     </ListGroup>
   </Container>
