@@ -17,6 +17,6 @@ namespace KursyTutoriale.Domain.Entities.Course
         public float Price { get; set; }
         public ICollection<CourseTag> Tags { get; set; }
         public ICollection<CourseModuleReadModel> Modules { get; set; }
-        public ICollection<VerificationStamp> VerificationStamps { get; set; }
+        public VerificationStamp VerificationStamp { get; set; }
     }
 }
