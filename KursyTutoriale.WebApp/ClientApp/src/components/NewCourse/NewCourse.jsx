@@ -19,6 +19,8 @@ import SystemService from '../../api/Services/SystemService';
 import Button from '../../layouts/CSS/Button/Button';
 import InputField from '../../layouts/CSS/InputField/InputField';
 
+import backgroundImage from '../../images/Book_background.jpg';
+
 function NewCourse() {
   // table of tags
   // setTagsList is used to add tags dynamically
@@ -112,10 +114,13 @@ function NewCourse() {
       <Zoom duration="200">
     <Container
       className="justify-content-center Container"
-      style={{ backgroundColor: '#7BC5DA' }}
+      style={{ backgroundColor: '#7BC5DA', backgroundImage: `url(${backgroundImage})`,
+  backgroundPosition: 'center',
+  backgroundSize: 'cover',
+  backgroundRepeat: 'no-repeat', opaciy: '0.5'}}
     >
       <br />
-      <h1 style={{ textAlign: 'center' }}>Add a new course</h1>
+      <h1 style={{ textAlign: 'center', color: '#ffb606', fontSize: '60px', fontWeight: '800', opacity: '1.0'}}>Add a new course</h1>
 
       <Form onSubmit={(e) => handleSubmit(e)}>
         <br />
@@ -216,6 +221,19 @@ function NewCourse() {
                 id="exampleText"
                 placeholder="Set price"
               />
+            </Col>
+          </Row>
+        </FormGroup>
+
+        <br />
+
+        <FormGroup>
+          <Row>
+            <Label sm={2} for="date">
+              Date of adding course{' '}
+            </Label>
+            <Col sm={10}>
+              <InputField type="datetime" name="date" id="exampleText" />
             </Col>
           </Row>
         </FormGroup>
