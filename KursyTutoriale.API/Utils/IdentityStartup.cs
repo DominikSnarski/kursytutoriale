@@ -41,6 +41,7 @@ namespace KursyTutoriale.API.Utils
                 opt.Issuer = jwtConfig["issuer"];
                 opt.Audience = jwtConfig["audience"];
                 opt.Secret = jwtConfig["secret"];
+                opt.ExpireTimeInMinutes = int.Parse(jwtConfig["expire_time_in_minutes"]);
             });
 
             var key = Encoding.UTF8.GetBytes(jwtConfig["secret"]);

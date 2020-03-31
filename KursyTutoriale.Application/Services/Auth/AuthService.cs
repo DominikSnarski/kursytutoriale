@@ -99,7 +99,7 @@ namespace KursyTutoriale.Application.Services.Auth
             return new JwtSecurityToken(
                 issuer: jwtOptions.Issuer,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(15),
+                expires: DateTime.UtcNow.AddMinutes(jwtOptions.ExpireTimeInMinutes),
                 notBefore: DateTime.UtcNow,
                 audience: jwtOptions.Audience,
                 signingCredentials: creds);
