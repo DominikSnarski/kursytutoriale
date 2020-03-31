@@ -9,7 +9,7 @@ namespace KursyTutoriale.Domain.Entities.Course
     {
         public VerificationStamp()
         {
-            Status = StampStatus.pending;
+            Status = StampStatus.Pending;
             Date = DateTime.UtcNow;
         }
         public StampStatus Status { get; set; }

@@ -22,4 +22,8 @@
     <ProjectReference Include="..\KursyTutoriale.Shared\KursyTutoriale.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CoursePublication\" />
+  </ItemGroup>
+
 </Project>

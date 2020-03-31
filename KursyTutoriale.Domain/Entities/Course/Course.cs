@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace KursyTutoriale.Domain.Entities.Course
 {
@@ -56,6 +55,19 @@ namespace KursyTutoriale.Domain.Entities.Course
             modules.Add(module);
 
             return true;
+        }
+
+        public bool IsVerified()
+        {
+            if (VerificationStamp is null)
+                return false;
+
+            return VerificationStamp.Status == Shared.StampStatus.Verified;
+        }
+
+        public bool CanPublish(Guid userId)
+        {
+            return userId == OwnerId;
         }
     }
 }

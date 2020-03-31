@@ -48,7 +48,7 @@ namespace KursyTutoriale.Application.Services.Mod
             var course = courseRepository.Find(courseId);
 
             var userId = executionContext.GetUserId();
-            var @event = new VerificationChanged(courseId, StampStatus.blocked, note, userId);
+            var @event = new VerificationChanged(courseId, StampStatus.Blocked, note, userId);
 
             courseRepository.HandleEvent(@event, course);
 
@@ -154,18 +154,16 @@ namespace KursyTutoriale.Application.Services.Mod
          /// <returns>Created Verification Stamp</returns>
         public async Task<int> AcceptCourse(Guid CourseId)
         {
-            if(courseRepository.Queryable()
-                .FirstOrDefault(c => c.Id == CourseId)
-                .VerificationStamp.ModAssigneeId != executionContext.GetUserId()
+            var course = courseRepository.Find(CourseId);
+
+            if (course.VerificationStamp.ModAssigneeId != executionContext.GetUserId()
                 && !executionContext.GetUserRoles().Contains("Admin"))
             {
                 throw new Exception("Moderator not assigned to the verification of this course");
             }
 
-            var course = courseRepository.Find(CourseId);
-
             var userId = executionContext.GetUserId();
-            var @event = new VerificationChanged(CourseId,StampStatus.verified,null,userId);
+            var @event = new VerificationChanged(CourseId,StampStatus.Verified,null,userId);
 
             courseRepository.HandleEvent(@event, course);
 
@@ -192,7 +190,7 @@ namespace KursyTutoriale.Application.Services.Mod
             var course = courseRepository.Find(CourseId);
 
             var userId = executionContext.GetUserId();
-            var @event = new VerificationChanged(CourseId, StampStatus.rejected, Dto.Note, userId);
+            var @event = new VerificationChanged(CourseId, StampStatus.Rejected, Dto.Note, userId);
 
             courseRepository.HandleEvent(@event, course);
 
