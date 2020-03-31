@@ -1,5 +1,6 @@
 ﻿using KursyTutoriale.Domain.Entities.Auth;
 using KursyTutoriale.Domain.Entities.Course;
+using KursyTutoriale.Domain.Entities.CoursePublication;
 using KursyTutoriale.Domain.Entities.Moderation;
 using KursyTutoriale.Domain.Entities.UserProfiles;
 using KursyTutoriale.Infrastructure.Configuration.DataModels;
@@ -24,6 +25,7 @@ namespace KursyTutoriale.Infrastructure
         public DbSet<CourseJsonEvent> CourseEvents{ get; set; }
         public DbSet<CourseReadModel> Courses { get; set; }
         public DbSet<Report> Reports { get; set; }
+        public DbSet<CoursePublicationProfile> PublicationProfiles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -35,6 +37,7 @@ namespace KursyTutoriale.Infrastructure
             builder.ApplyConfiguration(new CourseConfigurator());
             builder.ApplyConfiguration(new GenderConfigurator());
             builder.ApplyConfiguration(new ReportConfiguration());
+            builder.ApplyConfiguration(new CoursePublicationProfileConfiguration());
         }
     }
 }

@@ -212,9 +212,14 @@ namespace KursyTutoriale.Application.Services
         /// </param>
         public async Task<int> AddModule(CourseModuleCreationDTO module)
         {
+            var userId = executionContext.GetUserId();
+            var course = courseRepository.Find(module.CourseId);
+
+            if (!course.HasAccess(userId))
+                throw new UnauthorizedAccessException();
+
             var @event = new ModuleAdded(module.CourseId, module.Title, module.Description);
 
-            var course = courseRepository.Find(module.CourseId);
 
             if (course.Id == Guid.Empty)
                 throw new Exception($"Course with id: {module.CourseId} doesnt exist");
@@ -233,13 +238,17 @@ namespace KursyTutoriale.Application.Services
         /// </param>
         public async Task<int> AddLesson(AddLessonRequest lesson)
         {
+            var userId = executionContext.GetUserId();
+            var course = courseRepository.Find(lesson.CourseId);
+
+            if (!course.HasAccess(userId))
+                throw new UnauthorizedAccessException();
+
             var lessonParts = lesson.Content.OrderBy(part => part.Index)
                 .Select(part => new LessonPart(part.Name, part.Content))
                 .ToList();
 
             var @event = new LessonAdded(0, 0, lesson.Title, lesson.ModuleId, lesson.CourseId, lessonParts);
-
-            var course = courseRepository.Find(lesson.CourseId);
 
             if (course.Id == Guid.Empty)
                 throw new Exception($"Course with id: {lesson.CourseId} doesnt exist");
