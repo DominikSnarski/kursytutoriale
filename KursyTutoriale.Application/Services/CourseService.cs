@@ -33,6 +33,7 @@ namespace KursyTutoriale.Application.Services
         CourseReadModel GetCourse(Guid id);
         IEnumerable<CourseBasicInformationsDTO> GetUsersCourses(Guid UserId);
         IEnumerable<CourseBasicInformationsDTO> GetCoursesForVerification(int NrOfCourses);
+        Task<Guid> ReportCourse(Guid CourseId, ReportType type, string reporterComment);
     }
 
     public class CourseService : ICourseService
@@ -43,6 +44,7 @@ namespace KursyTutoriale.Application.Services
         private ICourseRepository courseRepository;
         private IFileService fileService;
         private IExecutionContextAccessor executionContext;
+        private IExtendedRepository<Report> reportRepository;
         public CourseService(
             IUnitOfWork unitOfWork,
             IDTOMapper mapper,
@@ -50,7 +52,8 @@ namespace KursyTutoriale.Application.Services
             IFileService fileService,
             IExecutionContextAccessor executionContext,
             ICourseRepository courseRepository, 
-            IExtendedRepository<Tag> tagsRepository)
+            IExtendedRepository<Tag> tagsRepository,
+            IExtendedRepository<Report> reportRepository)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
@@ -58,6 +61,7 @@ namespace KursyTutoriale.Application.Services
             this.executionContext = executionContext;
             this.courseRepository = courseRepository;
             this.tagsRepository = tagsRepository;
+            this.reportRepository = reportRepository;
         }
 
 
@@ -208,9 +212,14 @@ namespace KursyTutoriale.Application.Services
         /// </param>
         public async Task<int> AddModule(CourseModuleCreationDTO module)
         {
+            var userId = executionContext.GetUserId();
+            var course = courseRepository.Find(module.CourseId);
+
+            if (!course.HasAccess(userId))
+                throw new UnauthorizedAccessException();
+
             var @event = new ModuleAdded(module.CourseId, module.Title, module.Description);
 
-            var course = courseRepository.Find(module.CourseId);
 
             if (course.Id == Guid.Empty)
                 throw new Exception($"Course with id: {module.CourseId} doesnt exist");
@@ -229,13 +238,17 @@ namespace KursyTutoriale.Application.Services
         /// </param>
         public async Task<int> AddLesson(AddLessonRequest lesson)
         {
+            var userId = executionContext.GetUserId();
+            var course = courseRepository.Find(lesson.CourseId);
+
+            if (!course.HasAccess(userId))
+                throw new UnauthorizedAccessException();
+
             var lessonParts = lesson.Content.OrderBy(part => part.Index)
                 .Select(part => new LessonPart(part.Name, part.Content))
                 .ToList();
 
             var @event = new LessonAdded(0, 0, lesson.Title, lesson.ModuleId, lesson.CourseId, lessonParts);
-
-            var course = courseRepository.Find(lesson.CourseId);
 
             if (course.Id == Guid.Empty)
                 throw new Exception($"Course with id: {lesson.CourseId} doesnt exist");
@@ -382,7 +395,7 @@ namespace KursyTutoriale.Application.Services
 
             return result.AsEnumerable();
         }
-       
+
         /// <summary>
         /// Returns the list of courses that are waiting to be verified, ordered from the oldest
         /// </summary>
@@ -390,20 +403,35 @@ namespace KursyTutoriale.Application.Services
         /// <returns>List of courses waiting for verification</returns>
         public IEnumerable<CourseBasicInformationsDTO> GetCoursesForVerification(int NrOfCourses)
         {
-            List<CourseBasicInformationsDTO> result = new List<CourseBasicInformationsDTO>();
-            foreach (var course in
-                courseRepository.Queryable()
-                .Where(c => c.VerificationStamps
-                    .OrderByDescending(s => s.Index)
-                    .First().Status == StampStatus.pending)
-                .OrderBy(s => s.VerificationStamps
-                    .OrderByDescending(s => s.Index)
-                    .First().Date)
-                .Take(NrOfCourses))
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Creates a report for a course, takes user report it from execution context
+        /// </summary>
+        /// <param name="courseId">the id of the course reported</param>
+        /// <param name="reporterComment">the comment left with a report by a reporter</param>
+        /// <param name="type">type of a report</param>
+        /// <returns>Id of the report made</returns>
+
+        public async Task<Guid> ReportCourse(Guid courseId,ReportType type, string reporterComment)
+        {
+            CourseReadModel course = courseRepository.Queryable().First(c => c.Id == courseId);
+            if (course == null)
             {
-                result.Add(mapper.Map<CourseBasicInformationsDTO>(course));
+                throw new ArgumentException("courseId not found","courseId");
             }
-            return result;
+            if (executionContext.GetUserId() == null)
+            {
+                throw new UnauthorizedAccessException();
+            }
+            Report report = new Report(executionContext.GetUserId(), courseId);
+            report.ReportType = type;
+            report.ReporterComment = reporterComment;
+
+            reportRepository.Insert(report);
+            var result = await unitOfWork.SaveChangesAsync();
+            return report.Id;
         }
     }
 }

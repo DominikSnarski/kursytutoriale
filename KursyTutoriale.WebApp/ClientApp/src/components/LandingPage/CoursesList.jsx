@@ -6,7 +6,6 @@ import {
   Col,
   Container,
   Jumbotron,
-  Row,
   Spinner,
   Table,
 } from 'reactstrap';
@@ -77,18 +76,30 @@ class CoursesList extends React.Component {
   render() {
     if (this.state.error) {
       return (
-        <Row>
+        <Container
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
           <Col xs="6" sm="4"></Col>
           <Col sm="12" md={{ size: 10, offset: 1 }}>
             <Alert color="danger">Something went terribly wrong.</Alert>
           </Col>
           <Col sm="4"></Col>
-        </Row>
+        </Container>
       );
     }
     if (this.state.isLoading)
       return (
-        <Row>
+        <Container
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
           <Col xs="6" sm="4"></Col>
           <Col xs="6" sm="4">
             <Spinner
@@ -98,7 +109,7 @@ class CoursesList extends React.Component {
             />
           </Col>
           <Col sm="4"></Col>
-        </Row>
+        </Container>
       );
     return (
       <Container>

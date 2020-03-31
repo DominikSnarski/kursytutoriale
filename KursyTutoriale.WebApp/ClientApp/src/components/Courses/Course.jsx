@@ -14,6 +14,7 @@ import {
   Spinner,
 } from 'reactstrap';
 import { Fade } from 'react-reveal';
+import { UserContext } from '../../contexts/UserContext';
 import './style.css';
 import Modules from './Modules';
 import {CourseService} from '../../api/Services/CourseService';
@@ -30,6 +31,10 @@ class Course extends React.Component {
       modules: null
     };
   }
+
+  static contextType = UserContext
+  
+
 
   componentDidMount() {
     this.setState({ isLoading: true });
@@ -73,6 +78,8 @@ class Course extends React.Component {
       );
     }
 
+    
+    const user = this.context
     return (
       <Container className="Container">
         <Fade left duration="200">
@@ -94,7 +101,7 @@ class Course extends React.Component {
           <Jumbotron className="courses_bg pr-4">
             <Row className="d-flex mb-3">
               <Col className="column-text">
-                Author: {this.state.course.ownerId}
+                Author: {this.state.course.ownerId} 
               </Col>
               <Col className="column-text">
                 Price:{' '}
@@ -137,9 +144,24 @@ class Course extends React.Component {
             <Modules
               toggleLesson={this.props.toggleLesson}
               modules={this.state.course.modules}
-              courseid = {this.state.courseid}
+              courseID = {this.state.courseid}
+              ownerID = {this.state.course.ownerId}
             />
           </Jumbotron>
+
+          {user.userid === this.state.course.ownerId &&
+            <Container>
+              <Row className="justify-content-md-center">
+            <Alert>
+              Your course will NOT be available if it is not verified. If you
+              think it is ready send it to verification!
+            </Alert>
+            </Row>
+            <Row className="justify-content-md-center">
+            <Button>Send to verification</Button>
+            </Row>
+          </Container>
+          }
 
           <Button color="secondary" onClick={this.props.toggle}>
             Back

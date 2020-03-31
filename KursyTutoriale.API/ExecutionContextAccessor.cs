@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using KursyTutoriale.Application.Contracts;
 using Microsoft.AspNetCore.Http;
 
@@ -22,10 +24,30 @@ namespace KursyTutoriale.API
                             ?.Claims
                             ?.FirstOrDefault(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
 
-            if (userId is null) 
+            if (userId is null)
                 throw new UnauthorizedAccessException("Unauthorized access");
 
             return Guid.Parse(userId.Value);
+        }
+
+        public IEnumerable<string> GetUserRoles()
+        {
+            var userRoles = httpContext
+                            ?.HttpContext
+                            ?.User
+                            ?.Claims
+                            ?.Where(claim => claim.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
+
+            if (userRoles is null)
+                throw new UnauthorizedAccessException("Unauthorized access");
+
+            List<string> rolesString = new List<string>();
+            foreach(Claim c in userRoles)
+            {
+                rolesString.Add(c.Value);
+            }
+
+            return rolesString.AsEnumerable();
         }
     }
 }

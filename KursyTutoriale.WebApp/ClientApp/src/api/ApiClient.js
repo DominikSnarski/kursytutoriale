@@ -79,7 +79,7 @@ apiClient.interceptors.response.use(
   (error) => {
     const { response } = error;
 
-    if (response.status !== 401) {
+    if (response!==undefined&&response.status !== 401) {
       return new Promise((reject) => {
         apiClient.setGlobalMessage(response.data);
         reject(error);

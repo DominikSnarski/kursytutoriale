@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace KursyTutoriale.Domain.Entities.Course
 {
@@ -35,7 +34,7 @@ namespace KursyTutoriale.Domain.Entities.Course
         public ICollection<Guid> Tags { get; set; }
         public IReadOnlyCollection<Lesson> Lessons { get => lessons.AsReadOnly(); }
         public IReadOnlyCollection<CourseModule> Modules { get => modules.AsReadOnly(); }
-        public ICollection<VerificationStamp> VerificationStamps { get; set; }
+        public VerificationStamp VerificationStamp { get; set; }
 
         public bool AddLesson(Lesson lesson, Guid moduleId)
         {
@@ -56,6 +55,19 @@ namespace KursyTutoriale.Domain.Entities.Course
             modules.Add(module);
 
             return true;
+        }
+
+        public bool IsVerified()
+        {
+            if (VerificationStamp is null)
+                return false;
+
+            return VerificationStamp.Status == Shared.StampStatus.Verified;
+        }
+
+        public bool HasAccess(Guid userId)
+        {
+            return userId == OwnerId;
         }
     }
 }

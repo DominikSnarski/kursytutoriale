@@ -6,12 +6,14 @@ using KursyTutoriale.Application.DataTransferObjects;
 using KursyTutoriale.Application.DataTransferObjects.Course;
 using KursyTutoriale.Application.Services;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace KursyTutoriale.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class CourseCreatorController : Controller
     {
@@ -60,20 +62,6 @@ namespace KursyTutoriale.API.Controllers
         {
             var index = await courseService.AddLesson(lesson);
             return index;
-        }
-
-
-        /// <summary>
-        /// Used to get course you want to edit.
-        /// </summary>
-        /// <param name="courseId">  Id of course you want to get </param>
-        /// <returns>
-        /// Returns version of course viable for edition 
-        /// </returns>
-        [HttpGet("GetCourseForEdition")]
-        public CourseForEditionDTO GetCourseForEdition(Guid courseId)
-        {
-            return courseService.GetCourseForEdition(courseId);
         }
     }
 }
