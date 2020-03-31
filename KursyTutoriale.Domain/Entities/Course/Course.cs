@@ -65,7 +65,7 @@ namespace KursyTutoriale.Domain.Entities.Course
             return VerificationStamp.Status == Shared.StampStatus.Verified;
         }
 
-        public bool CanPublish(Guid userId)
+        public bool HasAccess(Guid userId)
         {
             return userId == OwnerId;
         }

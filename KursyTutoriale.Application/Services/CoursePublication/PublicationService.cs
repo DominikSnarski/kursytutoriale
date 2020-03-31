@@ -39,7 +39,7 @@ namespace KursyTutoriale.Application.Services.CoursePublication
                 throw new Exception("Cannot publish unverified course");
 
             var userId = executionContextAccessor.GetUserId();
-            if (!course.CanPublish(userId))
+            if (!course.HasAccess(userId))
                 throw new UnauthorizedAccessException();
 
             var newProfile = new CoursePublicationProfile(courseId, course.OwnerId);
@@ -63,7 +63,7 @@ namespace KursyTutoriale.Application.Services.CoursePublication
                 throw new Exception("Cannot publish unverified course");
 
             var userId = executionContextAccessor.GetUserId();
-            if (!course.CanPublish(userId))
+            if (!course.HasAccess(userId))
                 throw new UnauthorizedAccessException();
 
             var newVersion = profile.PublishNewMajorVersion();
