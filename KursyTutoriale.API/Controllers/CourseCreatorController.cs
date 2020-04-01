@@ -6,12 +6,14 @@ using KursyTutoriale.Application.DataTransferObjects;
 using KursyTutoriale.Application.DataTransferObjects.Course;
 using KursyTutoriale.Application.Services;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace KursyTutoriale.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class CourseCreatorController : Controller
     {
@@ -21,7 +23,6 @@ namespace KursyTutoriale.API.Controllers
         {
             this.courseService = courseService;
         }
-
 
         /// <summary>
         /// Used to create course.
@@ -57,53 +58,10 @@ namespace KursyTutoriale.API.Controllers
         /// Version of lesson you want to add to module
         /// </param>
         [HttpPost("AddLesson")]
-        public async Task<int> AddLesson([FromBody]LessonCreationDTO lesson)
+        public async Task<int> AddLesson([FromBody]AddLessonRequest lesson)
         {
             var index = await courseService.AddLesson(lesson);
             return index;
-        }
-
-
-        /// <summary>
-        /// Used to get course you want to edit.
-        /// </summary>
-        /// <param name="courseId">  Id of course you want to get </param>
-        /// <returns>
-        /// Returns version of course viable for edition 
-        /// </returns>
-        [HttpGet("GetCourseForEdition")]
-        public CourseForEditionDTO GetCourseForEdition(Guid courseId)
-        {
-            return courseService.GetCourseForEdition(courseId);
-        }
-
-        /// <summary>
-        /// Used to get course module for edition
-        /// </summary>
-        /// <param name="courseId">Id of course you want to get</param>
-        /// <param name="moduleIndex">Index of course module you want to get</param>
-        /// <returns>
-        /// Returns version of module viable for edition
-        /// </returns>
-        [HttpGet("GetCourseModuleForEdition")]
-        public CourseModuleForEditionDTO GetCourseModuleForEdition(Guid courseId, int moduleIndex)
-        {
-            return courseService.GetCourseModuleForEdition(courseId, moduleIndex);
-        }
-
-        /// <summary>
-        /// Used to get lesson for edition
-        /// </summary>
-        /// <param name="courseId">Id of course you want to get</param>
-        /// <param name="moduleIndex">Index of course module you want to get</param>
-        /// <param name="lessonIndex">Index of lesson you want to get</param>
-        /// <returns>
-        /// Returns version of lesson viable for edition
-        /// </returns>
-        [HttpGet("GetLessonForEdition")]
-        public LessonForEditionDTO GeLessonForEdition(Guid courseId, int moduleIndex, int lessonIndex)
-        {
-            return courseService.GetLessonForEdition(courseId, moduleIndex, lessonIndex);
         }
     }
 }

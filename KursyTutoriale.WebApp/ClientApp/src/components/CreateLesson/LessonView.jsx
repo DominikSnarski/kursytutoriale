@@ -1,128 +1,128 @@
 import React from 'react';
 import { Jumbotron, Button, Container, Col, Row } from 'reactstrap';
 import { Fade } from 'react-reveal';
-import { DndProvider } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
-import { Link } from 'react-router-dom';
-import LessonEdit from './LessonEdit';
+import { useHistory, Link } from 'react-router-dom';
+import { UserContext } from '../../contexts/UserContext';
+import AppRoutes from '../../routing/AppRoutes';
 
-class Lesson extends React.Component {
-  constructor() {
-    super();
+function Lesson(props) {
+  const items = JSON.parse(
+    props.location.state.lessons[props.location.state.index].content,
+  );
+  const userContext = React.useContext(UserContext);
+  const history = useHistory();
 
-    const exampleContents = [
-      {
-        name: 'text',
-        value:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dolor lacus, congue a rutrum a, consectetur et justo. Nulla laoreet, tortor eget faucibus cursus, lorem erat rutrum nunc, quis varius augue dolor in turpis.',
-      },
-      {
-        name: 'question',
-        value: 'How much is 2+2?',
-        answers: { 1: '3', 2: '22', 3: '4' },
-        correctAnswer: 3,
-        type: 'radio',
-      },
-      { name: 'text', value: 'One under another.' },
-      {
-        name: 'multipleAnswersQuestion',
-        value: 'что это?',
-        answers: ['это штахета.', 'чики брики в дамке', 'nudy'],
-        correctAnswers: [1, 2],
-      },
-      {
-        name: 'image',
-        value: 'https://via.placeholder.com/480x320',
-        alt: 'We are sorry but we have lost this image.',
-      },
-    ];
+  return (
+    <Container className="Container">
+      <Fade left duration="200">
+        <Jumbotron fluid className="jumbotron_bg">
+          <span className="d-lg-flex justify-content-center d-block h2 text-dark">
+            {props.location.state.lessons[props.location.state.index].title}
+          </span>
+        </Jumbotron>
 
-    this.state = {
-      exampleContents,
-      showLessonEdit: false,
-    };
-
-    this.toggleLessonEdit = this.toggleLessonEdit.bind(this);
-  }
-
-  toggleLessonEdit() {
-    this.setState({ showLessonEdit: !this.state.showLessonEdit });
-  }
-
-  render() {
-    if (this.state.showLessonEdit) {
-      return (
-        <DndProvider backend={HTML5Backend}>
-          <LessonEdit toggleLessonEdit={this.toggleLessonEdit} />
-        </DndProvider>
-      );
-    }
-    return (
-      <Container className="Container">
-        <Fade left duration="200">
-          <Jumbotron fluid className="jumbotron_bg">
-            <span className="d-lg-flex justify-content-center d-block h2 text-dark">
-              Lesson&apos;s Title
-            </span>
-          </Jumbotron>
-
-          <Jumbotron className="courses_bg pr-4">
-            {this.state.exampleContents.map((item, i) => (
-              <div key={i}>
-                {item.name === 'text' && item.value}{' '}
-                {item.name === 'image' && (
-                  <Row>
-                    <Col className="d-flex justify-content-center mb-2">
-                      <img src={item.value} alt={item.alt} />
-                    </Col>
-                  </Row>
-                )}
-                {item.name === 'video' && (
-                  <Row>
-                    <Col className="d-flex justify-content-center mb-2">
-                      <video width="480" controls>
-                        <source src={item.value} type="video/mp4" />
-                        Your browser does not support HTML5 video.
-                      </video>
-                    </Col>
-                  </Row>
-                )}
-              </div>
-            ))}
-
-            <Row className="mt-5">
-              <Col>
-                <Button color="secondary" onClick={this.props.toggleLesson}>
-                  Previous lesson
-                </Button>
-              </Col>
-              <Col className="text-right">
-                <Button color="secondary" onClick={this.props.toggleLesson}>
-                  Next lesson
-                </Button>
-              </Col>
-            </Row>
-          </Jumbotron>
+        <Jumbotron className="courses_bg pr-4">
+          {items.map((item, key) => {
+            if (item.Name.substring(0, 4) === 'text')
+              return (
+                <Container>
+                  <p>{item.Content}</p>
+                  <br />
+                </Container>
+              );
+            // eslint-disable-next-line react/jsx-key
+            return (
+              <Container key={key}>
+                <Row className="justify-content-md-center">
+                  <img
+                    src={item.Content}
+                    alt="Something, somewhere went terribly wrong"
+                  />
+                </Row>
+              </Container>
+            );
+          })}
 
           <Row className="mt-5">
             <Col>
-              <Link to="/courseview">
-                <Button color="secondary" onClick={this.props.toggleLesson}>
-                  Leave lesson
-                </Button>
-              </Link>
+              {props.location.state.index !== 0 && (
+                <Link
+                  to={{
+                    pathname: AppRoutes.Lesson,
+                    state: {
+                      lessons: props.location.state.lessons,
+                      index: props.location.state.index - 1,
+                      ownerID: props.location.state.ownerID,
+                      courseID: props.location.state.courseID,
+                    },
+                  }}
+                >
+                  <Button
+                    color="secondary"
+                    onClick={() => {
+                      history.goBack();
+                    }}
+                  >
+                    Previous lesson
+                  </Button>
+                </Link>
+              )}
             </Col>
             <Col className="text-right">
-              <Link to="/editlesson">
-                <Button color="secondary" onClick={this.toggleLessonEdit}>
-                  Edit lesson
-                </Button>
-              </Link>
+              {props.location.state.index !==
+                props.location.state.lessons.length - 1 && (
+                <Link
+                  to={{
+                    pathname: AppRoutes.Lesson,
+                    state: {
+                      lessons: props.location.state.lessons,
+                      index: props.location.state.index + 1,
+                      ownerID: props.location.state.ownerID,
+                      courseID: props.location.state.courseID,
+                    },
+                  }}
+                >
+                  <Button
+                    color="secondary"
+                    onClick={() => {
+                      history.goBack();
+                    }}
+                  >
+                    Next lesson
+                  </Button>
+                </Link>
+              )}
             </Col>
           </Row>
-        </Fade>
-      </Container>
-    );
-  }
+        </Jumbotron>
+
+        <Row className="mt-5">
+          <Col>
+            <Button
+              color="secondary"
+              onClick={() => {
+                history.push(`/courseview/${props.location.state.courseID}`);
+              }}
+            >
+              Leave lesson
+            </Button>
+          </Col>
+          <Col className="text-right">
+            {userContext.userid === props.location.state.ownerID && (
+              <Button
+                color="secondary"
+                onClick={() => {
+                  history.goBack();
+                }}
+              >
+                Edit lesson
+              </Button>
+            )}
+          </Col>
+        </Row>
+      </Fade>
+    </Container>
+  );
 }
+
 export default Lesson;

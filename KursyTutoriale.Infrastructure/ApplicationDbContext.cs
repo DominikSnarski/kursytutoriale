@@ -1,8 +1,10 @@
 ﻿using KursyTutoriale.Domain.Entities.Auth;
 using KursyTutoriale.Domain.Entities.Course;
+using KursyTutoriale.Domain.Entities.CoursePublication;
 using KursyTutoriale.Domain.Entities.Moderation;
 using KursyTutoriale.Domain.Entities.UserProfiles;
 using KursyTutoriale.Infrastructure.Configuration.DataModels;
+using KursyTutoriale.Infrastructure.EventSourcing;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -19,8 +21,11 @@ namespace KursyTutoriale.Infrastructure
         public DbSet<UserProfile> UserProfiles{ get; set; }
         public DbSet<ModeratorProfile> ModeratorProfiles { get; set; }
         public DbSet<Tag> Tags { get; set; }
-        public DbSet<Course> Courses { get; set; }
         public DbSet<Gender> Genders { get; set; }
+        public DbSet<CourseJsonEvent> CourseEvents{ get; set; }
+        public DbSet<CourseReadModel> Courses { get; set; }
+        public DbSet<Report> Reports { get; set; }
+        public DbSet<CoursePublicationProfile> PublicationProfiles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -31,6 +36,8 @@ namespace KursyTutoriale.Infrastructure
             builder.ApplyConfiguration(new TagConfiguration());
             builder.ApplyConfiguration(new CourseConfigurator());
             builder.ApplyConfiguration(new GenderConfigurator());
+            builder.ApplyConfiguration(new ReportConfiguration());
+            builder.ApplyConfiguration(new CoursePublicationProfileConfiguration());
         }
     }
 }

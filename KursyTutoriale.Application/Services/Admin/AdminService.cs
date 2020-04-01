@@ -43,6 +43,7 @@ namespace KursyTutoriale.Application.Services.Admin
                 return false;
 
             await userManager.AddToRoleAsync(user, "Moderator");
+            await userManager.RemoveFromRoleAsync(user, "User");
 
             moderatorProfile = new ModeratorProfile(userId);
 

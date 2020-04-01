@@ -34,16 +34,19 @@ const App = () => {
 
   const [appContext, setAppContext] = useState(InitialAppContext);
 
-  apiClient.onLogin = (username, userid) => {
+  apiClient.onLogin = (username, userid, userRoles) => {
     setUserContext({
       authenticated: true,
       username,
       userid,
+      userRoles,
     });
+
     const temp = {
       authenticated: true,
       username,
       userid,
+      userRoles,
     };
     localStorage.setItem('user', JSON.stringify(temp));
   };

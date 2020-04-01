@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace KursyTutoriale.Shared
+﻿namespace KursyTutoriale.Shared
 {
     public enum StampStatus
     {
-        pending = 0,
-        verified = 1,
-        rejected = 2
+        Pending = 0,
+        Verified = 1,
+        Rejected = 2,
+        Blocked = 3
     }
 }
