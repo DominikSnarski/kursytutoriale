@@ -19,6 +19,7 @@ import SystemService from '../../api/Services/SystemService';
 import Button from '../../layouts/CSS/Button/Button';
 import InputField from '../../layouts/CSS/InputField/InputField';
 
+import './NewCourse.css';
 import backgroundImage from '../../images/Book_background.jpg';
 
 function NewCourse() {
@@ -110,17 +111,18 @@ function NewCourse() {
 
 
   return (
-    <Jumbotron fluid className="jumbotron_bg">
+    <Jumbotron fluid className="jumbotron_newCourse">
       <Zoom duration="200">
     <Container
       className="justify-content-center Container"
-      style={{ backgroundColor: '#7BC5DA', backgroundImage: `url(${backgroundImage})`,
+      style={{ backgroundColor: '#edf3f4', backgroundImage: `url(${backgroundImage})`,
   backgroundPosition: 'center',
   backgroundSize: 'cover',
-  backgroundRepeat: 'no-repeat', opaciy: '0.5'}}
+  backgroundRepeat: 'no-repeat', 
+  opaciy: '0.3'}}
     >
       <br />
-      <h1 style={{ textAlign: 'center', color: '#ffb606', fontSize: '60px', fontWeight: '800', opacity: '1.0'}}>Add a new course</h1>
+      <h1>Add a new course</h1>
 
       <Form onSubmit={(e) => handleSubmit(e)}>
         <br />

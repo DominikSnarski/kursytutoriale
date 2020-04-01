@@ -1,0 +1,16 @@
+.jumbotron_newCourse {
+    background-color:#F8F9F9 !important;
+}
+
+h1 {
+    text-align: center;
+    color: #ffb606;
+    font-size: 60px;
+    font-weight: 900;
+    opacity: 1.0; 
+    text-shadow: 2px 2px 2px #000000;
+}
+
+Label{
+    font-weight: 600;
+}
