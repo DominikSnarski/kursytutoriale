@@ -7,7 +7,7 @@ function Tags(props) {
     <div>
       <div
         style={{
-          backgroundColor: '#348DA6',
+          backgroundColor: '#ffb606',
           position: 'relative',
           padding: '0.25rem',
           marginTop: '1rem',
