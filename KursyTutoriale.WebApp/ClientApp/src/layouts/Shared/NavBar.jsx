@@ -69,6 +69,13 @@ const NavBar = () => {
                 )}
               </Form>
 
+              {userContext.authenticated &&
+                userContext.userRoles.includes('Moderator') && (
+                  <Link to={AppRoutes.ModPanel}>
+                    <Button outline>ModPanel</Button>
+                  </Link>
+                )}
+
               {userContext.authenticated && (
                 <Link to={`/userProfile/${userContext.userid}`}>
                   <Button color="warning" outline>

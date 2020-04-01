@@ -26,6 +26,7 @@ namespace KursyTutoriale.Infrastructure
         public DbSet<CourseReadModel> Courses { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<CoursePublicationProfile> PublicationProfiles { get; set; }
+        public DbSet<ModAssignment> ModAssignments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -38,6 +39,7 @@ namespace KursyTutoriale.Infrastructure
             builder.ApplyConfiguration(new GenderConfigurator());
             builder.ApplyConfiguration(new ReportConfiguration());
             builder.ApplyConfiguration(new CoursePublicationProfileConfiguration());
+            builder.ApplyConfiguration(new ModAssignmentConfiguration());
         }
     }
 }
