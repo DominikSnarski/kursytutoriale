@@ -5,7 +5,7 @@ export const Card = (props) => {
   return (
     <div className="card">
       <img src={props.image}></img>
-      <div class="text-center">
+      <div className="text-center">
         <div className="card-title">
           <a href={props.link}>{props.title}</a>
         </div>

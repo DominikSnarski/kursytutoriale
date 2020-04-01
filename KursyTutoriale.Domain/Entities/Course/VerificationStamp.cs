@@ -15,8 +15,6 @@ namespace KursyTutoriale.Domain.Entities.Course
         public StampStatus Status { get; set; }
         public string Note { get; set; }
         public DateTime Date { get; set; }
-        public DateTime DateOfModAssignment { get; set; }
-        public Guid ModAssigneeId { get; set; }
         public Guid ModVerifierId { get; set; }
     }
 }

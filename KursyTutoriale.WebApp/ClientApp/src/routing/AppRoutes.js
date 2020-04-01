@@ -12,6 +12,7 @@ const AppRoutes = {
   Logout: '/',
   UserProfile: '/userProfile/:id',
   CourseRejectionForm: '/courseRejectionForm',
+  ModPanel: '/modPanel',
 };
 
 export default AppRoutes;

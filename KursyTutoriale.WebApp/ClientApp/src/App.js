@@ -26,6 +26,8 @@ import MainLayout from './layouts/MainLayout';
 import AppRoute from './routing/AppRoute';
 import AppRoutes from './routing/AppRoutes';
 import ProtectedRoute from './routing/ProtectedRoute';
+import ModPanel from './components/ModPanel/ModPanel';
+import ModRoute from './routing/ModRoute';
 
 const App = () => {
   const [userContext, setUserContext] = useState(
@@ -136,6 +138,12 @@ const App = () => {
                 exact
                 path={AppRoutes.CourseRejectionForm}
                 component={CourseRejectionForm}
+                layout={MainLayout}
+              />
+              <ModRoute
+                exact
+                path={AppRoutes.ModPanel}
+                component={ModPanel}
                 layout={MainLayout}
               />
               <Route component={notfound} layout={MainLayout} />
