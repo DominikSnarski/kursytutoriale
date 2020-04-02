@@ -13,6 +13,7 @@ function Button(props) {
         }}
       >
         <button
+          type={props.type}
           style={{
             background: 'transparent',
             border: 0,
@@ -37,6 +38,7 @@ function Button(props) {
         }}
       >
         <button
+          type={props.type}
           style={{
             background: 'transparent',
             border: 0,
