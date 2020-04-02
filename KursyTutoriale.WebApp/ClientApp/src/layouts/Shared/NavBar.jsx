@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -14,95 +15,88 @@ import {
 import { UserContext } from '../../contexts/UserContext';
 import apiClient from '../../api/ApiClient';
 import AppRoutes from '../../routing/AppRoutes';
+import './NavBar.css';
 
 const NavBar = () => {
   const userContext = React.useContext(UserContext);
 
   const handleSubmit = (event) => {
-    event.preventDefault();
-
     apiClient.logout();
   };
 
   return (
-    <header className="page">
-      <Navbar
-        fixed="top"
-        color="light"
-        light
-        expand="xs"
-        className="border-bottom border-gray bg-white"
-        style={{ height: 80 }}
-      >
-        <Container>
-          <Row noGutters className="position-relative w-100 align-items-center">
-            <Col className="d-none d-lg-flex justify-content-start">
-              <Nav className="mrx-auto" navbar>
-                <NavItem className="d-flex align-items-center">
-                  <Link to={AppRoutes.Home} className="font-weight-bold">
-                    Home
-                  </Link>
-                </NavItem>
+    <header className="header d-flex flex-row">
+      <div className="header_content d-flex flex-row align-items-center">
+        <div className="logo_container">
+          <div className="logo">
+            <span>
+              <Link to={AppRoutes.Home} style={{ color: '#3a3a3a' }}>
+                kursy tutoriale
+              </Link>
+            </span>
+          </div>
+        </div>
 
-                <NavItem className="d-flex align-items-center">
-                  <NavLink className="font-weight-bold" href="#Courses">
-                    Courses
-                  </NavLink>
-                </NavItem>
+        <Nav className="nav_container">
+          <NavItem className="nav_item">
+            <NavLink className="font-weight-bold" href="#Courses">
+              Courses
+            </NavLink>
+          </NavItem>
 
-                <NavItem className="d-flex align-items-center">
-                  <Link
-                    className="font-weight-bold"
-                    to={AppRoutes.AddNewCourse}
-                  >
-                    Add New Course
-                  </Link>
-                </NavItem>
-              </Nav>
-            </Col>
-            <Col className="d-none d-lg-flex justify-content-end">
-              <Form onSubmit={handleSubmit}>
-                {userContext.authenticated && (
-                  <Button className="font-weight-bold" type="submit" outline>
-                    Logout
-                  </Button>
-                )}
-              </Form>
-
-              {userContext.authenticated &&
-                userContext.userRoles.includes('Moderator') && (
-                  <Link to={AppRoutes.ModPanel}>
-                    <Button outline>ModPanel</Button>
-                  </Link>
-                )}
-
-              {userContext.authenticated && (
-                <Link to={`/userProfile/${userContext.userid}`}>
-                  <Button color="warning" outline>
-                    {userContext.username}
-                  </Button>
-                </Link>
-              )}
-
-              <Form inline>
-                <Link to={AppRoutes.Signin}>
-                  <Button type="button" color="primary" outline>
-                    Sign in
-                  </Button>
-                </Link>
-              </Form>
-
-              <Form inline>
-                <Link to={AppRoutes.Register}>
-                  <Button type="button" color="primary" outline>
-                    Register
-                  </Button>
-                </Link>
-              </Form>
-            </Col>
-          </Row>
-        </Container>
-      </Navbar>
+          <NavItem className="nav_item">
+            <Link className="font-weight-bold" to={AppRoutes.AddNewCourse}>
+              Add New Course
+            </Link>
+          </NavItem>
+        </Nav>
+      </div>
+      <div className="user_controls d-flex flex-row justify-content-center align-items-center">
+        {userContext !== undefined && userContext.authenticated && (
+          <span
+            className="user_controls_nav"
+            onClick={() => {
+              handleSubmit();
+            }}
+            style={{ color: '#BB0000' }}
+          >
+            Logout
+          </span>
+        )}
+        {userContext !== undefined &&
+          userContext.authenticated &&
+          userContext.userRoles.includes('Moderator') && (
+            <span className="user_controls_nav">
+              <Link to={AppRoutes.ModPanel}>
+                <Button outline>ModPanel</Button>
+              </Link>
+            </span>
+          )}
+        {userContext !== undefined && userContext.authenticated && (
+          <span className="user_controls_nav">
+            <Link
+              to={`/userProfile/${userContext.userid}`}
+              style={{ color: '#eaebec', fontWeight: 'bold' }}
+            >
+              {userContext.username}
+            </Link>
+          </span>
+        )}
+        {userContext !== undefined && !userContext.authenticated && (
+          <span className="user_controls_nav">
+            <Link to={AppRoutes.Signin} style={{ color: '#FFFFFF' }}>
+              Sign In
+            </Link>
+          </span>
+        )}
+        {userContext !== undefined && !userContext.authenticated && (
+          <span className="user_controls_nav">
+            <Link to={AppRoutes.Register} style={{ color: '#00BB00' }}>
+              Register
+            </Link>
+          </span>
+        )}
+      </div>
     </header>
   );
 };
