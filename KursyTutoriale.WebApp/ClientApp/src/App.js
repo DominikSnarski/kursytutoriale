@@ -12,7 +12,10 @@ import { AppContext, InitialAppContext } from './contexts/AppContext';
 import { InitialUserContext, UserContext } from './contexts/UserContext';
 import Course from './components/Courses/Course';
 import { GlobalErrorMessage } from './components/GlobalMessages/GlobalErrorMessage';
-import LessonEdit from './components/CreateLesson/LessonEdit';
+import NewLesson from './components/CreateLesson/CreateLesson';
+import LessonEditor from './components/Editors/EditLesson'
+import CourseEditor from './components/Editors/EditCourse'
+import ModuleEditor from './components/Editors/EditModule'
 import Lesson from './components/CreateLesson/LessonView';
 import LandingPage from './components/LandingPage/LandingPage';
 import SignIn from './components/Auth/SignIn';
@@ -112,8 +115,26 @@ const App = () => {
               />
               <ProtectedRoute
                 exact
+                path={AppRoutes.CreateLesson}
+                component={NewLesson}
+                layout={MainLayout}
+              />
+              <ProtectedRoute
+                exact
+                path={AppRoutes.EditCourse}
+                component={CourseEditor}
+                layout={MainLayout}
+              />
+              <ProtectedRoute
+                exact
+                path={AppRoutes.EditModule}
+                component={ModuleEditor}
+                layout={MainLayout}
+              />
+              <ProtectedRoute
+                exact
                 path={AppRoutes.EditLesson}
-                component={LessonEdit}
+                component={LessonEditor}
                 layout={MainLayout}
               />
               <ProtectedRoute

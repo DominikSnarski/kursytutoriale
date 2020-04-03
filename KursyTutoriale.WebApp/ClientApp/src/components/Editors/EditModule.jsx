@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ModuleService } from '../../api/Services/ModuleService';
 
@@ -9,45 +9,52 @@ import {
   FormFeedback,
   Row,
   Col,
-  Container
+  Container,
+  Input,
 } from 'reactstrap';
 
 import Button from '../../layouts/CSS/Button/Button';
-import Input from '../../layouts/CSS/InputField/InputField';
 
-function NewModule (props) {
-
+function NewModule(props) {
   const history = useHistory();
-  
+
+  const [title, setTitle] = useState(props.location.state.title);
+  const [description, setDescription] = useState(
+    props.location.state.description,
+  );
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    
+
     const formData = new FormData(event.target);
 
-    ModuleService.addModule(
+    ModuleService.editModule(
       props.location.state.courseid,
       formData.get('title'),
       formData.get('description'),
-      "there will be no image here. Please delete me!"
     ).then(() => {
-      history.push(`/courseview/${props.location.state.courseid}`)
+      history.push(`/courseview/${props.location.state.courseid}`);
     });
   };
 
   return (
     <Container className="Container">
       <Form onSubmit={(e) => handleSubmit(e)}>
-        <Row>
-        </Row>
+        <Row></Row>
         <Row className="mt-2">
           <Col>
             1. What will be the title of the module?
             <FormGroup className="mt-2">
               <Input
+                className="input_field mb-3"
                 type="text"
                 name="title"
-                id="title"
-                placeholder="e.g. Breakfasts"
+                id="titleField"
+                placeholder="Lesson title, Max. 100 characters"
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                }}
+                value={title}
               />
               <FormFeedback valid>Sweet! that name is available</FormFeedback>
             </FormGroup>
@@ -58,10 +65,15 @@ function NewModule (props) {
             2. What will you learn in this module?
             <FormGroup className="mt-2">
               <Input
-                type="textarea"
+                className="input_field mb-3"
+                type="text"
                 name="description"
-                id="exampleText"
-                placeholder="e.g. In this module you will learn how..."
+                id="titleField"
+                placeholder="Lesson description"
+                value={description}
+                onChange={(e) => {
+                  setDescription(e.target.value);
+                }}
               />
             </FormGroup>
           </Col>
@@ -69,17 +81,21 @@ function NewModule (props) {
 
         <Row className="mt-5">
           <Col>
-            <Button text="Back" onClick={() => {history.push(`/courseview/${props.location.state.courseid}`)}}></Button>
+            <Button
+              text="Back"
+              onClick={() => {
+                history.push(`/courseview/${props.location.state.courseid}`);
+              }}
+            ></Button>
           </Col>
           <Col className="text-right">
-            <Button text="Submit">
-            </Button>
+            <Button text="Submit"></Button>
           </Col>
         </Row>
       </Form>
-      <br/>
+      <br />
     </Container>
   );
-};
+}
 
 export default NewModule;
