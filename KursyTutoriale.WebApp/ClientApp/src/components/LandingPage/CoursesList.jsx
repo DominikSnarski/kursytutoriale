@@ -7,7 +7,7 @@ import {
   Spinner,
   Table,
 } from 'reactstrap';
-import Button from '../../layouts/CSS/Button/Button'
+import Button from '../../layouts/CSS/Button/Button';
 import Details from '../Details/Details';
 import Filters from './Filters';
 import Pagination from '../Shared/Pagination';
@@ -141,6 +141,7 @@ class CoursesList extends React.Component {
         </Fade>
       </Container>
     );
+  }
   }
   
   export default CoursesList;
