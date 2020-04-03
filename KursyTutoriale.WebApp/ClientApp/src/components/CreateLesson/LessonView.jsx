@@ -2,14 +2,12 @@ import React from 'react';
 import { Jumbotron, Button, Container, Col, Row } from 'reactstrap';
 import { Fade } from 'react-reveal';
 import { useHistory, Link } from 'react-router-dom';
-import { UserContext } from '../../contexts/UserContext';
 import AppRoutes from '../../routing/AppRoutes';
 
 function Lesson(props) {
   const items = JSON.parse(
     props.location.state.lessons[props.location.state.index].content,
   );
-  const userContext = React.useContext(UserContext);
   const history = useHistory();
 
   return (
@@ -106,18 +104,6 @@ function Lesson(props) {
             >
               Leave lesson
             </Button>
-          </Col>
-          <Col className="text-right">
-            {userContext.userid === props.location.state.ownerID && (
-              <Button
-                color="secondary"
-                onClick={() => {
-                  history.goBack();
-                }}
-              >
-                Edit lesson
-              </Button>
-            )}
           </Col>
         </Row>
       </Fade>

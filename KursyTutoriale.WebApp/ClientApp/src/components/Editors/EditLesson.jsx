@@ -13,20 +13,18 @@ import {
 import { Zoom } from 'react-reveal';
 import Draggable from 'react-draggable';
 import { LessonService } from '../../api/Services/LessonService';
-import LessonPreview from './LessonPreview';
-import Kit from './Kit/Kit';
-import './style.css';
+import Kit from '../CreateLesson/Kit/Kit';
+import '../CreateLesson/style.css';
 import Button from '../../layouts/CSS/Button/Button';
-import InputField from '../../layouts/CSS/InputField/InputField';
-import './Kit.css';
+import '../CreateLesson/Kit.css'
 
-function LessonEdit(props) {
+function EditLesson(props) {
   const history = useHistory();
-  const [lessonTitle, setLessonTitle] = useState('');
+  const [lessonTitle, setLessonTitle] = useState(props.location.state.title);
+  const [description, setDescription] = useState(props.location.state.description);
   const blankTextInput = { name: 'text', content: '' };
-  const [showPreview, setShowPreview] = useState(false);
-  const [items, setItems] = useState([{ ...blankTextInput }]);
-  
+  const [items, setItems] = useState(props.location.state.content);
+
   const handleTextChange = (e) => {
     const updatedText = [...items];
     updatedText[e.target.dataset.idx].content = e.target.value;
@@ -52,27 +50,16 @@ function LessonEdit(props) {
 
     const formData = new FormData(event.target);
 
-    LessonService.addLesson(
+    LessonService.editLesson(
       props.location.state.courseid,
       props.location.state.moduleid,
       formData.get('title'),
+      formData.get('description'),
       items,
     ).then(() => {
       history.push(`/courseview/${props.location.state.courseid}`);
     });
   };
-
-  if (showPreview) {
-    return (
-      <Container>
-        <LessonPreview
-          toggleLessonPreview={() => setShowPreview(!showPreview)}
-          items={items}
-          title={lessonTitle}
-        />
-      </Container>
-    );
-  }
 
   return (
     <Container fluid>
@@ -82,11 +69,13 @@ function LessonEdit(props) {
             <h4>Lesson information</h4>
             <Zoom left duration="200">
               <FormGroup className="mt-2">
-                <InputField
+                <Input
+                  className="input_field mb-3"
                   type="text"
                   name="title"
                   id="titleField"
                   placeholder="Lesson's title. Max. 100 characters"
+                  value={lessonTitle}
                   onChange={(event) => setLessonTitle(event.target.value)}
                 />
                 <FormFeedback valid>Sweet! that name is available</FormFeedback>
@@ -94,10 +83,13 @@ function LessonEdit(props) {
             </Zoom>
 
             <Zoom left duration="200">
-              <InputField
+              <Input
+                className="input_field mb-3"
                 type="textarea"
                 name="description"
                 id="descriptionField"
+                value={description}
+                onChange={(event) => setDescription(event.target.value)}
                 placeholder="Lesson's description. Max. 250 characters"
               />
             </Zoom>
@@ -110,7 +102,7 @@ function LessonEdit(props) {
               </Alert>
             )}
             {items.map((item, key) => {
-              if (item.name === 'text')
+              if (item.Name === 'text')
                 return (
                   <Input
                     className="input_field mb-3"
@@ -118,7 +110,7 @@ function LessonEdit(props) {
                     name={`text${key}`}
                     id={item.index}
                     data-idx={key}
-                    value={items[key].content}
+                    value={items[key].Content}
                     onChange={handleTextChange}
                   />
                 );
@@ -126,8 +118,9 @@ function LessonEdit(props) {
               return (
                 <Container key={key}>
                   <Row className="justify-content-md-center">
-                    <img className="mb-3"
-                      src={item.content}
+                    <img
+                      className="mb-3"
+                      src={item.Content}
                       alt="Something, somewhere went terribly wrong"
                     />
                   </Row>
@@ -137,7 +130,7 @@ function LessonEdit(props) {
 
             <Button
               onClick={() => {
-                history.goBack();
+                history.push(`/courseview/${props.location.state.courseid}`);
               }}
               text="Back"
             ></Button>
@@ -146,28 +139,28 @@ function LessonEdit(props) {
         </div>
       </Form>
       <Draggable>
-      <div className="sidenav" cursor="move">
-        <div>
-          <Kit
-            addTextField={() =>
-              setItems([
-                ...items,
-                {
-                  ...blankTextInput,
-                },
-              ])
-            }
-            addImage={(event) => {
-              const file = event.target.files[0];
-              getBase64(file);
-            }}
-            clearLesson={() => setItems([])}
-          />
+        <div className="sidenav" cursor="move">
+          <div>
+            <Kit
+              addTextField={() =>
+                setItems([
+                  ...items,
+                  {
+                    ...blankTextInput,
+                  },
+                ])
+              }
+              addImage={(event) => {
+                const file = event.target.files[0];
+                getBase64(file);
+              }}
+              clearLesson={() => setItems([])}
+            />
+          </div>
         </div>
-      </div>
       </Draggable>
     </Container>
   );
 }
 
-export default LessonEdit;
+export default EditLesson;
