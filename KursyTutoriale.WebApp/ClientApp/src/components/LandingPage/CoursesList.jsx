@@ -12,7 +12,7 @@ import Details from '../Details/Details';
 import Filters from './Filters';
 import Pagination from '../Shared/Pagination';
 import { CourseService } from '../../api/Services/CourseService';
-import Button from "../../layouts/CSS/Button/Button";
+
 
 class CoursesList extends React.Component {
   constructor() {
