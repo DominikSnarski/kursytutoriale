@@ -2,10 +2,8 @@ import React from 'react';
 import { Fade } from 'react-reveal';
 import {
   Alert,
-  Button,
   Col,
   Container,
-  Jumbotron,
   Spinner,
   Table,
 } from 'reactstrap';
@@ -13,6 +11,7 @@ import Details from '../Details/Details';
 import Filters from './Filters';
 import Pagination from '../Shared/Pagination';
 import { CourseService } from '../../api/Services/CourseService';
+import Button from "../../layouts/CSS/Button/Button";
 
 class CoursesList extends React.Component {
   constructor() {
@@ -114,19 +113,13 @@ class CoursesList extends React.Component {
     return (
       <Container>
         <Fade left duration="200">
-          <Jumbotron fluid className="jumbotron_bg">
-            <span className="d-lg-flex justify-content-center d-block h2 text-dark">
-              Courses
-            </span>
-          </Jumbotron>
-          <Button color="info" size="xm" onClick={this.toggleFilters}>
-            Filters
+          <Button color="transparent" text="Filters" onClick={this.toggleFilters}>
           </Button>
           <Fade top collapse when={this.state.showFilters}>
             <Filters formRef={this.formRef} formReset={this.formReset} />
           </Fade>
           <div>
-            <Table className="courses_bg">
+            <Table style={{backgroundColor:"transparent"}}>
               <thead>
                 <tr>
                   <th></th>

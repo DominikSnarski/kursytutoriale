@@ -1,7 +1,8 @@
 /* eslint-disable */
 import React from 'react';
 import { Fade } from 'react-reveal';
-import { Button, ButtonGroup, Container } from 'reactstrap';
+import { ButtonGroup, Container } from 'reactstrap';
+import Button from '../../layouts/CSS/Button/Button';
 
 class Pagination extends React.Component {
   constructor(props) {
@@ -108,23 +109,32 @@ class Pagination extends React.Component {
       <Container className="d-none d-lg-flex justify-content-center">
         <Fade left>
           <ButtonGroup>
-            <Button color="info" onClick={() => this.setPage(1)}>
-              First
-            </Button>
             <Button
-              color="info"
+              onClick={() => this.setPage(1)}
+              color="#000000"
+              text="First"
+              width="75px"
+            ></Button>
+            <Button
               onClick={() => this.setPage(pager.currentPage - 1)}
-            >
-              Previous
-            </Button>
+              text="Previous"
+              color="#000000"
+              width="75px"
+            ></Button>
             {pager.pages.map((page, i) => (
-              <Button key={i} color="info" onClick={() => this.setPage(page)}>
-                {page}
-              </Button>
+              <Button
+                text={i + 1}
+                color="#000000"
+                onClick={() => this.setPage(page)}
+                width="50px"
+              ></Button>
             ))}
-            <Button color="info" onClick={() => this.setPage(pager.totalPages)}>
-              Last
-            </Button>
+            <Button
+              text="Last"
+              color="#000000"
+              onClick={() => this.setPage(pager.totalPages)}
+              width="75px"
+            ></Button>
           </ButtonGroup>
         </Fade>
       </Container>

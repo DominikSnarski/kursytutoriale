@@ -13,7 +13,7 @@ function Kit(props) {
               Tools kit
             </CardHeader>
             <Button2
-              width='auto'
+              width='100%'
               text="Add text area"
               onClick={props.addTextField}>
             </Button2>
@@ -37,9 +37,7 @@ function Kit(props) {
               </div>
             </div>
             <Button2
-              width='auto'
-              className="mb-3 ml-2 mr-2"
-              color="danger"
+              width="100%"
               onClick={props.clearLesson}
               text='Clear'>
             </Button2>
