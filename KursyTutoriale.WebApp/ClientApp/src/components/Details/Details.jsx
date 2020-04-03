@@ -1,50 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Details.css';
-import { Container, Row, Col, Collapse, Media } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Container, Row, Col, Collapse, Media, Button } from 'reactstrap';
+import { Link, useHistory } from 'react-router-dom';
 import AppRoutes from '../../routing/AppRoutes';
 
-class Details extends React.Component {
-  constructor(props) {
-    super(props);
+function Details(props){
+  const [course] = useState(props.course)
+  const [isOpen, setIsOpen] = useState(false)
 
-    this.state = {
-      course: this.props.course,
-      isOpen: false,
-    };
+  const toggle = () => {
+    setIsOpen(!isOpen);
   }
 
-  toggle() {
-    this.setState({ isOpen: !this.state.isOpen });
-  }
+  const history = useHistory();
 
-  render() {
     return (
       <tbody>
-        <tr onClick={() => this.toggle()} style={{ cursor: 'pointer' }}>
+        <tr onClick={() => toggle()} style={{ cursor: 'pointer' }}>
           <td>
             <Media src="https://jakewilson.gallerycdn.vsassets.io/extensions/jakewilson/vscode-placeholder-images/0.1.0/1499508629226/Microsoft.VisualStudio.Services.Icons.Default" />
           </td>
-          <Link to={`${AppRoutes.Courseview}/${this.state.course.id}`}>
-            <td>{this.state.course.title}</td>
+          <Link to={`${AppRoutes.Courseview}/${course.id}`}>
+            <td>{course.title}</td>
           </Link>
-          <td>{this.state.course.date}</td>
+          <td>{course.date}</td>
         </tr>
-        <Collapse isOpen={this.state.isOpen}>
+        <Collapse isOpen={isOpen}>
           <Container>
             <Row>
-              <Col className="additional">Price: {this.state.course.price}</Col>
+              <Col className="additional">
+                Price: {`${course.price}\t`}
+                Tags:
+                {course.tags.map((txt, key) => (
+                  <span key={key}> {txt.id}</span>
+                ))}
+              </Col>
             </Row>
 
             <Row>
               <Col className="d-flex justify-content-center mb-2">
-                {this.state.course.description}
+                {course.description}
               </Col>
+            </Row>
+            <Row className="justify-content-md-center">
+              <Button block className="m-2" onClick={() => {history.push(`/courseview/${course.id}`);}}>Go to course page</Button>
             </Row>
           </Container>
         </Collapse>
       </tbody>
     );
-  }
 }
 export default Details;

@@ -46,26 +46,66 @@ function LessonsList(props) {
                 >
                   <Button color="primary">Lets go</Button>
                 </Link>
+
+                {userContext.userid === props.ownerID &&
+                  item.title !== 'Default title' && (// warunek item.title !== 'Default title'trzeba bedzie usunac potem
+                    <Link
+                      className="m-1"
+                      to={{
+                        pathname: AppRoutes.EditLesson,
+                        state: {
+                          courseid: props.courseid,
+                          moduleid: props.moduleid,
+                          title: item.title,
+                          description: item.description,
+                          content: JSON.parse(props.lessons[i].content),
+                        },
+                      }}
+                    >
+                      <Button className="ml-2" color="secondary">
+                        Edit lesson
+                      </Button>
+                    </Link>
+                  )}
               </Card>
             </Col>
           </Row>
         ))}
 
         {userContext.userid === props.ownerID && (
-          <Link
-            className="m-2"
-            to={{
-              pathname: AppRoutes.EditLesson,
-              state: {
-                courseid: props.courseid,
-                moduleid: props.moduleid,
-              },
-            }}
-          >
-            <Button color="success" size="lg" block>
-              Add new lesson
-            </Button>
-          </Link>
+          <Row className="justify-content-md-center">
+            <Link
+              className="m-1"
+              to={{
+                pathname: AppRoutes.CreateLesson,
+                state: {
+                  courseid: props.courseid,
+                  moduleid: props.moduleid,
+                },
+              }}
+            >
+              <Button color="success" size="lg">
+                Add new lesson
+              </Button>
+            </Link>
+
+            <Link
+              className="m-1"
+              to={{
+                pathname: AppRoutes.EditModule,
+                state: {
+                  courseid: props.courseid,
+                  moduleid: props.moduleid,
+                  title: props.moduleTitle,
+                  description: props.moduleDescription,
+                },
+              }}
+            >
+              <Button color="secondary" size="lg">
+                Edit module
+              </Button>
+            </Link>
+          </Row>
         )}
       </Card>
     </Container>

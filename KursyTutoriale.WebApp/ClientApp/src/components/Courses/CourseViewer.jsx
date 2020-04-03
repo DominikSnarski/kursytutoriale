@@ -14,13 +14,16 @@ import {
   Spinner,
 } from 'reactstrap';
 import { Fade } from 'react-reveal';
-// import { UserContext } from '../../contexts/UserContext';
+import { Link, useHistory } from 'react-router-dom';
+import { UserContext } from '../../contexts/UserContext';
 import './style.css';
 import Modules from './Modules';
 import { CourseService } from '../../api/Services/CourseService';
+import AppRoutes from '../../routing/AppRoutes';
 
 const CourseViewer = (props) => {
-  // const userContext = React.useContext(UserContext);
+  const history = useHistory();
+  const userContext = React.useContext(UserContext);
   const [course, setCourse] = useState({});
   const [courseLoaded, setCourseLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,20 +37,6 @@ const CourseViewer = (props) => {
       });
     }
   }, [props.id]);
-
-  /* {userContext.userid === course.ownerId && (
-    <Container>
-      <Row className="justify-content-md-center">
-        <Alert>
-          Your course will NOT be available if it is not verified. If you
-          think it is ready send it to verification!
-        </Alert>
-      </Row>
-      <Row className="justify-content-md-center">
-        <Button>Send to verification</Button>
-      </Row>
-    </Container>
-  )} */
 
   if (error) {
     return (
@@ -139,9 +128,39 @@ const CourseViewer = (props) => {
             courseID={props.id}
             ownerID={course.ownerId}
           />
+
+          {userContext.userid === course.ownerId && (
+            <Row className="mt-4">
+              <Link to={{
+            pathname: AppRoutes.EditCourse, 
+            state: {
+              courseID: props.id,
+              title: course.title,
+              description: course.description,
+              price: course.price
+            }
+            }}>
+                <Button className="pull-right">Edit course</Button>
+              </Link>
+            </Row>
+          )}
         </Jumbotron>
 
-        <Button color="secondary" onClick={props.toggle}>
+        {userContext.userid === course.ownerId && (
+          <Container>
+            <Row className="justify-content-md-center">
+              <Alert>
+                Your course will NOT be available if it is not verified. If you
+                think it is ready send it to verification!
+              </Alert>
+            </Row>
+            <Row className="justify-content-md-center">
+              <Button>Send to verification</Button>
+            </Row>
+          </Container>
+        )}
+
+        <Button color="secondary" onClick={() => {history.goBack()}}>
           Back
         </Button>
       </Fade>
