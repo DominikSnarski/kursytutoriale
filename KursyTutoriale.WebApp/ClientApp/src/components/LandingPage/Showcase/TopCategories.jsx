@@ -3,7 +3,6 @@ import {
   Card,
   CardImg,
   CardText,
-  Jumbotron,
   CardImgOverlay,
   CardTitle,
   Container,
@@ -16,11 +15,6 @@ import { Fade } from 'react-reveal';
 const TopCategories = (props) => (
   <Container className="Container">
     <Fade left duration="200">
-      <Jumbotron fluid className="jumbotron_bg">
-        <span className="d-lg-flex justify-content-center d-block h2 text-dark">
-          Top categories
-        </span>
-      </Jumbotron>
       <Row>
         <Col xs="6" sm="4">
           <div>

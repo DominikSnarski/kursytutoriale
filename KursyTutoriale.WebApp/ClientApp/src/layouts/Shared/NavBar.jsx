@@ -1,17 +1,6 @@
-/* eslint-disable */
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Button,
-  Col,
-  Container,
-  Form,
-  Nav,
-  Navbar,
-  NavItem,
-  NavLink,
-  Row,
-} from 'reactstrap';
+import { Button, Nav, NavItem} from 'reactstrap';
 import { UserContext } from '../../contexts/UserContext';
 import apiClient from '../../api/ApiClient';
 import AppRoutes from '../../routing/AppRoutes';
@@ -20,7 +9,7 @@ import './NavBar.css';
 const NavBar = () => {
   const userContext = React.useContext(UserContext);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = () => {
     apiClient.logout();
   };
 
@@ -38,12 +27,6 @@ const NavBar = () => {
         </div>
 
         <Nav className="nav_container">
-          <NavItem className="nav_item">
-            <NavLink className="font-weight-bold" href="#Courses">
-              Courses
-            </NavLink>
-          </NavItem>
-
           <NavItem className="nav_item">
             <Link className="font-weight-bold" to={AppRoutes.AddNewCourse}>
               Add New Course

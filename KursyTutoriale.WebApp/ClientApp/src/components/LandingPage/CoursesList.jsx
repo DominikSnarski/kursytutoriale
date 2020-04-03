@@ -7,11 +7,12 @@ import {
   Spinner,
   Table,
 } from 'reactstrap';
-import Button from '../../layouts/CSS/Button/Button'
+import Button from '../../layouts/CSS/Button/Button';
 import Details from '../Details/Details';
 import Filters from './Filters';
 import Pagination from '../Shared/Pagination';
 import { CourseService } from '../../api/Services/CourseService';
+
 
 class CoursesList extends React.Component {
   constructor() {
@@ -110,37 +111,37 @@ class CoursesList extends React.Component {
           <Col sm="4"></Col>
         </Container>
       );
-      return (
-        <Container>
-          <Fade left duration="200">
-            <Button color="#eaebec" text="Filters" onClick={this.toggleFilters}>
-            </Button>
-            <Fade top collapse when={this.state.showFilters}>
-              <Filters formRef={this.formRef} formReset={this.formReset} />
-            </Fade>
-            <div>
-              <Table style={{color:"transparent"}}>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Title</th>
-                    <th>Date</th>
-                  </tr>
-                </thead>
-                {this.state.pageOfItems.map((item, i) => (
-                  <Details key={i} course={item} />
-                ))}
-              </Table>
-              <Pagination
-                items={this.state.exampleItems}
-                onChangePage={this.onChangePage}
-              />
-            </div>
-            <hr />
+    return (
+      <Container>
+        <Fade left duration="200">
+          <Button color="transparent" text="Filters" onClick={this.toggleFilters}>
+          </Button>
+          <Fade top collapse when={this.state.showFilters}>
+            <Filters formRef={this.formRef} formReset={this.formReset} />
           </Fade>
-        </Container>
-      );
-    }
+          <div>
+            <Table style={{backgroundColor:"transparent"}}>
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Title</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              {this.state.pageOfItems.map((item, i) => (
+                <Details key={i} course={item} />
+              ))}
+            </Table>
+            <Pagination
+              items={this.state.exampleItems}
+              onChangePage={this.onChangePage}
+            />
+          </div>
+          <hr />
+        </Fade>
+      </Container>
+    );
+  }
   }
   
   export default CoursesList;
