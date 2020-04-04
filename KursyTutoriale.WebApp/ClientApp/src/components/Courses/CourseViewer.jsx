@@ -13,7 +13,6 @@ import {
   Alert,
   Spinner,
 } from 'reactstrap';
-import { Fade } from 'react-reveal';
 import { Link, useHistory } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import './style.css';
@@ -67,7 +66,6 @@ const CourseViewer = (props) => {
   }
   return (
     <Container className="Container">
-      <Fade left duration="200">
         <Jumbotron fluid className="jumbotron_bg">
           <span className="d-lg-flex justify-content-center d-block h2 text-dark">
             {course.title}
@@ -83,6 +81,27 @@ const CourseViewer = (props) => {
         </Row>
 
         <Jumbotron className="courses_bg pr-4">
+        <Row className="d-flex mb-3">
+            <Col className="column-text">
+            State of course: {course.verified === false ?
+            (
+              <text style={{backgroundColor: 'red', paddingLeft: '10px', paddingRight: '10px'}}> Not verified</text>
+            ) 
+            :(
+              <text style={{backgroundColor: 'lightgreen', paddingLeft: '10px', paddingRight: '10px'}}>Verified</text>
+            )}
+            </Col>
+            <Col className="column-text">
+              Type: {course.verified === false ?
+            (
+              <text style={{backgroundColor: 'red', paddingLeft: '10px', paddingRight: '10px'}}>Private</text>
+            ) 
+            :(
+              <text style={{backgroundColor: 'lightgreen', paddingLeft: '10px', paddingRight: '10px'}}>Public</text>
+            )}
+            </Col>
+          </Row>
+
           <Row className="d-flex mb-3">
             <Col className="column-text">Author: {course.ownerId}</Col>
             <Col className="column-text">
@@ -146,7 +165,7 @@ const CourseViewer = (props) => {
           )}
         </Jumbotron>
 
-        {userContext.userid === course.ownerId && (
+        {userContext.userid === course.ownerId && !course.verified &&(
           <Container>
             <Row className="justify-content-md-center">
               <Alert>
@@ -163,7 +182,6 @@ const CourseViewer = (props) => {
         <Button color="secondary" onClick={() => {history.goBack()}}>
           Back
         </Button>
-      </Fade>
     </Container>
   );
 };
