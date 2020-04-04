@@ -13,7 +13,6 @@ import {
   Alert,
   Spinner,
 } from 'reactstrap';
-import { Fade } from 'react-reveal';
 import { Link, useHistory } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import './style.css';
@@ -67,7 +66,6 @@ const CourseViewer = (props) => {
   }
   return (
     <Container className="Container">
-      <Fade left duration="200">
         <Jumbotron fluid className="jumbotron_bg">
           <span className="d-lg-flex justify-content-center d-block h2 text-dark">
             {course.title}
@@ -167,7 +165,7 @@ const CourseViewer = (props) => {
           )}
         </Jumbotron>
 
-        {userContext.userid === course.ownerId && (
+        {userContext.userid === course.ownerId && course.verified === false &&(
           <Container>
             <Row className="justify-content-md-center">
               <Alert>
@@ -184,7 +182,6 @@ const CourseViewer = (props) => {
         <Button color="secondary" onClick={() => {history.goBack()}}>
           Back
         </Button>
-      </Fade>
     </Container>
   );
 };
