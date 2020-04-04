@@ -83,6 +83,27 @@ const CourseViewer = (props) => {
         </Row>
 
         <Jumbotron className="courses_bg pr-4">
+        <Row className="d-flex mb-3">
+            <Col className="column-text">
+            State of course: {course.verified === false ?
+            (
+              <text style={{backgroundColor: 'red', paddingLeft: '10px', paddingRight: '10px'}}> Not verified</text>
+            ) 
+            :(
+              <text style={{backgroundColor: 'lightgreen', paddingLeft: '10px', paddingRight: '10px'}}>Verified</text>
+            )}
+            </Col>
+            <Col className="column-text">
+              Type: {course.verified === false ?
+            (
+              <text style={{backgroundColor: 'red', paddingLeft: '10px', paddingRight: '10px'}}>Private</text>
+            ) 
+            :(
+              <text style={{backgroundColor: 'lightgreen', paddingLeft: '10px', paddingRight: '10px'}}>Public</text>
+            )}
+            </Col>
+          </Row>
+
           <Row className="d-flex mb-3">
             <Col className="column-text">Author: {course.ownerId}</Col>
             <Col className="column-text">

@@ -23,6 +23,7 @@ import './NewCourse.css';
 import backgroundImage from '../../images/Book_background.jpg';
 
 function NewCourse() {
+
   // table of tags
   // setTagsList is used to add tags dynamically
   // const [tagsList, setTagsList] = useState([]);
@@ -228,19 +229,6 @@ function NewCourse() {
                     id="exampleText"
                     placeholder="Set price"
                   />
-                </Col>
-              </Row>
-            </FormGroup>
-
-            <br />
-
-            <FormGroup>
-              <Row>
-                <Label sm={2} for="date">
-                  Date of adding course{' '}
-                </Label>
-                <Col sm={10}>
-                  <InputField type="datetime" name="date" id="exampleText" />
                 </Col>
               </Row>
             </FormGroup>
