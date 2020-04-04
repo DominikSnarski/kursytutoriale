@@ -10,6 +10,7 @@ using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 
 namespace KursyTutoriale.API.Controllers
 {
@@ -33,9 +34,16 @@ namespace KursyTutoriale.API.Controllers
         /// Returns details of course.
         /// </returns>
         [HttpGet("GetCourseDetails")]
-        public CourseDetailsDTO GetCourseDetails(Guid courseId)
+        public IActionResult GetCourseDetails(Guid courseId)
         {
-            return courseService.GetCourseDetails(courseId);
+            try
+            {
+                return Ok(courseService.GetCourseDetails(courseId));
+            }
+            catch(NullReferenceException e)
+            {
+                return NotFound();
+            }
         }
 
         /// <summary>

@@ -4,6 +4,7 @@ using KursyTutoriale.Application.DataTransferObjects.Course;
 using KursyTutoriale.Application.DataTransferObjects.Course.Verification;
 using KursyTutoriale.Domain.Entities.Course;
 using KursyTutoriale.Domain.Entities.Course.Events;
+using KursyTutoriale.Domain.Entities.CoursePublication;
 using KursyTutoriale.Infrastructure.Repositories;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using KursyTutoriale.Infrastructure.Services;
@@ -33,35 +34,28 @@ namespace KursyTutoriale.Application.Services
         CourseReadModel GetCourse(Guid id);
         IEnumerable<CourseBasicInformationsDTO> GetUsersCourses(Guid UserId);
         IEnumerable<CourseBasicInformationsDTO> GetCoursesForVerification(int NrOfCourses);
-        Task<Guid> ReportCourse(Guid CourseId, ReportType type, string reporterComment);
     }
 
     public class CourseService : ICourseService
     {
         private IUnitOfWork unitOfWork;
         private IDTOMapper mapper;
-        private IExtendedRepository<Tag> tagsRepository;
         private ICourseRepository courseRepository;
-        private IFileService fileService;
+        private IExtendedRepository<CoursePublicationProfile> publicationRepository;
         private IExecutionContextAccessor executionContext;
-        private IExtendedRepository<Report> reportRepository;
+
         public CourseService(
             IUnitOfWork unitOfWork,
             IDTOMapper mapper,
-            IExtendedRepository<CourseReadModel> coursesRepository,
-            IFileService fileService,
             IExecutionContextAccessor executionContext,
-            ICourseRepository courseRepository, 
-            IExtendedRepository<Tag> tagsRepository,
-            IExtendedRepository<Report> reportRepository)
+            ICourseRepository courseRepository,
+            IExtendedRepository<CoursePublicationProfile> publicationRepository)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
-            this.fileService = fileService;
             this.executionContext = executionContext;
             this.courseRepository = courseRepository;
-            this.tagsRepository = tagsRepository;
-            this.reportRepository = reportRepository;
+            this.publicationRepository = publicationRepository;
         }
 
 
@@ -76,12 +70,19 @@ namespace KursyTutoriale.Application.Services
         {
             var query = courseRepository.Queryable();
             var result = query.FirstOrDefault(q => q.Id.Equals(courseId));
-            if (result != null)
-            {
-                return mapper.Map<CourseDetailsDTO>(result);
-                    
-            }
-            else throw new Exception("Error 1000! GetCourseDetail service returned null");
+
+            if (result == null)
+                throw new NullReferenceException("Error 1000! GetCourseDetail service returned null");
+
+            var dto = mapper.Map<CourseDetailsDTO>(result);
+
+            dto.Verified = result.VerificationStamp.Status == StampStatus.Verified;
+
+            dto.Public = publicationRepository
+                .Queryable()
+                .Any(pp => pp.CourseId == courseId);
+
+            return dto;
         }
 
         /// <summary>
@@ -188,10 +189,6 @@ namespace KursyTutoriale.Application.Services
         public async Task<Guid> AddCourse(CourseCreationDTO request)
         {
             var tagsIds = request.Tags.Select(t => t.Id).ToList();
-            tagsIds = tagsRepository.Queryable()
-                .Where(t => tagsIds.Contains(t.Id))
-                .Select(t => t.Id)
-                .ToList();
 
             var userId = executionContext.GetUserId();
             var @event = new CourseCreated(Guid.NewGuid(), request.Title, request.Description, userId, request.Date, request.Price, tagsIds);
@@ -403,34 +400,6 @@ namespace KursyTutoriale.Application.Services
         public IEnumerable<CourseBasicInformationsDTO> GetCoursesForVerification(int NrOfCourses)
         {
             throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Creates a report for a course, takes user report it from execution context
-        /// </summary>
-        /// <param name="courseId">the id of the course reported</param>
-        /// <param name="reporterComment">the comment left with a report by a reporter</param>
-        /// <param name="type">type of a report</param>
-        /// <returns>Id of the report made</returns>
-
-        public async Task<Guid> ReportCourse(Guid courseId,ReportType type, string reporterComment)
-        {
-            CourseReadModel course = courseRepository.Queryable().First(c => c.Id == courseId);
-            if (course == null)
-            {
-                throw new ArgumentException("courseId not found","courseId");
-            }
-            if (executionContext.GetUserId() == null)
-            {
-                throw new UnauthorizedAccessException();
-            }
-            Report report = new Report(executionContext.GetUserId(), courseId);
-            report.ReportType = type;
-            report.ReporterComment = reporterComment;
-
-            reportRepository.Insert(report);
-            var result = await unitOfWork.SaveChangesAsync();
-            return report.Id;
         }
     }
 }

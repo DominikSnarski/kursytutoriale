@@ -1,5 +1,6 @@
 ﻿using KursyTutoriale.Application.DataTransferObjects.Course.Report;
 using KursyTutoriale.Application.Services;
+using KursyTutoriale.Application.Services.Reports;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +17,15 @@ namespace KursyTutoriale.API.Controllers
     {
         ICourseService courseService;
         ISystemService systemService;
-        public ReportController(ICourseService courseService,
-            ISystemService systemService)
+        IReportService reportService;
+        public ReportController(
+            ICourseService courseService,
+            ISystemService systemService,
+            IReportService reportService)
         {
             this.courseService = courseService;
             this.systemService = systemService;
+            this.reportService = reportService;
         }
 
 
@@ -36,7 +41,7 @@ namespace KursyTutoriale.API.Controllers
             Guid? id = null;
             try
             {
-                id = await courseService.ReportCourse(report.CourseId, report.ReportType, report.ReporterComment);
+                id = await reportService.ReportCourse(report.CourseId, report.ReportType, report.ReporterComment);
             }
             catch(Exception e)
             {
