@@ -27,7 +27,7 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
 
             var service = new CourseService(null, null, null, repositoryMock.Object, null);
 
-            Assert.Throws<Exception>(()=>service.GetCourseDetails(Guid.Empty));
+            Assert.Throws<NullReferenceException>(()=>service.GetCourseDetails(Guid.Empty));
         }
 
         [Fact]
