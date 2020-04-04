@@ -10,6 +10,8 @@ namespace KursyTutoriale.Application.DataTransferObjects.Course
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public bool Public { get; set; }
+        public bool Verified { get; set; }
         public Guid OwnerId { get; set; }
         public DateTime Date { get; set; }
         public ICollection<CourseTag> Tags { get; set; }

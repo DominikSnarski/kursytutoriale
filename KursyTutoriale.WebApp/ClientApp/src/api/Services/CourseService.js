@@ -24,7 +24,9 @@ export const CourseService = {
     );
   },
   getCourse: (courseId) => {
-    return apiClient.get(`api/CoursesViewer/GetCourse?id=${courseId}`);
+    return apiClient.get(
+      `api/CoursesViewer/GetCourseDetails?courseId=${courseId}`,
+    );
   },
   addCourse: (date, description, ownerId, tags, price, title) => {
     return new Promise((resolve, reject) =>
