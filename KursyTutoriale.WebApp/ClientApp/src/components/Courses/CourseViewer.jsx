@@ -13,12 +13,11 @@ import {
   Alert,
   Spinner,
 } from 'reactstrap';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import './style.css';
 import Modules from './Modules';
 import { CourseService } from '../../api/Services/CourseService';
-import AppRoutes from '../../routing/AppRoutes';
 
 const CourseViewer = (props) => {
   const history = useHistory();
@@ -66,106 +65,131 @@ const CourseViewer = (props) => {
   }
   return (
     <Container className="Container">
-        <Jumbotron fluid className="jumbotron_bg">
-          <span className="d-lg-flex justify-content-center d-block h2 text-dark">
-            {course.title}
-          </span>
-        </Jumbotron>
-        <Row className="mb-4">
-          <Col sm="12" md={{ size: 6, offset: 3 }}>
-            <img
-              src="https://via.placeholder.com/480x320"
-              alt="Generic placeholder"
-            />
+      <Jumbotron fluid className="jumbotron_bg">
+        <span className="d-lg-flex justify-content-center d-block h2 text-dark">
+          {course.title}
+        </span>
+      </Jumbotron>
+      <Row className="mb-4">
+        <Col sm="12" md={{ size: 6, offset: 3 }}>
+          <img
+            src="https://via.placeholder.com/480x320"
+            alt="Generic placeholder"
+          />
+        </Col>
+      </Row>
+
+      <Jumbotron className="courses_bg pr-4">
+        <Row className="d-flex mb-3">
+          <Col className="column-text">
+            State of course:{' '}
+            {course.verified === false ? (
+              <text
+                style={{
+                  backgroundColor: 'red',
+                  paddingLeft: '10px',
+                  paddingRight: '10px',
+                }}
+              >
+                {' '}
+                Not verified
+              </text>
+            ) : (
+              <text
+                style={{
+                  backgroundColor: 'lightgreen',
+                  paddingLeft: '10px',
+                  paddingRight: '10px',
+                }}
+              >
+                Verified
+              </text>
+            )}
+          </Col>
+          <Col className="column-text">
+            Type:{' '}
+            {course.verified === false ? (
+              <text
+                style={{
+                  backgroundColor: 'red',
+                  paddingLeft: '10px',
+                  paddingRight: '10px',
+                }}
+              >
+                Private
+              </text>
+            ) : (
+              <text
+                style={{
+                  backgroundColor: 'lightgreen',
+                  paddingLeft: '10px',
+                  paddingRight: '10px',
+                }}
+              >
+                Public
+              </text>
+            )}
           </Col>
         </Row>
 
-        <Jumbotron className="courses_bg pr-4">
         <Row className="d-flex mb-3">
-            <Col className="column-text">
-            State of course: {course.verified === false ?
-            (
-              <text style={{backgroundColor: 'red', paddingLeft: '10px', paddingRight: '10px'}}> Not verified</text>
-            ) 
-            :(
-              <text style={{backgroundColor: 'lightgreen', paddingLeft: '10px', paddingRight: '10px'}}>Verified</text>
-            )}
-            </Col>
-            <Col className="column-text">
-              Type: {course.verified === false ?
-            (
-              <text style={{backgroundColor: 'red', paddingLeft: '10px', paddingRight: '10px'}}>Private</text>
-            ) 
-            :(
-              <text style={{backgroundColor: 'lightgreen', paddingLeft: '10px', paddingRight: '10px'}}>Public</text>
-            )}
-            </Col>
-          </Row>
+          <Col className="column-text">Author: {course.ownerId}</Col>
+          <Col className="column-text">
+            Price: {course.price === 0 ? 'Free' : course.price}$
+          </Col>
+        </Row>
 
-          <Row className="d-flex mb-3">
-            <Col className="column-text">Author: {course.ownerId}</Col>
-            <Col className="column-text">
-              Price: {course.price === 0 ? 'Free' : course.price}$
-            </Col>
-          </Row>
+        <Row className="d-flex mb-3">
+          <Col className="column-text">
+            Tags:{' '}
+            {course.tags.map((txt, i) => (
+              <span key={i}> {txt.id}</span>
+            ))}
+          </Col>
+          <Col className="column-text">
+            Number of completions: {course.popularity}
+          </Col>
+        </Row>
 
-          <Row className="d-flex mb-3">
-            <Col className="column-text">
-              Tags:{' '}
-              {course.tags.map((txt, i) => (
-                <span key={i}> {txt.id}</span>
-              ))}
-            </Col>
-            <Col className="column-text">
-              Number of completions: {course.popularity}
-            </Col>
-          </Row>
+        <Row className="d-flex justify-content-center mb-2">
+          <Col>
+            <Card fluid outline style={{ borderColor: '#9dd2e2' }}>
+              <CardHeader className="spans">Course details</CardHeader>
+              <CardBody style={{ backgroundColor: '#7CC3D8' }}>
+                <CardText>{course.description}</CardText>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
 
-          <Row className="d-flex justify-content-center mb-2">
-            <Col>
-              <Card fluid outline style={{ borderColor: '#9dd2e2' }}>
-                <CardHeader className="spans">Course details</CardHeader>
-                <CardBody style={{ backgroundColor: '#7CC3D8' }}>
-                  <CardText>{course.description}</CardText>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
+        <Row className="d-flex justify-content-center mb-2">
+          <Col>
+            <Card fluid outline style={{ borderColor: '#9dd2e2' }}>
+              <CardHeader className="spans">Course details</CardHeader>
+              <CardBody style={{ backgroundColor: '#7CC3D8' }}>
+                <CardText>{course.description}</CardText>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
 
-          <Row className="d-flex justify-content-center mb-2">
-            Your progress into this course.
-          </Row>
-          <Progress value="25" className="mb-4" />
+        <Row className="d-flex justify-content-center mb-2">
+          Your progress into this course.
+        </Row>
+        <Progress value="25" className="mb-4" />
 
-          <Row>
-            <h3>Modules</h3>
-          </Row>
+        <Row>
+          <h3>Modules</h3>
+        </Row>
 
-          <Modules
-            toggleLesson={props.toggleLesson}
-            modules={course.modules}
-            courseID={props.id}
-            ownerID={course.ownerId}
-          />
+        <Modules
+          toggleLesson={props.toggleLesson}
+          modules={course.modules}
+          courseID={props.id}
+          ownerID={course.ownerId}
+        />
 
-          {userContext.userid === course.ownerId && (
-            <Row className="mt-4">
-              <Link to={{
-            pathname: AppRoutes.EditCourse, 
-            state: {
-              courseID: props.id,
-              title: course.title,
-              description: course.description,
-              price: course.price
-            }
-            }}>
-                <Button className="pull-right">Edit course</Button>
-              </Link>
-            </Row>
-          )}
-        </Jumbotron>
-
-        {userContext.userid === course.ownerId && !course.verified &&(
+        {userContext.userid === course.ownerId && !course.verified && (
           <Container>
             <Row className="justify-content-md-center">
               <Alert>
@@ -178,10 +202,30 @@ const CourseViewer = (props) => {
             </Row>
           </Container>
         )}
+      </Jumbotron>
 
-        <Button color="secondary" onClick={() => {history.goBack()}}>
-          Back
-        </Button>
+      {userContext.userid === course.ownerId && (
+        <Container>
+          <Row className="justify-content-md-center">
+            <Alert>
+              Your course will NOT be available if it is not verified. If you
+              think it is ready send it to verification!
+            </Alert>
+          </Row>
+          <Row className="justify-content-md-center">
+            <Button>Send to verification</Button>
+          </Row>
+        </Container>
+      )}
+
+      <Button
+        color="secondary"
+        onClick={() => {
+          history.goBack();
+        }}
+      >
+        Back
+      </Button>
     </Container>
   );
 };
