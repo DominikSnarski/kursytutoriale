@@ -165,7 +165,7 @@ const CourseViewer = (props) => {
           )}
         </Jumbotron>
 
-        {userContext.userid === course.ownerId && course.verified === false &&(
+        {userContext.userid === course.ownerId && !course.verified &&(
           <Container>
             <Row className="justify-content-md-center">
               <Alert>
