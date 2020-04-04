@@ -42,7 +42,7 @@ namespace KursyTutoriale.API.Controllers
             }
             catch(NullReferenceException e)
             {
-                return NotFound();
+                return NoContent();
             }
         }
 
