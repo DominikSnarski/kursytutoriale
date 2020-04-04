@@ -30,8 +30,8 @@ function Details({ course }) {
             <Col className="additional">
               Price: {`${course.price}\t`}
               Tags:
-              {course.tags.map((txt, key) => (
-                <span key={key}> {txt.id}</span>
+              {course.tags.map((tag, key) => (
+                <span key={key}> {tag}</span>
               ))}
             </Col>
           </Row>

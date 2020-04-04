@@ -135,6 +135,8 @@ namespace KursyTutoriale.Application.Services
 
                 var courses = courseRepository.Queryable()
                     .Where(c => courseIds.Contains(c.Id))
+                    .Include(c => c.Tags)
+                    .ThenInclude(t => t.Tag)
                     .ToList();
 
                 return mapper.Map<List<CoursePageItemDTO>>(courses);

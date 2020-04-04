@@ -54,7 +54,7 @@ namespace KursyTutoriale.Application.Configuration
                 cfg.CreateMap<CourseReadModel, CoursePageItemDTO>()
                 .ForMember(
                     dto => dto.Tags,
-                    opt => opt.MapFrom(e => e.Tags.Select(tag => tag.Tag.Name))
+                    opt => opt.MapFrom(e => e.Tags.Select(tag => tag.Tag.Name).ToList())
                     );
 
                 cfg.CreateMap<UserProfile, UserProfileDTO>()
