@@ -2,6 +2,7 @@
 using KursyTutoriale.Application.Contracts;
 using KursyTutoriale.Application.DataTransferObjects.Course;
 using KursyTutoriale.Application.DataTransferObjects.Course.Verification;
+using KursyTutoriale.Application.DataTransferObjects.NewCourse;
 using KursyTutoriale.Domain.Entities.Course;
 using KursyTutoriale.Domain.Entities.Course.Events;
 using KursyTutoriale.Domain.Entities.CoursePublication;
@@ -9,6 +10,7 @@ using KursyTutoriale.Infrastructure.Repositories;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using KursyTutoriale.Infrastructure.Services;
 using KursyTutoriale.Shared;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -22,7 +24,7 @@ namespace KursyTutoriale.Application.Services
     {
         CourseDetailsDTO GetCourseDetails(Guid courseId);
         CourseModuleDetailsDTO GetCourseModuleDetails(Guid courseId, int moduleIndex);
-        List<CourseBasicInformationsDTO> GetPagesOfCourses(int firstPageNumber, int lastPageNumber, int pageSize);
+        List<CoursePageItemDTO> GetPublicCoursesPaged(int firstPageNumber, int lastPageNumber, int pageSize);
         Task<Guid> AddCourse(CourseCreationDTO course);
         Task<int> AddModule(CourseModuleCreationDTO module);
         Task<int> AddLesson(AddLessonRequest lesson);
@@ -121,17 +123,26 @@ namespace KursyTutoriale.Application.Services
         /// Returns pages from firstPageNumber to lastPageNumber.
         /// If for exemple firstPageNumber=1 and lastPageNumber=3, it will return courses from first page to third page.
         /// </returns>
-        public List<CourseBasicInformationsDTO> GetPagesOfCourses(int firstPageNumber, int lastPageNumber, int pageSize)
+        public List<CoursePageItemDTO> GetPublicCoursesPaged(int firstPageNumber, int lastPageNumber, int pageSize)
         {
-            var query = courseRepository.Queryable();
-            query = query.Skip(firstPageNumber * pageSize).Take(pageSize * (lastPageNumber - firstPageNumber + 1));
-            var queryList = query.ToList();
-            List<CourseBasicInformationsDTO> list = new List<CourseBasicInformationsDTO>();
-            foreach (var c in queryList)
+            try
             {
-                list.Add(mapper.Map<CourseBasicInformationsDTO>(c));
+                var courseIds = publicationRepository.Queryable()
+                                    .Skip(firstPageNumber * pageSize)
+                                    .Take(pageSize * (lastPageNumber - firstPageNumber + 1))
+                                    .Select(p => p.CourseId)
+                                    .ToList();
+
+                var courses = courseRepository.Queryable()
+                    .Where(c => courseIds.Contains(c.Id))
+                    .ToList();
+
+                return mapper.Map<List<CoursePageItemDTO>>(courses);
             }
-            return list;
+            catch(SqlException e)
+            {
+                return new List<CoursePageItemDTO>();
+            }
         }
 
         /// <summary>

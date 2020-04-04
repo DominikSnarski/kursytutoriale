@@ -10,6 +10,7 @@ namespace KursyTutoriale.Domain.Entities.Course
         { }
         public Guid CourseId { get; set; }
         public Guid Id { get; set; }
-   
+        public Tag Tag { get; set; }
+
     }
 }

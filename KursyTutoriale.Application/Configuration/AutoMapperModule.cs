@@ -3,6 +3,7 @@ using AutoMapper;
 using KursyTutoriale.Application.DataTransferObjects.Auth;
 using KursyTutoriale.Application.DataTransferObjects.Course;
 using KursyTutoriale.Application.DataTransferObjects.Course.Report;
+using KursyTutoriale.Application.DataTransferObjects.NewCourse;
 using KursyTutoriale.Application.DataTransferObjects.Tags;
 using KursyTutoriale.Application.DataTransferObjects.UserProfiles;
 using KursyTutoriale.Domain.Entities.Course;
@@ -49,6 +50,12 @@ namespace KursyTutoriale.Application.Configuration
                 cfg.CreateMap<CourseReadModel, CourseForEditionDTO>();
                 cfg.CreateMap<CourseModuleReadModel, CourseModuleForEditionDTO>();
                 cfg.CreateMap<LessonReadModel, LessonForEditionDTO>();
+
+                cfg.CreateMap<CourseReadModel, CoursePageItemDTO>()
+                .ForMember(
+                    dto => dto.Tags,
+                    opt => opt.MapFrom(e => e.Tags.Select(tag => tag.Tag.Name))
+                    );
 
                 cfg.CreateMap<UserProfile, UserProfileDTO>()
                     .ForMember(dto => dto.GenderName, opt => opt.MapFrom(up => up.Gender.Name));
