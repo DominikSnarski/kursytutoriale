@@ -83,7 +83,7 @@ const CourseViewer = (props) => {
         <Row className="d-flex mb-3">
           <Col className="column-text">
             State of course:{' '}
-            {course.verified === false ? (
+            {!course.verified ? (
               <text
                 style={{
                   backgroundColor: 'red',
@@ -108,7 +108,7 @@ const CourseViewer = (props) => {
           </Col>
           <Col className="column-text">
             Type:{' '}
-            {course.verified === false ? (
+            {!course.public ? (
               <text
                 style={{
                   backgroundColor: 'red',
@@ -188,23 +188,8 @@ const CourseViewer = (props) => {
           courseID={props.id}
           ownerID={course.ownerId}
         />
-
-        {userContext.userid === course.ownerId && !course.verified && (
-          <Container>
-            <Row className="justify-content-md-center">
-              <Alert>
-                Your course will NOT be available if it is not verified. If you
-                think it is ready send it to verification!
-              </Alert>
-            </Row>
-            <Row className="justify-content-md-center">
-              <Button>Send to verification</Button>
-            </Row>
-          </Container>
-        )}
       </Jumbotron>
-
-      {userContext.userid === course.ownerId && (
+      {userContext.userid === course.ownerId && !course.verified && (
         <Container>
           <Row className="justify-content-md-center">
             <Alert>
@@ -217,7 +202,6 @@ const CourseViewer = (props) => {
           </Row>
         </Container>
       )}
-
       <Button
         color="secondary"
         onClick={() => {

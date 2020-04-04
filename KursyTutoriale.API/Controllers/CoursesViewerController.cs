@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using KursyTutoriale.Application.DataTransferObjects;
-using KursyTutoriale.Application.DataTransferObjects.Course;
+﻿using KursyTutoriale.Application.DataTransferObjects.Course;
 using KursyTutoriale.Application.Services;
 using KursyTutoriale.Domain.Entities.Course;
-using KursyTutoriale.Infrastructure.Repositories.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NLog;
+using System;
+using System.Collections.Generic;
 
 namespace KursyTutoriale.API.Controllers
 {
@@ -34,6 +27,7 @@ namespace KursyTutoriale.API.Controllers
         /// Returns details of course.
         /// </returns>
         [HttpGet("GetCourseDetails")]
+        [ProducesResponseType(200, Type = typeof(CourseDetailsDTO))]
         public IActionResult GetCourseDetails(Guid courseId)
         {
             try
