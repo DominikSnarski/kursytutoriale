@@ -75,10 +75,9 @@ namespace KursyTutoriale.Application.Services
         public CourseDetailsDTO GetCourseDetails(Guid courseId)
         {
             var query = courseRepository.Queryable();
-            query = query.Where(q => q.Id.Equals(courseId));
-            if (query != null)
+            var result = query.FirstOrDefault(q => q.Id.Equals(courseId));
+            if (result != null)
             {
-                var result = query.FirstOrDefault();
                 return mapper.Map<CourseDetailsDTO>(result);
                     
             }
