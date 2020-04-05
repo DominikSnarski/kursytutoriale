@@ -10,6 +10,7 @@ using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using KursyTutoriale.Infrastructure.Services;
 using KursyTutoriale.Shared;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,6 +76,14 @@ namespace KursyTutoriale.Application.Services
                 throw new NullReferenceException("Error 1000! GetCourseDetail service returned null");
 
             var dto = mapper.Map<CourseDetailsDTO>(result);
+
+            foreach(CourseModuleBasicInformationsDTO module in dto.Modules)
+            {
+                foreach(LessonDetailsDTO lesson in module.Lessons)
+                {
+                    lesson.Content = JsonConvert.DeserializeObject((string) lesson.Content);
+                }
+            }
 
             dto.Verified = result.VerificationStamp.Status == StampStatus.Verified;
 
@@ -241,7 +250,7 @@ namespace KursyTutoriale.Application.Services
                 throw new UnauthorizedAccessException();
 
             var lessonParts = lesson.Content.OrderBy(part => part.Index)
-                .Select(part => new LessonPart(part.Name, part.Content))
+                .Select(part => new LessonPart(part.Name, part.Content) { Type = part.Type})
                 .ToList();
 
             var @event = new LessonAdded(0, 0, lesson.Title, lesson.ModuleId, lesson.CourseId, lessonParts);
