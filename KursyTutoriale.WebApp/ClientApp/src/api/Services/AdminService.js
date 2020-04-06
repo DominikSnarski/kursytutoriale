@@ -26,6 +26,15 @@ export const AdminService = {
           .catch((error) => reject(error)),
       );
     },
+
+    getCoursesForVerification: (NrOfCourses) => {
+      return new Promise((resolve, reject) =>
+        apiClient
+          .post(`/api/Moderator/GetCoursesForVerification?NrOfCourses=${NrOfCourses}`)
+          .then((resp) => resolve(resp))
+          .catch((error) => reject(error)),
+      );
+    },
 };
 
 export default AdminService;

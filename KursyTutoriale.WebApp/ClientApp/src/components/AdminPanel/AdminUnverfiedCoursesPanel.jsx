@@ -14,7 +14,7 @@ import {
 import UnverifiedCourseDetails from './UnverifiedCourseDetails';
 // import Filters from './Filters';
 // import Pagination from '../Shared/Pagination';
-// import { AdminService } from '../../api/Services/AdminService';
+ import { AdminService } from '../../api/Services/AdminService';
 
 
 class AdminUnverifiedCoursesPanel extends React.Component {
@@ -22,40 +22,21 @@ class AdminUnverifiedCoursesPanel extends React.Component {
     super(props);
 
     this.state = {
-        listOfCourses: [{
-          "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          "title": "string",
-          "description": "string",
-          "ownerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          "date": "2020-03-25T13:48:11.084Z",
-          "price": 0,
-          "tags": [
-            {
-              "courseId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-              "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-            }
-          ],
-          "modules": [
-            {
-              "index": 0,
-              "title": "string"
-            }
-          ]
-        }],
+        listOfCourses: [],
         isLoading: true,
         error: false
     }
 }
 
-  componentDidMount() {
-    this.setState({ isLoading: true });
+componentDidMount() {
+  this.setState({ isLoading: true });
 
-    // To Do
-    // Add service to take list of unferified courses
+  AdminService.getCoursesForVerification(100).then((data) => {
+    this.setState({ listOfUsers: data, isLoading: false });
+  });
 
-    this.setState({isLoading:false});
+}
 
-  }
 
   render() {
     if (this.state.error) {
