@@ -77,11 +77,17 @@ namespace KursyTutoriale.Application.Services
 
             var dto = mapper.Map<CourseDetailsDTO>(result);
 
-            foreach(CourseModuleBasicInformationsDTO module in dto.Modules)
+            if(dto.Modules != null)
             {
-                foreach(LessonDetailsDTO lesson in module.Lessons)
+                foreach (CourseModuleBasicInformationsDTO module in dto.Modules)
                 {
-                    lesson.Content = JsonConvert.DeserializeObject((string) lesson.Content);
+                    if(module.Lessons != null)
+                    {
+                        foreach (LessonDetailsDTO lesson in module.Lessons)
+                        {
+                            lesson.Content = JsonConvert.DeserializeObject((string)lesson.Content);
+                        }
+                    }
                 }
             }
 
