@@ -10,6 +10,5 @@ namespace KursyTutoriale.Domain.Entities.Course
         public string Title { get; set; }
         public string Content { get; set; }
         public int Index { get; set; }
-        public string QuizSerialized { get; set; }
     }
 }
