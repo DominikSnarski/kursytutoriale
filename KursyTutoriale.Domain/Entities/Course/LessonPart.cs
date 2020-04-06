@@ -1,19 +1,17 @@
-﻿using KursyTutoriale.Shared;
-using System;
+﻿using System;
 
 namespace KursyTutoriale.Domain.Entities.Course
 {
     public class LessonPart
     {
-        public LessonPart(string name, object content)
+        public LessonPart(string name, string content)
         {
             Name = name;
             Content = content;
-            Type = LessonPartType.Paragraph;
         }
-        public LessonPartType Type { get; set; } 
-        public int Index { get; set; }
+
+        public int Idex { get; set; }
         public string Name { get; set; }
-        public object Content { get; set; }
+        public string Content { get; set; }
     }
 }
