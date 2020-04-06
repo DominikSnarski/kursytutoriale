@@ -8,6 +8,6 @@ namespace KursyTutoriale.Application.DataTransferObjects.Course
     {
         public string Title { get; set; }
         public string Descripion { get; set; }
-        public object Content { get; set; }
+        public string Content { get; set; }
     }
 }
