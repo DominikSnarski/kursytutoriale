@@ -8,6 +8,10 @@ function Lesson(props) {
   const items = JSON.parse(
     props.location.state.lessons[props.location.state.index].content,
   );
+  items.map((e, k) => {
+    e.Content = JSON.parse(e.Content);
+  });
+  console.log(items);
   const history = useHistory();
 
   return (
@@ -21,13 +25,14 @@ function Lesson(props) {
 
         <Jumbotron className="courses_bg pr-4">
           {items.map((item, key) => {
-            if (item.Name.substring(0, 4) === 'text')
+            if (item.Type.substring(0, 4) === 'text') {
               return (
                 <Container>
                   <p>{item.Content}</p>
                   <br />
                 </Container>
               );
+            }
             // eslint-disable-next-line react/jsx-key
             return (
               <Container key={key}>

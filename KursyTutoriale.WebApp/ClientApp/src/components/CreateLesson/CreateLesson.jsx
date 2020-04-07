@@ -22,7 +22,7 @@ import './Kit.css';
 function LessonEdit(props) {
   const history = useHistory();
   const [lessonTitle, setLessonTitle] = useState('');
-  const blankTextInput = { name: 'text', content: '' };
+  const blankTextInput = { type: 'text', content: '' };
   const [items, setItems] = useState([{ ...blankTextInput }]);
 
   const handleTextChange = (e) => {
@@ -38,7 +38,7 @@ function LessonEdit(props) {
       setItems([
         ...items,
         {
-          name: 'image',
+          type: 'image',
           content: reader.result,
         },
       ]);
@@ -97,7 +97,7 @@ function LessonEdit(props) {
               </Alert>
             )}
             {items.map((item, key) => {
-              if (item.name === 'text')
+              if (item.type === 'text')
                 return (
                   <Input
                     className="input_field mb-3"
