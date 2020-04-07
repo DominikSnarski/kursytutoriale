@@ -1,4 +1,5 @@
 ﻿using KursyTutoriale.Application.Services.Admin;
+using KursyTutoriale.Domain.Entities.Administration;
 using KursyTutoriale.Domain.Entities.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,9 +45,17 @@ namespace KursyTutoriale.API.Controllers
         }
 
         [HttpGet("GetListOfUsers")]
-        public List<ApplicationUser> GetListOfUsers()
+        public async Task<IList<UserBasic>> GetListOfUsers()
         {
-            return adminService.GetListOfUsers();
+            var list = await adminService.GetListOfUsers();
+            return list;
+        }
+
+        [HttpGet("GetListOfModerators")]
+        public async Task<IList<UserBasic>> GetListOfModerators()
+        {
+            var list = await adminService.GetListOfModerators();
+            return list;
         }
     }
 }

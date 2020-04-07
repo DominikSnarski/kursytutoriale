@@ -71,9 +71,9 @@ class AdminUsersPanel extends React.Component {
             <Table className="courses_bg">
               <thead>
                 <tr>
-                  <th></th>
-                  <th>Title</th>
-                  <th>Date</th>
+                <th>UserName</th>
+                  <th>Email</th>
+                  <th>Id</th>
                 </tr>
               </thead>
               {this.state.listOfUsers.map((item, i) => (

@@ -1,4 +1,5 @@
-﻿using KursyTutoriale.Domain.Entities.Auth;
+﻿using KursyTutoriale.Domain.Entities.Administration;
+using KursyTutoriale.Domain.Entities.Auth;
 using KursyTutoriale.Domain.Entities.Moderation;
 using KursyTutoriale.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
@@ -15,15 +16,18 @@ namespace KursyTutoriale.Application.Services.Admin
         UserManager<ApplicationUser> userManager;
         IExtendedRepository<ModeratorProfile> moderatorRepo;
         IUnitOfWork unitOfWork;
+        IDTOMapper mapper;
 
         public AdminService(
             UserManager<ApplicationUser> userManager,
             IExtendedRepository<ModeratorProfile> moderatorRepo,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            IDTOMapper mapper)
         {
             this.userManager = userManager;
             this.moderatorRepo = moderatorRepo;
             this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
 
         public async Task<bool> CreateModeratorProfile(Guid userId)
@@ -71,13 +75,34 @@ namespace KursyTutoriale.Application.Services.Admin
             return true;
         }
 
-        public List<ApplicationUser> GetListOfUsers()
+        public async Task<List<UserBasic>> GetListOfUsers()
         {
-            var listOfUsers =  userManager.Users.ToList();
+            var listOfUsers = await userManager.GetUsersInRoleAsync("User");
 
-            if (listOfUsers == null) listOfUsers = new List<ApplicationUser>();
+            if (listOfUsers != null)
+            {
+                var result = mapper.Map<IEnumerable<UserBasic>>(listOfUsers.AsEnumerable());
+                return result.ToList();
+            }
+            else
+            {
+                return new List<UserBasic>();
+            }
+        }
 
-            return listOfUsers;
+        public async Task<List<UserBasic>> GetListOfModerators()
+        {
+            var listOfUsers = await userManager.GetUsersInRoleAsync("Moderator");
+
+            if (listOfUsers != null)
+            {
+                var result = mapper.Map<IEnumerable<UserBasic>>(listOfUsers.AsEnumerable());
+                return result.ToList();
+            }
+            else
+            {
+                return new List<UserBasic>();
+            }
         }
     }
 }

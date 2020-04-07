@@ -32,9 +32,11 @@ class AdminModeratorsPanel extends React.Component {
   componentDidMount() {
     this.setState({ isLoading: true });
 
-    AdminService.getUsersList().then((data) => {
+     AdminService.getModeratorsList().then((data) => {
       this.setState({ listOfUsers: data, isLoading: false });
+
     });
+
 
   }
 
@@ -71,9 +73,9 @@ class AdminModeratorsPanel extends React.Component {
             <Table className="courses_bg">
               <thead>
                 <tr>
-                  <th></th>
-                  <th>Title</th>
-                  <th>Date</th>
+                  <th>UserName</th>
+                  <th>Email</th>
+                  <th>Id</th>
                 </tr>
               </thead>
               {this.state.listOfUsers.map((item, i) => (

@@ -8,6 +8,13 @@ export const AdminService = {
         .then((res) => resolve(res.data))
         .catch((error) => reject(error)),
     ),
+    getModeratorsList: () =>
+    new Promise((resolve, reject) =>
+      apiClient
+        .get(`api/Admin/GetListOfModerators`)
+        .then((res) => resolve(res.data))
+        .catch((error) => reject(error)),
+    ),
 
     promoteToModerator: (userId) => {
       return new Promise((resolve, reject) =>
@@ -30,7 +37,7 @@ export const AdminService = {
     getCoursesForVerification: (NrOfCourses) => {
       return new Promise((resolve, reject) =>
         apiClient
-          .post(`/api/Moderator/GetCoursesForVerification?NrOfCourses=${NrOfCourses}`)
+          .get(`/api/Moderator/GetCoursesForVerification?NrOfCourses=${NrOfCourses}`)
           .then((resp) => resolve(resp))
           .catch((error) => reject(error)),
       );

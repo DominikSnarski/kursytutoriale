@@ -32,10 +32,12 @@ componentDidMount() {
   this.setState({ isLoading: true });
 
   AdminService.getCoursesForVerification(100).then((data) => {
-    this.setState({ listOfUsers: data, isLoading: false });
+    this.setState({ listOfCourses: data.data, isLoading: false });
   });
 
+
 }
+
 
 
   render() {
@@ -73,6 +75,9 @@ componentDidMount() {
                 <tr>
                   <th>Title</th>
                   <th>Date</th>
+                  <th>Id</th>
+                  <th>OwnerId</th>
+                  <th>Price</th>
                 </tr>
               </thead>
               {this.state.listOfCourses.map((item, i) => (

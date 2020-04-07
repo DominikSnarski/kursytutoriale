@@ -3,50 +3,34 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Container, Row, Col, Collapse, Media, Button } from 'reactstrap';
 import { AdminService } from '../../api/Services/AdminService';
+import { Link } from 'react-router-dom';
 
     const UserDetails = (props) => {
       const history = useHistory();
-      const [isOpen, setIsOpen] = useState(false);
-
-      const toggle = () =>{
-          setIsOpen(!isOpen);
-      };
 
       const handleButtonPromoteClick = () => {
-        AdminService.promoteToModerator(props.user.id).then(() => history.push('/adminMainPanel'));
+        AdminService.promoteToModerator(props.user.id).then(() => history.push('/')).then(() => history.push('/adminMainPanel'));
       };
-    
 
-return (
-      <tbody>
-        <tr onClick={() => toggle()} style={{ cursor: 'pointer' }}>
-          <td>
-            <Media src="https://jakewilson.gallerycdn.vsassets.io/extensions/jakewilson/vscode-placeholder-images/0.1.0/1499508629226/Microsoft.VisualStudio.Services.Icons.Default" />
-          </td>
 
-          <td>{props.user.userName}</td>
-          <td>Data utworzenia konta ktorej na razie nie zapisujemy</td>
-        </tr>
-        <Collapse isOpen={isOpen}>
-          <Container>
-            <Row>
-              <Col className="additional">Email: {props.user.email}</Col>
-            </Row>
+      return (
+        <tbody>
+          <tr>
+            <td>
+              <Link
+                to={`/userProfile/${props.user.id}`}
+                style={{ color: '#eaebec', fontWeight: 'bold' }}
+              >
+                {props.user.userName}
+              </Link>
+            </td>
+            <td>{props.user.email}</td>
+            <td>{props.user.id}</td>
+            <td> <Button onClick={() => handleButtonPromoteClick()}>Promote to moderator</Button></td>
+          </tr>
 
-            <Row>
-              <Col className="d-flex justify-content-center mb-2">
-                Id: {props.user.id}
-              </Col>
-            </Row>
-            <Row>
-              <Col className="d-flex justify-content-center mb-2">
-                <Button onClick={() => handleButtonPromoteClick()}>Promote to moderator</Button>
-              </Col>
-            </Row>
-          </Container>
-        </Collapse>
-      </tbody>
-);
+        </tbody>
+      );
 };
 
 export default UserDetails;
