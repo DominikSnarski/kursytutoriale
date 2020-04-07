@@ -36,6 +36,20 @@ namespace KursyTutoriale.Infrastructure.Repositories.Implementations
             return course;
         }
 
+        public void UpdateRating(Guid id, float rating)
+        {
+            var course = dbContext.Courses.Where(c => c.Id == id).FirstOrDefault();
+            course.Rating = rating;
+            dbContext.Courses.Update(course);
+        }
+
+        public void IncrementViewCount(Guid id)
+        {
+            var course = dbContext.Courses.Where(c => c.Id == id).FirstOrDefault();
+            course.Popularity = course.Popularity + 1;
+            dbContext.Courses.Update(course);
+        }
+
         public ICollection<Course> GetAll()
         {
             return BuildCourses(dbContext.CourseEvents);

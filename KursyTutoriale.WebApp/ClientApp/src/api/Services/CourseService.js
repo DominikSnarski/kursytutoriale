@@ -67,6 +67,22 @@ export const CourseService = {
         .catch((error) => reject(error)),
     );
   },
+  addRating: (courseId,userId,rate) => {
+    return new Promise((resolve, reject) =>
+      apiClient
+        .post(`/api/CoursesViewer/AddRating?CourseId=${courseId}&UserId=${userId}&Rating=${rate}`)
+        .then((response) => resolve(response.data))
+        .catch((error) => reject(error)),
+    );
+  },
+  incrementViewCount: (courseId) => {
+    return new Promise((resolve, reject) =>
+      apiClient
+        .post(`/api/CoursesViewer/IncrementViewCount?CourseId=${courseId}`)
+        .then((response) => resolve(response.data))
+        .catch((error) => reject(error)),
+    );
+  },
   
 };
 

@@ -13,6 +13,7 @@ import {
   Alert,
   Spinner,
 } from 'reactstrap';
+import StarRating from 'react-star-rating-component';
 import { useHistory } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import './style.css';
@@ -26,6 +27,7 @@ const CourseViewer = (props) => {
   const [courseLoaded, setCourseLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error] = useState(false);
+  const [rating, setRating] = useState(0);
 
 
   useEffect(() => {
@@ -34,8 +36,12 @@ const CourseViewer = (props) => {
       CourseService.getCourse(props.id).then((response) => {
         setCourse(response.data);
         setCourseLoaded(true);
+        setRating(response.data.rating);
+        CourseService.incrementViewCount(props.id);
       });
+      
     }
+
   }, [props.id]);
 
   const handleButtonPublishClick = () => {
@@ -45,6 +51,16 @@ const CourseViewer = (props) => {
   const handleButtonPublishNewVersionClick = () => {
     CourseService.publishNewVersionOfCourse(course.id).then(() => history.push('/')).then(() => history.push(`/courseview/${course.id}`));
   };
+
+   const onStarClick = (nextValue) => {
+    CourseService.addRating(course.id,userContext.userid,nextValue);
+    setRating(nextValue);
+  };
+  const onStarHover = () => {
+
+  };
+
+  
 
   if (error) {
     return (
@@ -135,29 +151,39 @@ const CourseViewer = (props) => {
                   paddingLeft: '10px',
                   paddingRight: '10px',
                 }}
-              >
-                Public
-              </text>
-            )}
+                >
+                  Public
+                </text>
+              )}
           </Col>
+          <Col>
+          <StarRating
+              onStarClick={(nextValue, prevValue, name) => onStarClick(nextValue, prevValue, name) }
+              onStarHover={(nextValue, prevValue, name) => onStarHover(nextValue, prevValue, name) }
+              name='rating'
+              value = {rating}
+              
+                />
+        
+            </Col>
         </Row>
 
-        <Row className="d-flex mb-3">
-          <Col className="column-text">Author: {course.ownerId}</Col>
-          <Col className="column-text">
-            Price: {course.price === 0 ? 'Free' : course.price}$
+          <Row className="d-flex mb-3">
+            <Col className="column-text">Author: {}</Col>
+            <Col className="column-text">
+              Price: {course.price === 0 ? 'Free' : course.price}$
           </Col>
-        </Row>
+          </Row>
 
-        <Row className="d-flex mb-3">
-          <Col className="column-text">
-            Tags:{' '}
-            {course.tags.map((txt, i) => (
-              <span key={i}> {txt.id}</span>
-            ))}
+          <Row className="d-flex mb-3">
+            <Col className="column-text">
+              Tags:{' '}
+              {course.tags.map((txt, i) => (
+                <span key={i}> {txt.id}</span>
+              ))}
           </Col>
           <Col className="column-text">
-            Number of completions: {course.popularity}
+            Views: {course.popularity}
           </Col>
         </Row>
 

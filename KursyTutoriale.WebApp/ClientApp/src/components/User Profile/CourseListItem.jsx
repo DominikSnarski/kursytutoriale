@@ -6,7 +6,7 @@ import AppRoutes from '../../routing/AppRoutes';
 
 function CourseListItem(props) {
   return (
-    <Card body>
+    <Card body >
       <Link to={`${AppRoutes.Courseview}/${props.course.id}`}>
         <CardTitle>
           {props.course.title}

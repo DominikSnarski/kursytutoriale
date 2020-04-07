@@ -12,5 +12,7 @@ namespace KursyTutoriale.Infrastructure.Repositories.Interfaces
         Course Find(Guid id);
         Course HandleEvent(BaseEvent<Course> @event, Course entity);
         IQueryable<CourseReadModel> Queryable();
+        void UpdateRating(Guid id, float rating);
+        void IncrementViewCount(Guid id);
     }
 }

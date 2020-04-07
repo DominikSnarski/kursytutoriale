@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
-// import './Details.css';
-import { useHistory } from 'react-router-dom';
-import { Container, Row, Col, Collapse, Button } from 'reactstrap';
+import React from 'react';
+import { useHistory, Link } from 'react-router-dom';
+import { Button } from 'reactstrap';
 import { AdminService } from '../../api/Services/AdminService';
-import { Link } from 'react-router-dom';
+
 
     const ModeratorDetails = (props) => {
       const history = useHistory();
-      const [isOpen, setIsOpen] = useState(false);
 
       const handleButtonRemoveClick = () => {
         AdminService.removeModerator(props.user.id).then(() => history.push('/')).then(() => history.push('/adminMainPanel'));

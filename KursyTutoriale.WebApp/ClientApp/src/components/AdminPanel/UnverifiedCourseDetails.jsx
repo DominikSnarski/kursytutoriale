@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 // import './Details.css';
  import { useHistory } from 'react-router-dom';
-import { Container, Row, Col, Collapse, Button, Table, Input } from 'reactstrap';
+import { Container, Collapse, Button, Input } from 'reactstrap';
 // import { AdminService } from '../../api/Services/AdminService';
 import CourseViewer from '../Courses/CourseViewer';
 import { ModService } from '../../api/Services/ModService';
