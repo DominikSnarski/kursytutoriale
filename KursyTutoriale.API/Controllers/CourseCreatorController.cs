@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using KursyTutoriale.Application.DataTransferObjects;
 using KursyTutoriale.Application.DataTransferObjects.Course;
+using KursyTutoriale.Application.DataTransferObjects.NewCourse.CourseEdit;
 using KursyTutoriale.Application.Services;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -62,6 +63,18 @@ namespace KursyTutoriale.API.Controllers
         {
             var index = await courseService.AddLesson(lesson);
             return index;
+        }
+
+        [HttpPost("EditLesson")]
+        public async Task EditLesson([FromBody]ChangeLessonDTO lesson)
+        {
+            await courseService.EditLesson(lesson);
+        }
+
+        [HttpPost("EditModule")]
+        public async Task EditModule([FromBody]ChangeModuleDTO module)
+        {
+            await courseService.EditModule(module);
         }
     }
 }

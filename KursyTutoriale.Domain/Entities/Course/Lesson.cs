@@ -15,19 +15,19 @@ namespace KursyTutoriale.Domain.Entities.Course
             Id = id;
         }
 
-        public Lesson(Guid id, int courseModuleIndex, string title, int index)
+        public Lesson(Guid id, string title, int index, string description)
         {
             Id = id;
-            CourseModuleIndex = courseModuleIndex;
             Title = title;
             Index = index;
             Content = new List<LessonPart>();
+            Description = description;
         }
 
         public Guid Id { get; set; }
         public Guid CourseId { get; set; }
-        public int CourseModuleIndex { get; set; }
-        public string Title { get; set; }
+        public string Title { get; private set; }
+        public string Description { get; private set; }
         public int Index { get; set; }
         public List<LessonPart> Content { get; set; }
 
@@ -37,10 +37,27 @@ namespace KursyTutoriale.Domain.Entities.Course
             Content.Add(lessonPart);
         }
 
+        internal void ChangeTitle(string title)
+        {
+            Title = title;
+        }
+
         public void AddPartRange(IEnumerable<LessonPart> lessonParts)
         {
             foreach (var lessonPart in lessonParts)
                 AddPart(lessonPart);
+        }
+
+        public void Update(List<LessonPart> lessonParts)
+        {
+            Content.Clear();
+
+            AddPartRange(lessonParts);
+        }
+
+        internal void ChangeDescription(string description)
+        {
+            Description = description;
         }
     }
 }

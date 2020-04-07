@@ -46,14 +46,6 @@ namespace KursyTutoriale.Domain.Entities.Course.Events
                 VerificationStamp = new VerificationStamp()
             };
 
-            DefaultModuleId = DefaultModuleId == Guid.Empty ? Guid.NewGuid() : DefaultModuleId;
-            var module = new CourseModule(DefaultModuleId, "Default title", "Default description");
-            entity.AddModule(module);
-
-            DefaultLessonId = DefaultLessonId == Guid.Empty ? Guid.NewGuid() : DefaultLessonId;
-            var lesson = new Lesson(DefaultLessonId, 0, "Default title", 0);
-            module.AddLesson(lesson);
-
             return entity;
         }
 

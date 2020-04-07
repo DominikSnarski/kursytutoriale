@@ -8,7 +8,21 @@ export const LessonService = {
           courseID,
           moduleID,
           title,
-          content
+          content,
+        })
+        .then((resp) => resolve(resp))
+        .catch((error) => reject(error)),
+    );
+  },
+  editLesson: (courseId, lessonId, title, description, content) => {
+    return new Promise((resolve, reject) =>
+      apiClient
+        .post('/api/CourseCreator/EditLesson', {
+          courseId,
+          lessonId,
+          title,
+          description,
+          content,
         })
         .then((resp) => resolve(resp))
         .catch((error) => reject(error)),

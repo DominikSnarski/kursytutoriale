@@ -35,6 +35,12 @@ namespace KursyTutoriale.Domain.Entities.Course
             lessons = new List<Lesson>();
         }
 
+        internal void Update(string title, string description)
+        {
+            Title = title;
+            Description = description;
+        }
+
         public virtual bool AddLesson(Lesson lesson)
         {
             if (lessons.Any(m => m.Id == lesson.Id))

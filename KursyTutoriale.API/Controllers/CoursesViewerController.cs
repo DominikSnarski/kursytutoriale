@@ -36,7 +36,7 @@ namespace KursyTutoriale.API.Controllers
             {
                 return Ok(courseService.GetCourseDetails(courseId));
             }
-            catch(NullReferenceException e)
+            catch(NullReferenceException)
             {
                 return NoContent();
             }
