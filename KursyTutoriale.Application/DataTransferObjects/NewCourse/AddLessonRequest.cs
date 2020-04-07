@@ -9,5 +9,6 @@ namespace KursyTutoriale.Application.DataTransferObjects.Course
         public Guid ModuleId { get; set; }
         public string Title { get; set; }
         public List<LessonPartDTO> Content { get; set; }
+        public string Description { get; internal set; }
     }
 }

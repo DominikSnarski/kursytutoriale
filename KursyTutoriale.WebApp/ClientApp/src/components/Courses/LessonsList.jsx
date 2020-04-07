@@ -30,9 +30,7 @@ function LessonsList(props) {
                 style={{ backgroundColor: '#7CC3D8', borderColor: '#7CC3D8' }}
               >
                 <CardTitle>{item.title}</CardTitle>
-                <CardText className="card-height">
-                  {'temp description'}
-                </CardText>
+                <CardText className="card-height">{item.description}</CardText>
                 <Link
                   to={{
                     pathname: AppRoutes.Lesson,
@@ -48,14 +46,14 @@ function LessonsList(props) {
                 </Link>
 
                 {userContext.userid === props.ownerID &&
-                  item.title !== 'Default title' && (// warunek item.title !== 'Default title'trzeba bedzie usunac potem
+                item.title !== 'Default title' && ( // warunek item.title !== 'Default title'trzeba bedzie usunac potem
                     <Link
                       className="m-1"
                       to={{
                         pathname: AppRoutes.EditLesson,
                         state: {
                           courseid: props.courseid,
-                          moduleid: props.moduleid,
+                          lessonid: item.id,
                           title: item.title,
                           description: item.description,
                           content: JSON.parse(props.lessons[i].content),

@@ -30,6 +30,7 @@ function NewModule(props) {
 
     ModuleService.editModule(
       props.location.state.courseid,
+      props.location.state.moduleid,
       formData.get('title'),
       formData.get('description'),
     ).then(() => {

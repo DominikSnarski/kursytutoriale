@@ -1,14 +1,12 @@
-﻿
-using KursyTutoriale.Application.Contracts;
+﻿using KursyTutoriale.Application.Contracts;
 using KursyTutoriale.Application.DataTransferObjects.Course;
-using KursyTutoriale.Application.DataTransferObjects.Course.Verification;
 using KursyTutoriale.Application.DataTransferObjects.NewCourse;
+using KursyTutoriale.Application.DataTransferObjects.NewCourse.CourseEdit;
 using KursyTutoriale.Domain.Entities.Course;
 using KursyTutoriale.Domain.Entities.Course.Events;
 using KursyTutoriale.Domain.Entities.CoursePublication;
 using KursyTutoriale.Infrastructure.Repositories;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
-using KursyTutoriale.Infrastructure.Services;
 using KursyTutoriale.Shared;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +34,8 @@ namespace KursyTutoriale.Application.Services
         CourseReadModel GetCourse(Guid id);
         IEnumerable<CourseBasicInformationsDTO> GetUsersCourses(Guid UserId);
         IEnumerable<CourseBasicInformationsDTO> GetCoursesForVerification(int NrOfCourses);
+        Task EditLesson(ChangeLessonDTO dto);
+        Task EditModule(ChangeModuleDTO dto);
     }
 
     public class CourseService : ICourseService
@@ -141,7 +141,7 @@ namespace KursyTutoriale.Application.Services
 
                 return mapper.Map<List<CoursePageItemDTO>>(courses);
             }
-            catch(SqlException e)
+            catch(SqlException)
             {
                 return new List<CoursePageItemDTO>();
             }
@@ -257,7 +257,7 @@ namespace KursyTutoriale.Application.Services
                 .Select(part => new LessonPart(part.Name, part.Content))
                 .ToList();
 
-            var @event = new LessonAdded(0, 0, lesson.Title, lesson.ModuleId, lesson.CourseId, lessonParts);
+            var @event = new LessonAdded(0, lesson.Title, lesson.ModuleId, lesson.CourseId, lessonParts, lesson.Description);
 
             if (course.Id == Guid.Empty)
                 throw new Exception($"Course with id: {lesson.CourseId} doesnt exist");
@@ -413,6 +413,39 @@ namespace KursyTutoriale.Application.Services
         public IEnumerable<CourseBasicInformationsDTO> GetCoursesForVerification(int NrOfCourses)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task EditLesson(ChangeLessonDTO dto)
+        {
+            var course = courseRepository.Find(dto.CourseId);
+
+            var @event = new LessonChanged(
+                dto.CourseId, 
+                dto.LessonId, 
+                dto.Content
+                    .Select(lp => new LessonPart(lp.Name, lp.Content))
+                    .ToList(), 
+                dto.Title,
+                dto.Description);
+
+            courseRepository.HandleEvent(@event, course);
+
+            await unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task EditModule(ChangeModuleDTO dto)
+        {
+            var course = courseRepository.Find(dto.CourseId);
+
+            var @event = new ModuleChanged(
+                dto.CourseId,
+                dto.Title,
+                dto.Description,
+                dto.ModuleId);
+
+            courseRepository.HandleEvent(@event, course);
+
+            await unitOfWork.SaveChangesAsync();
         }
     }
 }

@@ -43,6 +43,8 @@ namespace KursyTutoriale.Domain.Entities.Course
             if (module is null)
                 return false;
 
+            lessons.Add(lesson);
+
             return module.AddLesson(lesson);
         }
 

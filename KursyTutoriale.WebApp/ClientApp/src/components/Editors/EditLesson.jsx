@@ -16,12 +16,14 @@ import { LessonService } from '../../api/Services/LessonService';
 import Kit from '../CreateLesson/Kit/Kit';
 import '../CreateLesson/style.css';
 import Button from '../../layouts/CSS/Button/Button';
-import '../CreateLesson/Kit.css'
+import '../CreateLesson/Kit.css';
 
 function EditLesson(props) {
   const history = useHistory();
   const [lessonTitle, setLessonTitle] = useState(props.location.state.title);
-  const [description, setDescription] = useState(props.location.state.description);
+  const [description, setDescription] = useState(
+    props.location.state.description,
+  );
   const blankTextInput = { name: 'text', content: '' };
   const [items, setItems] = useState(props.location.state.content);
 
@@ -52,7 +54,7 @@ function EditLesson(props) {
 
     LessonService.editLesson(
       props.location.state.courseid,
-      props.location.state.moduleid,
+      props.location.state.lessonid,
       formData.get('title'),
       formData.get('description'),
       items,
