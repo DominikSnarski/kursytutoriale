@@ -34,13 +34,10 @@ namespace KursyTutoriale.Application.Services
         CourseReadModel GetCourse(Guid id);
         IEnumerable<CourseBasicInformationsDTO> GetUsersCourses(Guid UserId);
         IEnumerable<CourseBasicInformationsDTO> GetCoursesForVerification(int NrOfCourses);
-<<<<<<< HEAD
         Task EditLesson(ChangeLessonDTO dto);
         Task EditModule(ChangeModuleDTO dto);
-=======
         Task AddRating(Guid CourseId, Guid UserId, float rating);
         Task IncrementViewCount(Guid CourseId);
->>>>>>> Finished ratings and views
     }
 
     public class CourseService : ICourseService
@@ -423,7 +420,6 @@ namespace KursyTutoriale.Application.Services
             throw new NotImplementedException();
         }
 
-<<<<<<< HEAD
         public async Task EditLesson(ChangeLessonDTO dto)
         {
             var course = courseRepository.Find(dto.CourseId);
@@ -453,8 +449,8 @@ namespace KursyTutoriale.Application.Services
                 dto.ModuleId);
 
             courseRepository.HandleEvent(@event, course);
-
-=======
+            await unitOfWork.SaveChangesAsync();
+        }
         public async Task AddRating(Guid CourseId, Guid UserId, float rating)
         {
             var query = rateRepository.Queryable();
@@ -463,7 +459,6 @@ namespace KursyTutoriale.Application.Services
             if (rate != null)
             {
                 rate.Rating = rating;
-                rateRepository.Update(rate);
             }
             else
             {
@@ -476,15 +471,14 @@ namespace KursyTutoriale.Application.Services
                 rateRepository.Insert(r);
             }
             await unitOfWork.SaveChangesAsync();
-            query = rateRepository.Queryable();
+
                 var newRating = query.Where(r => r.CourseId == CourseId).Average(r => r.Rating);
 
                 var query1 = courseRepository.Queryable();
                 var course = query1.Where(c => c.Id == CourseId).FirstOrDefault();
                 if (course != null)
                 {
-                    
-                    courseRepository.UpdateRating(course.Id,newRating);
+                 course.Rating = newRating;
                 }
                 await unitOfWork.SaveChangesAsync();
             
@@ -492,8 +486,12 @@ namespace KursyTutoriale.Application.Services
 
         public async Task IncrementViewCount(Guid CourseId)
         {
-            courseRepository.IncrementViewCount(CourseId);
->>>>>>> Finished ratings and views
+            var query = courseRepository.Queryable();
+            var course = query.Where(c => c.Id == CourseId).FirstOrDefault();
+            if(course != null)
+            {
+                course.Popularity++;
+            }
             await unitOfWork.SaveChangesAsync();
         }
     }
