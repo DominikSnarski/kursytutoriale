@@ -29,7 +29,7 @@ function EditLesson(props) {
 
   const handleTextChange = (e) => {
     const updatedText = [...items];
-    updatedText[e.target.dataset.idx].content = e.target.value;
+    updatedText[e.target.dataset.idx].Content = e.target.value;
     setItems(updatedText);
   };
 
