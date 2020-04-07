@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 // import './Details.css';
-import { useHistory } from 'react-router-dom';
-import { Container, Row, Col, Collapse, Media, Button } from 'reactstrap';
+import { useHistory, Link } from 'react-router-dom';
+import { Button } from 'reactstrap';
 import { AdminService } from '../../api/Services/AdminService';
-import { Link } from 'react-router-dom';
 
     const UserDetails = (props) => {
       const history = useHistory();
