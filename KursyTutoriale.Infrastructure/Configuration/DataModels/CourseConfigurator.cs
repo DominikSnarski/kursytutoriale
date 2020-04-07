@@ -22,11 +22,13 @@ namespace KursyTutoriale.Infrastructure.Configuration.DataModels
                     l.HasKey(tt => tt.Id);
                 });
             });
+
             builder.OwnsMany(c => c.Tags, t =>
             {
                 t.ToTable("KTCourseTags");
                 t.HasKey(tt => tt.Id);
             });
+
             builder.OwnsOne(c => c.VerificationStamp, t =>
             {
                 t.ToTable("KTVerificationStamps");

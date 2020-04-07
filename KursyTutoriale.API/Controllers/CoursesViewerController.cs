@@ -1,4 +1,6 @@
-﻿using KursyTutoriale.Application.DataTransferObjects.Course;
+
+using KursyTutoriale.Application.DataTransferObjects.Course;
+using KursyTutoriale.Application.DataTransferObjects.NewCourse;
 using KursyTutoriale.Application.Services;
 using KursyTutoriale.Domain.Entities.Course;
 using Microsoft.AspNetCore.Mvc;
@@ -66,9 +68,9 @@ namespace KursyTutoriale.API.Controllers
         /// If for exemple firstPageNumber=1 and lastPageNumber=3, it will return courses from first page to third page.
         /// </returns>
         [HttpGet("GetPagesOfCourses")]
-        public List<CourseBasicInformationsDTO> GetPagesOfCourses(int firstPageNumber, int lastPageNumber, int pageSize)
+        public List<CoursePageItemDTO> GetPagesOfCourses(int firstPageNumber, int lastPageNumber, int pageSize)
         {
-            return courseService.GetPagesOfCourses(firstPageNumber, lastPageNumber, pageSize);
+            return courseService.GetPublicCoursesPaged(firstPageNumber, lastPageNumber, pageSize);
         }
 
         /// <summary>
