@@ -26,6 +26,8 @@ const CourseViewer = (props) => {
   const [courseLoaded, setCourseLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error] = useState(false);
+
+
   useEffect(() => {
     if (!isLoading) {
       setIsLoading(true);
@@ -35,6 +37,14 @@ const CourseViewer = (props) => {
       });
     }
   }, [props.id]);
+
+  const handleButtonPublishClick = () => {
+    CourseService.publishCourse(course.id).then(() => history.push('/')).then(() => history.push(`/courseview/${course.id}`));
+  };
+
+  const handleButtonPublishNewVersionClick = () => {
+    CourseService.publishNewVersionOfCourse(course.id).then(() => history.push('/')).then(() => history.push(`/courseview/${course.id}`));
+  };
 
   if (error) {
     return (
@@ -163,17 +173,6 @@ const CourseViewer = (props) => {
         </Row>
 
         <Row className="d-flex justify-content-center mb-2">
-          <Col>
-            <Card fluid outline style={{ borderColor: '#9dd2e2' }}>
-              <CardHeader className="spans">Course details</CardHeader>
-              <CardBody style={{ backgroundColor: '#7CC3D8' }}>
-                <CardText>{course.description}</CardText>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-
-        <Row className="d-flex justify-content-center mb-2">
           Your progress into this course.
         </Row>
         <Progress value="25" className="mb-4" />
@@ -199,6 +198,32 @@ const CourseViewer = (props) => {
           </Row>
           <Row className="justify-content-md-center">
             <Button>Send to verification</Button>
+          </Row>
+        </Container>
+      )}
+      {userContext.userid === course.ownerId && course.verified && !course.public && (
+        <Container>
+          <Row className="justify-content-md-center">
+            <Alert>
+              Your course will NOT be available if it is not published. If you
+              think it is ready click publish button to allow other user to see it.
+            </Alert>
+          </Row>
+          <Row className="justify-content-md-center">
+            <Button onClick={() => handleButtonPublishClick()}>Publish</Button>
+          </Row>
+        </Container>
+      )}
+      {userContext.userid === course.ownerId && course.verified && course.public && (
+        <Container>
+          <Row className="justify-content-md-center">
+            <Alert>
+              Changes you have added to your course will not be visible to other users. 
+              If you want them to see new content publish new version of your course.
+            </Alert>
+          </Row>
+          <Row className="justify-content-md-center">
+            <Button onClick={() => handleButtonPublishNewVersionClick()}>Publish New Version</Button>
           </Row>
         </Container>
       )}

@@ -51,6 +51,23 @@ export const CourseService = {
         .catch((error) => reject(error)),
     );
   },
+  publishCourse: (id) => {
+    return new Promise((resolve, reject) =>
+      apiClient
+        .post(`/api/PublicCourses/Publish?Id=${id}`)
+        .then((response) => resolve(response.data))
+        .catch((error) => reject(error)),
+    );
+  },
+  publishNewVersionOfCourse: (id) => {
+    return new Promise((resolve, reject) =>
+      apiClient
+        .post(`/api/PublicCourses/PublishNewVersion?Id=${id}`)
+        .then((response) => resolve(response.data))
+        .catch((error) => reject(error)),
+    );
+  },
+  
 };
 
 export default CourseService;
