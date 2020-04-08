@@ -3,9 +3,11 @@ using KursyTutoriale.Application.DataTransferObjects.Course;
 using KursyTutoriale.Application.DataTransferObjects.NewCourse;
 using KursyTutoriale.Application.Services;
 using KursyTutoriale.Domain.Entities.Course;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace KursyTutoriale.API.Controllers
 {
@@ -138,6 +140,20 @@ namespace KursyTutoriale.API.Controllers
         public IEnumerable<CourseBasicInformationsDTO> GetUsersCourses(Guid UserId)
         {
             return courseService.GetUsersCourses(UserId);
+        }
+
+        [Authorize]
+        [HttpPost("AddRating")]
+        public async Task AddRating(Guid CourseId, Guid UserId, float Rating)
+        {
+          await courseService.AddRating(CourseId,UserId, Rating);
+        }
+
+        [Authorize]
+        [HttpPost("IncrementViewCount")]
+        public async Task IncrementViewCount(Guid CourseId)
+        {
+            await courseService.IncrementViewCount(CourseId);
         }
 
     }

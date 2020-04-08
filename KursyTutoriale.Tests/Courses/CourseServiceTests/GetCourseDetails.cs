@@ -25,7 +25,7 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
             var repositoryMock = new Mock<ICourseRepository>();
             repositoryMock.Setup(m => m.Queryable()).Returns(courseQuery);
 
-            var service = new CourseService(null, null, null, repositoryMock.Object, null);
+            var service = new CourseService(null, null, null, repositoryMock.Object, null,null);
 
             Assert.Throws<NullReferenceException>(()=>service.GetCourseDetails(Guid.Empty));
         }
@@ -59,7 +59,8 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
                 mapperMock.Object,
                 null,
                 repositoryMock.Object,
-                new Mock<IExtendedRepository<CoursePublicationProfile>>().Object);
+                new Mock<IExtendedRepository<CoursePublicationProfile>>().Object,
+                null);
 
             //Act
             var details = service.GetCourseDetails(courseId);
@@ -101,7 +102,8 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
                 mapperMock.Object,
                 null,
                 repositoryMock.Object,
-                new Mock<IExtendedRepository<CoursePublicationProfile>>().Object);
+                new Mock<IExtendedRepository<CoursePublicationProfile>>().Object,
+                null);
 
             //Act
             var details = service.GetCourseDetails(courseId);
@@ -137,7 +139,8 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
                 mapperMock.Object,
                 null,
                 repositoryMock.Object,
-                profileMock.Object);
+                profileMock.Object,
+                null);
 
             //Act
             var details = service.GetCourseDetails(courseId);
@@ -177,7 +180,8 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
                 mapperMock.Object,
                 null,
                 repositoryMock.Object,
-                profileMock.Object);
+                profileMock.Object,
+                null);
 
             //Act
             var details = service.GetCourseDetails(courseId);

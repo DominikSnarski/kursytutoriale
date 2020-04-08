@@ -277,7 +277,7 @@ class UserProfile extends React.Component {
                                   {this.state.courseList
                                     .slice(0, this.state.numOfVisibleCourses)
                                     .map((course, index) => (
-                                      <Row sm="6">
+                                      <Row sm="auto" p>
                                         <CourseListItem course={course} />
                                       </Row>
                                     ))}

@@ -14,6 +14,8 @@ namespace KursyTutoriale.Application.DataTransferObjects.Course
         public bool Verified { get; set; }
         public Guid OwnerId { get; set; }
         public DateTime Date { get; set; }
+        public int Popularity { get; set; }
+        public double Rating { get; set; }
         public ICollection<CourseTag> Tags { get; set; }
         public ICollection<CourseModuleBasicInformationsDTO> Modules { get; set; }
 

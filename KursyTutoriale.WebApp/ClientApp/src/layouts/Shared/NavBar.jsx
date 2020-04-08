@@ -55,6 +55,15 @@ const NavBar = () => {
               </Link>
             </span>
           )}
+          {userContext !== undefined &&
+          userContext.authenticated &&
+          userContext.userRoles.includes('Admin') && (
+            <span className="user_controls_nav">
+              <Link to={AppRoutes.AdminMainPanel}>
+                <Button outline>AdminPanel</Button>
+              </Link>
+            </span>
+          )}
         {userContext !== undefined && userContext.authenticated && (
           <span className="user_controls_nav">
             <Link

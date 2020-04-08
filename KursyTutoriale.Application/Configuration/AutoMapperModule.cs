@@ -6,6 +6,8 @@ using KursyTutoriale.Application.DataTransferObjects.Course.Report;
 using KursyTutoriale.Application.DataTransferObjects.NewCourse;
 using KursyTutoriale.Application.DataTransferObjects.Tags;
 using KursyTutoriale.Application.DataTransferObjects.UserProfiles;
+using KursyTutoriale.Domain.Entities.Administration;
+using KursyTutoriale.Domain.Entities.Auth;
 using KursyTutoriale.Domain.Entities.Course;
 using KursyTutoriale.Domain.Entities.UserProfiles;
 using System;
@@ -65,6 +67,7 @@ namespace KursyTutoriale.Application.Configuration
 
                 cfg.CreateMap<Lesson, LessonReadModel>();
                 cfg.CreateMap<CourseModule, CourseModuleReadModel>();
+                cfg.CreateMap<ApplicationUser, UserBasic>();
             });
 
             var dtoMapper = new DTOMapper(config);

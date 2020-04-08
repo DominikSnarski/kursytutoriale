@@ -51,6 +51,39 @@ export const CourseService = {
         .catch((error) => reject(error)),
     );
   },
+  publishCourse: (id) => {
+    return new Promise((resolve, reject) =>
+      apiClient
+        .post(`/api/PublicCourses/Publish?Id=${id}`)
+        .then((response) => resolve(response.data))
+        .catch((error) => reject(error)),
+    );
+  },
+  publishNewVersionOfCourse: (id) => {
+    return new Promise((resolve, reject) =>
+      apiClient
+        .post(`/api/PublicCourses/PublishNewVersion?Id=${id}`)
+        .then((response) => resolve(response.data))
+        .catch((error) => reject(error)),
+    );
+  },
+  addRating: (courseId,userId,rate) => {
+    return new Promise((resolve, reject) =>
+      apiClient
+        .post(`/api/CoursesViewer/AddRating?CourseId=${courseId}&UserId=${userId}&Rating=${rate}`)
+        .then((response) => resolve(response.data))
+        .catch((error) => reject(error)),
+    );
+  },
+  incrementViewCount: (courseId) => {
+    return new Promise((resolve, reject) =>
+      apiClient
+        .post(`/api/CoursesViewer/IncrementViewCount?CourseId=${courseId}`)
+        .then((response) => resolve(response.data))
+        .catch((error) => reject(error)),
+    );
+  },
+  
 };
 
 export default CourseService;

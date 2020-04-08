@@ -27,6 +27,7 @@ namespace KursyTutoriale.Infrastructure
         public DbSet<Report> Reports { get; set; }
         public DbSet<CoursePublicationProfile> PublicationProfiles { get; set; }
         public DbSet<ModAssignment> ModAssignments { get; set; }
+        public DbSet<Rate> Rates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -40,6 +41,7 @@ namespace KursyTutoriale.Infrastructure
             builder.ApplyConfiguration(new ReportConfiguration());
             builder.ApplyConfiguration(new CoursePublicationProfileConfiguration());
             builder.ApplyConfiguration(new ModAssignmentConfiguration());
+            builder.ApplyConfiguration(new RateConfiguration());
         }
     }
 }
