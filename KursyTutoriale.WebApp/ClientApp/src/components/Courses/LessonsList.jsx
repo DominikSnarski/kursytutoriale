@@ -31,40 +31,43 @@ function LessonsList(props) {
               >
                 <CardTitle>{item.title}</CardTitle>
                 <CardText className="card-height">{item.description}</CardText>
-                <Link
-                  to={{
-                    pathname: AppRoutes.Lesson,
-                    state: {
-                      lessons: props.lessons,
-                      index: i,
-                      ownerID: props.ownerID,
-                      courseID: props.courseid,
-                    },
-                  }}
-                >
-                  <Button color="primary">Lets go</Button>
-                </Link>
 
-                {userContext.userid === props.ownerID &&
-                item.title !== 'Default title' && ( // warunek item.title !== 'Default title'trzeba bedzie usunac potem
-                    <Link
-                      className="m-1"
-                      to={{
-                        pathname: AppRoutes.EditLesson,
-                        state: {
-                          courseid: props.courseid,
-                          lessonid: item.id,
-                          title: item.title,
-                          description: item.description,
-                          content: JSON.parse(props.lessons[i].content),
-                        },
-                      }}
-                    >
-                      <Button className="ml-2" color="secondary">
-                        Edit lesson
-                      </Button>
-                    </Link>
-                  )}
+                {userContext.userid === props.ownerID && (
+                  <Link
+                    to={{
+                      pathname: AppRoutes.Lesson,
+                      state: {
+                        lessons: props.lessons,
+                        index: i,
+                        ownerID: props.ownerID,
+                        courseID: props.courseid,
+                      },
+                    }}
+                  >
+                    <Button color="primary">Lets go</Button>
+                  </Link>
+                )}
+
+                {userContext.userid === props.ownerID && (
+                  <Link
+                    className="m-1"
+                    to={{
+                      pathname: AppRoutes.EditLesson,
+                      state: {
+                        courseid: props.courseid,
+                        lessonid: item.id,
+                        title: item.title,
+                        description: item.description,
+                        content: JSON.parse(props.lessons[i].content),
+                        videoSrc: ''
+                      },
+                    }}
+                  >
+                    <Button className="ml-2" color="secondary">
+                      Edit lesson
+                    </Button>
+                  </Link>
+                )}
               </Card>
             </Col>
           </Row>

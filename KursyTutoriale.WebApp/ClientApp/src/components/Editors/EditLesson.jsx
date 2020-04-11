@@ -26,6 +26,7 @@ function EditLesson(props) {
   );
   const blankTextInput = { name: 'text', content: '' };
   const [items, setItems] = useState(props.location.state.content);
+  const [videoSrc, setVideoSrc] = useState(props.location.state.videoSrc);
 
   const handleTextChange = (e) => {
     const updatedText = [...items];
@@ -98,6 +99,16 @@ function EditLesson(props) {
 
             <h4>Lesson content</h4>
 
+            {videoSrc !== '' && (
+              <Container className="video mb-3">
+              <Row className="justify-content-md-center">
+                <video controls>
+                  <source src={videoSrc} type="video/mp4" />
+                </video>
+              </Row>
+              </Container>
+            )}
+
             {items.length === 0 && (
               <Alert className="text-center" color="danger">
                 The lesson is empty!
@@ -156,7 +167,9 @@ function EditLesson(props) {
                 const file = event.target.files[0];
                 getBase64(file);
               }}
-              clearLesson={() => setItems([])}
+              addVideo={(event) => {const file = URL.createObjectURL(event.target.files[0]);
+              setVideoSrc(file)}}
+              clearLesson={() => {setItems([]); setVideoSrc('')}}
             />
           </div>
         </div>

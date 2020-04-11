@@ -29,7 +29,6 @@ const CourseViewer = (props) => {
   const [error] = useState(false);
   const [rating, setRating] = useState(0);
 
-
   useEffect(() => {
     if (!isLoading) {
       setIsLoading(true);
@@ -39,28 +38,26 @@ const CourseViewer = (props) => {
         setRating(response.data.rating);
         CourseService.incrementViewCount(props.id);
       });
-      
     }
-
   }, [props.id]);
 
   const handleButtonPublishClick = () => {
-    CourseService.publishCourse(course.id).then(() => history.push('/')).then(() => history.push(`/courseview/${course.id}`));
+    CourseService.publishCourse(course.id)
+      .then(() => history.push('/'))
+      .then(() => history.push(`/courseview/${course.id}`));
   };
 
   const handleButtonPublishNewVersionClick = () => {
-    CourseService.publishNewVersionOfCourse(course.id).then(() => history.push('/')).then(() => history.push(`/courseview/${course.id}`));
+    CourseService.publishNewVersionOfCourse(course.id)
+      .then(() => history.push('/'))
+      .then(() => history.push(`/courseview/${course.id}`));
   };
 
-   const onStarClick = (nextValue) => {
-    CourseService.addRating(course.id,userContext.userid,nextValue);
+  const onStarClick = (nextValue) => {
+    CourseService.addRating(course.id, userContext.userid, nextValue);
     setRating(nextValue);
   };
-  const onStarHover = () => {
-
-  };
-
-  
+  const onStarHover = () => {};
 
   if (error) {
     return (
@@ -151,39 +148,56 @@ const CourseViewer = (props) => {
                   paddingLeft: '10px',
                   paddingRight: '10px',
                 }}
-                >
-                  Public
-                </text>
-              )}
+              >
+                Public
+              </text>
+            )}
           </Col>
-          <Col>
-          <StarRating
-              onStarClick={(nextValue, prevValue, name) => onStarClick(nextValue, prevValue, name) }
-              onStarHover={(nextValue, prevValue, name) => onStarHover(nextValue, prevValue, name) }
-              name='rating'
-              value = {rating}
-              
-                />
-        
-            </Col>
         </Row>
 
-          <Row className="d-flex mb-3">
-            <Col className="column-text">Author: {}</Col>
-            <Col className="column-text">
-              Price: {course.price === 0 ? 'Free' : course.price}$
-          </Col>
-          </Row>
-
-          <Row className="d-flex mb-3">
-            <Col className="column-text">
-              Tags:{' '}
-              {course.tags.map((txt, i) => (
-                <span key={i}> {txt.id}</span>
-              ))}
-          </Col>
+        <Row className="d-flex mb-3">
+          <Col className="column-text">Author: {}</Col>
           <Col className="column-text">
-            Views: {course.popularity}
+            Price: {course.price === 0 ? 'Free' : course.price}$
+          </Col>
+        </Row>
+
+        <Row className="d-flex mb-3">
+          <Col className="column-text">
+            Tags:{' '}
+            {course.tags.map((txt, i) => (
+              <span key={i}> {txt.id}</span>
+            ))}
+          </Col>
+          <Col className="column-text">Views: {course.popularity}</Col>
+        </Row>
+
+        <Row className="d-flex mb-3">
+          <Col className="column-text">
+            Course Rating:
+          </Col>
+
+          <Col className="column-text">
+            Your Rating:
+          </Col>
+        </Row>
+
+        <Row className="d-flex mb-3">
+          <Col className="column-text">
+            <StarRating name="rating" value={3} />
+          </Col>
+
+          <Col className="column-text">
+            <StarRating
+              onStarClick={(nextValue, prevValue, name) =>
+                onStarClick(nextValue, prevValue, name)
+              }
+              onStarHover={(nextValue, prevValue, name) =>
+                onStarHover(nextValue, prevValue, name)
+              }
+              name="rating"
+              value={rating}
+            />
           </Col>
         </Row>
 
@@ -213,6 +227,14 @@ const CourseViewer = (props) => {
           courseID={props.id}
           ownerID={course.ownerId}
         />
+
+        {userContext.userid === course.ownerId && (
+          <Container>
+            <Row className="justify-content-md-center mt-5">
+              <Button size="lg">Join this course</Button>
+            </Row>
+          </Container>
+        )}
       </Jumbotron>
       {userContext.userid === course.ownerId && !course.verified && (
         <Container>
@@ -227,32 +249,42 @@ const CourseViewer = (props) => {
           </Row>
         </Container>
       )}
-      {userContext.userid === course.ownerId && course.verified && !course.public && (
-        <Container>
-          <Row className="justify-content-md-center">
-            <Alert>
-              Your course will NOT be available if it is not published. If you
-              think it is ready click publish button to allow other user to see it.
-            </Alert>
-          </Row>
-          <Row className="justify-content-md-center">
-            <Button onClick={() => handleButtonPublishClick()}>Publish</Button>
-          </Row>
-        </Container>
-      )}
-      {userContext.userid === course.ownerId && course.verified && course.public && (
-        <Container>
-          <Row className="justify-content-md-center">
-            <Alert>
-              Changes you have added to your course will not be visible to other users. 
-              If you want them to see new content publish new version of your course.
-            </Alert>
-          </Row>
-          <Row className="justify-content-md-center">
-            <Button onClick={() => handleButtonPublishNewVersionClick()}>Publish New Version</Button>
-          </Row>
-        </Container>
-      )}
+      {userContext.userid === course.ownerId &&
+        course.verified &&
+        !course.public && (
+          <Container>
+            <Row className="justify-content-md-center">
+              <Alert>
+                Your course will NOT be available if it is not published. If you
+                think it is ready click publish button to allow other user to
+                see it.
+              </Alert>
+            </Row>
+            <Row className="justify-content-md-center">
+              <Button onClick={() => handleButtonPublishClick()}>
+                Publish
+              </Button>
+            </Row>
+          </Container>
+        )}
+      {userContext.userid === course.ownerId &&
+        course.verified &&
+        course.public && (
+          <Container>
+            <Row className="justify-content-md-center">
+              <Alert>
+                Changes you have added to your course will not be visible to
+                other users. If you want them to see new content publish new
+                version of your course.
+              </Alert>
+            </Row>
+            <Row className="justify-content-md-center">
+              <Button onClick={() => handleButtonPublishNewVersionClick()}>
+                Publish New Version
+              </Button>
+            </Row>
+          </Container>
+        )}
       <Button
         color="secondary"
         onClick={() => {

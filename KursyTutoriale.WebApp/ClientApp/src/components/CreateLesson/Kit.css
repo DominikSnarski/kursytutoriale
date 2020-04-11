@@ -1,5 +1,5 @@
 .sidenav {
-    width: 350px;
+    width: 11%;
     position: absolute;
     z-index: 1;
     top: 150px;
@@ -17,4 +17,8 @@
   
   .lesson{
     justify-content: center;
+  }
+
+  .video{
+    width: 800px
   }
