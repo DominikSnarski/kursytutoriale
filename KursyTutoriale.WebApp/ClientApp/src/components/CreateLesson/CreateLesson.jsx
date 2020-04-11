@@ -18,11 +18,24 @@ import './style.css';
 import Button from '../../layouts/CSS/Button/Button';
 import InputField from '../../layouts/CSS/InputField/InputField';
 import './Kit.css';
+import QuizEditor from './QuizEditor';
 
 function LessonEdit(props) {
   const history = useHistory();
   const [lessonTitle, setLessonTitle] = useState('');
   const blankTextInput = { type: 'text', content: '' };
+  const blankQuizInput = {
+    type: 'quiz',
+    content: {
+      questions: [
+        {
+          question: '',
+          answers: ['', ''],
+          correct: 0,
+        },
+      ],
+    },
+  };
   const [items, setItems] = useState([{ ...blankTextInput }]);
 
   const handleTextChange = (e) => {
@@ -43,6 +56,13 @@ function LessonEdit(props) {
         },
       ]);
     };
+  };
+
+  const updateQuiz = (quiz, key) => {
+    let i = items;
+    i[key].content = quiz;
+    console.log(i);
+    setItems([...i]);
   };
 
   const handleSubmit = (event) => {
@@ -110,17 +130,27 @@ function LessonEdit(props) {
                   />
                 );
               // eslint-disable-next-line react/jsx-key
-              return (
-                <Container key={key}>
-                  <Row className="justify-content-md-center">
-                    <img
-                      className="mb-3"
-                      src={item.content}
-                      alt="Something, somewhere went terribly wrong"
-                    />
-                  </Row>
-                </Container>
-              );
+              if (item.type === 'image')
+                return (
+                  <Container key={key}>
+                    <Row className="justify-content-md-center">
+                      <img
+                        className="mb-3"
+                        src={item.content}
+                        alt="Something, somewhere went terribly wrong"
+                      />
+                    </Row>
+                  </Container>
+                );
+              if (item.type === 'quiz')
+                return (
+                  <QuizEditor
+                    blankQ={blankQuizInput}
+                    itemIndex={key}
+                    quiz={item.content}
+                    updateQuiz={updateQuiz}
+                  />
+                );
             })}
 
             <Button
@@ -149,6 +179,14 @@ function LessonEdit(props) {
                 const file = event.target.files[0];
                 getBase64(file);
               }}
+              addQuiz={() =>
+                setItems([
+                  ...items,
+                  {
+                    ...blankQuizInput,
+                  },
+                ])
+              }
               clearLesson={() => setItems([])}
             />
           </div>

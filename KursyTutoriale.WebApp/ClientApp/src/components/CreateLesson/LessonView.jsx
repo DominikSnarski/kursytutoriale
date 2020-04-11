@@ -3,6 +3,7 @@ import { Jumbotron, Button, Container, Col, Row } from 'reactstrap';
 import { Fade } from 'react-reveal';
 import { useHistory, Link } from 'react-router-dom';
 import AppRoutes from '../../routing/AppRoutes';
+import QuizViewer from './QuizViewer';
 
 function Lesson(props) {
   const items = JSON.parse(
@@ -11,7 +12,6 @@ function Lesson(props) {
   items.map((e, k) => {
     e.Content = JSON.parse(e.Content);
   });
-  console.log(items);
   const history = useHistory();
 
   return (
@@ -34,16 +34,28 @@ function Lesson(props) {
               );
             }
             // eslint-disable-next-line react/jsx-key
-            return (
-              <Container key={key}>
-                <Row className="justify-content-md-center">
-                  <img
-                    src={item.Content}
-                    alt="Something, somewhere went terribly wrong"
-                  />
-                </Row>
-              </Container>
-            );
+            if (item.Type.substring(0, 5) === 'image') {
+              return (
+                <Container key={key}>
+                  <Row className="justify-content-md-center">
+                    <img
+                      src={item.Content}
+                      alt="Something, somewhere went terribly wrong"
+                    />
+                  </Row>
+                </Container>
+              );
+            }
+            // eslint-disable-next-line react/jsx-key
+            if (item.Type.substring(0, 4) === 'quiz') {
+              return (
+                <Container key={key}>
+                  <Row className="justify-content-md-center">
+                    <QuizViewer content={item.Content} />
+                  </Row>
+                </Container>
+              );
+            }
           })}
 
           <Row className="mt-5">
