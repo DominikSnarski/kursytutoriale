@@ -16,17 +16,19 @@ import { LessonService } from '../../api/Services/LessonService';
 import Kit from './Kit/Kit';
 import './style.css';
 import Button from '../../layouts/CSS/Button/Button';
-import InputField from '../../layouts/CSS/InputField/InputField';
 import './Kit.css';
 import QuizEditor from './QuizEditor';
 
 function LessonEdit(props) {
   const history = useHistory();
-  const [lessonTitle, setLessonTitle] = useState('');
-  const blankTextInput = { type: 'text', content: '' };
+  const [lessonTitle, setLessonTitle] = useState(props.location.state.title);
+  const [lessonDescription, setLessonDescription] = useState(
+    props.location.state.description,
+  );
+  const blankTextInput = { Type: 'text', Content: '' };
   const blankQuizInput = {
-    type: 'quiz',
-    content: {
+    Type: 'quiz',
+    Content: {
       questions: [
         {
           question: '',
@@ -36,11 +38,15 @@ function LessonEdit(props) {
       ],
     },
   };
-  const [items, setItems] = useState([{ ...blankTextInput }]);
+  const [items, setItems] = useState(
+    !props.location.state.isEdited
+      ? [{ ...blankTextInput }]
+      : props.location.state.content,
+  );
 
   const handleTextChange = (e) => {
     const updatedText = [...items];
-    updatedText[e.target.dataset.idx].content = e.target.value;
+    updatedText[e.target.dataset.idx].Content = e.target.value;
     setItems(updatedText);
   };
 
@@ -52,16 +58,15 @@ function LessonEdit(props) {
         ...items,
         {
           type: 'image',
-          content: reader.result,
+          Content: reader.result,
         },
       ]);
     };
   };
 
   const updateQuiz = (quiz, key) => {
-    let i = items;
-    i[key].content = quiz;
-    console.log(i);
+    const i = items;
+    i[key].Content = quiz;
     setItems([...i]);
   };
 
@@ -69,15 +74,27 @@ function LessonEdit(props) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
-
-    LessonService.addLesson(
-      props.location.state.courseid,
-      props.location.state.moduleid,
-      formData.get('title'),
-      items,
-    ).then(() => {
-      history.push(`/courseview/${props.location.state.courseid}`);
-    });
+    if (!props.location.state.isEdited) {
+      LessonService.addLesson(
+        props.location.state.courseid,
+        props.location.state.moduleid,
+        formData.get('title'),
+        formData.get('description'),
+        items,
+      ).then(() => {
+        history.push(`/courseview/${props.location.state.courseid}`);
+      });
+    } else {
+      LessonService.editLesson(
+        props.location.state.courseid,
+        props.location.state.lessonid,
+        formData.get('title'),
+        formData.get('description'),
+        items,
+      ).then(() => {
+        history.push(`/courseview/${props.location.state.courseid}`);
+      });
+    }
   };
 
   return (
@@ -86,26 +103,32 @@ function LessonEdit(props) {
         <div>
           <Container className="Container">
             <h4>Lesson information</h4>
-            <Zoom left duration="200">
+            <Zoom left duration={200}>
               <FormGroup className="mt-2">
-                <InputField
+                <Input
+                  className="input_field mb-3"
                   type="text"
                   name="title"
                   id="titleField"
                   placeholder="Lesson's title. Max. 100 characters"
-                  value={lessonTitle}
-                  onChange={(event) => setLessonTitle(event.target.value)}
+                  value={lessonTitle ?? ''}
+                  onChange={(event) => {
+                    setLessonTitle(event.target.value);
+                  }}
                 />
                 <FormFeedback valid>Sweet! that name is available</FormFeedback>
               </FormGroup>
             </Zoom>
 
-            <Zoom left duration="200">
-              <InputField
+            <Zoom left duration={200}>
+              <Input
+                className="input_field mb-3"
+                value={lessonDescription ?? ''}
                 type="textarea"
                 name="description"
                 id="descriptionField"
                 placeholder="Lesson's description. Max. 250 characters"
+                onChange={(event) => setLessonDescription(event.target.value)}
               />
             </Zoom>
 
@@ -117,40 +140,39 @@ function LessonEdit(props) {
               </Alert>
             )}
             {items.map((item, key) => {
-              if (item.type === 'text')
-                return (
-                  <Input
-                    className="input_field mb-3"
-                    type="text"
-                    name={`text${key}`}
-                    id={item.index}
-                    data-idx={key}
-                    value={items[key].content}
-                    onChange={handleTextChange}
-                  />
-                );
-              // eslint-disable-next-line react/jsx-key
-              if (item.type === 'image')
+              if (item.Type === 'image')
+                // eslint-disable-next-line react/jsx-key
                 return (
                   <Container key={key}>
                     <Row className="justify-content-md-center">
                       <img
                         className="mb-3"
-                        src={item.content}
+                        src={item.Content}
                         alt="Something, somewhere went terribly wrong"
                       />
                     </Row>
                   </Container>
                 );
-              if (item.type === 'quiz')
+              if (item.Type === 'quiz')
                 return (
                   <QuizEditor
-                    blankQ={blankQuizInput}
                     itemIndex={key}
-                    quiz={item.content}
+                    quiz={item.Content}
                     updateQuiz={updateQuiz}
                   />
                 );
+              return (
+                <Input
+                  key={key}
+                  className="input_field mb-3"
+                  type="text"
+                  name={`text${key}`}
+                  id={item.index}
+                  data-idx={key}
+                  value={items[key].Content}
+                  onChange={handleTextChange}
+                />
+              );
             })}
 
             <Button

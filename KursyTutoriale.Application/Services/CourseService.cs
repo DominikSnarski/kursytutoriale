@@ -431,7 +431,7 @@ namespace KursyTutoriale.Application.Services
                 dto.CourseId, 
                 dto.LessonId, 
                 dto.Content
-                    .Select(lp => new LessonPart(lp.Type, JsonConvert.SerializeObject(dto.Content)))
+                    .Select(lp => new LessonPart(lp.Type, JsonConvert.SerializeObject(lp.Content)))
                     .ToList(), 
                 dto.Title,
                 dto.Description);

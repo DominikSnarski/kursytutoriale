@@ -9,8 +9,8 @@ function Lesson(props) {
   const items = JSON.parse(
     props.location.state.lessons[props.location.state.index].content,
   );
-  items.map((e, k) => {
-    e.Content = JSON.parse(e.Content);
+  items.map((e) => {
+    return JSON.parse(e.Content);
   });
   const history = useHistory();
 
@@ -25,14 +25,6 @@ function Lesson(props) {
 
         <Jumbotron className="courses_bg pr-4">
           {items.map((item, key) => {
-            if (item.Type.substring(0, 4) === 'text') {
-              return (
-                <Container>
-                  <p>{item.Content}</p>
-                  <br />
-                </Container>
-              );
-            }
             // eslint-disable-next-line react/jsx-key
             if (item.Type.substring(0, 5) === 'image') {
               return (
@@ -56,6 +48,12 @@ function Lesson(props) {
                 </Container>
               );
             }
+            return (
+              <Container key={key}>
+                <p>{item.Content}</p>
+                <br />
+              </Container>
+            );
           })}
 
           <Row className="mt-5">

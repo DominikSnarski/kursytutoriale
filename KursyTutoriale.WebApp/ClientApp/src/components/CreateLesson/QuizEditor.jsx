@@ -1,20 +1,12 @@
-/* eslint-disable */
 import React, { useState } from 'react';
 import {
-  Alert,
   Container,
   FormGroup,
-  Form,
-  FormFeedback,
   Input,
-  Row,
   Label,
   Button,
+  InputGroup,
 } from 'reactstrap';
-import { Fade } from 'react-reveal';
-import { useHistory, Link } from 'react-router-dom';
-import AppRoutes from '../../routing/AppRoutes';
-//import Button from '../../layouts/CSS/Button/Button';
 
 const QuizEditor = (props) => {
   const [quiz, setQuiz] = useState(props.quiz);
@@ -27,29 +19,29 @@ const QuizEditor = (props) => {
   };
 
   const answerChanged = (e) => {
-    let q = quiz;
+    const q = quiz;
     q.questions[currentQuestionIndex].correct = e.target.value;
     setQuiz({ ...q });
     props.updateQuiz(quiz, props.itemIndex);
   };
 
   const questionAnswerChanged = (e) => {
-    let q = quiz;
-    q.questions[currentQuestionIndex].answers[parseInt(e.target.id)] =
+    const q = quiz;
+    q.questions[currentQuestionIndex].answers[parseInt(e.target.id, 10)] =
       e.target.value;
     setQuiz({ ...q });
     props.updateQuiz(quiz, props.itemIndex);
   };
 
   const addQuestion = () => {
-    let q = quiz;
+    const q = quiz;
     q.questions = [...q.questions, blankQuestion];
     setQuiz({ ...q });
     props.updateQuiz(quiz, props.itemIndex);
   };
 
   const addAnswer = () => {
-    let q = quiz;
+    const q = quiz;
     q.questions[currentQuestionIndex].answers = [
       ...q.questions[currentQuestionIndex].answers,
       '',
@@ -59,10 +51,17 @@ const QuizEditor = (props) => {
   };
 
   const questionChanged = (e) => {
-    let q = quiz;
+    const q = quiz;
     q.questions[currentQuestionIndex].question = e.target.value;
     setQuiz({ ...q });
     props.updateQuiz(quiz, props.itemIndex);
+  };
+
+  const removeAnswer = (e) => {
+    const q = quiz;
+    if (q.questions[currentQuestionIndex].answers.length > 2)
+      q.questions[currentQuestionIndex].answers.splice(e.target.id, 1);
+    setQuiz({ ...q });
   };
 
   return (
@@ -80,23 +79,38 @@ const QuizEditor = (props) => {
           return (
             <FormGroup check key={k}>
               <Label>
-                <Input
-                  checked={
-                    parseInt(quiz.questions[currentQuestionIndex].correct) == k
-                  }
-                  onChange={answerChanged}
-                  type="radio"
-                  name="answer"
-                  value={k}
-                />{' '}
-                <Input
-                  id={k}
-                  value={answer}
-                  placeholder={'Answer ' + (k + 1)}
-                  className="input_field mb-3"
-                  type="text"
-                  onChange={questionAnswerChanged}
-                />
+                <InputGroup>
+                  <Input
+                    checked={
+                      parseInt(
+                        quiz.questions[currentQuestionIndex].correct,
+                        10,
+                      ) === k
+                    }
+                    onChange={answerChanged}
+                    type="radio"
+                    name="answer"
+                    value={k}
+                  />{' '}
+                  <Input
+                    id={k}
+                    value={answer}
+                    placeholder={`Answer ${k + 1}`}
+                    className="input_field mb-3"
+                    type="text"
+                    onChange={questionAnswerChanged}
+                  />
+                  {quiz.questions[currentQuestionIndex].answers.length > 2 && (
+                    <Button
+                      style={{ float: 'right' }}
+                      id={k}
+                      onClick={removeAnswer}
+                      color="danger"
+                    >
+                      -
+                    </Button>
+                  )}
+                </InputGroup>
               </Label>
             </FormGroup>
           );
