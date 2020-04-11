@@ -14,6 +14,9 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
         public Guid CourseId { get; private set; }
         public Guid OwnerId { get; private set; }
         public bool CommentsEnabled { get; private set; }
+        public int Popularity { get; set; }
+        public double Rating { get; set; }
+
 
         public IReadOnlyCollection<CourseVersion> Versions { get => versions.AsReadOnly(); }
         public IReadOnlyCollection<Observer> Observers { get => observers.AsReadOnly(); }

@@ -86,9 +86,18 @@ namespace KursyTutoriale.Application.Services
 
             dto.Verified = result.VerificationStamp.Status == StampStatus.Verified;
 
-            dto.Public = publicationRepository
-                .Queryable()
+            var query1 = publicationRepository
+                .Queryable();
+
+            dto.Public = query1
                 .Any(pp => pp.CourseId == courseId);
+
+            if (dto.Public)
+            {
+                var publication = query1.Where(pp => pp.CourseId == courseId).FirstOrDefault();
+                dto.Rating = publication.Rating;
+                dto.Popularity = publication.Popularity;
+            }
 
             return dto;
         }
@@ -476,8 +485,8 @@ namespace KursyTutoriale.Application.Services
 
                 var newRating = query.Where(r => r.CourseId == CourseId).Average(r => r.Rating);
 
-                var query1 = courseRepository.Queryable();
-                var course = query1.Where(c => c.Id == CourseId).FirstOrDefault();
+                var query1 = publicationRepository.Queryable();
+                var course = query1.Where(c => c.CourseId == CourseId).FirstOrDefault();
                 if (course != null)
                 {
                  course.Rating = newRating;
@@ -488,8 +497,9 @@ namespace KursyTutoriale.Application.Services
 
         public async Task IncrementViewCount(Guid CourseId)
         {
-            var query = courseRepository.Queryable();
-            var course = query.Where(c => c.Id == CourseId).FirstOrDefault();
+
+            var query = publicationRepository.Queryable();
+            var course = query.Where(c => c.CourseId == CourseId).FirstOrDefault();
             if(course != null)
             {
                 course.Popularity++;
