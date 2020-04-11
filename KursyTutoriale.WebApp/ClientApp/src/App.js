@@ -13,9 +13,9 @@ import { InitialUserContext, UserContext } from './contexts/UserContext';
 import Course from './components/Courses/Course';
 import { GlobalErrorMessage } from './components/GlobalMessages/GlobalErrorMessage';
 import NewLesson from './components/CreateLesson/CreateLesson';
-import LessonEditor from './components/Editors/EditLesson'
-import CourseEditor from './components/Editors/EditCourse'
-import ModuleEditor from './components/Editors/EditModule'
+// import LessonEditor from './components/Editors/EditLesson';
+import CourseEditor from './components/Editors/EditCourse';
+import ModuleEditor from './components/Editors/EditModule';
 import Lesson from './components/CreateLesson/LessonView';
 import LandingPage from './components/LandingPage/LandingPage';
 import SignIn from './components/Auth/SignIn';
@@ -33,7 +33,6 @@ import ModPanel from './components/ModPanel/ModPanel';
 import ModRoute from './routing/ModRoute';
 import AdminMainPanel from './components/AdminPanel/AdminMainPanel';
 import AdminRoute from './routing/AdminRoute';
-
 
 const App = () => {
   const [userContext, setUserContext] = useState(
@@ -137,7 +136,7 @@ const App = () => {
               <ProtectedRoute
                 exact
                 path={AppRoutes.EditLesson}
-                component={LessonEditor}
+                component={NewLesson}
                 layout={MainLayout}
               />
               <ProtectedRoute
@@ -169,8 +168,8 @@ const App = () => {
                 path={AppRoutes.ModPanel}
                 component={ModPanel}
                 layout={MainLayout}
-                />
-                <AdminRoute
+              />
+              <AdminRoute
                 exact
                 path={AppRoutes.AdminMainPanel}
                 component={AdminMainPanel}

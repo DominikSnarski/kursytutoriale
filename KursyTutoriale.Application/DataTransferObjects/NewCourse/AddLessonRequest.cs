@@ -8,7 +8,7 @@ namespace KursyTutoriale.Application.DataTransferObjects.Course
         public Guid CourseId { get; set; }
         public Guid ModuleId { get; set; }
         public string Title { get; set; }
+        public string Description { get; set; }
         public List<LessonPartDTO> Content { get; set; }
-        public string Description { get; internal set; }
     }
 }

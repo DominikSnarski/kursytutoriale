@@ -4,14 +4,14 @@ namespace KursyTutoriale.Domain.Entities.Course
 {
     public class LessonPart
     {
-        public LessonPart(string name, string content)
+        public LessonPart(string type, string content)
         {
-            Name = name;
+            Type = type;
             Content = content;
         }
 
-        public int Idex { get; set; }
-        public string Name { get; set; }
+        public int Index { get; set; }
+        public string Type { get; set; }
         public string Content { get; set; }
     }
 }

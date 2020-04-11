@@ -10,6 +10,7 @@ using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using KursyTutoriale.Shared;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -258,8 +259,10 @@ namespace KursyTutoriale.Application.Services
             if (!course.HasAccess(userId))
                 throw new UnauthorizedAccessException();
 
+            string partContent = JsonConvert.SerializeObject(lesson.Content[0].Content);
+
             var lessonParts = lesson.Content.OrderBy(part => part.Index)
-                .Select(part => new LessonPart(part.Name, part.Content))
+                .Select(part => new LessonPart(part.Type, JsonConvert.SerializeObject(part.Content)))
                 .ToList();
 
             var @event = new LessonAdded(0, lesson.Title, lesson.ModuleId, lesson.CourseId, lessonParts, lesson.Description);
@@ -428,7 +431,7 @@ namespace KursyTutoriale.Application.Services
                 dto.CourseId, 
                 dto.LessonId, 
                 dto.Content
-                    .Select(lp => new LessonPart(lp.Name, lp.Content))
+                    .Select(lp => new LessonPart(lp.Type, JsonConvert.SerializeObject(lp.Content)))
                     .ToList(), 
                 dto.Title,
                 dto.Description);
