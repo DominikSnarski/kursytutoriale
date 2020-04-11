@@ -36,7 +36,6 @@ namespace KursyTutoriale.API.Controllers
         {
             var id = await courseService.AddCourse(course);
             return id;
-
         }
 
         /// <summary>

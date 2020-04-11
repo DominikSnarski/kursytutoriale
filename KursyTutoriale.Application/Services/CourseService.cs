@@ -209,7 +209,7 @@ namespace KursyTutoriale.Application.Services
             var tagsIds = request.Tags.Select(t => t.Id).ToList();
 
             var userId = executionContext.GetUserId();
-            var @event = new CourseCreated(Guid.NewGuid(), request.Title, request.Description, userId, request.Date, request.Price, tagsIds);
+            var @event = new CourseCreated(Guid.NewGuid(), request.Title, request.Description, userId, DateTime.UtcNow, request.Price, tagsIds);
 
             var course = courseRepository.HandleEvent(@event, new Course());
 
@@ -240,8 +240,7 @@ namespace KursyTutoriale.Application.Services
 
             courseRepository.HandleEvent(@event, course);
 
-            await unitOfWork.SaveChangesAsync();
-            return 1;
+            return await unitOfWork.SaveChangesAsync();
         }
 
         /// <summary>
@@ -316,7 +315,7 @@ namespace KursyTutoriale.Application.Services
         {
             var query = courseRepository.Queryable()
                 .Include(c => c.Modules)
-                .ThenInclude(m=>m.Lessons)
+                .ThenInclude(m=> m.Lessons)
                 .Where(c => c.Id.Equals(id))
                 .FirstOrDefault();
             return query;
