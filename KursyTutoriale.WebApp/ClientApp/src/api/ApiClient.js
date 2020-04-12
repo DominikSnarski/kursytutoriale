@@ -8,6 +8,8 @@ const apiClient = axios.create({
 
 apiClient.baseURL = 'https://localhost:44354/';
 
+apiClient.refreshRequestSent = false;
+
 apiClient.fetchCourses = (firstPage, lastPage, caller) => {
   apiClient.get('api/CoursesViewer/GetNumberOfCourses').then(
     (response) => {
@@ -33,17 +35,10 @@ apiClient.fetchCourses = (firstPage, lastPage, caller) => {
 };
 
 apiClient.login = async (username, password) => {
-  const res = await apiClient
-    .post('api/Login/SignIn', {
-      username,
-      password,
-    })
-    .catch(
-      () =>
-        new Promise((resolve, reject) => {
-          reject(new Error(false));
-        }),
-    );
+  const res = await apiClient.post('api/Login/SignIn', {
+    username,
+    password,
+  });
 
   localStorage.setItem('access_token', res.data.accessToken);
   localStorage.setItem('refresh_token', res.data.refreshToken);
@@ -75,21 +70,22 @@ apiClient.interceptors.request.use((config) => {
 });
 
 apiClient.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    return response;
+  },
   (error) => {
     const { response } = error;
-
-    if (response!==undefined&&response.status !== 401) {
-      return new Promise((reject) => {
-        apiClient.setGlobalMessage(response.data);
-        reject(error);
-      });
+    if (response !== undefined && response.status !== 401) {
+      apiClient.setGlobalMessage(response.data.error);
+      return Promise.reject(response);
     }
 
     return new Promise((resolve, reject) => {
       const accessToken = localStorage.getItem('access_token');
       const refreshToken = localStorage.getItem('refresh_token');
       const username = jwtDecode(accessToken).sub;
+
+      apiClient.refreshRequestSent = true;
 
       apiClient
         .post('api/Login/RefreshToken', {

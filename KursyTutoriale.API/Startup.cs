@@ -1,4 +1,6 @@
 using Autofac;
+using KursyTutoriale.API.Filters;
+using KursyTutoriale.API.Middleware;
 using KursyTutoriale.API.Utils;
 using KursyTutoriale.Application.Configuration;
 using KursyTutoriale.Application.Configuration.DIModules;
@@ -13,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace KursyTutoriale.API
 {
@@ -31,14 +34,17 @@ namespace KursyTutoriale.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers()
-                .AddNewtonsoftJson(opt =>
+            services.AddControllers(opt =>
+            {
+                opt.Filters.Add(typeof(ModelValidationFilter));
+            })
+            .AddNewtonsoftJson(opt =>
+            {
+                opt.SerializerSettings.Error = (object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args) =>
                 {
-                    opt.SerializerSettings.Error = (object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args) =>
-                    {
-                        throw args.ErrorContext.Error;
-                    };
-                });
+                    throw args.ErrorContext.Error;
+                };
+            });
 
             services = ConfigureCORS(services);
             services = IdentityStartup.ConfigureAuthentication(services, Configuration);
@@ -126,6 +132,8 @@ namespace KursyTutoriale.API
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseExceptionHandling();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

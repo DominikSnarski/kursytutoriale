@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Tags(props) {
+const Tags = (props) => {
   const { tag, handleCloseClick } = props;
 
   return (
@@ -13,7 +13,7 @@ function Tags(props) {
           marginTop: '1rem',
         }}
       >
-        <span>{tag}</span>
+        <span>{tag.name}</span>
         <button
           className="Close"
           style={{
@@ -23,13 +23,13 @@ function Tags(props) {
             marginBottom: '1rem',
             fontSize: '0.75rem',
           }}
-          onClick={() => handleCloseClick(tag)}
+          onClick={() => handleCloseClick(tag.id)}
         >
           X
         </button>
       </div>
     </div>
   );
-}
+};
 
 export default Tags;
