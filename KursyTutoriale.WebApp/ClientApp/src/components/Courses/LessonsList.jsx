@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Button,
   Container,
   Col,
   Row,
@@ -13,6 +12,7 @@ import './style.css';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import AppRoutes from '../../routing/AppRoutes';
+import Button from '../../layouts/CSS/Button/Button';
 
 function LessonsList(props) {
   const userContext = React.useContext(UserContext);
@@ -33,7 +33,7 @@ function LessonsList(props) {
             <Col className="ml-2 mb-2 mr-2">
               <Card
                 body
-                style={{ backgroundColor: '#7CC3D8', borderColor: '#7CC3D8' }}
+                style={{ backgroundColor: '#f5dfae', borderColor: '#f5dfae' }}
               >
                 <CardTitle>{item.title}</CardTitle>
                 <CardText className="card-height">{item.description}</CardText>
@@ -48,7 +48,7 @@ function LessonsList(props) {
                     },
                   }}
                 >
-                  <Button color="primary">Lets go</Button>
+                  <Button text="Lets go" color="lightgreen"/>
                 </Link>
 
                 {userContext.userid === props.ownerID &&
@@ -67,9 +67,7 @@ function LessonsList(props) {
                         },
                       }}
                     >
-                      <Button className="ml-2" color="secondary">
-                        Edit lesson
-                      </Button>
+                      <Button text="Edit lesson" color="grey" hover="black"/>
                     </Link>
                   )}
               </Card>
@@ -89,9 +87,7 @@ function LessonsList(props) {
                 },
               }}
             >
-              <Button color="success" size="lg">
-                Add new lesson
-              </Button>
+              <Button size="lg" text="Add new lesson"/>
             </Link>
 
             <Link
@@ -106,9 +102,7 @@ function LessonsList(props) {
                 },
               }}
             >
-              <Button color="secondary" size="lg">
-                Edit module
-              </Button>
+              <Button size="lg" text="Edit module"/>
             </Link>
           </Row>
         )}

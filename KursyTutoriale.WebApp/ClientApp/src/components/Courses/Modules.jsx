@@ -18,11 +18,11 @@ function Modules(props) {
 
   return (
     <Container fluid>
-      <ListGroup style={{ borderColor: '#9dd2e2' }}>
+      <ListGroup style={{ borderColor: '#ffb606' }}>
         {props.modules.map((item, i) => (
           <Row key={i} className="d-flex justify-content-center mb-2">
             <Col>
-              <Button color="info" id={`toggler${item.index}`} size="lg" block>
+              <Button color="warning" id={`toggler${item.index}`} size="lg" block>
                 {item.title}
               </Button>
               <UncontrolledCollapse toggler={`#toggler${item.index}`}>

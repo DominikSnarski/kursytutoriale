@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   Jumbotron,
-  Button,
   Container,
   Col,
   Row,
@@ -19,6 +18,7 @@ import { UserContext } from '../../contexts/UserContext';
 import './style.css';
 import Modules from './Modules';
 import { CourseService } from '../../api/Services/CourseService';
+import Button from '../../layouts/CSS/Button/Button';
 
 const CourseViewer = (props) => {
   const history = useHistory();
@@ -88,10 +88,10 @@ const CourseViewer = (props) => {
   }
   return (
     <Container className="Container">
-      <Jumbotron fluid className="jumbotron_bg">
-        <span className="d-lg-flex justify-content-center d-block h2 text-dark">
+      <Jumbotron fluid className="jumbotron_courseView">
+        <h1>
           {course.title}
-        </span>
+        </h1>
       </Jumbotron>
       <Row className="mb-4">
         <Col sm="12" md={{ size: 6, offset: 3 }}>
@@ -154,23 +154,19 @@ const CourseViewer = (props) => {
             )}
           </Col>
           <Col>
-            <StarRating
-              onStarClick={(nextValue, prevValue, name) =>
-                onStarClick(nextValue, prevValue, name)
-              }
-              onStarHover={(nextValue, prevValue, name) =>
-                onStarHover(nextValue, prevValue, name)
-              }
-              name="rating"
-              value={rating}
-            />
-          </Col>
+          <StarRating
+              onStarClick={(nextValue, prevValue, name) => onStarClick(nextValue, prevValue, name) }
+              onStarHover={(nextValue, prevValue, name) => onStarHover(nextValue, prevValue, name) }
+              name='rating'
+              value = {rating}             
+                />       
+            </Col>
         </Row>
 
-        <Row className="d-flex mb-3">
-          <Col className="column-text">Author: {}</Col>
-          <Col className="column-text">
-            Price: {course.price === 0 ? 'Free' : course.price}$
+          <Row className="d-flex mb-3">
+            <Col className="column-text">Author: {}</Col>
+            <Col className="column-text">
+              Price: {course.price === 0 ? 'Free' : course.price} $
           </Col>
         </Row>
 
@@ -184,11 +180,11 @@ const CourseViewer = (props) => {
           <Col className="column-text">Views: {course.popularity}</Col>
         </Row>
 
-        <Row className="d-flex justify-content-center mb-2">
+        <Row className="justify-content-center mb-2">
           <Col>
-            <Card fluid outline style={{ borderColor: '#9dd2e2' }}>
+            <Card fluid outline style={{ borderColor: '#ffb606' }}>
               <CardHeader className="spans">Course details</CardHeader>
-              <CardBody style={{ backgroundColor: '#7CC3D8' }}>
+              <CardBody style={{ backgroundColor: '#f5dfae' }}>
                 <CardText>{course.description}</CardText>
               </CardBody>
             </Card>
@@ -198,11 +194,13 @@ const CourseViewer = (props) => {
         <Row className="d-flex justify-content-center mb-2">
           Your progress into this course.
         </Row>
-        <Progress value="25" className="mb-4" />
+        <Progress color="warning" value="25" className="mb-4" />
 
+        <br/>
         <Row>
-          <h3>Modules</h3>
+          <h3 style={{fontWeight: '900'}}>Modules</h3>
         </Row>
+        <br/>
 
         <Modules
           toggleLesson={props.toggleLesson}
@@ -220,7 +218,7 @@ const CourseViewer = (props) => {
             </Alert>
           </Row>
           <Row className="justify-content-md-center">
-            <Button>Send to verification</Button>
+            <Button text="Send to verification"/>
           </Row>
         </Container>
       )}
@@ -261,13 +259,11 @@ const CourseViewer = (props) => {
           </Container>
         )}
       <Button
-        color="secondary"
+        text="Back"
         onClick={() => {
           history.goBack();
         }}
-      >
-        Back
-      </Button>
+      />
     </Container>
   );
 };
