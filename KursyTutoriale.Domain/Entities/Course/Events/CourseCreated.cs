@@ -11,13 +11,14 @@ namespace KursyTutoriale.Domain.Entities.Course.Events
             string title,
             string description,
             Guid ownerId,
+            DateTime date,
             float price,
             ICollection<Guid> tags) : base(entityId)
         {
             Title = title;
             Description = description;
             OwnerId = ownerId;
-            Date = DateTime.UtcNow;
+            Date = date;
             Price = price;
             Tags = tags;
         }
