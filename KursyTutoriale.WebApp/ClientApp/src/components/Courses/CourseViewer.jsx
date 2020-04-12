@@ -89,9 +89,7 @@ const CourseViewer = (props) => {
   return (
     <Container className="Container">
       <Jumbotron fluid className="jumbotron_courseView">
-        <h1>
-          {course.title}
-        </h1>
+        <h1>{course.title}</h1>
       </Jumbotron>
       <Row className="mb-4">
         <Col sm="12" md={{ size: 6, offset: 3 }}>
@@ -154,19 +152,23 @@ const CourseViewer = (props) => {
             )}
           </Col>
           <Col>
-          <StarRating
-              onStarClick={(nextValue, prevValue, name) => onStarClick(nextValue, prevValue, name) }
-              onStarHover={(nextValue, prevValue, name) => onStarHover(nextValue, prevValue, name) }
-              name='rating'
-              value = {rating}             
-                />       
-            </Col>
+            <StarRating
+              onStarClick={(nextValue, prevValue, name) =>
+                onStarClick(nextValue, prevValue, name)
+              }
+              onStarHover={(nextValue, prevValue, name) =>
+                onStarHover(nextValue, prevValue, name)
+              }
+              name="rating"
+              value={rating}
+            />
+          </Col>
         </Row>
 
-          <Row className="d-flex mb-3">
-            <Col className="column-text">Author: {}</Col>
-            <Col className="column-text">
-              Price: {course.price === 0 ? 'Free' : course.price} $
+        <Row className="d-flex mb-3">
+          <Col className="column-text">Author: {}</Col>
+          <Col className="column-text">
+            Price: {course.price === 0 ? 'Free' : course.price} $
           </Col>
         </Row>
 
@@ -196,18 +198,27 @@ const CourseViewer = (props) => {
         </Row>
         <Progress color="warning" value="25" className="mb-4" />
 
-        <br/>
+        <br />
         <Row>
-          <h3 style={{fontWeight: '900'}}>Modules</h3>
+          <h3 style={{ fontWeight: '900' }}>Modules</h3>
         </Row>
-        <br/>
+        <br />
 
         <Modules
           toggleLesson={props.toggleLesson}
           modules={course.modules}
           courseID={props.id}
           ownerID={course.ownerId}
+          courseTitle={course.title}
         />
+
+        {userContext.userid === course.ownerId && (
+          <Container>
+            <Row className="justify-content-md-center mt-4">
+              <Button text="Join this course" />
+            </Row>
+          </Container>
+        )}
       </Jumbotron>
       {userContext.userid === course.ownerId && !course.verified && (
         <Container>
@@ -218,7 +229,7 @@ const CourseViewer = (props) => {
             </Alert>
           </Row>
           <Row className="justify-content-md-center">
-            <Button text="Send to verification"/>
+            <Button text="Send to verification" />
           </Row>
         </Container>
       )}
