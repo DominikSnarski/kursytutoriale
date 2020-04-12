@@ -9,8 +9,8 @@ function Lesson(props) {
   const items = JSON.parse(
     props.location.state.lessons[props.location.state.index].content,
   );
-  items.map((e) => {
-    return JSON.parse(e.Content);
+  items.forEach((e) => {
+    e.Content = JSON.parse(e.Content);
   });
   const history = useHistory();
 

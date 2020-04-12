@@ -18,8 +18,8 @@ function LessonsList(props) {
   const userContext = React.useContext(UserContext);
   const parseContents = (contents) => {
     const content = JSON.parse(contents);
-    content.map((e) => {
-      return JSON.parse(e.Content);
+    content.forEach((e) => {
+      e.Content = JSON.parse(e.Content);
     });
     return content;
   };

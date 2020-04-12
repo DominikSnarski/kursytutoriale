@@ -83,7 +83,6 @@ function NewCourse() {
     const formData = new FormData(event.target);
 
     CourseService.addCourse(
-      new Date(),
       formData.get('description'),
       userContext.userid,
       tagsList,

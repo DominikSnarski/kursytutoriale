@@ -220,6 +220,7 @@ namespace KursyTutoriale.Application.Services.Mod
             foreach (var course in
                 courseRepository.Queryable()
                 .Include(c => c.VerificationStamp)
+                .Where(c => c.VerificationStamp.Status == StampStatus.Pending)
                 .OrderBy(s => s.VerificationStamp.Date)
                 .Take(NrOfCourses))
             {
@@ -249,7 +250,8 @@ namespace KursyTutoriale.Application.Services.Mod
             foreach (var course in
                 courseRepository.Queryable()
                 .Include(c => c.VerificationStamp)
-                .Where(c => c.VerificationStamp.Status == StampStatus.Pending)
+                .Where(c => c.VerificationStamp.Status == StampStatus.Pending &&
+                    c.OwnerId != userid)
                 .OrderBy(s => s.VerificationStamp.Date)
                 .Take(NrOfCourses))
             {
