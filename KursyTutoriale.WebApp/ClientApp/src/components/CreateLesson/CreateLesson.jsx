@@ -13,11 +13,14 @@ import {
 import { Zoom } from 'react-reveal';
 import Draggable from 'react-draggable';
 import { LessonService } from '../../api/Services/LessonService';
+import { UserContext } from '../../contexts/UserContext';
 import Kit from './Kit/Kit';
 import './style.css';
 import Button from '../../layouts/CSS/Button/Button';
 import './Kit.css';
 import QuizEditor from './QuizEditor';
+import { CreateFolder } from '../../api/Services/DropboxService';
+
 
 function LessonEdit(props) {
   const history = useHistory();
@@ -43,6 +46,8 @@ function LessonEdit(props) {
       ? [{ ...blankTextInput }]
       : props.location.state.content,
   );
+  const [videoSrc, setVideoSrc] = useState('');
+  const userContext = React.useContext(UserContext);
 
   const handleTextChange = (e) => {
     const updatedText = [...items];
@@ -69,6 +74,44 @@ function LessonEdit(props) {
     i[key].Content = quiz;
     setItems([...i]);
   };
+
+  const UploadFile = (event) => {
+    const xhr = new XMLHttpRequest();
+
+    xhr.upload.onprogress = () => {
+      // (evt)
+      // const percentComplete = parseInt((100.0 * evt.loaded) / evt.total);
+      // Upload in progress. Do something here with the percent complete.
+    };
+
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        // const fileInfo = JSON.parse(xhr.response);
+        // Upload succeeded. Do something here with the file info.
+      } else {
+        // const errorMessage = xhr.response || 'Unable to upload file';
+        // Upload failed. Do something here with the error.
+      }
+    };
+    xhr.open('POST', 'https://content.dropboxapi.com/2/files/upload');
+    xhr.setRequestHeader(
+      'Authorization',
+      'Bearer Zlau4oTAU_AAAAAAAAAAD4-sRbgu01IRKMjCVFLSpUNmtb7xKMtgx-n6l2DNS1WB',
+    );
+    xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+    xhr.setRequestHeader(
+      'Dropbox-API-Arg',
+      JSON.stringify({
+        path: `/${userContext.username}/${props.location.state.courseTitle}/lesson${props.location.state.lessonNumber}.mp4`,
+        mode: 'add',
+        autorename: true,
+        mute: false,
+      }),
+    );
+
+    xhr.send(event.target.files[0]);
+  };
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -133,6 +176,16 @@ function LessonEdit(props) {
             </Zoom>
 
             <h4>Lesson content</h4>
+
+            {videoSrc !== '' && (
+              <Container className="video mb-3">
+                <Row className="justify-content-md-center">
+                  <video controls>
+                    <source src={videoSrc} type="video/mp4" />
+                  </video>
+                </Row>
+                </Container>
+            )}
 
             {items.length === 0 && (
               <Alert className="text-center" color="danger">
@@ -209,7 +262,19 @@ function LessonEdit(props) {
                   },
                 ])
               }
-              clearLesson={() => setItems([])}
+              addVideo={(event) => {
+                const file = URL.createObjectURL(event.target.files[0]);
+                setVideoSrc(file);
+                CreateFolder(
+                  `${userContext.username}/${props.location.state.courseTitle}`,
+                );
+                UploadFile(event);
+              }}
+              clearLesson={() => {
+                setItems([]);
+                setVideoSrc('');
+              }}
+
             />
           </div>
         </div>

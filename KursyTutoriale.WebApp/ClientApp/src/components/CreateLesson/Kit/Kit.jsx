@@ -18,11 +18,6 @@ function Kit(props) {
               onClick={props.addTextField}
             ></Button2>
             <div className="input-group mb-3">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="inputGroupFileAddon01">
-                  Add image
-                </span>
-              </div>
               <div className="custom-file">
                 <input
                   type="file"
@@ -32,7 +27,21 @@ function Kit(props) {
                   aria-describedby="inputGroupFileAddon01"
                 />
                 <label className="custom-file-label" htmlFor="inputGroupFile01">
-                  Choose file
+                  Add image
+                </label>
+              </div>
+            </div>
+            <div className="input-group mb-3">
+              <div className="custom-file">
+                <input
+                  type="file"
+                  className="custom-file-input"
+                  id="inputGroupFile01"
+                  onChange={props.addVideo}
+                  aria-describedby="inputGroupFileAddon01"
+                />
+                <label className="custom-file-label" htmlFor="inputGroupFile01">
+                  Add video
                 </label>
               </div>
             </div>

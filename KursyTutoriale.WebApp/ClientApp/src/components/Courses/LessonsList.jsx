@@ -37,19 +37,21 @@ function LessonsList(props) {
               >
                 <CardTitle>{item.title}</CardTitle>
                 <CardText className="card-height">{item.description}</CardText>
-                <Link
-                  to={{
-                    pathname: AppRoutes.Lesson,
-                    state: {
-                      lessons: props.lessons,
-                      index: i,
-                      ownerID: props.ownerID,
-                      courseID: props.courseid,
-                    },
-                  }}
-                >
-                  <Button text="Lets go" color="lightgreen"/>
-                </Link>
+                {userContext.userid === props.ownerID && (
+                  <Link
+                    to={{
+                      pathname: AppRoutes.Lesson,
+                      state: {
+                        lessons: props.lessons,
+                        index: i,
+                        ownerID: props.ownerID,
+                        courseID: props.courseid,
+                      },
+                    }}
+                  >
+                    <Button text="Let's go" color="lightgreen" />
+                  </Link>
+                )}
 
                 {userContext.userid === props.ownerID &&
                 item.title !== 'Default title' && ( // warunek item.title !== 'Default title'trzeba bedzie usunac potem
@@ -67,7 +69,7 @@ function LessonsList(props) {
                         },
                       }}
                     >
-                      <Button text="Edit lesson" color="grey" hover="black"/>
+                      <Button text="Edit lesson" color="grey" hover="black" />
                     </Link>
                   )}
               </Card>
@@ -82,12 +84,14 @@ function LessonsList(props) {
               to={{
                 pathname: AppRoutes.CreateLesson,
                 state: {
+                  courseTitle: props.courseTitle,
                   courseid: props.courseid,
                   moduleid: props.moduleid,
+                  lessonNumber: props.lessons.length,
                 },
               }}
             >
-              <Button size="lg" text="Add new lesson"/>
+              <Button size="lg" text="Add new lesson" />
             </Link>
 
             <Link
@@ -102,7 +106,7 @@ function LessonsList(props) {
                 },
               }}
             >
-              <Button size="lg" text="Edit module"/>
+              <Button size="lg" text="Edit module" />
             </Link>
           </Row>
         )}
