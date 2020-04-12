@@ -52,15 +52,7 @@ namespace KursyTutoriale.API.Controllers
         {
             JWTTokenDto token;
 
-            try
-            {
-                token = await authService.GenerateTokenAsync(request.Username, request.Password);
-            }
-            catch(AuthenticationException e)
-            {
-                return StatusCode(400, e.Message);
-            }
-
+            token = await authService.GenerateTokenAsync(request.Username, request.Password);
             logger.LogInformation($"User: {request.Username} signed in at {DateTime.UtcNow}");
 
             return Ok(token);
@@ -71,14 +63,7 @@ namespace KursyTutoriale.API.Controllers
         {
             JWTTokenDto token;
 
-            try
-            {
-                token = await authService.RefreshTokenAsync(request.Username, request.RefreshToken);
-            }
-            catch(AuthenticationException)
-            {
-                return StatusCode(400,"Token refresh failed");
-            }
+            token = await authService.RefreshTokenAsync(request.Username, request.RefreshToken);
 
             return Ok(token);
         }

@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import Zoom from 'react-reveal/Zoom';
 import React, { useState, useContext, useEffect } from 'react';
 import {
@@ -23,14 +22,10 @@ import './NewCourse.css';
 import backgroundImage from '../../images/Book_background.jpg';
 
 function NewCourse() {
-  // table of tags
-  // setTagsList is used to add tags dynamically
-  // const [tagsList, setTagsList] = useState([]);
-  // const [inputValue, setInputValue] = useState("");
   const [tags, setTags] = useState([]);
   const [tagsState, setTagsState] = useState({
     tagsList: [],
-    inputValue: {},
+    inputValue: '',
     error: '',
   });
   const userContext = useContext(UserContext);
@@ -43,10 +38,8 @@ function NewCourse() {
     );
   }, []);
 
-  // onChanging tag
   const handleInputChange = (event) => {
     const { value } = event.target;
-    // setInputValue(value);
     const newState = { ...tagsState };
     newState.inputValue = value;
     setTagsState({
@@ -54,18 +47,11 @@ function NewCourse() {
     });
   };
 
-  // onClick button 'Add' tag
   const handleButtonAddClick = () => {
-    // setTagsList([...tagsList, inputValue]);
-    // setInputValue("");
+    const { tagsList, inputValue } = tagsState;
 
-    const { tagsList } = tagsState;
-
-    // if tag is null
     if (inputValue === '') return;
 
-    // some - return true, if the array contains at least one such element
-    // prevents the addition of two of the same tags
     if (tagsList.some((tag) => tag === inputValue)) {
       setTagsState({
         ...tagsState,
@@ -81,12 +67,12 @@ function NewCourse() {
     });
   };
 
-  // onRemove tag
-  const handleTagRemove = (tagValue) => {
+  const handleTagRemove = (tagId) => {
+    const { tagsList } = tagsState;
+    const newTagsList = tagsList.filter((tag) => tag.id !== tagId);
     setTagsState({
       ...tagsState,
-      // return tags which is not like tag toRemove
-      tagsList: tagsList.filter((tag) => tag !== tagValue),
+      tagsList: [...newTagsList],
     });
   };
 
@@ -169,7 +155,7 @@ function NewCourse() {
                     <Tags
                       name="tagsList"
                       key={tag}
-                      tag={tags.find((t) => t.id === tag.id).name}
+                      tag={tags.find((t) => t.id === tag.id)}
                       handleCloseClick={handleTagRemove}
                     />
                   ))}
@@ -178,6 +164,7 @@ function NewCourse() {
                 <Col sm={1}>
                   <Button
                     text="Add"
+                    type="button"
                     onClick={handleButtonAddClick}
                     width="60px"
                   ></Button>

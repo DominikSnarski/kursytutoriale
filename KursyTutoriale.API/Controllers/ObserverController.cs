@@ -15,7 +15,6 @@ namespace KursyTutoriale.API.Controllers
     public class ObserverController : Controller
     {
         private IObserverService observerService;
-        private IExecutionContextAccessor executionContextAccessor;
 
         public ObserverController(IObserverService observerService)
         {

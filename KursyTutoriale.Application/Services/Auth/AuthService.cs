@@ -59,7 +59,7 @@ namespace KursyTutoriale.Application.Services.Auth
             var user = await userManager.FindByNameAsync(username);
 
             if (user == null)
-                throw new AuthenticationException();
+                throw new AuthenticationException("User doesnt exist");
 
             var isTokenValid = await userManager.VerifyUserTokenAsync(user, REFRESH_TOKEN_PROVIDER, REFRESH_TOKEN_KEY, refreshToken);
 
@@ -78,7 +78,7 @@ namespace KursyTutoriale.Application.Services.Auth
                 };
             }
 
-            throw new AuthenticationException();
+            throw new AuthenticationException("Refresh token failed");
         }
 
         private async Task<JwtSecurityToken> GenerateAccessToken(ApplicationUser user)
