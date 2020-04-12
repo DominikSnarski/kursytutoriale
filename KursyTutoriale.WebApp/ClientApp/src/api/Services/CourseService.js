@@ -28,11 +28,10 @@ export const CourseService = {
       `api/CoursesViewer/GetCourseDetails?courseId=${courseId}`,
     );
   },
-  addCourse: (date, description, ownerId, tags, price, title) => {
+  addCourse: (description, ownerId, tags, price, title) => {
     return new Promise((resolve, reject) =>
       apiClient
         .post('/api/CourseCreator/AddCourse', {
-          date,
           description,
           ownerId,
           price,
@@ -67,10 +66,12 @@ export const CourseService = {
         .catch((error) => reject(error)),
     );
   },
-  addRating: (courseId,userId,rate) => {
+  addRating: (courseId, userId, rate) => {
     return new Promise((resolve, reject) =>
       apiClient
-        .post(`/api/CoursesViewer/AddRating?CourseId=${courseId}&UserId=${userId}&Rating=${rate}`)
+        .post(
+          `/api/CoursesViewer/AddRating?CourseId=${courseId}&UserId=${userId}&Rating=${rate}`,
+        )
         .then((response) => resolve(response.data))
         .catch((error) => reject(error)),
     );
@@ -83,7 +84,6 @@ export const CourseService = {
         .catch((error) => reject(error)),
     );
   },
-  
 };
 
 export default CourseService;

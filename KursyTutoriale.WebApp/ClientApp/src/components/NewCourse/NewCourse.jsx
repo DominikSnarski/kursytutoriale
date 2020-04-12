@@ -23,7 +23,6 @@ import './NewCourse.css';
 import backgroundImage from '../../images/Book_background.jpg';
 
 function NewCourse() {
-
   // table of tags
   // setTagsList is used to add tags dynamically
   // const [tagsList, setTagsList] = useState([]);
@@ -98,7 +97,6 @@ function NewCourse() {
     const formData = new FormData(event.target);
 
     CourseService.addCourse(
-      new Date(),
       formData.get('description'),
       userContext.userid,
       tagsList,
