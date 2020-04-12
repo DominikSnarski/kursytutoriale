@@ -220,6 +220,7 @@ namespace KursyTutoriale.Application.Services.Mod
             foreach (var course in
                 courseRepository.Queryable()
                 .Include(c => c.VerificationStamp)
+                .Where(c => c.VerificationStamp.Status == StampStatus.Pending)
                 .OrderBy(s => s.VerificationStamp.Date)
                 .Take(NrOfCourses))
             {
