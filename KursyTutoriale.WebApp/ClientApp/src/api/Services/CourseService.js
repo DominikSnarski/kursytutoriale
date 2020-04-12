@@ -29,18 +29,13 @@ export const CourseService = {
     );
   },
   addCourse: (description, ownerId, tags, price, title) => {
-    return new Promise((resolve, reject) =>
-      apiClient
-        .post('/api/CourseCreator/AddCourse', {
-          description,
-          ownerId,
-          price,
-          title,
-          tags,
-        })
-        .then((resp) => resolve(resp))
-        .catch((error) => reject(error)),
-    );
+    return apiClient.post('/api/CourseCreator/AddCourse', {
+      description,
+      ownerId,
+      price,
+      title,
+      tags,
+    });
   },
   getUsersCourses: (id) => {
     return new Promise((resolve, reject) =>
