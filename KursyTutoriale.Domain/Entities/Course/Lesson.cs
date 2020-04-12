@@ -33,7 +33,7 @@ namespace KursyTutoriale.Domain.Entities.Course
 
         public void AddPart(LessonPart lessonPart)
         {
-            lessonPart.Idex = Content.Count;
+            lessonPart.Index = Content.Count;
             Content.Add(lessonPart);
         }
 

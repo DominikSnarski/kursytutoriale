@@ -1,13 +1,14 @@
 import apiClient from '../ApiClient';
 
 export const LessonService = {
-  addLesson: (courseID, moduleID, title, content) => {
+  addLesson: (courseID, moduleID, title, description, content) => {
     return new Promise((resolve, reject) =>
       apiClient
         .post('/api/CourseCreator/AddLesson', {
           courseID,
           moduleID,
           title,
+          description,
           content,
         })
         .then((resp) => resolve(resp))

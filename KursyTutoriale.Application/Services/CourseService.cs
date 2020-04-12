@@ -10,6 +10,7 @@ using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using KursyTutoriale.Shared;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -209,7 +210,7 @@ namespace KursyTutoriale.Application.Services
             var tagsIds = request.Tags.Select(t => t.Id).ToList();
 
             var userId = executionContext.GetUserId();
-            var @event = new CourseCreated(Guid.NewGuid(), request.Title, request.Description, userId, request.Date, request.Price, tagsIds);
+            var @event = new CourseCreated(Guid.NewGuid(), request.Title, request.Description, userId, DateTime.UtcNow, request.Price, tagsIds);
 
             var course = courseRepository.HandleEvent(@event, new Course());
 
@@ -240,8 +241,7 @@ namespace KursyTutoriale.Application.Services
 
             courseRepository.HandleEvent(@event, course);
 
-            await unitOfWork.SaveChangesAsync();
-            return 1;
+            return await unitOfWork.SaveChangesAsync();
         }
 
         /// <summary>
@@ -258,8 +258,10 @@ namespace KursyTutoriale.Application.Services
             if (!course.HasAccess(userId))
                 throw new UnauthorizedAccessException();
 
+            string partContent = JsonConvert.SerializeObject(lesson.Content[0].Content);
+
             var lessonParts = lesson.Content.OrderBy(part => part.Index)
-                .Select(part => new LessonPart(part.Name, part.Content))
+                .Select(part => new LessonPart(part.Type, JsonConvert.SerializeObject(part.Content)))
                 .ToList();
 
             var @event = new LessonAdded(0, lesson.Title, lesson.ModuleId, lesson.CourseId, lessonParts, lesson.Description);
@@ -316,7 +318,7 @@ namespace KursyTutoriale.Application.Services
         {
             var query = courseRepository.Queryable()
                 .Include(c => c.Modules)
-                .ThenInclude(m=>m.Lessons)
+                .ThenInclude(m=> m.Lessons)
                 .Where(c => c.Id.Equals(id))
                 .FirstOrDefault();
             return query;
@@ -428,7 +430,7 @@ namespace KursyTutoriale.Application.Services
                 dto.CourseId, 
                 dto.LessonId, 
                 dto.Content
-                    .Select(lp => new LessonPart(lp.Name, lp.Content))
+                    .Select(lp => new LessonPart(lp.Type, JsonConvert.SerializeObject(lp.Content)))
                     .ToList(), 
                 dto.Title,
                 dto.Description);

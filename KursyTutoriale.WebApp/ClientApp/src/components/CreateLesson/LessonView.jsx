@@ -3,11 +3,15 @@ import { Jumbotron, Button, Container, Col, Row } from 'reactstrap';
 import { Fade } from 'react-reveal';
 import { useHistory, Link } from 'react-router-dom';
 import AppRoutes from '../../routing/AppRoutes';
+import QuizViewer from './QuizViewer';
 
 function Lesson(props) {
   const items = JSON.parse(
     props.location.state.lessons[props.location.state.index].content,
   );
+  items.forEach((e) => {
+    e.Content = JSON.parse(e.Content);
+  });
   const history = useHistory();
 
   return (
@@ -21,22 +25,33 @@ function Lesson(props) {
 
         <Jumbotron className="courses_bg pr-4">
           {items.map((item, key) => {
-            if (item.Name.substring(0, 4) === 'text')
+            // eslint-disable-next-line react/jsx-key
+            if (item.Type.substring(0, 5) === 'image') {
               return (
-                <Container>
-                  <p>{item.Content}</p>
-                  <br />
+                <Container key={key}>
+                  <Row className="justify-content-md-center">
+                    <img
+                      src={item.Content}
+                      alt="Something, somewhere went terribly wrong"
+                    />
+                  </Row>
                 </Container>
               );
+            }
             // eslint-disable-next-line react/jsx-key
+            if (item.Type.substring(0, 4) === 'quiz') {
+              return (
+                <Container key={key}>
+                  <Row className="justify-content-md-center">
+                    <QuizViewer content={item.Content} />
+                  </Row>
+                </Container>
+              );
+            }
             return (
               <Container key={key}>
-                <Row className="justify-content-md-center">
-                  <img
-                    src={item.Content}
-                    alt="Something, somewhere went terribly wrong"
-                  />
-                </Row>
+                <p>{item.Content}</p>
+                <br />
               </Container>
             );
           })}

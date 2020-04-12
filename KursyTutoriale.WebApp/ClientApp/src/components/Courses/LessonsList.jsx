@@ -16,7 +16,13 @@ import Button from '../../layouts/CSS/Button/Button';
 
 function LessonsList(props) {
   const userContext = React.useContext(UserContext);
-
+  const parseContents = (contents) => {
+    const content = JSON.parse(contents);
+    content.forEach((e) => {
+      e.Content = JSON.parse(e.Content);
+    });
+    return content;
+  };
   return (
     <Container fluid>
       <Card>
@@ -56,7 +62,8 @@ function LessonsList(props) {
                           lessonid: item.id,
                           title: item.title,
                           description: item.description,
-                          content: JSON.parse(props.lessons[i].content),
+                          content: parseContents(props.lessons[i].content),
+                          isEdited: true,
                         },
                       }}
                     >
@@ -90,8 +97,8 @@ function LessonsList(props) {
                 state: {
                   courseid: props.courseid,
                   moduleid: props.moduleid,
-                  title: props.moduleTitle,
                   description: props.moduleDescription,
+                  isEdited: false,
                 },
               }}
             >
