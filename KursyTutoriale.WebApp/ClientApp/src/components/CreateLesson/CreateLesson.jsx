@@ -57,7 +57,7 @@ function LessonEdit(props) {
       setItems([
         ...items,
         {
-          type: 'image',
+          Type: 'image',
           Content: reader.result,
         },
       ]);
