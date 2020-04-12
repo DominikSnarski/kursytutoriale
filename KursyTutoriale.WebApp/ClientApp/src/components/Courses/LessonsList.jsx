@@ -80,8 +80,10 @@ function LessonsList(props) {
               to={{
                 pathname: AppRoutes.CreateLesson,
                 state: {
+                  courseTitle: props.courseTitle,
                   courseid: props.courseid,
                   moduleid: props.moduleid,
+                  lessonNumber: props.lessons.length,
                 },
               }}
             >

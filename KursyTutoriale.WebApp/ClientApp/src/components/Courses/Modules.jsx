@@ -34,6 +34,7 @@ function Modules(props) {
                   moduleDescription={item.description}
                   moduleTitle={item.title}
                   ownerID={props.ownerID}
+                  courseTitle={props.courseTitle}
                 />
               </UncontrolledCollapse>
             </Col>

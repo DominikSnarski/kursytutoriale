@@ -226,6 +226,7 @@ const CourseViewer = (props) => {
           modules={course.modules}
           courseID={props.id}
           ownerID={course.ownerId}
+          courseTitle={course.title}
         />
 
         {userContext.userid === course.ownerId && (
