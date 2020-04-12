@@ -9,12 +9,17 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
     {
         private List<CourseVersion> versions;
         private List<Observer> observers;
+        private List<Comment> comments;
 
         public Guid CourseId { get; private set; }
         public Guid OwnerId { get; private set; }
+        public bool CommentsEnabled { get; private set; }
 
         public IReadOnlyCollection<CourseVersion> Versions { get => versions.AsReadOnly(); }
         public IReadOnlyCollection<Observer> Observers { get => observers.AsReadOnly(); }
+        public IReadOnlyCollection<Comment> Comments { get => CommentsEnabled ? comments.AsReadOnly() : new List<Comment>().AsReadOnly(); }
+
+
 
         public CoursePublicationProfile(Guid courseId, Guid ownerId)
         {
@@ -23,6 +28,8 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
 
             versions = new List<CourseVersion>();
             versions.Add(new CourseVersion(1, 0, DateTime.Now));
+
+            CommentsEnabled = true;
 
             observers = new List<Observer>();
         }
@@ -57,6 +64,24 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
                 return;
 
             observers = observers.Where(obs => obs.Id != userId).ToList();
+        }
+
+        public void AddComment(Comment comment)
+        {
+            if (!CommentsEnabled)
+                throw new InvalidStateException("Comments are disabled");
+
+            comments.Add(comment);
+        }
+
+        public void DisableComments()
+        {
+            CommentsEnabled = false;
+        }
+
+        public void EnableComments()
+        {
+            CommentsEnabled = true;
         }
     }
 }

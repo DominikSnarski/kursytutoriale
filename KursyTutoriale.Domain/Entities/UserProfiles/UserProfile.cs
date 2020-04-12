@@ -7,6 +7,7 @@ namespace KursyTutoriale.Domain.Entities.UserProfiles
         public UserProfile() :base() { }
         public UserProfile(Guid id):base(id){}
 
+        public string Username { get; set; }
         public string Name { get; set; }
         public string SiteLink { get; set; }
         public string AvatarPath { get; set; }
