@@ -39,6 +39,7 @@ namespace KursyTutoriale.Application.Services
         Task EditModule(ChangeModuleDTO dto);
         Task AddRating(Guid CourseId, Guid UserId, float rating);
         Task IncrementViewCount(Guid CourseId);
+
     }
 
     public class CourseService : ICourseService
@@ -506,5 +507,6 @@ namespace KursyTutoriale.Application.Services
             }
             await unitOfWork.SaveChangesAsync();
         }
+
     }
 }

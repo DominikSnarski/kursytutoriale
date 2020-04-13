@@ -18,12 +18,14 @@ import { UserContext } from '../../contexts/UserContext';
 import './style.css';
 import Modules from './Modules';
 import { CourseService } from '../../api/Services/CourseService';
+import { CourseParticipantsService } from '../../api/Services/CourseParticipantsService';
 import Button from '../../layouts/CSS/Button/Button';
 
 const CourseViewer = (props) => {
   const history = useHistory();
   const userContext = React.useContext(UserContext);
   const [course, setCourse] = useState({});
+  const [isParticipating, setParticipation] = useState(false);
   const [courseLoaded, setCourseLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error] = useState(false);
@@ -37,7 +39,13 @@ const CourseViewer = (props) => {
         setCourseLoaded(true);
         setRating(response.data.rating);
         CourseService.incrementViewCount(props.id);
+
+        CourseParticipantsService.isParticipating(response.data.id,userContext.userid).then((_response) => {
+          setParticipation(_response.data);
+        });
+
       });
+
     }
   }, [props.id]);
 
@@ -52,6 +60,18 @@ const CourseViewer = (props) => {
       .then(() => history.push('/'))
       .then(() => history.push(`/courseview/${course.id}`));
   };
+
+  const handleButtonJoinCourseClick = () => {
+    CourseParticipantsService.joinCourse(course.id,userContext.userid)
+    .then(() => history.push('/'))
+    .then(() => history.push(`/courseview/${course.id}`));
+  }
+
+  const handleButtonLeaveCourseClick = () => {
+    CourseParticipantsService.leaveCourse(course.id,userContext.userid)
+    .then(() => history.push('/'))
+    .then(() => history.push(`/courseview/${course.id}`));
+  }
 
   const onStarClick = (nextValue) => {
     CourseService.addRating(course.id, userContext.userid, nextValue);
@@ -245,9 +265,7 @@ const CourseViewer = (props) => {
               </Alert>
             </Row>
             <Row className="justify-content-md-center">
-              <Button onClick={() => handleButtonPublishClick()}>
-                Publish
-              </Button>
+              <Button onClick={() => handleButtonPublishClick()} text="Publish"/>
             </Row>
           </Container>
         )}
@@ -263,9 +281,33 @@ const CourseViewer = (props) => {
               </Alert>
             </Row>
             <Row className="justify-content-md-center">
-              <Button onClick={() => handleButtonPublishNewVersionClick()}>
-                Publish New Version
-              </Button>
+              <Button onClick={() => handleButtonPublishNewVersionClick()} text="Publish New Version"/>
+            </Row>
+          </Container>
+        )}
+
+        {userContext.userid !== course.ownerId &&
+        course.verified &&
+        course.public &&
+        isParticipating === false && (
+          <Container>
+            <Row className="justify-content-md-center">
+            </Row>
+            <Row className="justify-content-md-center">
+              <Button onClick={() => handleButtonJoinCourseClick()} text="Join Course"/>
+            </Row>
+          </Container>
+        )}
+
+        {userContext.userid !== course.ownerId &&
+        course.verified &&
+        course.public &&
+        isParticipating === true && (
+          <Container>
+            <Row className="justify-content-md-center">
+            </Row>
+            <Row className="justify-content-md-center">
+              <Button onClick={() => handleButtonLeaveCourseClick()} text="Leave Course"/>
             </Row>
           </Container>
         )}
