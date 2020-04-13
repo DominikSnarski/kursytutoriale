@@ -24,7 +24,7 @@ import backgroundImage from '../../images/Book_background.jpg';
 function NewCourse() {
   const [tags, setTags] = useState([]);
   const [title, setTitle] = useState();
-  const [titleErrorMessage, setTitleErrorMessage] = useState('')
+  const [titleErrorMessage, setTitleErrorMessage] = useState('');
   const [tagsState, setTagsState] = useState({
     tagsList: [],
     inputValue: '',
@@ -69,9 +69,9 @@ function NewCourse() {
     });
   };
 
-  const handleTitleChange = (event) =>{
-    setTitle(event.target.value)
-  }
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value);
+  };
 
   const handleTagRemove = (tagId) => {
     const { tagsList } = tagsState;
@@ -88,9 +88,8 @@ function NewCourse() {
     event.preventDefault();
     const formData = new FormData(event.target);
 
-    if(formData.get('title') === '')
-    {
-      setTitleErrorMessage('Module title can\'t be empty')
+    if (formData.get('title') === '') {
+      setTitleErrorMessage("Module title can't be empty");
       return;
     }
 
