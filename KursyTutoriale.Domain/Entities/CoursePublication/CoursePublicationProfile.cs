@@ -66,7 +66,7 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
             if (!observers.Any(obs => obs.UserId == userId))
                 return;
 
-            observers = observers.Where(obs => obs.Id != userId).ToList();
+            observers = observers.Where(obs => obs.UserId != userId).ToList();
         }
 
         public void AddComment(Comment comment)

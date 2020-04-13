@@ -32,5 +32,14 @@ namespace KursyTutoriale.API.Controllers
         {
             await observerService.RemoveObserver(courseId);
         }
+
+
+        [Authorize]
+        [HttpGet("IsObserving")]
+        public bool IsObserving(Guid courseId)
+        {
+            var result = observerService.IsObserving(courseId);
+            return result;
+        }
     }
 }

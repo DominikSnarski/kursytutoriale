@@ -51,5 +51,16 @@ namespace KursyTutoriale.Application.Services.CoursePublication
 
             await unitOfWork.SaveChangesAsync();
         }
+
+        public bool IsObserving(Guid courseId)
+        {
+            var userId = executionContextAccessor.GetUserId();
+            var profile = profilesRepository.Queryable().FirstOrDefault(p => p.CourseId == courseId);
+            if (profile is null)
+                throw new Exception("Cannot check if is observing from non-public course");
+            if (profile.Observers.FirstOrDefault(o => o.UserId == userId) != null) return true;
+            else return false;
+
+        }
     }
 }

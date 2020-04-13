@@ -18,7 +18,7 @@ import { UserContext } from '../../contexts/UserContext';
 import './style.css';
 import Modules from './Modules';
 import { CourseService } from '../../api/Services/CourseService';
-import { CourseParticipantsService } from '../../api/Services/CourseParticipantsService';
+import { ObserverService } from '../../api/Services/ObserverService';
 import Button from '../../layouts/CSS/Button/Button';
 
 const CourseViewer = (props) => {
@@ -40,7 +40,7 @@ const CourseViewer = (props) => {
         setRating(response.data.rating);
         CourseService.incrementViewCount(props.id);
 
-        CourseParticipantsService.isParticipating(response.data.id,userContext.userid).then((_response) => {
+        ObserverService.IsObserving(response.data.id).then((_response) => {
           setParticipation(_response.data);
         });
 
@@ -62,13 +62,13 @@ const CourseViewer = (props) => {
   };
 
   const handleButtonJoinCourseClick = () => {
-    CourseParticipantsService.joinCourse(course.id,userContext.userid)
+    ObserverService.Observe(course.id)
     .then(() => history.push('/'))
     .then(() => history.push(`/courseview/${course.id}`));
   }
 
   const handleButtonLeaveCourseClick = () => {
-    CourseParticipantsService.leaveCourse(course.id,userContext.userid)
+    ObserverService.Unobserve(course.id)
     .then(() => history.push('/'))
     .then(() => history.push(`/courseview/${course.id}`));
   }
