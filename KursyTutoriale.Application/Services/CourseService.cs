@@ -101,7 +101,7 @@ namespace KursyTutoriale.Application.Services
 
             return dto;
         }
-
+        
         /// <summary>
         /// Used to get module details
         /// </summary>
