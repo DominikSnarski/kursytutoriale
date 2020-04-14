@@ -24,10 +24,10 @@ namespace KursyTutoriale.Application.Configuration
             var config = new MapperConfiguration(cfg =>
             {
                 IEnumerable<Type> dtoTypes = typeof(CourseDetailsDTO).Assembly.GetTypes()
-                    .Where(t => t.Namespace.StartsWith("KursyTutoriale.Application.DataTransferObjects"));
+                    .Where(t => !(t.Namespace is null) && t.Namespace.StartsWith("KursyTutoriale.Application.DataTransferObjects"));
 
                 IEnumerable<Type> entityTypes = typeof(Course).Assembly.GetTypes()
-                    .Where(t => t.Namespace.StartsWith("KursyTutoriale.Domain.Entities"));
+                    .Where(t => !(t.Namespace is null) && t.Namespace.StartsWith("KursyTutoriale.Domain.Entities")).ToList();
 
                 foreach (Type dto in dtoTypes)
                 {

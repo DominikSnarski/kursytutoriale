@@ -7,5 +7,6 @@
         public string AvatarPath { get; set; }
         public int Age { get; set; }
         public string GenderName { get; set; }
+        public string Username { get; set; }
     }
 }

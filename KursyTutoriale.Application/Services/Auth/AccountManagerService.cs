@@ -38,6 +38,7 @@ namespace KursyTutoriale.Infrastructure
             
 
             var userProfile = new UserProfile(user.Id);
+            userProfile.Username = user.UserName;
 
             user.UserProfileId = userProfile.Id;
 

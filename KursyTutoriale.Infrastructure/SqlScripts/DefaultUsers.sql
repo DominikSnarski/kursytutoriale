@@ -28,3 +28,22 @@ SUCCESS:
 	COMMIT TRAN UserRole_JL;
 	PRINT N'UserRole_JL completed';
 TEND:
+
+PRINT 'Username_JL begins';
+BEGIN TRAN UserRole_JL;
+
+	UPDATE KTUserProfile
+	SET Username = u.Username
+	FROM KTUserProfile up JOIN
+	AspNetUsers u ON u.Id = up.Id;
+	GOTO SUCCESS;
+
+ERROR: 
+	ROLLBACK TRAN UserRole_JL;
+	PRINT N'Error occured during Username_JL execution';
+	GOTO TEND;
+
+SUCCESS:
+	COMMIT TRAN UserRole_JL;
+	PRINT N'Username_JL completed';
+TEND:
