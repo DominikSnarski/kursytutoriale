@@ -10,6 +10,7 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
         private List<CourseVersion> versions;
         private List<Observer> observers;
         private List<Comment> comments;
+        private List<CourseProgress> progresses;
 
         public Guid CourseId { get; private set; }
         public Guid OwnerId { get; private set; }
@@ -21,7 +22,7 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
         public IReadOnlyCollection<CourseVersion> Versions { get => versions.AsReadOnly(); }
         public IReadOnlyCollection<Observer> Observers { get => observers.AsReadOnly(); }
         public IReadOnlyCollection<Comment> Comments { get => CommentsEnabled ? comments.AsReadOnly() : new List<Comment>().AsReadOnly(); }
-
+        public IReadOnlyCollection<CourseProgress> Progresses { get => progresses.AsReadOnly(); }
 
 
         public CoursePublicationProfile(Guid courseId, Guid ownerId)
@@ -35,6 +36,8 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
             CommentsEnabled = true;
 
             observers = new List<Observer>();
+
+            progresses = new List<CourseProgress>();
         }
 
         public CourseVersion PublishNewMajorVersion()
@@ -85,6 +88,13 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
         public void EnableComments()
         {
             CommentsEnabled = true;
+        }
+        public void AddCourseProgress(CourseProgress cp)
+        {
+            if (progresses.Any(p => p.UserId == cp.UserId && p.LessonId == cp.LessonId))
+                return;
+            
+            progresses.Add(cp);
         }
     }
 }

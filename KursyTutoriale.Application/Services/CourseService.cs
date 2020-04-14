@@ -98,6 +98,36 @@ namespace KursyTutoriale.Application.Services
                 var publication = query1.Where(pp => pp.CourseId == courseId).FirstOrDefault();
                 dto.Rating = publication.Rating;
                 dto.Popularity = publication.Popularity;
+
+                int progress = 0;
+
+                var userId = executionContext.GetUserId();
+                if (userId.Equals(publication.OwnerId)) progress = 100;
+                else
+                {
+                    var progresses = publication.Progresses.AsQueryable().Where(pr => pr.UserId == userId);
+
+                    if ( progresses != null)
+                    {
+                        int total = 0, completed = 0;
+
+                        foreach (CourseModuleReadModel module in result.Modules)
+                        {
+                            foreach (LessonReadModel lesson in module.Lessons)
+                            {
+                                total++;
+                                if (progresses.Any(p => p.LessonId == lesson.Id))
+                                    completed++;
+                            }
+                        }
+
+                        progress = ((completed * 100) / total);
+                    }
+                    else progress = 0;
+                }
+
+                dto.Progress = progress;
+
             }
 
             return dto;

@@ -4,8 +4,14 @@ import { Fade } from 'react-reveal';
 import { useHistory, Link } from 'react-router-dom';
 import AppRoutes from '../../routing/AppRoutes';
 import QuizViewer from './QuizViewer';
+import { CourseProgressService } from '../../api/Services/CourseProgressService';
 
 function Lesson(props) {
+
+  const MarkProgress= () => {
+  CourseProgressService.markProgress(props.location.state.courseID, props.location.state.lessons[props.location.state.index].id);
+  }
+
   const items = JSON.parse(
     props.location.state.lessons[props.location.state.index].content,
   );
@@ -25,8 +31,10 @@ function Lesson(props) {
 
         <Jumbotron className="courses_bg pr-4">
           {items.map((item, key) => {
+            MarkProgress()
             // eslint-disable-next-line react/jsx-key
             if (item.Type.substring(0, 5) === 'image') {
+              
               return (
                 <Container key={key}>
                   <Row className="justify-content-md-center">

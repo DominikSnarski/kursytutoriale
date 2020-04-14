@@ -25,7 +25,7 @@ const CourseViewer = (props) => {
   const history = useHistory();
   const userContext = React.useContext(UserContext);
   const [course, setCourse] = useState({});
-  const [isParticipating, setParticipation] = useState(false);
+  const [isObserving, setObservation] = useState(false);
   const [courseLoaded, setCourseLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error] = useState(false);
@@ -39,9 +39,8 @@ const CourseViewer = (props) => {
         setCourseLoaded(true);
         setRating(response.data.rating);
         CourseService.incrementViewCount(props.id);
-
-        ObserverService.IsObserving(response.data.id).then((_response) => {
-          setParticipation(_response.data);
+        ObserverService.isObserving(response.data.id).then((_response) => {
+          setObservation(_response.data);
         });
 
       });
@@ -62,13 +61,13 @@ const CourseViewer = (props) => {
   };
 
   const handleButtonJoinCourseClick = () => {
-    ObserverService.Observe(course.id)
+    ObserverService.observe(course.id)
     .then(() => history.push('/'))
     .then(() => history.push(`/courseview/${course.id}`));
   }
 
   const handleButtonLeaveCourseClick = () => {
-    ObserverService.Unobserve(course.id)
+    ObserverService.unobserve(course.id)
     .then(() => history.push('/'))
     .then(() => history.push(`/courseview/${course.id}`));
   }
@@ -76,8 +75,16 @@ const CourseViewer = (props) => {
   const onStarClick = (nextValue) => {
     CourseService.addRating(course.id, userContext.userid, nextValue);
     setRating(nextValue);
+    course.rating = nextValue;
   };
-  const onStarHover = () => {};
+  const onStarHover = (nextValue) => {
+    setRating(nextValue);
+
+  };
+
+  const onStarHoverOut = (nextValue) => {
+    setRating(course.rating);
+  };
 
   if (error) {
     return (
@@ -179,6 +186,9 @@ const CourseViewer = (props) => {
               onStarHover={(nextValue, prevValue, name) =>
                 onStarHover(nextValue, prevValue, name)
               }
+              onStarHoverOut={(nextValue, prevValue, name) =>
+                onStarHoverOut(nextValue, prevValue, name)
+              }
               name="rating"
               value={rating}
             />
@@ -216,7 +226,7 @@ const CourseViewer = (props) => {
         <Row className="d-flex justify-content-center mb-2">
           Your progress into this course.
         </Row>
-        <Progress color="warning" value="25" className="mb-4" />
+        <Progress color="warning" value={course.progress} className="mb-4" />
 
         <br />
         <Row>
@@ -230,15 +240,9 @@ const CourseViewer = (props) => {
           courseID={props.id}
           ownerID={course.ownerId}
           courseTitle={course.title}
+          isObserving ={isObserving}
         />
 
-        {userContext.userid === course.ownerId && (
-          <Container>
-            <Row className="justify-content-md-center mt-4">
-              <Button text="Join this course" />
-            </Row>
-          </Container>
-        )}
       </Jumbotron>
       {userContext.userid === course.ownerId && !course.verified && (
         <Container>
@@ -289,7 +293,7 @@ const CourseViewer = (props) => {
         {userContext.userid !== course.ownerId &&
         course.verified &&
         course.public &&
-        isParticipating === false && (
+        isObserving === false && (
           <Container>
             <Row className="justify-content-md-center">
             </Row>
@@ -302,7 +306,7 @@ const CourseViewer = (props) => {
         {userContext.userid !== course.ownerId &&
         course.verified &&
         course.public &&
-        isParticipating === true && (
+        isObserving === true && (
           <Container>
             <Row className="justify-content-md-center">
             </Row>

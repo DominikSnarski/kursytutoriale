@@ -1,7 +1,7 @@
 import apiClient from '../ApiClient';
 
 export const ObserverService = {
-  Observe: (courseId) => {
+  observe: (courseId) => {
     return new Promise((resolve, reject) =>
       apiClient
         .post(`/api/Observer/Observe?courseId=${courseId}`)
@@ -9,7 +9,7 @@ export const ObserverService = {
         .catch((error) => reject(error)),
     );
   },
-  Unobserve: (courseId) => {
+  unobserve: (courseId) => {
     return new Promise((resolve, reject) =>
       apiClient
         .delete(`/api/Observer/Unobserve?courseId=${courseId}`)
@@ -17,7 +17,7 @@ export const ObserverService = {
         .catch((error) => reject(error)),
     );
   },
-  IsObserving: (courseId) => {
+  isObserving: (courseId) => {
     return new Promise((resolve, reject) =>
       apiClient
         .get(`/api/Observer/IsObserving?courseId=${courseId}`)
