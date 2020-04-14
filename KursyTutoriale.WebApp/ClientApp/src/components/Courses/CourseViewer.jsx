@@ -82,7 +82,7 @@ const CourseViewer = (props) => {
 
   };
 
-  const onStarHoverOut = (nextValue) => {
+  const onStarHoverOut = () => {
     setRating(course.rating);
   };
 
