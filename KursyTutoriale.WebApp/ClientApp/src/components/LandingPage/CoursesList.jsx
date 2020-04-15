@@ -38,7 +38,6 @@ class CoursesList extends React.Component {
     this.setState({ isLoading: true });
 
     CourseService.getCoursePages(0, 4).then((data) => {
-      console.log(data);
       this.setState({ exampleItems: data, isLoading: false });
     });
 
@@ -85,7 +84,7 @@ class CoursesList extends React.Component {
         </Container>
       );
     }
-    if (this.state.exampleItems.length == 0 || this.state.isLoading)
+    if (this.state.exampleItems.length === 0 || this.state.isLoading)
       return (
         <Container
           style={{
