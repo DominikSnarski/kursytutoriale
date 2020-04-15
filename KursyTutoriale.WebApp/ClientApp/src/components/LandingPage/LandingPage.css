@@ -1,7 +1,6 @@
 /*Sections*/
 html {
   background: #eaebec;
-  scroll-snap-type: y mandatory;
 }
 
 .section {
