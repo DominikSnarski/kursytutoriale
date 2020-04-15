@@ -119,6 +119,7 @@ class EditProfile extends React.Component {
                 <Row>
                   <Media
                     src="https://www.w3schools.com/howto/img_avatar.png"
+                    style={{ width: '100%', height: '100%' }}
                     alt="Generic placeholder image"
                   />
                   <CustomInput type="file" label="Pick a file!" />

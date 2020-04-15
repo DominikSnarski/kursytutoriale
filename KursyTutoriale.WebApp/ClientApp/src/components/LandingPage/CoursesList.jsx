@@ -1,18 +1,11 @@
 import React from 'react';
 import { Fade } from 'react-reveal';
-import {
-  Alert,
-  Col,
-  Container,
-  Spinner,
-  Table,
-} from 'reactstrap';
+import { Alert, Col, Container, Spinner, Table } from 'reactstrap';
 import Button from '../../layouts/CSS/Button/Button';
 import Details from '../Details/Details';
 import Filters from './Filters';
 import Pagination from '../Shared/Pagination';
 import { CourseService } from '../../api/Services/CourseService';
-
 
 class CoursesList extends React.Component {
   constructor() {
@@ -45,6 +38,7 @@ class CoursesList extends React.Component {
     this.setState({ isLoading: true });
 
     CourseService.getCoursePages(0, 4).then((data) => {
+      console.log(data);
       this.setState({ exampleItems: data, isLoading: false });
     });
 
@@ -91,7 +85,7 @@ class CoursesList extends React.Component {
         </Container>
       );
     }
-    if (this.state.isLoading)
+    if (this.state.exampleItems.length == 0 || this.state.isLoading)
       return (
         <Container
           style={{
@@ -114,13 +108,16 @@ class CoursesList extends React.Component {
     return (
       <Container>
         <Fade left duration="200">
-          <Button color="transparent" text="Filters" onClick={this.toggleFilters}>
-          </Button>
+          <Button
+            color="transparent"
+            text="Filters"
+            onClick={this.toggleFilters}
+          ></Button>
           <Fade top collapse when={this.state.showFilters}>
             <Filters formRef={this.formRef} formReset={this.formReset} />
           </Fade>
           <div>
-            <Table style={{backgroundColor:"transparent"}}>
+            <Table style={{ backgroundColor: 'transparent' }}>
               <thead>
                 <tr>
                   <th></th>
@@ -142,6 +139,6 @@ class CoursesList extends React.Component {
       </Container>
     );
   }
-  }
-  
-  export default CoursesList;
+}
+
+export default CoursesList;

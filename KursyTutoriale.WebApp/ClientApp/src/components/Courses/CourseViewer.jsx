@@ -19,6 +19,7 @@ import { UserContext } from '../../contexts/UserContext';
 import './style.css';
 import Modules from './Modules';
 import { CourseService } from '../../api/Services/CourseService';
+import Comments from '../Comments/Comments';
 
 const CourseViewer = (props) => {
   const history = useHistory();
@@ -261,6 +262,7 @@ const CourseViewer = (props) => {
       >
         Back
       </Button>
+      <Comments></Comments>
     </Container>
   );
 };

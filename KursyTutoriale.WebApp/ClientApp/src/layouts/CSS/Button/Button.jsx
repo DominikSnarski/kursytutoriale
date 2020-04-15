@@ -17,11 +17,13 @@ function Button(props) {
           style={{
             background: 'transparent',
             border: 0,
-            width: 'auto',
-            height: 'auto',
+            width: '100%',
+            height: '100%',
           }}
         >
-          <a href={props.link}>{props.text}</a>
+          <a href={props.link} style={{ fontSize: props.fontSize }}>
+            {props.text}
+          </a>
         </button>
       </div>
     );
@@ -42,11 +44,13 @@ function Button(props) {
           style={{
             background: 'transparent',
             border: 0,
-            width: 'auto',
-            height: 'auto',
+            width: '100%',
+            height: '100%',
           }}
         >
-          <a href={props.link}>{props.text}</a>
+          <a href={props.link} style={{ fontSize: props.fontSize }}>
+            {props.text}
+          </a>
         </button>
       </div>
     );
