@@ -23,10 +23,14 @@ namespace KursyTutoriale.Infrastructure.Configuration.DataModels
                 config.HasKey(o => o.Id);
             });
 
-
             builder.OwnsMany(pp => pp.Comments, config =>
             {
                 config.ToTable("KTComments");
+                config.HasKey(o => o.Id);
+            });
+            builder.OwnsMany(pp => pp.Progresses, config =>
+            {
+                config.ToTable("KTProgresses");
                 config.HasKey(o => o.Id);
             });
         }

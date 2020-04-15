@@ -37,7 +37,7 @@ function LessonsList(props) {
               >
                 <CardTitle>{item.title}</CardTitle>
                 <CardText className="card-height">{item.description}</CardText>
-                {userContext.userid === props.ownerID && (
+                {((userContext.userid === props.ownerID) || props.isObserving )&& (
                   <Link
                     to={{
                       pathname: AppRoutes.Lesson,

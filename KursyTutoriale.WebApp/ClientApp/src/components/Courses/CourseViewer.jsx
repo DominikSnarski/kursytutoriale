@@ -18,12 +18,14 @@ import { UserContext } from '../../contexts/UserContext';
 import './style.css';
 import Modules from './Modules';
 import { CourseService } from '../../api/Services/CourseService';
+import { ObserverService } from '../../api/Services/ObserverService';
 import Button from '../../layouts/CSS/Button/Button';
 
 const CourseViewer = (props) => {
   const history = useHistory();
   const userContext = React.useContext(UserContext);
   const [course, setCourse] = useState({});
+  const [isObserving, setObservation] = useState(false);
   const [courseLoaded, setCourseLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error] = useState(false);
@@ -37,7 +39,15 @@ const CourseViewer = (props) => {
         setCourseLoaded(true);
         setRating(response.data.rating);
         CourseService.incrementViewCount(props.id);
+        if (userContext.userid === response.data.ownerId || userContext.userRoles.includes('Admin')) { setObservation(true); }
+        else {
+          ObserverService.isObserving(response.data.id).then((_response) => {
+            setObservation(_response.data);
+          });
+        }
+
       });
+
     }
   }, [props.id]);
 
@@ -53,11 +63,31 @@ const CourseViewer = (props) => {
       .then(() => history.push(`/courseview/${course.id}`));
   };
 
+  const handleButtonJoinCourseClick = () => {
+    ObserverService.observe(course.id)
+    .then(() => history.push('/'))
+    .then(() => history.push(`/courseview/${course.id}`));
+  }
+
+  const handleButtonLeaveCourseClick = () => {
+    ObserverService.unobserve(course.id)
+    .then(() => history.push('/'))
+    .then(() => history.push(`/courseview/${course.id}`));
+  }
+
   const onStarClick = (nextValue) => {
     CourseService.addRating(course.id, userContext.userid, nextValue);
     setRating(nextValue);
+    course.rating = nextValue;
   };
-  const onStarHover = () => {};
+  const onStarHover = (nextValue) => {
+    setRating(nextValue);
+
+  };
+
+  const onStarHoverOut = () => {
+    setRating(course.rating);
+  };
 
   if (error) {
     return (
@@ -159,6 +189,9 @@ const CourseViewer = (props) => {
               onStarHover={(nextValue, prevValue, name) =>
                 onStarHover(nextValue, prevValue, name)
               }
+              onStarHoverOut={(nextValue, prevValue, name) =>
+                onStarHoverOut(nextValue, prevValue, name)
+              }
               name="rating"
               value={rating}
             />
@@ -196,7 +229,7 @@ const CourseViewer = (props) => {
         <Row className="d-flex justify-content-center mb-2">
           Your progress into this course.
         </Row>
-        <Progress color="warning" value="25" className="mb-4" />
+        <Progress color="warning" value={course.progress} className="mb-4" />
 
         <br />
         <Row>
@@ -210,15 +243,9 @@ const CourseViewer = (props) => {
           courseID={props.id}
           ownerID={course.ownerId}
           courseTitle={course.title}
+          isObserving ={isObserving}
         />
 
-        {userContext.userid === course.ownerId && (
-          <Container>
-            <Row className="justify-content-md-center mt-4">
-              <Button text="Join this course" />
-            </Row>
-          </Container>
-        )}
       </Jumbotron>
       {userContext.userid === course.ownerId && !course.verified && (
         <Container>
@@ -245,9 +272,7 @@ const CourseViewer = (props) => {
               </Alert>
             </Row>
             <Row className="justify-content-md-center">
-              <Button onClick={() => handleButtonPublishClick()}>
-                Publish
-              </Button>
+              <Button onClick={() => handleButtonPublishClick()} text="Publish"/>
             </Row>
           </Container>
         )}
@@ -263,9 +288,33 @@ const CourseViewer = (props) => {
               </Alert>
             </Row>
             <Row className="justify-content-md-center">
-              <Button onClick={() => handleButtonPublishNewVersionClick()}>
-                Publish New Version
-              </Button>
+              <Button onClick={() => handleButtonPublishNewVersionClick()} text="Publish New Version"/>
+            </Row>
+          </Container>
+        )}
+
+        {userContext.userid !== course.ownerId &&
+        course.verified &&
+        course.public &&
+        isObserving === false && (
+          <Container>
+            <Row className="justify-content-md-center">
+            </Row>
+            <Row className="justify-content-md-center">
+              <Button onClick={() => handleButtonJoinCourseClick()} text="Join Course"/>
+            </Row>
+          </Container>
+        )}
+
+        {userContext.userid !== course.ownerId &&
+        course.verified &&
+        course.public &&
+        isObserving === true && (
+          <Container>
+            <Row className="justify-content-md-center">
+            </Row>
+            <Row className="justify-content-md-center">
+              <Button onClick={() => handleButtonLeaveCourseClick()} text="Leave Course"/>
             </Row>
           </Container>
         )}

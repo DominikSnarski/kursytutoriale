@@ -51,5 +51,18 @@ namespace KursyTutoriale.Application.Services.CoursePublication
 
             await unitOfWork.SaveChangesAsync();
         }
+
+        public bool IsObserving(Guid courseId)
+        {
+            if (executionContextAccessor.GetUserRoles().Contains("Admin")) return true;
+
+            var userId = executionContextAccessor.GetUserId();
+            var profile = profilesRepository.Queryable().FirstOrDefault(p => p.CourseId == courseId);
+            if (profile is null)
+                return false;
+            if (profile.Observers.FirstOrDefault(o => o.UserId == userId) != null) return true;
+            else return false;
+
+        }
     }
 }

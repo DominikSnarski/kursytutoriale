@@ -35,6 +35,7 @@ function Modules(props) {
                   moduleTitle={item.title}
                   ownerID={props.ownerID}
                   courseTitle={props.courseTitle}
+                  isObserving={props.isObserving}
                 />
               </UncontrolledCollapse>
             </Col>
