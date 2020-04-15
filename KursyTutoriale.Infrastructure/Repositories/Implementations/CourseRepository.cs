@@ -174,6 +174,8 @@ namespace KursyTutoriale.Infrastructure.Repositories.Implementations
                 readModel.VerificationStamp.Note = course.VerificationStamp.Note;
                 readModel.VerificationStamp.ModVerifierId = course.VerificationStamp.ModVerifierId;
                 readModel.VerificationStamp.Date = course.VerificationStamp.Date;
+                readModel.Popularity = course.Popularity;
+                readModel.Rating = course.Rating;
             }
         }
 

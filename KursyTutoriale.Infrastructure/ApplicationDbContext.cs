@@ -28,7 +28,7 @@ namespace KursyTutoriale.Infrastructure
         public DbSet<CoursePublicationProfile> PublicationProfiles { get; set; }
         public DbSet<ModAssignment> ModAssignments { get; set; }
         public DbSet<Rate> Rates { get; set; }
-
+        
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

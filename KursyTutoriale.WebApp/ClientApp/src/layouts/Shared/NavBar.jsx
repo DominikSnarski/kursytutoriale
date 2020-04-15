@@ -64,7 +64,7 @@ const NavBar = () => {
               </Link>
             </span>
           )}
-        {userContext !== undefined && userContext.authenticated && (
+        {userContext !== undefined && userContext.authenticated&& !userContext.userRoles.includes('Admin') && (
           <span className="user_controls_nav">
             <Link
               to={`/userProfile/${userContext.userid}`}

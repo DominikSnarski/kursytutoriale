@@ -2,6 +2,7 @@
 using KursyTutoriale.Application.DataTransferObjects.Course;
 using KursyTutoriale.Application.DataTransferObjects.NewCourse;
 using KursyTutoriale.Application.DataTransferObjects.NewCourse.CourseEdit;
+using KursyTutoriale.Application.Services.CoursePublication;
 using KursyTutoriale.Domain.Entities.Course;
 using KursyTutoriale.Domain.Entities.Course.Events;
 using KursyTutoriale.Domain.Entities.CoursePublication;
@@ -10,6 +11,7 @@ using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using KursyTutoriale.Shared;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +40,7 @@ namespace KursyTutoriale.Application.Services
         Task EditModule(ChangeModuleDTO dto);
         Task AddRating(Guid CourseId, Guid UserId, float rating);
         Task IncrementViewCount(Guid CourseId);
+
     }
 
     public class CourseService : ICourseService
@@ -48,6 +51,7 @@ namespace KursyTutoriale.Application.Services
         private IExtendedRepository<CoursePublicationProfile> publicationRepository;
         private IExecutionContextAccessor executionContext;
         private IExtendedRepository<Rate> rateRepository;
+        private ICourseProgressService progressService;
 
         public CourseService(
             IUnitOfWork unitOfWork,
@@ -55,7 +59,8 @@ namespace KursyTutoriale.Application.Services
             IExecutionContextAccessor executionContext,
             ICourseRepository courseRepository,
             IExtendedRepository<CoursePublicationProfile> publicationRepository,
-            IExtendedRepository<Rate> rateRepository)
+            IExtendedRepository<Rate> rateRepository,
+            ICourseProgressService progressService)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
@@ -63,6 +68,7 @@ namespace KursyTutoriale.Application.Services
             this.courseRepository = courseRepository;
             this.publicationRepository = publicationRepository;
             this.rateRepository = rateRepository;
+            this.progressService = progressService;
         }
 
 
@@ -85,13 +91,27 @@ namespace KursyTutoriale.Application.Services
 
             dto.Verified = result.VerificationStamp.Status == StampStatus.Verified;
 
-            dto.Public = publicationRepository
-                .Queryable()
+            var profileQuery = publicationRepository
+                .Queryable();
+
+            dto.Public = profileQuery
                 .Any(pp => pp.CourseId == courseId);
+
+            if (dto.Public)
+            {
+                var publication = profileQuery.Where(pp => pp.CourseId == courseId).FirstOrDefault();
+                dto.Rating = publication.Rating;
+                dto.Popularity = publication.Popularity;
+
+                int progress = progressService.GetProgress(result,publication);
+
+                dto.Progress = progress;
+
+            }
 
             return dto;
         }
-
+        
         /// <summary>
         /// Used to get module details
         /// </summary>
@@ -209,7 +229,7 @@ namespace KursyTutoriale.Application.Services
             var tagsIds = request.Tags.Select(t => t.Id).ToList();
 
             var userId = executionContext.GetUserId();
-            var @event = new CourseCreated(Guid.NewGuid(), request.Title, request.Description, userId, request.Date, request.Price, tagsIds);
+            var @event = new CourseCreated(Guid.NewGuid(), request.Title, request.Description, userId, DateTime.UtcNow, request.Price, tagsIds);
 
             var course = courseRepository.HandleEvent(@event, new Course());
 
@@ -240,8 +260,7 @@ namespace KursyTutoriale.Application.Services
 
             courseRepository.HandleEvent(@event, course);
 
-            await unitOfWork.SaveChangesAsync();
-            return 1;
+            return await unitOfWork.SaveChangesAsync();
         }
 
         /// <summary>
@@ -258,8 +277,10 @@ namespace KursyTutoriale.Application.Services
             if (!course.HasAccess(userId))
                 throw new UnauthorizedAccessException();
 
+            string partContent = JsonConvert.SerializeObject(lesson.Content[0].Content);
+
             var lessonParts = lesson.Content.OrderBy(part => part.Index)
-                .Select(part => new LessonPart(part.Name, part.Content))
+                .Select(part => new LessonPart(part.Type, JsonConvert.SerializeObject(part.Content)))
                 .ToList();
 
             var @event = new LessonAdded(0, lesson.Title, lesson.ModuleId, lesson.CourseId, lessonParts, lesson.Description);
@@ -316,7 +337,7 @@ namespace KursyTutoriale.Application.Services
         {
             var query = courseRepository.Queryable()
                 .Include(c => c.Modules)
-                .ThenInclude(m=>m.Lessons)
+                .ThenInclude(m=> m.Lessons)
                 .Where(c => c.Id.Equals(id))
                 .FirstOrDefault();
             return query;
@@ -428,7 +449,7 @@ namespace KursyTutoriale.Application.Services
                 dto.CourseId, 
                 dto.LessonId, 
                 dto.Content
-                    .Select(lp => new LessonPart(lp.Name, lp.Content))
+                    .Select(lp => new LessonPart(lp.Type, JsonConvert.SerializeObject(lp.Content)))
                     .ToList(), 
                 dto.Title,
                 dto.Description);
@@ -474,8 +495,8 @@ namespace KursyTutoriale.Application.Services
 
                 var newRating = query.Where(r => r.CourseId == CourseId).Average(r => r.Rating);
 
-                var query1 = courseRepository.Queryable();
-                var course = query1.Where(c => c.Id == CourseId).FirstOrDefault();
+                var query1 = publicationRepository.Queryable();
+                var course = query1.Where(c => c.CourseId == CourseId).FirstOrDefault();
                 if (course != null)
                 {
                  course.Rating = newRating;
@@ -486,13 +507,15 @@ namespace KursyTutoriale.Application.Services
 
         public async Task IncrementViewCount(Guid CourseId)
         {
-            var query = courseRepository.Queryable();
-            var course = query.Where(c => c.Id == CourseId).FirstOrDefault();
+
+            var query = publicationRepository.Queryable();
+            var course = query.Where(c => c.CourseId == CourseId).FirstOrDefault();
             if(course != null)
             {
                 course.Popularity++;
             }
             await unitOfWork.SaveChangesAsync();
         }
+
     }
 }

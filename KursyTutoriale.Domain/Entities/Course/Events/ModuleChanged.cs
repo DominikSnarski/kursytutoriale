@@ -26,7 +26,7 @@ namespace KursyTutoriale.Domain.Entities.Course.Events
             var module = entity.Modules.FirstOrDefault(l => l.Id == ModuleId);
 
             if (module is null)
-                throw new InvalidStateException("");
+                throw new InvalidStateException("Module doesnt exist");
 
             module.Update(Title, Description);
             

@@ -15,7 +15,6 @@ namespace KursyTutoriale.API.Controllers
     public class ObserverController : Controller
     {
         private IObserverService observerService;
-        private IExecutionContextAccessor executionContextAccessor;
 
         public ObserverController(IObserverService observerService)
         {
@@ -32,6 +31,15 @@ namespace KursyTutoriale.API.Controllers
         public async Task Unobserve(Guid courseId)
         {
             await observerService.RemoveObserver(courseId);
+        }
+
+
+        [Authorize]
+        [HttpGet("IsObserving")]
+        public bool IsObserving(Guid courseId)
+        {
+            var result = observerService.IsObserving(courseId);
+            return result;
         }
     }
 }

@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Button,
   Container,
   Col,
   Row,
@@ -13,10 +12,17 @@ import './style.css';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import AppRoutes from '../../routing/AppRoutes';
+import Button from '../../layouts/CSS/Button/Button';
 
 function LessonsList(props) {
   const userContext = React.useContext(UserContext);
-
+  const parseContents = (contents) => {
+    const content = JSON.parse(contents);
+    content.forEach((e) => {
+      e.Content = JSON.parse(e.Content);
+    });
+    return content;
+  };
   return (
     <Container fluid>
       <Card>
@@ -27,23 +33,25 @@ function LessonsList(props) {
             <Col className="ml-2 mb-2 mr-2">
               <Card
                 body
-                style={{ backgroundColor: '#7CC3D8', borderColor: '#7CC3D8' }}
+                style={{ backgroundColor: '#f5dfae', borderColor: '#f5dfae' }}
               >
                 <CardTitle>{item.title}</CardTitle>
                 <CardText className="card-height">{item.description}</CardText>
-                <Link
-                  to={{
-                    pathname: AppRoutes.Lesson,
-                    state: {
-                      lessons: props.lessons,
-                      index: i,
-                      ownerID: props.ownerID,
-                      courseID: props.courseid,
-                    },
-                  }}
-                >
-                  <Button color="primary">Lets go</Button>
-                </Link>
+                {((userContext.userid === props.ownerID) || props.isObserving )&& (
+                  <Link
+                    to={{
+                      pathname: AppRoutes.Lesson,
+                      state: {
+                        lessons: props.lessons,
+                        index: i,
+                        ownerID: props.ownerID,
+                        courseID: props.courseid,
+                      },
+                    }}
+                  >
+                    <Button text="Let's go" color="lightgreen" />
+                  </Link>
+                )}
 
                 {userContext.userid === props.ownerID &&
                 item.title !== 'Default title' && ( // warunek item.title !== 'Default title'trzeba bedzie usunac potem
@@ -56,13 +64,12 @@ function LessonsList(props) {
                           lessonid: item.id,
                           title: item.title,
                           description: item.description,
-                          content: JSON.parse(props.lessons[i].content),
+                          content: parseContents(props.lessons[i].content),
+                          isEdited: true,
                         },
                       }}
                     >
-                      <Button className="ml-2" color="secondary">
-                        Edit lesson
-                      </Button>
+                      <Button text="Edit lesson" color="grey" hover="black" />
                     </Link>
                   )}
               </Card>
@@ -77,14 +84,14 @@ function LessonsList(props) {
               to={{
                 pathname: AppRoutes.CreateLesson,
                 state: {
+                  courseTitle: props.courseTitle,
                   courseid: props.courseid,
                   moduleid: props.moduleid,
+                  lessonNumber: props.lessons.length,
                 },
               }}
             >
-              <Button color="success" size="lg">
-                Add new lesson
-              </Button>
+              <Button size="lg" text="Add new lesson" />
             </Link>
 
             <Link
@@ -94,14 +101,12 @@ function LessonsList(props) {
                 state: {
                   courseid: props.courseid,
                   moduleid: props.moduleid,
-                  title: props.moduleTitle,
                   description: props.moduleDescription,
+                  isEdited: false,
                 },
               }}
             >
-              <Button color="secondary" size="lg">
-                Edit module
-              </Button>
+              <Button size="lg" text="Edit module" />
             </Link>
           </Row>
         )}

@@ -28,20 +28,14 @@ export const CourseService = {
       `api/CoursesViewer/GetCourseDetails?courseId=${courseId}`,
     );
   },
-  addCourse: (date, description, ownerId, tags, price, title) => {
-    return new Promise((resolve, reject) =>
-      apiClient
-        .post('/api/CourseCreator/AddCourse', {
-          date,
-          description,
-          ownerId,
-          price,
-          title,
-          tags,
-        })
-        .then((resp) => resolve(resp))
-        .catch((error) => reject(error)),
-    );
+  addCourse: (description, ownerId, tags, price, title) => {
+    return apiClient.post('/api/CourseCreator/AddCourse', {
+      description,
+      ownerId,
+      price,
+      title,
+      tags,
+    });
   },
   getUsersCourses: (id) => {
     return new Promise((resolve, reject) =>
@@ -67,10 +61,12 @@ export const CourseService = {
         .catch((error) => reject(error)),
     );
   },
-  addRating: (courseId,userId,rate) => {
+  addRating: (courseId, userId, rate) => {
     return new Promise((resolve, reject) =>
       apiClient
-        .post(`/api/CoursesViewer/AddRating?CourseId=${courseId}&UserId=${userId}&Rating=${rate}`)
+        .post(
+          `/api/CoursesViewer/AddRating?CourseId=${courseId}&UserId=${userId}&Rating=${rate}`,
+        )
         .then((response) => resolve(response.data))
         .catch((error) => reject(error)),
     );
@@ -83,7 +79,6 @@ export const CourseService = {
         .catch((error) => reject(error)),
     );
   },
-  
 };
 
 export default CourseService;

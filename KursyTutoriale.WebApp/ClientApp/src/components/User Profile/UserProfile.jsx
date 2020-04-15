@@ -22,6 +22,7 @@ import classnames from 'classnames';
 import EditProfile from './EditProfile';
 import { UserService } from '../../api/Services/UserService';
 import CourseService from '../../api/Services/CourseService';
+import CourseProgressService from '../../api/Services/CourseProgressService';
 import CourseListItem from './CourseListItem';
 
 class UserProfile extends React.Component {
@@ -34,6 +35,10 @@ class UserProfile extends React.Component {
       isLoading: true,
       courseList: [],
       numberOfCourses: 0,
+      completedCoursesList: [],
+      numberOfCompletedCourses: 0,
+      uncompletedCoursesList: [],
+      numberOfUncompletedCourses: 0,
       numOfVisibleCourses: 2,
 
       userName: props.username,
@@ -64,11 +69,26 @@ class UserProfile extends React.Component {
       (result) => this.setState({ isLoading: false, user: result }),
       (error) => console.log(error),
     );
+
     CourseService.getUsersCourses(this.state.userid).then(
       (result) =>
         this.setState({ courseList: result, numberOfCourses: result.length }),
       (error) => console.log(error),
     );
+
+    CourseProgressService.getUserCompletedCourses().then(
+      (result) =>
+        this.setState({ completedCoursesList: result.data, numberOfCompletedCourses: result.data.length }),
+      (error) => console.log(error),
+    );
+
+    CourseProgressService.getUserUncompletedCourses().then(
+      (result) =>
+        this.setState({ uncompletedCoursesList: result.data, numberOfUncompletedCourses: result.data.length }),
+      (error) => console.log(error),
+    );
+
+
   }
 
   loadMore() {
@@ -89,7 +109,6 @@ class UserProfile extends React.Component {
         </center>
       );
     }
-
     return (
       <div>
         {this.state.showEdit && <EditProfile />}
@@ -205,6 +224,7 @@ class UserProfile extends React.Component {
                       <Row>
                         <Container>
                           <Nav tabs>
+
                             <NavItem>
                               <NavLink
                                 className={classnames({
@@ -222,6 +242,7 @@ class UserProfile extends React.Component {
                                 </l>
                               </NavLink>
                             </NavItem>
+
                             <NavItem>
                               <NavLink
                                 className={classnames({
@@ -235,10 +256,47 @@ class UserProfile extends React.Component {
                                   <span role="img" aria-label="list">
                                     📝
                                   </span>{' '}
-                                  Courses
+                                  My Courses
                                 </l>
                               </NavLink>
                             </NavItem>
+
+                            <NavItem>
+                              <NavLink
+                                className={classnames({
+                                  active: this.state.activeTab === '3',
+                                })}
+                                onClick={() => {
+                                  this.toggle('3');
+                                }}
+                              >
+                                <l className="stats">
+                                  <span role="img" aria-label="list">
+                                    📝
+                                  </span>{' '}
+                                  Observed
+                                </l>
+                              </NavLink>
+                            </NavItem>
+
+                            <NavItem>
+                              <NavLink
+                                className={classnames({
+                                  active: this.state.activeTab === '4',
+                                })}
+                                onClick={() => {
+                                  this.toggle('4');
+                                }}
+                              >
+                                <l className="stats">
+                                  <span role="img" aria-label="list">
+                                    📝
+                                  </span>{' '}
+                                  Completed
+                                </l>
+                              </NavLink>
+                            </NavItem>
+
                           </Nav>
                           <TabContent activeTab={this.state.activeTab}>
                             <TabPane tabId="1" className="about">
@@ -267,6 +325,7 @@ class UserProfile extends React.Component {
                                 <Col>{this.state.user.genderName}</Col>
                               </Row>
                             </TabPane>
+
                             <TabPane tabId="2">
                               {this.state.numberOfCourses === 0 ? (
                                 <p>
@@ -290,6 +349,41 @@ class UserProfile extends React.Component {
                                 </Col>
                               )}
                             </TabPane>
+
+                            <TabPane tabId="3">
+                              {this.state.numberOfUncompletedCourses === 0 ? (
+                                <p>
+                                 This User has not started observing any courses yet.
+                                </p>
+                              ) : (
+                                <Col>
+                                  {this.state.uncompletedCoursesList.slice(0, this.state.numberOfUncompletedCourses).map((course, index) => (
+                                      <Row sm="auto" p>
+                                        <CourseListItem course={course} />
+                                      </Row>
+                                    ))}
+                                 
+                                </Col>
+                              )}
+                            </TabPane>
+
+                            <TabPane tabId="4">
+                              {this.state.numberOfCompletedCourses === 0 ? (
+                                <p>
+                                 This User has not completed any courses yet.
+                                </p>
+                              ) : (
+                                <Col>
+                                  {this.state.completedCoursesList.slice(0, this.state.numberOfCompletedCourses).map((course, index) => (
+                                      <Row sm="auto" p>
+                                        <CourseListItem course={course} />
+                                      </Row>
+                                    ))}
+                                 
+                                </Col>
+                              )}
+                            </TabPane>
+
                           </TabContent>
                         </Container>
                       </Row>

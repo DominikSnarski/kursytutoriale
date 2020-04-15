@@ -12,10 +12,12 @@ namespace KursyTutoriale.Application.DataTransferObjects.Course
         public string Description { get; set; }
         public bool Public { get; set; }
         public bool Verified { get; set; }
+        public float Price { get; set; }
         public Guid OwnerId { get; set; }
         public DateTime Date { get; set; }
         public int Popularity { get; set; }
         public double Rating { get; set; }
+        public int Progress { get; set; }
         public ICollection<CourseTag> Tags { get; set; }
         public ICollection<CourseModuleBasicInformationsDTO> Modules { get; set; }
 

@@ -7,5 +7,6 @@ namespace KursyTutoriale.Application.Services.CoursePublication
     {
         Task AddObserver(Guid courseId);
         Task RemoveObserver(Guid courseId);
+        bool IsObserving(Guid courseId);
     }
 }

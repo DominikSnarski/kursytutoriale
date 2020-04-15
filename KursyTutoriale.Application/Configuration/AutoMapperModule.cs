@@ -9,6 +9,7 @@ using KursyTutoriale.Application.DataTransferObjects.UserProfiles;
 using KursyTutoriale.Domain.Entities.Administration;
 using KursyTutoriale.Domain.Entities.Auth;
 using KursyTutoriale.Domain.Entities.Course;
+using KursyTutoriale.Domain.Entities.CoursePublication;
 using KursyTutoriale.Domain.Entities.UserProfiles;
 using System;
 using System.Collections.Generic;
@@ -24,10 +25,10 @@ namespace KursyTutoriale.Application.Configuration
             var config = new MapperConfiguration(cfg =>
             {
                 IEnumerable<Type> dtoTypes = typeof(CourseDetailsDTO).Assembly.GetTypes()
-                    .Where(t => t.Namespace.StartsWith("KursyTutoriale.Application.DataTransferObjects"));
+                    .Where(t => !(t.Namespace is null) && t.Namespace.StartsWith("KursyTutoriale.Application.DataTransferObjects"));
 
                 IEnumerable<Type> entityTypes = typeof(Course).Assembly.GetTypes()
-                    .Where(t => t.Namespace.StartsWith("KursyTutoriale.Domain.Entities"));
+                    .Where(t => !(t.Namespace is null) && t.Namespace.StartsWith("KursyTutoriale.Domain.Entities")).ToList();
 
                 foreach (Type dto in dtoTypes)
                 {

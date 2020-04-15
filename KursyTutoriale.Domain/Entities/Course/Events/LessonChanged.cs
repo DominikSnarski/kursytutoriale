@@ -30,7 +30,7 @@ namespace KursyTutoriale.Domain.Entities.Course.Events
             var lesson = entity.Lessons.FirstOrDefault(l => l.Id == LessonId);
 
             if (lesson is null)
-                throw new InvalidStateException("");
+                throw new InvalidStateException("Lesson doesnt exist");
 
             lesson.Update(LessonParts);
             lesson.ChangeTitle(Title);
