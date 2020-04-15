@@ -75,15 +75,17 @@ const Course = (props) => {
   }
   return (
     <Container>
-      {UserContext.userid !== course.ownerId && (
-        <Button
-          color="danger"
-          style={{ float: 'right' }}
-          onClick={toggleReportModal}
-        >
-          Report
-        </Button>
-      )}
+      {userContext !== undefined &&
+        userContext.authenticated &&
+        userContext.userid !== course.ownerId && (
+          <Button
+            color="danger"
+            style={{ float: 'right' }}
+            onClick={toggleReportModal}
+          >
+            Report
+          </Button>
+        )}
       <CourseReportModal
         toggle={toggleReportModal}
         isOpen={modal}

@@ -21,7 +21,7 @@ export const ModService = {
   getReportCodes: () => {
     return apiClient.get(`${api}GetReportStatusCodes`);
   },
-  resolverReport: (ReportId, ReportStatus, Comment) => {
+  resolveReport: (ReportId, ReportStatus, Comment) => {
     return apiClient.put(`${api}ResolveReport`, {
       reportId: ReportId,
       resolverComment: Comment,

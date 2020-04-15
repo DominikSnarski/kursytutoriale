@@ -125,7 +125,7 @@ namespace KursyTutoriale.Application.Services.Mod
         /// <returns>Id of a report</returns>
         public async void ResolveReport(Guid reportId, ReportStatusType resolve, string resolverComment)
         {
-            var report = reportRepository.Queryable().First(r => r.Id == reportId);
+            var report = await reportRepository.Queryable().FirstOrDefaultAsync(r => r.Id == reportId);
 
             if (report.ModAssigneeId != executionContext.GetUserId() &&
                 !executionContext.GetUserRoles().Contains("Admin"))
@@ -138,8 +138,7 @@ namespace KursyTutoriale.Application.Services.Mod
 
             if(resolve == ReportStatusType.CourseBlocked)
             {
-                await BlockCourse(report.CourseId, report.ResolverComment);
-                return;
+                await BlockCourse(report.CourseId,resolverComment);
             }
 
             report.ResolvedDate = DateTime.UtcNow;

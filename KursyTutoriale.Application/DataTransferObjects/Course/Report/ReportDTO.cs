@@ -5,6 +5,7 @@ namespace KursyTutoriale.Application.DataTransferObjects.Course.Report
 {
     public class ReportDTO
     {
+        public Guid Id { get; set; }
         public Guid ReporterId { get; set; }
         public Guid CourseId { get; set; }
         public string ReporterComment { get; set; }
