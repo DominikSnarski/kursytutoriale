@@ -104,6 +104,7 @@ namespace KursyTutoriale.Application.Services.CoursePublication
 
             var userId = executionContextAccessor.GetUserId();
             if (userId.Equals(profile.OwnerId)) progress = 100;
+            else if (!profile.Observers.Any(o => o.UserId == userId)) progress = 0;
             else
             {
                 var progresses = profile.Progresses.AsQueryable().Where(pr => pr.UserId == userId);
@@ -121,8 +122,8 @@ namespace KursyTutoriale.Application.Services.CoursePublication
                                 completed++;
                         }
                     }
-
-                    progress = ((completed * 100) / total);
+                    if (total == 0) progress = 0;
+                    else progress = ((completed * 100) / total);
                 }
                 else progress = 0;
             }
