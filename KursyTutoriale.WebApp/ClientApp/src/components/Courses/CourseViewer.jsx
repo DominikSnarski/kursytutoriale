@@ -39,9 +39,12 @@ const CourseViewer = (props) => {
         setCourseLoaded(true);
         setRating(response.data.rating);
         CourseService.incrementViewCount(props.id);
-        ObserverService.isObserving(response.data.id).then((_response) => {
-          setObservation(_response.data);
-        });
+        if (userContext.userid === response.data.ownerId || userContext.userRoles.includes('Admin')) { setObservation(true); }
+        else {
+          ObserverService.isObserving(response.data.id).then((_response) => {
+            setObservation(_response.data);
+          });
+        }
 
       });
 

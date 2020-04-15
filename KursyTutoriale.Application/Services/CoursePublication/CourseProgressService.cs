@@ -38,6 +38,7 @@ namespace KursyTutoriale.Application.Services.CoursePublication
 
         public async Task MarkProgress(CourseProgressDTO dto)
         {
+            if (executionContextAccessor.GetUserRoles().Contains("Admin")) return;
             var userId = executionContextAccessor.GetUserId();
 
             var profile = profilesRepository.Queryable().FirstOrDefault(p => p.CourseId == dto.CourseId);
@@ -65,27 +66,7 @@ namespace KursyTutoriale.Application.Services.CoursePublication
             {
                 var course = courseRepository.Queryable().FirstOrDefault(c => c.Id == profile.CourseId);
 
-                int progress = 0;
-
-                    var progresses = profile.Progresses.AsQueryable().Where(pr => pr.UserId == userId);
-
-                    if (progresses != null)
-                    {
-                        int total = 0, completed = 0;
-
-                        foreach (CourseModuleReadModel module in course.Modules)
-                        {
-                            foreach (LessonReadModel lesson in module.Lessons)
-                            {
-                                total++;
-                                if (progresses.Any(p => p.LessonId == lesson.Id))
-                                    completed++;
-                            }
-                        }
-
-                        progress = ((completed * 100) / total);
-                    }
-                    else progress = 0;
+                int progress = GetProgress(course, profile);
 
                 if (progress == 100) courses.Add(mapper.Map<CourseBasicInformationsDTO>(course));
             }
@@ -108,8 +89,23 @@ namespace KursyTutoriale.Application.Services.CoursePublication
             {
                 var course = courseRepository.Queryable().FirstOrDefault(c => c.Id == profile.CourseId);
 
-                int progress = 0;
+                int progress = GetProgress(course, profile);
 
+                if (progress != 100) courses.Add(mapper.Map<CourseBasicInformationsDTO>(course));
+            }
+
+            return courses.AsEnumerable();
+
+        }
+
+        public int GetProgress(CourseReadModel course,CoursePublicationProfile profile)
+        {
+            int progress = 0;
+
+            var userId = executionContextAccessor.GetUserId();
+            if (userId.Equals(profile.OwnerId)) progress = 100;
+            else
+            {
                 var progresses = profile.Progresses.AsQueryable().Where(pr => pr.UserId == userId);
 
                 if (progresses != null)
@@ -129,12 +125,9 @@ namespace KursyTutoriale.Application.Services.CoursePublication
                     progress = ((completed * 100) / total);
                 }
                 else progress = 0;
-
-                if (progress != 100) courses.Add(mapper.Map<CourseBasicInformationsDTO>(course));
             }
 
-            return courses.AsEnumerable();
-
+            return progress;
         }
     }
 }

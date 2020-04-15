@@ -26,7 +26,7 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
             var repositoryMock = new Mock<ICourseRepository>();
             repositoryMock.Setup(m => m.Queryable()).Returns(courseQuery);
 
-            var service = new CourseService(null, null, null, repositoryMock.Object, null,null);
+            var service = new CourseService(null, null, null, repositoryMock.Object, null,null,null);
 
             Assert.Throws<NullReferenceException>(()=>service.GetCourseDetails(Guid.Empty));
         }
@@ -61,6 +61,7 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
                 null,
                 repositoryMock.Object,
                 new Mock<IExtendedRepository<CoursePublicationProfile>>().Object,
+                null,
                 null);
 
             //Act
@@ -104,6 +105,7 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
                 null,
                 repositoryMock.Object,
                 new Mock<IExtendedRepository<CoursePublicationProfile>>().Object,
+                null,
                 null);
 
             //Act
@@ -141,6 +143,7 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
                 null,
                 repositoryMock.Object,
                 profileMock.Object,
+                null,
                 null);
 
             //Act

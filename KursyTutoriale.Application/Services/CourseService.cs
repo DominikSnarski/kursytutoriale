@@ -2,6 +2,7 @@
 using KursyTutoriale.Application.DataTransferObjects.Course;
 using KursyTutoriale.Application.DataTransferObjects.NewCourse;
 using KursyTutoriale.Application.DataTransferObjects.NewCourse.CourseEdit;
+using KursyTutoriale.Application.Services.CoursePublication;
 using KursyTutoriale.Domain.Entities.Course;
 using KursyTutoriale.Domain.Entities.Course.Events;
 using KursyTutoriale.Domain.Entities.CoursePublication;
@@ -50,6 +51,7 @@ namespace KursyTutoriale.Application.Services
         private IExtendedRepository<CoursePublicationProfile> publicationRepository;
         private IExecutionContextAccessor executionContext;
         private IExtendedRepository<Rate> rateRepository;
+        private ICourseProgressService progressService;
 
         public CourseService(
             IUnitOfWork unitOfWork,
@@ -57,7 +59,8 @@ namespace KursyTutoriale.Application.Services
             IExecutionContextAccessor executionContext,
             ICourseRepository courseRepository,
             IExtendedRepository<CoursePublicationProfile> publicationRepository,
-            IExtendedRepository<Rate> rateRepository)
+            IExtendedRepository<Rate> rateRepository,
+            ICourseProgressService progressService)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
@@ -65,6 +68,7 @@ namespace KursyTutoriale.Application.Services
             this.courseRepository = courseRepository;
             this.publicationRepository = publicationRepository;
             this.rateRepository = rateRepository;
+            this.progressService = progressService;
         }
 
 
@@ -87,44 +91,19 @@ namespace KursyTutoriale.Application.Services
 
             dto.Verified = result.VerificationStamp.Status == StampStatus.Verified;
 
-            var query1 = publicationRepository
+            var profileQuery = publicationRepository
                 .Queryable();
 
-            dto.Public = query1
+            dto.Public = profileQuery
                 .Any(pp => pp.CourseId == courseId);
 
             if (dto.Public)
             {
-                var publication = query1.Where(pp => pp.CourseId == courseId).FirstOrDefault();
+                var publication = profileQuery.Where(pp => pp.CourseId == courseId).FirstOrDefault();
                 dto.Rating = publication.Rating;
                 dto.Popularity = publication.Popularity;
 
-                int progress = 0;
-
-                var userId = executionContext.GetUserId();
-                if (userId.Equals(publication.OwnerId)) progress = 100;
-                else
-                {
-                    var progresses = publication.Progresses.AsQueryable().Where(pr => pr.UserId == userId);
-
-                    if ( progresses != null)
-                    {
-                        int total = 0, completed = 0;
-
-                        foreach (CourseModuleReadModel module in result.Modules)
-                        {
-                            foreach (LessonReadModel lesson in module.Lessons)
-                            {
-                                total++;
-                                if (progresses.Any(p => p.LessonId == lesson.Id))
-                                    completed++;
-                            }
-                        }
-
-                        progress = ((completed * 100) / total);
-                    }
-                    else progress = 0;
-                }
+                int progress = progressService.GetProgress(result,publication);
 
                 dto.Progress = progress;
 
