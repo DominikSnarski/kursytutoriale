@@ -14,3 +14,7 @@ h1 {
 Label{
     font-weight: 600;
 }
+
+.errorMessage{
+    color: red;
+}

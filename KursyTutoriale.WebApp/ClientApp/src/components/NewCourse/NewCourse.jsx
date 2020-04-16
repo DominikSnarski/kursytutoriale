@@ -23,6 +23,8 @@ import backgroundImage from '../../images/Book_background.jpg';
 
 function NewCourse() {
   const [tags, setTags] = useState([]);
+  const [title, setTitle] = useState();
+  const [titleErrorMessage, setTitleErrorMessage] = useState('')
   const [tagsState, setTagsState] = useState({
     tagsList: [],
     inputValue: '',
@@ -67,6 +69,10 @@ function NewCourse() {
     });
   };
 
+  const handleTitleChange = (event) =>{
+    setTitle(event.target.value)
+  }
+
   const handleTagRemove = (tagId) => {
     const { tagsList } = tagsState;
     const newTagsList = tagsList.filter((tag) => tag.id !== tagId);
@@ -81,6 +87,12 @@ function NewCourse() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
+
+    if(formData.get('title') === '')
+    {
+      setTitleErrorMessage('Module title can\'t be empty')
+      return;
+    }
 
     CourseService.addCourse(
       formData.get('description'),
@@ -123,7 +135,12 @@ function NewCourse() {
                     name="title"
                     id="title"
                     placeholder="Set title"
+                    value={title}
+                    onChange={handleTitleChange}
                   />
+                </Col>
+                <Col>
+                  <span>{titleErrorMessage}</span>
                 </Col>
               </Row>
             </FormGroup>

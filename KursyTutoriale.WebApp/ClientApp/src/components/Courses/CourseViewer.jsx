@@ -18,7 +18,9 @@ import { UserContext } from '../../contexts/UserContext';
 import './style.css';
 import Modules from './Modules';
 import { CourseService } from '../../api/Services/CourseService';
+import {UserService} from '../../api/Services/UserService';
 import { ObserverService } from '../../api/Services/ObserverService';
+import DiscountGenerator from './DiscountGenerator'
 import Button from '../../layouts/CSS/Button/Button';
 
 const CourseViewer = (props) => {
@@ -30,12 +32,16 @@ const CourseViewer = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error] = useState(false);
   const [rating, setRating] = useState(0);
+  const [owner, setOwner] = useState('');
 
   useEffect(() => {
     if (!isLoading) {
       setIsLoading(true);
       CourseService.getCourse(props.id).then((response) => {
         setCourse(response.data);
+        UserService.getUserProfileById(response.data.ownerId).then((resp) => {
+          setOwner(resp.data.username)
+        })
         setCourseLoaded(true);
         setRating(response.data.rating);
         CourseService.incrementViewCount(props.id);
@@ -47,7 +53,6 @@ const CourseViewer = (props) => {
         }
 
       });
-
     }
   }, [props.id]);
 
@@ -199,7 +204,7 @@ const CourseViewer = (props) => {
         </Row>
 
         <Row className="d-flex mb-3">
-          <Col className="column-text">Author: {}</Col>
+          <Col className="column-text">Author: {owner}</Col>
           <Col className="column-text">
             Price: {course.price === 0 ? 'Free' : course.price} $
           </Col>
@@ -245,8 +250,12 @@ const CourseViewer = (props) => {
           courseTitle={course.title}
           isObserving ={isObserving}
         />
+        
+        <DiscountGenerator/>
 
       </Jumbotron>
+
+
       {userContext.userid === course.ownerId && !course.verified && (
         <Container>
           <Row className="justify-content-md-center">

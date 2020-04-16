@@ -9,6 +9,7 @@ import {
   FormFeedback,
   Input,
   Row,
+  Progress,
 } from 'reactstrap';
 import { Zoom } from 'react-reveal';
 import Draggable from 'react-draggable';
@@ -19,12 +20,13 @@ import './style.css';
 import Button from '../../layouts/CSS/Button/Button';
 import './Kit.css';
 import QuizEditor from './QuizEditor';
-import { CreateFolder } from '../../api/Services/DropboxService';
-
+import dbx from '../../api/Services/DropboxService';
 
 function LessonEdit(props) {
   const history = useHistory();
   const [lessonTitle, setLessonTitle] = useState(props.location.state.title);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadingMessage, setUploadingMessage] = useState(((100.0 * 50) / 400).toString());
   const [lessonDescription, setLessonDescription] = useState(
     props.location.state.description,
   );
@@ -76,12 +78,34 @@ function LessonEdit(props) {
   };
 
   const UploadFile = (event) => {
+    setUploadingMessage('Please wait while your video is ulpoading...');
     const xhr = new XMLHttpRequest();
 
-    xhr.upload.onprogress = () => {
-      // (evt)
-      // const percentComplete = parseInt((100.0 * evt.loaded) / evt.total);
-      // Upload in progress. Do something here with the percent complete.
+    xhr.upload.onprogress = (evt) => {
+      setUploadingMessage((parseInt((100.0 * evt.loaded) / evt.total, 10)).toString());
+      setUploadProgress(parseInt((100.0 * evt.loaded) / evt.total, 10));
+    };
+
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        dbx
+          .sharingCreateSharedLinkWithSettings({
+            path: `/${userContext.userid}/${props.location.state.courseTitle}/lesson${props.location.state.lessonNumber}.mp4`,
+          })
+          .then((response) => {
+            const temp = response.url.length - 4;
+            const url = `${response.url.substring(0, temp)}raw=1`;
+            setItems([
+              ...items,
+              {
+                Type: 'video',
+                Content: url,
+              },
+            ]);
+          });
+
+        setUploadingMessage('');
+      }
     };
 
     xhr.onload = () => {
@@ -102,7 +126,7 @@ function LessonEdit(props) {
     xhr.setRequestHeader(
       'Dropbox-API-Arg',
       JSON.stringify({
-        path: `/${userContext.username}/${props.location.state.courseTitle}/lesson${props.location.state.lessonNumber}.mp4`,
+        path: `/${userContext.userid}/${props.location.state.courseTitle}/lesson${props.location.state.lessonNumber}.mp4`,
         mode: 'add',
         autorename: true,
         mute: false,
@@ -111,7 +135,6 @@ function LessonEdit(props) {
 
     xhr.send(event.target.files[0]);
   };
-
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -176,15 +199,8 @@ function LessonEdit(props) {
             </Zoom>
 
             <h4>Lesson content</h4>
-
-            {videoSrc !== '' && (
-              <Container className="video mb-3">
-                <Row className="justify-content-md-center">
-                  <video controls>
-                    <source src={videoSrc} type="video/mp4" />
-                  </video>
-                </Row>
-                </Container>
+            {uploadProgress > 0 && uploadProgress < 100 && (
+                  <Progress className="mb-3" color="warning" value={uploadProgress}>{uploadingMessage}%</Progress>
             )}
 
             {items.length === 0 && (
@@ -213,6 +229,16 @@ function LessonEdit(props) {
                     quiz={item.Content}
                     updateQuiz={updateQuiz}
                   />
+                );
+              if (item.Type === 'video')
+                return (
+                  <Container className="video mb-3">
+                    <Row className="justify-content-md-center">
+                      <video controls>
+                        <source src={videoSrc} type="video/mp4" />
+                      </video>
+                    </Row>
+                  </Container>
                 );
               return (
                 <Input
@@ -265,16 +291,12 @@ function LessonEdit(props) {
               addVideo={(event) => {
                 const file = URL.createObjectURL(event.target.files[0]);
                 setVideoSrc(file);
-                CreateFolder(
-                  `${userContext.username}/${props.location.state.courseTitle}`,
-                );
                 UploadFile(event);
               }}
               clearLesson={() => {
                 setItems([]);
                 setVideoSrc('');
               }}
-
             />
           </div>
         </div>
