@@ -12,7 +12,7 @@ import {
 
 import { Fade } from 'react-reveal';
 
-const TopMentors = (props) => (
+const TopMentors = () => (
   <Container className="Container">
     <Fade left duration="200">
       <Row>

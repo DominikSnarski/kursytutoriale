@@ -12,7 +12,7 @@ import {
 
 import { Fade } from 'react-reveal';
 
-const Featured2 = (props) => (
+const Featured2 = () => (
   <Container className="Container">
     <Fade left duration="200">
       <Row>

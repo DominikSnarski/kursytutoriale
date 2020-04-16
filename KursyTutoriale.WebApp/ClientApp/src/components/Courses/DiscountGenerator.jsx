@@ -12,7 +12,7 @@ import InputField from '../../layouts/CSS/InputField/InputField';
 import './style.css';
 
 function DiscountGenerator() {
-  const [discounts, setDiscounts] = useState([
+  const [discounts] = useState([
     'elo',
     'witam',
     'dzien dobry',

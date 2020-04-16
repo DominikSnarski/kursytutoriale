@@ -16,13 +16,6 @@ import Button from '../../layouts/CSS/Button/Button';
 
 function LessonsList(props) {
   const userContext = React.useContext(UserContext);
-  const parseContents = (contents) => {
-    const content = JSON.parse(contents);
-    content.forEach((e) => {
-      e.Content = JSON.parse(e.Content);
-    });
-    return content;
-  };
   return (
     <Container fluid>
       <Card>

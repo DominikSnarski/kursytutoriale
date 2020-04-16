@@ -17,7 +17,6 @@ import { CourseService } from '../../api/Services/CourseService';
 import SystemService from '../../api/Services/SystemService';
 import Button from '../../layouts/CSS/Button/Button';
 import InputField from '../../layouts/CSS/InputField/InputField';
-import dbx from '../../api/Services/DropboxService';
 
 import './NewCourse.css';
 import backgroundImage from '../../images/Book_background.jpg';
@@ -105,8 +104,6 @@ function NewCourse() {
       history.push(`/courseview/${response.data}`);
     });
   };
-  
-  dbx.sharingListSharedLinks({path: ''}).then(response => console.log(`response: ${response}`))
 
   return (
     <Jumbotron fluid className="jumbotron_newCourse">

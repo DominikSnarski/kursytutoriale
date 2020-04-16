@@ -7,7 +7,6 @@ import QuizViewer from './QuizViewer';
 import { CourseProgressService } from '../../api/Services/CourseProgressService';
 import './style.css';
 import './Kit.css';
-import dbx from '../../api/Services/DropboxService';
 
 function Lesson(props) {
 
