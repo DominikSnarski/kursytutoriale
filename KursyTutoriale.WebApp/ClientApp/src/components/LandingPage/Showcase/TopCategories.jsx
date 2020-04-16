@@ -21,7 +21,6 @@ const TopCategories = (props) => (
             <Card
               inverse
               className="m-2"
-              onClick={props.toggle}
               style={{ cursor: 'pointer' }}
             >
               <CardImg
@@ -45,7 +44,6 @@ const TopCategories = (props) => (
             <Card
               inverse
               className="m-2"
-              onClick={props.toggle}
               style={{ cursor: 'pointer' }}
             >
               <CardImg
@@ -69,7 +67,6 @@ const TopCategories = (props) => (
             <Card
               inverse
               className="m-2"
-              onClick={props.toggle}
               style={{ cursor: 'pointer' }}
             >
               <CardImg
@@ -95,7 +92,6 @@ const TopCategories = (props) => (
             <Card
               inverse
               className="m-2"
-              onClick={props.toggle}
               style={{ cursor: 'pointer' }}
             >
               <CardImg
@@ -119,7 +115,6 @@ const TopCategories = (props) => (
             <Card
               inverse
               className="m-2"
-              onClick={props.toggle}
               style={{ cursor: 'pointer' }}
             >
               <CardImg
@@ -143,7 +138,6 @@ const TopCategories = (props) => (
             <Card
               inverse
               className="m-2"
-              onClick={props.toggle}
               style={{ cursor: 'pointer' }}
             >
               <CardImg

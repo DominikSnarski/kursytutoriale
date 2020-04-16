@@ -18,6 +18,8 @@ import Button from '../../layouts/CSS/Button/Button';
 function NewModule(props) {
   const history = useHistory();
 
+  const [titleErrorMessage, setTitleErrorMessage] = useState('');
+  const [descriptionErrorMessage, setDescriptionErrorMessage] = useState('');
   const [title, setTitle] = useState(props.location.state.title);
   const [description, setDescription] = useState(
     props.location.state.description,
@@ -27,6 +29,18 @@ function NewModule(props) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
+
+    if (formData.get('title') === '') {
+      setTitleErrorMessage("Title can't be empty");
+    }
+
+    if (formData.get('description') === '') {
+      setDescriptionErrorMessage("Description can't be empty");
+    }
+
+    if (formData.get('description') === '' || formData.get('title') === '') {
+      return;
+    }
 
     ModuleService.editModule(
       props.location.state.courseid,
@@ -59,6 +73,7 @@ function NewModule(props) {
               />
               <FormFeedback valid>Sweet! that name is available</FormFeedback>
             </FormGroup>
+            <span className="errorMessage">{titleErrorMessage}</span>
           </Col>
         </Row>
         <Row className="justify-content-center text-dark mt-2">
@@ -77,6 +92,7 @@ function NewModule(props) {
                 }}
               />
             </FormGroup>
+            <span className="errorMessage">{descriptionErrorMessage}</span>
           </Col>
         </Row>
 

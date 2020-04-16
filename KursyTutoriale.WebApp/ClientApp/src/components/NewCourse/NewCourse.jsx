@@ -17,12 +17,15 @@ import { CourseService } from '../../api/Services/CourseService';
 import SystemService from '../../api/Services/SystemService';
 import Button from '../../layouts/CSS/Button/Button';
 import InputField from '../../layouts/CSS/InputField/InputField';
+import dbx from '../../api/Services/DropboxService';
 
 import './NewCourse.css';
 import backgroundImage from '../../images/Book_background.jpg';
 
 function NewCourse() {
   const [tags, setTags] = useState([]);
+  const [title, setTitle] = useState();
+  const [titleErrorMessage, setTitleErrorMessage] = useState('')
   const [tagsState, setTagsState] = useState({
     tagsList: [],
     inputValue: '',
@@ -67,6 +70,10 @@ function NewCourse() {
     });
   };
 
+  const handleTitleChange = (event) =>{
+    setTitle(event.target.value)
+  }
+
   const handleTagRemove = (tagId) => {
     const { tagsList } = tagsState;
     const newTagsList = tagsList.filter((tag) => tag.id !== tagId);
@@ -82,6 +89,12 @@ function NewCourse() {
     event.preventDefault();
     const formData = new FormData(event.target);
 
+    if(formData.get('title') === '')
+    {
+      setTitleErrorMessage('Module title can\'t be empty')
+      return;
+    }
+
     CourseService.addCourse(
       formData.get('description'),
       userContext.userid,
@@ -92,6 +105,8 @@ function NewCourse() {
       history.push(`/courseview/${response.data}`);
     });
   };
+  
+  dbx.sharingListSharedLinks({path: ''}).then(response => console.log(`response: ${response}`))
 
   return (
     <Jumbotron fluid className="jumbotron_newCourse">
@@ -123,7 +138,12 @@ function NewCourse() {
                     name="title"
                     id="title"
                     placeholder="Set title"
+                    value={title}
+                    onChange={handleTitleChange}
                   />
+                </Col>
+                <Col>
+                  <span>{titleErrorMessage}</span>
                 </Col>
               </Row>
             </FormGroup>

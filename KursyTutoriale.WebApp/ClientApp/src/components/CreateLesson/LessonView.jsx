@@ -5,6 +5,9 @@ import { useHistory, Link } from 'react-router-dom';
 import AppRoutes from '../../routing/AppRoutes';
 import QuizViewer from './QuizViewer';
 import { CourseProgressService } from '../../api/Services/CourseProgressService';
+import './style.css';
+import './Kit.css';
+import dbx from '../../api/Services/DropboxService';
 
 function Lesson(props) {
 
@@ -34,7 +37,6 @@ function Lesson(props) {
             MarkProgress()
             // eslint-disable-next-line react/jsx-key
             if (item.Type.substring(0, 5) === 'image') {
-              
               return (
                 <Container key={key}>
                   <Row className="justify-content-md-center">
@@ -52,6 +54,17 @@ function Lesson(props) {
                 <Container key={key}>
                   <Row className="justify-content-md-center">
                     <QuizViewer content={item.Content} />
+                  </Row>
+                </Container>
+              );
+            }
+            if (item.Type.substring(0, 5) === 'video') {
+              return (
+                <Container key={key} className="video">
+                  <Row className="justify-content-md-center">
+                    <video controls>
+                      <source src={item.Content} type="video/mp4" />
+                    </video>
                   </Row>
                 </Container>
               );

@@ -42,6 +42,7 @@ function LessonsList(props) {
                     to={{
                       pathname: AppRoutes.Lesson,
                       state: {
+                        courseTitle: props.courseTitle,
                         lessons: props.lessons,
                         index: i,
                         ownerID: props.ownerID,
@@ -53,25 +54,13 @@ function LessonsList(props) {
                   </Link>
                 )}
 
-                {userContext.userid === props.ownerID &&
-                item.title !== 'Default title' && ( // warunek item.title !== 'Default title'trzeba bedzie usunac potem
-                    <Link
-                      className="m-1"
-                      to={{
-                        pathname: AppRoutes.EditLesson,
-                        state: {
-                          courseid: props.courseid,
-                          lessonid: item.id,
-                          title: item.title,
-                          description: item.description,
-                          content: parseContents(props.lessons[i].content),
-                          isEdited: true,
-                        },
-                      }}
-                    >
+                {userContext.userid === props.ownerID &&(
                       <Button text="Edit lesson" color="grey" hover="black" />
-                    </Link>
                   )}
+
+                  {userContext.userid === props.ownerID &&(
+                      <Button text="Add lesson to preview" hover="black" />
+                    )}
               </Card>
             </Col>
           </Row>

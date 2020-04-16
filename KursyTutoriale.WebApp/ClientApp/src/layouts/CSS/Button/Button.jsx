@@ -5,6 +5,7 @@ function Button(props) {
   if (props.onClick == null) {
     return (
       <div
+        id={props.id}
         className="button text-center"
         style={{
           background: props.color,
@@ -31,6 +32,7 @@ function Button(props) {
   if (props.onClick != null) {
     return (
       <div
+        id={props.id}
         onClick={props.onClick}
         className="button text-center"
         style={{

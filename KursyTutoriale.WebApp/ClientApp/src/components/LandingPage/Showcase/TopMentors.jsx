@@ -21,7 +21,6 @@ const TopMentors = (props) => (
             <Card
               inverse
               className="m-2"
-              onClick={props.toggle}
               style={{ cursor: 'pointer' }}
             >
               <CardImg
@@ -45,7 +44,6 @@ const TopMentors = (props) => (
             <Card
               inverse
               className="m-2"
-              onClick={props.toggle}
               style={{ cursor: 'pointer' }}
             >
               <CardImg
@@ -68,8 +66,6 @@ const TopMentors = (props) => (
           <div>
             <Card
               inverse
-              className="m-2"
-              onClick={props.toggle}
               style={{ cursor: 'pointer' }}
             >
               <CardImg
@@ -95,7 +91,6 @@ const TopMentors = (props) => (
             <Card
               inverse
               className="m-2"
-              onClick={props.toggle}
               style={{ cursor: 'pointer' }}
             >
               <CardImg
@@ -119,7 +114,6 @@ const TopMentors = (props) => (
             <Card
               inverse
               className="m-2"
-              onClick={props.toggle}
               style={{ cursor: 'pointer' }}
             >
               <CardImg
@@ -143,7 +137,6 @@ const TopMentors = (props) => (
             <Card
               inverse
               className="m-2"
-              onClick={props.toggle}
               style={{ cursor: 'pointer' }}
             >
               <CardImg
