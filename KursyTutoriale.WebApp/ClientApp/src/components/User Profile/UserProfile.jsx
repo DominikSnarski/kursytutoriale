@@ -66,7 +66,7 @@ class UserProfile extends React.Component {
   UNSAFE_componentWillMount() {
     this.toggle('1');
     UserService.getUserProfileById(this.state.userid).then(
-      (result) => this.setState({ isLoading: false, user: result }),
+      (result) => this.setState({ isLoading: false, user: result.data }),
       (error) => console.log(error),
     );
 
@@ -78,17 +78,21 @@ class UserProfile extends React.Component {
 
     CourseProgressService.getUserCompletedCourses().then(
       (result) =>
-        this.setState({ completedCoursesList: result.data, numberOfCompletedCourses: result.data.length }),
+        this.setState({
+          completedCoursesList: result.data,
+          numberOfCompletedCourses: result.data.length,
+        }),
       (error) => console.log(error),
     );
 
     CourseProgressService.getUserUncompletedCourses().then(
       (result) =>
-        this.setState({ uncompletedCoursesList: result.data, numberOfUncompletedCourses: result.data.length }),
+        this.setState({
+          uncompletedCoursesList: result.data,
+          numberOfUncompletedCourses: result.data.length,
+        }),
       (error) => console.log(error),
     );
-
-
   }
 
   loadMore() {
@@ -224,7 +228,6 @@ class UserProfile extends React.Component {
                       <Row>
                         <Container>
                           <Nav tabs>
-
                             <NavItem>
                               <NavLink
                                 className={classnames({
@@ -296,7 +299,6 @@ class UserProfile extends React.Component {
                                 </l>
                               </NavLink>
                             </NavItem>
-
                           </Nav>
                           <TabContent activeTab={this.state.activeTab}>
                             <TabPane tabId="1" className="about">
@@ -353,16 +355,21 @@ class UserProfile extends React.Component {
                             <TabPane tabId="3">
                               {this.state.numberOfUncompletedCourses === 0 ? (
                                 <p>
-                                 This User has not started observing any courses yet.
+                                  This User has not started observing any
+                                  courses yet.
                                 </p>
                               ) : (
                                 <Col>
-                                  {this.state.uncompletedCoursesList.slice(0, this.state.numberOfUncompletedCourses).map((course, index) => (
+                                  {this.state.uncompletedCoursesList
+                                    .slice(
+                                      0,
+                                      this.state.numberOfUncompletedCourses,
+                                    )
+                                    .map((course, index) => (
                                       <Row sm="auto" p>
                                         <CourseListItem course={course} />
                                       </Row>
                                     ))}
-                                 
                                 </Col>
                               )}
                             </TabPane>
@@ -370,20 +377,23 @@ class UserProfile extends React.Component {
                             <TabPane tabId="4">
                               {this.state.numberOfCompletedCourses === 0 ? (
                                 <p>
-                                 This User has not completed any courses yet.
+                                  This User has not completed any courses yet.
                                 </p>
                               ) : (
                                 <Col>
-                                  {this.state.completedCoursesList.slice(0, this.state.numberOfCompletedCourses).map((course, index) => (
+                                  {this.state.completedCoursesList
+                                    .slice(
+                                      0,
+                                      this.state.numberOfCompletedCourses,
+                                    )
+                                    .map((course, index) => (
                                       <Row sm="auto" p>
                                         <CourseListItem course={course} />
                                       </Row>
                                     ))}
-                                 
                                 </Col>
                               )}
                             </TabPane>
-
                           </TabContent>
                         </Container>
                       </Row>

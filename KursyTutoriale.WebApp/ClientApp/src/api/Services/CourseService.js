@@ -72,11 +72,8 @@ export const CourseService = {
     );
   },
   incrementViewCount: (courseId) => {
-    return new Promise((resolve, reject) =>
-      apiClient
-        .post(`/api/CoursesViewer/IncrementViewCount?CourseId=${courseId}`)
-        .then((response) => resolve(response.data))
-        .catch((error) => reject(error)),
+    return apiClient.post(
+      `/api/CoursesViewer/IncrementViewCount?CourseId=${courseId}`,
     );
   },
 };

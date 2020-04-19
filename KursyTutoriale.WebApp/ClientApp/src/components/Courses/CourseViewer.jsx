@@ -10,7 +10,6 @@ import {
   CardText,
   Progress,
   Alert,
-  Spinner,
 } from 'reactstrap';
 import StarRating from 'react-star-rating-component';
 import { useHistory } from 'react-router-dom';
@@ -18,40 +17,24 @@ import { UserContext } from '../../contexts/UserContext';
 import './style.css';
 import Modules from './Modules';
 import { CourseService } from '../../api/Services/CourseService';
-import {UserService} from '../../api/Services/UserService';
 import { ObserverService } from '../../api/Services/ObserverService';
-import DiscountGenerator from './DiscountGenerator'
 import Button from '../../layouts/CSS/Button/Button';
+import { UserService } from '../../api/Services/UserService';
+import DiscountGenerator from './DiscountGenerator';
 
 const CourseViewer = (props) => {
   const history = useHistory();
   const userContext = React.useContext(UserContext);
-  const [course, setCourse] = useState({});
-  const [isObserving, setObservation] = useState(false);
-  const [courseLoaded, setCourseLoaded] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error] = useState(false);
-  const [rating, setRating] = useState(0);
-  const [owner, setOwner] = useState('');
 
+  const [ownerUserName, setOwnerUserName] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const course = { ...props.course };
+  const [rating, setRating] = useState(0);
   useEffect(() => {
     if (!isLoading) {
       setIsLoading(true);
-      CourseService.getCourse(props.id).then((response) => {
-        setCourse(response.data);
-        UserService.getUserProfileById(response.data.ownerId).then((resp) => {
-          setOwner(resp.data.username)
-        })
-        setCourseLoaded(true);
-        setRating(response.data.rating);
-        CourseService.incrementViewCount(props.id);
-        if (userContext.userid === response.data.ownerId || userContext.userRoles.includes('Admin')) { setObservation(true); }
-        else {
-          ObserverService.isObserving(response.data.id).then((_response) => {
-            setObservation(_response.data);
-          });
-        }
-
+      UserService.getUserProfileById(course.ownerId).then((response) => {
+        setOwnerUserName(response.data.username);
       });
     }
   }, [props.id]);
@@ -70,15 +53,15 @@ const CourseViewer = (props) => {
 
   const handleButtonJoinCourseClick = () => {
     ObserverService.observe(course.id)
-    .then(() => history.push('/'))
-    .then(() => history.push(`/courseview/${course.id}`));
-  }
+      .then(() => history.push('/'))
+      .then(() => history.push(`/courseview/${course.id}`));
+  };
 
   const handleButtonLeaveCourseClick = () => {
     ObserverService.unobserve(course.id)
-    .then(() => history.push('/'))
-    .then(() => history.push(`/courseview/${course.id}`));
-  }
+      .then(() => history.push('/'))
+      .then(() => history.push(`/courseview/${course.id}`));
+  };
 
   const onStarClick = (nextValue) => {
     CourseService.addRating(course.id, userContext.userid, nextValue);
@@ -87,40 +70,12 @@ const CourseViewer = (props) => {
   };
   const onStarHover = (nextValue) => {
     setRating(nextValue);
-
   };
 
   const onStarHoverOut = () => {
     setRating(course.rating);
   };
 
-  if (error) {
-    return (
-      <Row>
-        <Col xs="6" sm="4"></Col>
-        <Col sm="12" md={{ size: 10, offset: 1 }}>
-          <Alert color="danger">Something went terribly wrong.</Alert>
-        </Col>
-        <Col sm="4"></Col>
-      </Row>
-    );
-  }
-
-  if (!courseLoaded) {
-    return (
-      <Row>
-        <Col xs="6" sm="4"></Col>
-        <Col xs="6" sm="4">
-          <Spinner
-            className="d-lg-flex d-block h2"
-            style={{ width: '3rem', height: '3rem' }}
-            color="primary"
-          />
-        </Col>
-        <Col sm="4"></Col>
-      </Row>
-    );
-  }
   return (
     <Container className="Container">
       <Jumbotron fluid className="jumbotron_courseView">
@@ -204,7 +159,7 @@ const CourseViewer = (props) => {
         </Row>
 
         <Row className="d-flex mb-3">
-          <Col className="column-text">Author: {owner}</Col>
+          <Col className="column-text">Author: {ownerUserName}</Col>
           <Col className="column-text">
             Price: {course.price === 0 ? 'Free' : course.price} $
           </Col>
@@ -248,14 +203,10 @@ const CourseViewer = (props) => {
           courseID={props.id}
           ownerID={course.ownerId}
           courseTitle={course.title}
-          isObserving ={isObserving}
+          isObserving={props.isObserving}
         />
-        
-        <DiscountGenerator/>
-
+        <DiscountGenerator />
       </Jumbotron>
-
-
       {userContext.userid === course.ownerId && !course.verified && (
         <Container>
           <Row className="justify-content-md-center">
@@ -281,7 +232,10 @@ const CourseViewer = (props) => {
               </Alert>
             </Row>
             <Row className="justify-content-md-center">
-              <Button onClick={() => handleButtonPublishClick()} text="Publish"/>
+              <Button
+                onClick={() => handleButtonPublishClick()}
+                text="Publish"
+              />
             </Row>
           </Container>
         )}
@@ -297,33 +251,40 @@ const CourseViewer = (props) => {
               </Alert>
             </Row>
             <Row className="justify-content-md-center">
-              <Button onClick={() => handleButtonPublishNewVersionClick()} text="Publish New Version"/>
+              <Button
+                onClick={() => handleButtonPublishNewVersionClick()}
+                text="Publish New Version"
+              />
             </Row>
           </Container>
         )}
 
-        {userContext.userid !== course.ownerId &&
+      {userContext.userid !== course.ownerId &&
         course.verified &&
         course.public &&
-        isObserving === false && (
+        props.isObserving === false && (
           <Container>
+            <Row className="justify-content-md-center"></Row>
             <Row className="justify-content-md-center">
-            </Row>
-            <Row className="justify-content-md-center">
-              <Button onClick={() => handleButtonJoinCourseClick()} text="Join Course"/>
+              <Button
+                onClick={() => handleButtonJoinCourseClick()}
+                text="Join Course"
+              />
             </Row>
           </Container>
         )}
 
-        {userContext.userid !== course.ownerId &&
+      {userContext.userid !== course.ownerId &&
         course.verified &&
         course.public &&
-        isObserving === true && (
+        props.isObserving === true && (
           <Container>
+            <Row className="justify-content-md-center"></Row>
             <Row className="justify-content-md-center">
-            </Row>
-            <Row className="justify-content-md-center">
-              <Button onClick={() => handleButtonLeaveCourseClick()} text="Leave Course"/>
+              <Button
+                onClick={() => handleButtonLeaveCourseClick()}
+                text="Leave Course"
+              />
             </Row>
           </Container>
         )}

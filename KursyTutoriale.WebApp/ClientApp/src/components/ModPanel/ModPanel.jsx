@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import classnames from 'classnames';
 import {
@@ -13,11 +12,16 @@ import {
   TabContent,
   TabPane,
   Input,
+  Label,
+  Form,
+  FormGroup,
 } from 'reactstrap';
 import Button from '../../layouts/CSS/Button/Button';
 import Card from '../../layouts/CSS/Card/Card';
 import { ModService } from '../../api/Services/ModService';
 import CourseViewer from '../Courses/CourseViewer';
+import { CourseService } from '../../api/Services/CourseService';
+import { ReportService } from '../../api/Services/ReportService';
 
 const ModPanel = () => {
   const [pageLoaded, setPageLoaded] = useState(false);
@@ -28,14 +32,27 @@ const ModPanel = () => {
   const [activeTab, setActiveTab] = useState('1');
   const [reportsAssigned, setReportsAssigned] = useState(false);
   const [reports, setReports] = useState(false);
-  const [reportCodes, setReportCodes] = useState(false);
+  const [reportStatusCodes, setReportStatusCodes] = useState([]);
+  const [reportTypeCodes, setReportTypeCodes] = useState([]);
+  const [reportAssignments, setReportAssignments] = useState([]);
   const [itemSelectedIndex, setItemSelectedIndex] = useState(-1);
+  const [selectedResolveReportCode, setSelectedReportResolveCode] = useState(1);
+  let reportTypeText;
+  if (courseViewLoaded && activeTab === '2') {
+    reportTypeCodes.forEach((code) => {
+      if (code.code === reports[itemSelectedIndex].reportType)
+        reportTypeText = code.value;
+    });
+  }
 
   useEffect(() => {
     if (!pageLoaded) {
       setPageLoaded(true);
       ModService.getReportCodes().then((response) => {
-        setReportCodes(response.data);
+        setReportStatusCodes(response.data);
+      });
+      ReportService.getReportTypeCodes().then((response) => {
+        setReportTypeCodes(response.data);
       });
     }
   });
@@ -52,35 +69,109 @@ const ModPanel = () => {
 
   const getAssignments = () => {
     ModService.getCoursesRequiringVerification().then((response) => {
-      setCoursesAssigned(true);
-      setAssignments(response.data);
-      console.log(response.data);
-      console.log(assignments);
+      let assignmentstmp = [];
+      if (response.data.length > 0)
+        CourseService.getCourse(response.data[0].id).then((c1Response) => {
+          assignmentstmp = [...assignmentstmp, c1Response.data];
+          if (response.data.length > 1)
+            CourseService.getCourse(response.data[1].id).then((c2Response) => {
+              assignmentstmp = [...assignmentstmp, c2Response.data];
+              if (response.data.length > 2)
+                CourseService.getCourse(response.data[2].id).then(
+                  (c3Response) => {
+                    assignmentstmp = [...assignmentstmp, c3Response.data];
+                    setAssignments(assignmentstmp);
+                    setCoursesAssigned(true);
+                  },
+                );
+              else {
+                setAssignments(assignmentstmp);
+                setCoursesAssigned(true);
+              }
+            });
+          else {
+            setAssignments(assignmentstmp);
+            setCoursesAssigned(true);
+          }
+        });
+      else {
+        setAssignments(assignmentstmp);
+        setCoursesAssigned(true);
+      }
     });
   };
 
   const getReportAssignments = () => {
     ModService.getReports().then((response) => {
+      let assignmentstmp = [];
       setReports(response.data);
-      console.log(response.data);
-      setReportsAssigned(true);
+      if (response.data.length > 0)
+        CourseService.getCourse(response.data[0].courseId).then(
+          (c1Response) => {
+            assignmentstmp = [...assignmentstmp, c1Response.data];
+            if (response.data.length > 1)
+              CourseService.getCourse(response.data[1].courseId).then(
+                (c2Response) => {
+                  assignmentstmp = [...assignmentstmp, c2Response.data];
+                  if (response.data.length > 2)
+                    CourseService.getCourse(response.data[2].courseId).then(
+                      (c3Response) => {
+                        assignmentstmp = [...assignmentstmp, c3Response.data];
+                        setReportAssignments(assignmentstmp);
+                        setReportsAssigned(true);
+                      },
+                    );
+                  else {
+                    setReportAssignments(assignmentstmp);
+                    setReportsAssigned(true);
+                  }
+                },
+              );
+            else {
+              setReportAssignments(assignmentstmp);
+              setReportsAssigned(true);
+            }
+          },
+        );
+      else {
+        setReportAssignments(assignmentstmp);
+        setReportsAssigned(true);
+      }
     });
   };
 
   const setCourseViewer = (i, type) => {
-    console.log(type[i]);
-    console.log(courseViewItem);
-    setCourseViewLoaded(true);
     setItemSelectedIndex(i);
     setCourseViewItem(type[i]);
+    setCourseViewLoaded(true);
   };
 
   const toggleTab = (i) => {
     if (activeTab !== i) {
       setActiveTab(i);
       setCourseViewLoaded(false);
-    } else {
     }
+  };
+
+  const reportResolveSelectChanged = (e) => {
+    setSelectedReportResolveCode(
+      parseInt(e.target.options[e.target.selectedIndex].value, 10),
+    );
+  };
+
+  const handleReportResolve = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    ModService.resolveReport(
+      reports[itemSelectedIndex].id,
+      selectedResolveReportCode,
+      formData.get('comment'),
+    ).then(() => {
+      setCourseViewLoaded(false);
+      const index = reportAssignments;
+      index.splice(reportAssignments.indexOf(courseViewItem), 1);
+      setReportAssignments([...index]);
+    });
   };
 
   return (
@@ -161,7 +252,9 @@ const ModPanel = () => {
                       return (
                         <div
                           key={i}
-                          onClick={() => setCourseViewer(i, reports)}
+                          onClick={() => {
+                            setCourseViewer(i, reportAssignments);
+                          }}
                         >
                           <div>Type: {c.reportType}</div>
                           <div>Comment: {c.reporterComment}</div>
@@ -175,9 +268,27 @@ const ModPanel = () => {
             </TabPane>
           </TabContent>
           <Col>
+            {courseViewLoaded && activeTab === '2' && (
+              <div>
+                <header style={{ fontSize: '30px' }}>Report</header>
+                <Label>Reporter: {reports[itemSelectedIndex].reporterId}</Label>
+                <div />
+                <Label>
+                  {reportTypeText}
+                  {'  /  '}
+                  {reports[itemSelectedIndex].reporterComment}
+                </Label>
+                <div />
+                <Label>
+                  Reported on {reports[itemSelectedIndex].reportedDate}
+                </Label>
+              </div>
+            )}
             {courseViewLoaded && (
               <div>
                 <CourseViewer
+                  course={courseViewItem}
+                  rating={courseViewItem.rating}
                   id={
                     courseViewItem.id !== undefined
                       ? courseViewItem.id
@@ -197,32 +308,57 @@ const ModPanel = () => {
                 <Button
                   text="Verify"
                   onClick={() =>
-                    ModService.verifyCourse(courseViewItem.id).then(
-                      (response) => {
-                        setCourseViewLoaded(false);
-                        let index = assignments;
-                        index.splice(assignments.indexOf(courseViewItem), 1);
-                        setAssignments(index);
-                      },
-                    )
+                    ModService.verifyCourse(courseViewItem.id).then(() => {
+                      setCourseViewLoaded(false);
+                      const index = assignments;
+                      index.splice(assignments.indexOf(courseViewItem), 1);
+                      setAssignments([...index]);
+                    })
                   }
                 />
                 <Button
                   text="Reject"
                   onClick={() => {
-                    let comment = document.getElementById(
+                    const comment = document.getElementById(
                       'VerifierCommentTextArea',
                     ).value;
                     ModService.rejectCourse(courseViewItem.id, comment).then(
-                      (response) => {
+                      () => {
                         setCourseViewLoaded(false);
-                        let index = assignments;
+                        const index = assignments;
                         index.splice(assignments.indexOf(courseViewItem), 1);
-                        setAssignments(index);
+                        setAssignments([...index]);
                       },
                     );
                   }}
                 />
+              </div>
+            )}
+            {courseViewLoaded && activeTab === '2' && (
+              <div>
+                <Form onSubmit={handleReportResolve}>
+                  <FormGroup>
+                    <Input
+                      type="select"
+                      onChange={reportResolveSelectChanged}
+                      name="typeSelect"
+                    >
+                      {reportStatusCodes.map((code, key) => {
+                        return (
+                          <option key={key} value={code.code}>
+                            {code.value}
+                          </option>
+                        );
+                      })}
+                    </Input>
+                  </FormGroup>
+                  <FormGroup>
+                    <Input type="textarea" name="comment" />
+                  </FormGroup>
+                  <FormGroup>
+                    <Button type="submit" color="success" text="Resolve" />
+                  </FormGroup>
+                </Form>
               </div>
             )}
           </Col>

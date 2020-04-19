@@ -86,7 +86,9 @@ namespace KursyTutoriale.Application.Services.Mod
 
             var query = reportRepository.Queryable()
                 .Where(r => r.ReportStatus == ReportStatusType.Unresolved &&
-                    DateTime.Compare(r.DateOfModAssignment.AddHours(1), DateTime.UtcNow) < 0)
+                    DateTime.Compare(r.DateOfModAssignment.AddHours(1), DateTime.UtcNow) < 0 &&
+                    r.ReporterId != executionContext.GetUserId() &&
+                    executionContext.GetUserId() != courseRepository.Queryable().FirstOrDefault(c => c.Id == r.CourseId).OwnerId)
                 .OrderBy(r => r.ReportedDate)
                 .Take(count);
 
@@ -125,9 +127,10 @@ namespace KursyTutoriale.Application.Services.Mod
         /// <returns>Id of a report</returns>
         public async void ResolveReport(Guid reportId, ReportStatusType resolve, string resolverComment)
         {
-            var report = reportRepository.Queryable().First(r => r.Id == reportId);
+            var report = await reportRepository.Queryable().FirstOrDefaultAsync(r => r.Id == reportId);
 
             if (report.ModAssigneeId != executionContext.GetUserId() &&
+                report.ReporterId != executionContext.GetUserId() &&
                 !executionContext.GetUserRoles().Contains("Admin"))
                 throw new UnauthorizedAccessException("Moderator not assigned to resolvement of this report");
 
@@ -138,8 +141,7 @@ namespace KursyTutoriale.Application.Services.Mod
 
             if(resolve == ReportStatusType.CourseBlocked)
             {
-                await BlockCourse(report.CourseId, report.ResolverComment);
-                return;
+                await BlockCourse(report.CourseId,resolverComment);
             }
 
             report.ResolvedDate = DateTime.UtcNow;
