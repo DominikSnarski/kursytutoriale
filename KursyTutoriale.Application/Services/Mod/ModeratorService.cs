@@ -86,7 +86,9 @@ namespace KursyTutoriale.Application.Services.Mod
 
             var query = reportRepository.Queryable()
                 .Where(r => r.ReportStatus == ReportStatusType.Unresolved &&
-                    DateTime.Compare(r.DateOfModAssignment.AddHours(1), DateTime.UtcNow) < 0)
+                    DateTime.Compare(r.DateOfModAssignment.AddHours(1), DateTime.UtcNow) < 0 &&
+                    r.ReporterId != executionContext.GetUserId() &&
+                    executionContext.GetUserId() != courseRepository.Queryable().FirstOrDefault(c => c.Id == r.CourseId).OwnerId)
                 .OrderBy(r => r.ReportedDate)
                 .Take(count);
 
@@ -128,6 +130,7 @@ namespace KursyTutoriale.Application.Services.Mod
             var report = await reportRepository.Queryable().FirstOrDefaultAsync(r => r.Id == reportId);
 
             if (report.ModAssigneeId != executionContext.GetUserId() &&
+                report.ReporterId != executionContext.GetUserId() &&
                 !executionContext.GetUserRoles().Contains("Admin"))
                 throw new UnauthorizedAccessException("Moderator not assigned to resolvement of this report");
 
