@@ -12,7 +12,7 @@ import {
   Alert,
 } from 'reactstrap';
 import StarRating from 'react-star-rating-component';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import './style.css';
 import Modules from './Modules';
@@ -21,6 +21,8 @@ import { ObserverService } from '../../api/Services/ObserverService';
 import Button from '../../layouts/CSS/Button/Button';
 import { UserService } from '../../api/Services/UserService';
 import DiscountGenerator from './DiscountGenerator';
+
+import AppRoutes from '../../routing/AppRoutes';
 
 const CourseViewer = (props) => {
   const history = useHistory();
@@ -51,11 +53,11 @@ const CourseViewer = (props) => {
       .then(() => history.push(`/courseview/${course.id}`));
   };
 
-  const handleButtonJoinCourseClick = () => {
-    ObserverService.observe(course.id)
-      .then(() => history.push('/'))
-      .then(() => history.push(`/courseview/${course.id}`));
-  };
+  // const handleButtonJoinCourseClick = () => {
+  //   ObserverService.observe(course.id)
+  //     .then(() => history.push('/'))
+  //     .then(() => history.push(`/courseview/${course.id}`));
+  // };
 
   const handleButtonLeaveCourseClick = () => {
     ObserverService.unobserve(course.id)
@@ -266,10 +268,13 @@ const CourseViewer = (props) => {
           <Container>
             <Row className="justify-content-md-center"></Row>
             <Row className="justify-content-md-center">
-              <Button
+              {/* <Button
                 onClick={() => handleButtonJoinCourseClick()}
                 text="Join Course"
-              />
+              /> */}
+              <Link className="font-weight-bold" to={AppRoutes.Payment}>
+                Join Course
+              </Link>
             </Row>
           </Container>
         )}
