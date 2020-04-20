@@ -1,4 +1,4 @@
-import { React } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { PaymentService } from '../../api/Services/PaymentService';
 
@@ -14,25 +14,66 @@ import {
 import Button from '../../layouts/CSS/Button/Button';
 import Input from '../../layouts/CSS/InputField/InputField';
 
-function Payment (props) {
+function Payment(props) {
 
   const history = useHistory();
+
+  const [nameErrorMessage, setNameErrorMessage] = useState('');
+  const [surnameErrorMessage, setSurnameErrorMessage] = useState('');
+  const [cardNumberErrorMessage, setCardNumberErrorMessage] = useState('');
+  const [expirationDateErrorMessage, setExpirationDateErrorMessage] = useState('');
+  const [cvvErrorMessage, setCvvErrorMessage] = useState('');
+
+
+  const handleTextChange = () => {
+    setNameErrorMessage('');
+    setSurnameErrorMessage('');
+    setCardNumberErrorMessage('');
+    setExpirationDateErrorMessage('');
+    setCvvErrorMessage('');
+  };
   
   const handleSubmit = (event) => {
     event.preventDefault();
     
     const formData = new FormData(event.target);
 
-    // courseId, name, surname, cardNumber, expirationDate, cvv
+    if (formData.get('name') === '') {
+      setNameErrorMessage("Name can't be empty");
+    }
+
+    if (formData.get('surname') === '') {
+      setSurnameErrorMessage("Surname can't be empty");
+    }
+
+    if (formData.get('numer1') === '' || formData.get('numer2') === '' || formData.get('numer3') === '' || formData.get('numer4') === ''
+    || formData.get('numer1').length !== 4 || formData.get('numer2').length !== 4 || formData.get('numer3').length !== 4 || formData.get('numer4').length !== 4) {
+      setCardNumberErrorMessage("None of the card number fields cannot be empty. All of them must contains 4 numbers.");
+    }
+
+    if (formData.get('expirationDateMonth') === '' || formData.get('expirationDateYear') === '') {
+      setSurnameErrorMessage("Expiration date isn't complete");
+    }
+
+    if (formData.get('name') === '' || formData.get('surname') === '' 
+    || formData.get('numer1') === '' || formData.get('numer2') === '' || formData.get('numer3') === '' || formData.get('numer4') === '' 
+    || formData.get('expirationDateMonth') === '' || formData.get('expirationDateYear') === '' 
+    || formData.get('cvv') === '') {
+      return;
+    }
+
+    const cardNumber = formData.get('number1').toString() + formData.get('number2').toString() + formData.get('number3').toString() + formData.get('number4').toString();
+
     PaymentService.newPayment(
       props.location.state.courseid,
       formData.get('name'),
       formData.get('surname'),
-      formData.get('number1') + formData.get('number2') + formData.get('number3') + formData.get('number4'),
-      formData.get('expirationDateMonth') + formData.get('expirationDateYear'),
+      cardNumber,
+      formData.get('expirationDateMonth'),
+      formData.get('expirationDateYear'),
       formData.get('cvv')
     ).then(() => {
-      history.push(`/courseview/${props.location.state.courseid}`)
+      // history.push(`/courseview/${props.location.state.courseid}`)
     });
   };
 
@@ -56,6 +97,8 @@ function Payment (props) {
                         type="text"
                         name="name"
                         id="name"
+                        className="input_field"
+                        onChange={handleTextChange}
                     />
                 </Col>
 
@@ -65,10 +108,14 @@ function Payment (props) {
                         type="text"
                         name="surname"
                         id="surname"
+                        className="input_field"
+                        onChange={handleTextChange}
                     />
                 </Col>
                 </Row>          
             </FormGroup>
+            <span className="errorMessage">{nameErrorMessage}</span>
+            <span className="errorMessage">{surnameErrorMessage}</span>
           </Col>
         </Row>
         <Row className="mt-2">
@@ -86,7 +133,9 @@ function Payment (props) {
                                         placeholder="_ _ _ _"
                                         min={0}
                                         max={9999}
-                                        step="1"                             
+                                        step="1"      
+                                        className="input_field"
+                                        onChange={handleTextChange}                       
                                     />
                                 </Col>
                                 <Col>
@@ -97,7 +146,9 @@ function Payment (props) {
                                         placeholder="_ _ _ _"
                                         min={0}
                                         max={9999}
-                                        step="1"                           
+                                        step="1"   
+                                        className="input_field"
+                                        onChange={handleTextChange}                         
                                     />                            
                                 </Col>
                                 <Col>
@@ -108,7 +159,9 @@ function Payment (props) {
                                         placeholder="_ _ _ _"
                                         min={0}
                                         max={9999}
-                                        step="1"                            
+                                        step="1"          
+                                        className="input_field"
+                                        onChange={handleTextChange}                   
                                     />                            
                                 </Col>
                                 <Col>
@@ -119,13 +172,16 @@ function Payment (props) {
                                         placeholder="_ _ _ _"
                                         min={0}
                                         max={9999}
-                                        step="1"                           
+                                        step="1"                  
+                                        className="input_field"
+                                        onChange={handleTextChange}          
                                     />                            
                                 </Col> 
                             </Row>                                                     
                         </Col>
                     </Row>
                 </FormGroup>
+                <span className="errorMessage">{cardNumberErrorMessage}</span>
             </Col>
         </Row>
         <Row className="mt-2">
@@ -141,6 +197,8 @@ function Payment (props) {
                                     name="expirationDateMonth"
                                     id="expirationDateMonth"
                                     placeholder="Month"
+                                    className="input_field"
+                                    onChange={handleTextChange} 
                                 />
                             </Col>
                             <Col>
@@ -149,6 +207,8 @@ function Payment (props) {
                                     name="expirationDateYear"
                                     id="expirationDateYear"
                                     placeholder="Year"
+                                    className="input_field"
+                                    onChange={handleTextChange} 
                                 />
                             </Col>
                             </Row>
@@ -161,17 +221,23 @@ function Payment (props) {
                         name="cvv"
                         id="cvv"
                         placeholder="This number is on the back of the card"
+                        className="input_field"
+                        onChange={handleTextChange} 
                     />
                 </Col>
                 </Row>          
             </FormGroup>
+            <span className="errorMessage">{expirationDateErrorMessage}</span>
+            <span className="errorMessage">{cvvErrorMessage}</span>
           </Col>
         </Row>
         <Row className="mt-2">
             <FormGroup className="mt-2" check>
                                 Add to my cards
                                 <Col>
-                                <Input type="checkbox" />
+                                <Input 
+                                  type="checkbox"
+                                />
                                 </Col>
             </FormGroup>
         </Row>

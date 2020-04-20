@@ -53,11 +53,11 @@ const CourseViewer = (props) => {
       .then(() => history.push(`/courseview/${course.id}`));
   };
 
-  // const handleButtonJoinCourseClick = () => {
-  //   ObserverService.observe(course.id)
-  //     .then(() => history.push('/'))
-  //     .then(() => history.push(`/courseview/${course.id}`));
-  // };
+ const handleButtonJoinCourseClick = () => {
+   ObserverService.observe(course.id)
+     .then(() => history.push('/'))
+     .then(() => history.push(`/courseview/${course.id}`));
+};
 
   const handleButtonLeaveCourseClick = () => {
     ObserverService.unobserve(course.id)
@@ -268,12 +268,18 @@ const CourseViewer = (props) => {
           <Container>
             <Row className="justify-content-md-center"></Row>
             <Row className="justify-content-md-center">
-              {/* <Button
+              
+              <Link className="font-weight-bold" 
+                  to={{
+                  pathname: AppRoutes.Payment,
+                  state: {
+                    courseid: props.courseID,
+                  },
+                }}>
+               <Button
                 onClick={() => handleButtonJoinCourseClick()}
                 text="Join Course"
-              /> */}
-              <Link className="font-weight-bold" to={AppRoutes.Payment}>
-                Join Course
+              />
               </Link>
             </Row>
           </Container>
