@@ -17,7 +17,7 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
         public bool CommentsEnabled { get; private set; }
         public int Popularity { get; set; }
         public double Rating { get; set; }
-
+        public int Price { get; private set; }
 
         public IReadOnlyCollection<CourseVersion> Versions { get => versions.AsReadOnly(); }
         public IReadOnlyCollection<Participant> Participants { get => participants.AsReadOnly(); }
@@ -72,6 +72,11 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
             participants = participants.Where(obs => obs.UserId != userId).ToList();
         }
 
+        public void Join(Guid userId)
+        {
+
+        }
+
         public void AddComment(Comment comment)
         {
             if (!CommentsEnabled)
@@ -89,6 +94,7 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
         {
             CommentsEnabled = true;
         }
+
         public void AddCourseProgress(CourseProgress cp)
         {
             if (progresses.Any(p => p.UserId == cp.UserId && p.LessonId == cp.LessonId))
@@ -96,5 +102,9 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
             
             progresses.Add(cp);
         }
+
+        public bool CanBePaidFor() => Price == 0;
+
+        public bool CanJoin(Guid userId) => true; 
     }
 }

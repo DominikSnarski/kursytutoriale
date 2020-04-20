@@ -1,8 +1,5 @@
-﻿using KursyTutoriale.Domain;
-using KursyTutoriale.Domain.Entities.Auth;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using KursyTutoriale.Domain.Entities.Auth;
+using KursyTutoriale.Domain.Repositories;
 
 namespace KursyTutoriale.Infrastructure.Repositories.Interfaces
 {

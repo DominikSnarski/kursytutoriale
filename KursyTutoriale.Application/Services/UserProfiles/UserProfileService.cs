@@ -1,7 +1,7 @@
 ﻿using KursyTutoriale.Application.Contracts;
 using KursyTutoriale.Application.DataTransferObjects.UserProfiles;
 using KursyTutoriale.Domain.Entities.UserProfiles;
-using KursyTutoriale.Infrastructure.Repositories;
+using KursyTutoriale.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;

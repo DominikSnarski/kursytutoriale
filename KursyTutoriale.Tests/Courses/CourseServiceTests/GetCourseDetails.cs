@@ -1,17 +1,15 @@
 ﻿using KursyTutoriale.Application;
-using KursyTutoriale.Application.Contracts;
 using KursyTutoriale.Application.DataTransferObjects.Course;
 using KursyTutoriale.Application.Services;
 using KursyTutoriale.Domain.Entities.Course;
 using KursyTutoriale.Domain.Entities.CoursePublication;
-using KursyTutoriale.Infrastructure.Repositories;
+using KursyTutoriale.Domain.Repositories;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using KursyTutoriale.Shared;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Xunit;
 
 namespace KursyTutoriale.Tests.Courses.CourseServiceTests

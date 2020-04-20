@@ -1,6 +1,6 @@
 ﻿using URF.Core.Abstractions;
 
-namespace KursyTutoriale.Infrastructure.Repositories
+namespace KursyTutoriale.Domain.Repositories
 {
     public interface IExtendedRepository<TEntity> : IRepository<TEntity> where TEntity:class
     {

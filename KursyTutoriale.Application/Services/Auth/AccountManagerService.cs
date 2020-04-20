@@ -1,10 +1,8 @@
 ﻿using KursyTutoriale.Application.DataTransferObjects.Auth;
-using KursyTutoriale.Domain.Entities;
 using KursyTutoriale.Domain.Entities.Auth;
 using KursyTutoriale.Domain.Entities.Statistics;
 using KursyTutoriale.Domain.Entities.UserProfiles;
-using KursyTutoriale.Infrastructure.Repositories;
-using KursyTutoriale.Infrastructure.Repositories.Interfaces;
+using KursyTutoriale.Domain.Repositories;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Linq;

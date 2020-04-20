@@ -3,10 +3,8 @@ using KursyTutoriale.Application.DataTransferObjects.NewCourse.CoursePublication
 using KursyTutoriale.Application.Services.Utility;
 using KursyTutoriale.Domain.Entities.CoursePublication;
 using KursyTutoriale.Domain.Entities.UserProfiles;
-using KursyTutoriale.Infrastructure.Repositories;
-using KursyTutoriale.Infrastructure.Repositories.Interfaces;
+using KursyTutoriale.Domain.Repositories;
 using KursyTutoriale.Shared.Exceptions;
-using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

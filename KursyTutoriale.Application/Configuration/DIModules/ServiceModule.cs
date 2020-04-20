@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using KursyTutoriale.Application.Services.Auth;
+using KursyTutoriale.Infrastructure.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,6 +15,11 @@ namespace KursyTutoriale.Application.Configuration.DIModules
 
             builder
                 .RegisterAssemblyTypes(typeof(AuthService).Assembly)
+                .Where(c => c.Name.EndsWith("Service"))
+                .AsImplementedInterfaces();
+
+            builder
+                .RegisterAssemblyTypes(typeof(IPaymentService).Assembly)
                 .Where(c => c.Name.EndsWith("Service"))
                 .AsImplementedInterfaces();
         }
