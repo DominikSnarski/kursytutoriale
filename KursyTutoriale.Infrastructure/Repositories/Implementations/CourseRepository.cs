@@ -36,6 +36,18 @@ namespace KursyTutoriale.Infrastructure.Repositories.Implementations
             return course;
         }
 
+        public Course Find(Guid id, DateTime stateDate)
+        {
+            var course = new Course();
+
+            if (dbContext.CourseEvents.Where(e => e.EntityId == id).Any())
+                return BuildCourse(
+                    dbContext.CourseEvents.Where(e => e.EntityId == id && e.OccuranceDate <= stateDate),
+                    course);
+
+            return course;
+        }
+
         public ICollection<Course> GetAll()
         {
             return BuildCourses(dbContext.CourseEvents);

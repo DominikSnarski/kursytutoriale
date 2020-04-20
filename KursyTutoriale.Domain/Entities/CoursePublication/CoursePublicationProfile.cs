@@ -25,7 +25,7 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
         public IReadOnlyCollection<CourseProgress> Progresses { get => progresses.AsReadOnly(); }
 
 
-        public CoursePublicationProfile(Guid courseId, Guid ownerId)
+        public CoursePublicationProfile(Guid courseId, Guid ownerId, int price)
         {
             CourseId = courseId;
             OwnerId = ownerId;
@@ -38,6 +38,7 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
             participants = new List<Participant>();
 
             progresses = new List<CourseProgress>();
+            Price = price;
         }
 
         public CourseVersion PublishNewMajorVersion()
@@ -103,7 +104,7 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
             progresses.Add(cp);
         }
 
-        public bool CanBePaidFor() => Price == 0;
+        public bool CanBePaidFor() => Price != 0;
 
         public bool CanJoin(Guid userId) => true; 
     }
