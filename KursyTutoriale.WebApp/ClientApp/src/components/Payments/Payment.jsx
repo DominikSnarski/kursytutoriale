@@ -1,4 +1,4 @@
-import { React, useContext } from 'react';
+import { React } from 'react';
 import { useHistory } from 'react-router-dom';
 import { PaymentService } from '../../api/Services/PaymentService';
 
@@ -11,7 +11,6 @@ import {
   Container
 } from 'reactstrap';
 
-import { UserContext } from '../../contexts/UserContext';
 import Button from '../../layouts/CSS/Button/Button';
 import Input from '../../layouts/CSS/InputField/InputField';
 
@@ -23,12 +22,10 @@ function Payment (props) {
     event.preventDefault();
     
     const formData = new FormData(event.target);
-    const userContext = useContext(UserContext);
 
-    // courseId, userId, name, surname, cardNumber, expirationDate, cvv
-    PaymentService.addPayment(
+    // courseId, name, surname, cardNumber, expirationDate, cvv
+    PaymentService.newPayment(
       props.location.state.courseid,
-      userContext.id,
       formData.get('name'),
       formData.get('surname'),
       formData.get('number1') + formData.get('number2') + formData.get('number3') + formData.get('number4'),

@@ -4,9 +4,8 @@ export const PaymentService = {
     newPayment: (courseId, userId, name, surname, cardNumber, expirationDate, cvv) => {
         return new Promise((resolve, reject) =>
           apiClient
-            .post('/api/Payments/NewPayment', {
+            .post('/api/CreditCardPayment/PayForCourseAccess', {
                 courseId, 
-                userId, 
                 name, 
                 surname, 
                 cardNumber, 
