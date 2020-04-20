@@ -33,6 +33,7 @@ import ModPanel from './components/ModPanel/ModPanel';
 import ModRoute from './routing/ModRoute';
 import AdminMainPanel from './components/AdminPanel/AdminMainPanel';
 import AdminRoute from './routing/AdminRoute';
+import Payment from './components/Payment/Payment';
 
 const App = () => {
   const [userContext, setUserContext] = useState(
@@ -173,6 +174,12 @@ const App = () => {
                 exact
                 path={AppRoutes.AdminMainPanel}
                 component={AdminMainPanel}
+                layout={MainLayout}
+              />
+              <ProtectedRoute
+                exact
+                path={AppRoutes.Payment}
+                component={Payment}
                 layout={MainLayout}
               />
               <Route component={notfound} layout={MainLayout} />
