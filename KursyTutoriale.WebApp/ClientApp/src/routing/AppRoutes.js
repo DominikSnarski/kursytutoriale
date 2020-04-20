@@ -17,6 +17,7 @@ const AppRoutes = {
   CourseRejectionForm: '/courseRejectionForm',
   ModPanel: '/modPanel',
   AdminMainPanel: '/adminMainPanel',
+  Payment: '/payment'
 };
 
 export default AppRoutes;

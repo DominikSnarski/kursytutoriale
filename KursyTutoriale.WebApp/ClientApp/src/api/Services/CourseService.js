@@ -78,7 +78,7 @@ export const CourseService = {
         .then((response) => resolve(response.data))
         .catch((error) => reject(error)),
     );
-  },
+  }
 };
 
 export default CourseService;

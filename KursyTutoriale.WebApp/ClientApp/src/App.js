@@ -25,6 +25,7 @@ import NewCourse from './components/NewCourse/NewCourse';
 import EditProfile from './components/User Profile/EditProfile';
 import UserProfile from './components/User Profile/UserProfile';
 import CourseRejectionForm from './components/AdminPanel/CourseRejectionForm';
+import Payment from './components/Payments/Payment';
 import MainLayout from './layouts/MainLayout';
 import AppRoute from './routing/AppRoute';
 import AppRoutes from './routing/AppRoutes';
@@ -155,6 +156,12 @@ const App = () => {
                 exact
                 path={AppRoutes.UserProfile}
                 component={UserProfile}
+                layout={MainLayout}
+              />
+              <ProtectedRoute
+                exact
+                path={AppRoutes.Payment}
+                component={Payment}
                 layout={MainLayout}
               />
               <AppRoute

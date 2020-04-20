@@ -122,7 +122,9 @@ namespace KursyTutoriale.Application.Services.CoursePublication
                         }
                     }
 
-                    progress = ((completed * 100) / total);
+                    if (total != 0)
+                        progress = ((completed * 100) / total);
+                    else progress = 0;
                 }
                 else progress = 0;
             }

@@ -13,12 +13,14 @@ import {
   Spinner,
 } from 'reactstrap';
 import StarRating from 'react-star-rating-component';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import './style.css';
 import Modules from './Modules';
 import { CourseService } from '../../api/Services/CourseService';
 import { ObserverService } from '../../api/Services/ObserverService';
+
+import AppRoutes from '../../routing/AppRoutes';
 import Button from '../../layouts/CSS/Button/Button';
 
 const CourseViewer = (props) => {
@@ -63,11 +65,27 @@ const CourseViewer = (props) => {
       .then(() => history.push(`/courseview/${course.id}`));
   };
 
-  const handleButtonJoinCourseClick = () => {
-    ObserverService.observe(course.id)
-    .then(() => history.push('/'))
-    .then(() => history.push(`/courseview/${course.id}`));
-  }
+
+
+
+  // const handleButtonJoinCourseClick = () => {
+  //   if (course.price === 0)
+  //   {
+  //     ObserverService.observe(course.id)
+  //   .then(() => history.push('/'))
+  //   .then(() => history.push(`/courseview/${course.id}`));
+  //   }
+  //   else
+  //   {
+  //     PaymentService.payForTheCourse(course.id, userContext.id)
+  //   .then(() => history.push('/'))
+  //   .then(() => history.push(`/courseview/${course.id}`));
+  //   }
+  // }
+
+
+
+
 
   const handleButtonLeaveCourseClick = () => {
     ObserverService.unobserve(course.id)
@@ -301,7 +319,10 @@ const CourseViewer = (props) => {
             <Row className="justify-content-md-center">
             </Row>
             <Row className="justify-content-md-center">
-              <Button onClick={() => handleButtonJoinCourseClick()} text="Join Course"/>
+              {/* <Button onClick={() => handleButtonJoinCourseClick()} text="Join Course"/> */}
+              <Link className="font-weight-bold" to={AppRoutes.Payment}>
+                Join Course
+              </Link>
             </Row>
           </Container>
         )}
