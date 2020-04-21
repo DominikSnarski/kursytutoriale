@@ -34,20 +34,17 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
         {
             //Arrange
             var courseId = Guid.NewGuid();
-            var courseQuery = new List<CourseReadModel>
-            {
-                new CourseReadModel
+            var courseQuery = 
+                new Course
                 {
-                    Id = courseId,
                     VerificationStamp = new VerificationStamp
                     {
                         Status = StampStatus.Verified
                     }
-                }
-            }.AsQueryable();
+                };
 
             var repositoryMock = new Mock<ICourseRepository>();
-            repositoryMock.Setup(m => m.Queryable()).Returns(courseQuery);
+            repositoryMock.Setup(m => m.Find(It.IsAny<Guid>(), It.IsAny<DateTime>())).Returns(courseQuery);
 
             var mapperMock = new Mock<IDTOMapper>();
             mapperMock.Setup(m => m.Map<CourseDetailsDTO>(It.IsAny<CourseReadModel>()))
@@ -78,20 +75,17 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
         {
             //Arrange
             var courseId = Guid.NewGuid();
-            var courseQuery = new List<CourseReadModel>
-            {
-                new CourseReadModel
+            var courseQuery =
+                new Course
                 {
-                    Id = courseId,
                     VerificationStamp = new VerificationStamp
                     {
                         Status = stampStatus
                     }
-                }
-            }.AsQueryable();
+                };
 
             var repositoryMock = new Mock<ICourseRepository>();
-            repositoryMock.Setup(m => m.Queryable()).Returns(courseQuery);
+            repositoryMock.Setup(m => m.Find(It.IsAny<Guid>(), It.IsAny<DateTime>())).Returns(courseQuery);
 
             var mapperMock = new Mock<IDTOMapper>();
             mapperMock.Setup(m => m.Map<CourseDetailsDTO>(It.IsAny<CourseReadModel>()))
@@ -119,13 +113,10 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
         {
             //Arrange
             var courseId = Guid.NewGuid();
-            var courseQuery = new List<CourseReadModel>
-            {
-                new CourseReadModel{ Id = courseId, VerificationStamp = new VerificationStamp() }
-            }.AsQueryable();
+            var courseQuery = new Course{ VerificationStamp = new VerificationStamp() };
 
             var repositoryMock = new Mock<ICourseRepository>();
-            repositoryMock.Setup(m => m.Queryable()).Returns(courseQuery);
+            repositoryMock.Setup(m => m.Find(It.IsAny<Guid>(), It.IsAny<DateTime>())).Returns(courseQuery);
 
             var mapperMock = new Mock<IDTOMapper>();
             mapperMock.Setup(m => m.Map<CourseDetailsDTO>(It.IsAny<CourseReadModel>()))
