@@ -54,9 +54,18 @@ const CourseViewer = (props) => {
   };
 
  const handleButtonJoinCourseClick = () => {
-   ObserverService.observe(course.id)
+  if (course.price !== 0)
+  {
+    history.push(`/payment/${course.id}`);
+  }
+  
+  else
+  {
+    ObserverService.observe(course.id)
      .then(() => history.push('/'))
      .then(() => history.push(`/courseview/${course.id}`));
+  }
+   
 };
 
   const handleButtonLeaveCourseClick = () => {

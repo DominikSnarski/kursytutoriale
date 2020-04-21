@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+// import { React, useState } from 'react';
+
 import { useHistory } from 'react-router-dom';
 import { PaymentService } from '../../api/Services/PaymentService';
 
@@ -39,20 +41,24 @@ function Payment(props) {
     const formData = new FormData(event.target);
 
     if (formData.get('name') === '') {
-      setNameErrorMessage("Name can't be empty");
+      setNameErrorMessage("Name can't be empty. ");
     }
 
     if (formData.get('surname') === '') {
-      setSurnameErrorMessage("Surname can't be empty");
+      setSurnameErrorMessage("Surname can't be empty. ");
     }
 
-    if (formData.get('numer1') === '' || formData.get('numer2') === '' || formData.get('numer3') === '' || formData.get('numer4') === ''
-    || formData.get('numer1').length !== 4 || formData.get('numer2').length !== 4 || formData.get('numer3').length !== 4 || formData.get('numer4').length !== 4) {
-      setCardNumberErrorMessage("None of the card number fields cannot be empty. All of them must contains 4 numbers.");
+    if (formData.get('numer1') === '' || formData.get('numer2') === '' || formData.get('numer3') === '' || formData.get('numer4') === '') {
+      setCardNumberErrorMessage("None of the card number fields cannot be empty. ");
+    }
+
+    if (formData.get('numer1') !== null && formData.get('numer2') !== null && formData.get('numer3') !== null && formData.get('numer4') !== null) {
+      if (formData.get('numer1').ToString().length !== 4 || formData.get('numer2').ToString().length !== 4 || formData.get('numer3').ToString().length !== 4 || formData.get('numer4').ToString().length !== 4)
+        setCardNumberErrorMessage("All parts of card number must contains 4 numbers. ");
     }
 
     if (formData.get('expirationDateMonth') === '' || formData.get('expirationDateYear') === '') {
-      setSurnameErrorMessage("Expiration date isn't complete");
+      setSurnameErrorMessage("Expiration date isn't complete. ");
     }
 
     if (formData.get('name') === '' || formData.get('surname') === '' 
@@ -73,7 +79,7 @@ function Payment(props) {
       formData.get('expirationDateYear'),
       formData.get('cvv')
     ).then(() => {
-      // history.push(`/courseview/${props.location.state.courseid}`)
+      history.push(`/courseview/${props.location.state.courseid}`)
     });
   };
 
