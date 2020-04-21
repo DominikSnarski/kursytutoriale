@@ -19,7 +19,7 @@ namespace KursyTutoriale.API.Controllers
         }
 
         [HttpPost("PayForCourseAccess")]
-        public async Task PayForCourseAccess([FromQuery] Guid courseId, [FromBody] CreditCardDto creditCardDto)
+        public async Task PayForCourseAccess([FromQuery] Guid courseId, [FromBody] CreditCardInputDto creditCardDto)
         {
             await transactionService.PayForCourseAccess(courseId, creditCardDto);
         }

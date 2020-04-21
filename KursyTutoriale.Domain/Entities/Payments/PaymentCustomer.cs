@@ -1,5 +1,7 @@
-﻿using System;
+﻿using KursyTutoriale.Shared.Exceptions;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace KursyTutoriale.Domain.Entities.Payments
 {
@@ -7,6 +9,8 @@ namespace KursyTutoriale.Domain.Entities.Payments
     {
         private PaymentCustomer()
         {
+            creditCards = new List<CreditCard>();
+            transactions = new List<Transaction>();
         }
 
         public PaymentCustomer(Guid userId)
@@ -26,6 +30,18 @@ namespace KursyTutoriale.Domain.Entities.Payments
         public void AddCreditCardTransation(string CCNumber, int CCExpMonth, int CCExpYear)
         {
             var creditCard = new CreditCard(CCNumber, CCExpMonth, CCExpYear);
+
+            var transaction = new Transaction(creditCard);
+
+            transactions.Add(transaction);
+            creditCards.Add(creditCard);
+        }
+        public void AddCreditCardTransation(Guid creditCardId)
+        {
+            var creditCard = creditCards.FirstOrDefault(cc => cc.Id == creditCardId);
+
+            if (creditCard is null)
+                throw new InvalidStateException("Credit card doesnt exist");
 
             var transaction = new Transaction(creditCard);
 
