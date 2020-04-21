@@ -10,7 +10,7 @@ namespace KursyTutoriale.Tests.Payments.CreditCardTests
         {
             var cardNumber = "1234563298461839741209";
 
-            var creditCard = new CreditCard(cardNumber, 0, 0);
+            var creditCard = new CreditCard(cardNumber, 0, 0, "", "");
 
             Assert.Equal("1209", creditCard.Last4Digits);
         }

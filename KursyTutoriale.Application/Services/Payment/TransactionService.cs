@@ -48,7 +48,9 @@ namespace KursyTutoriale.Application.Services.Payment
                 (customer) => customer.AddCreditCardTransation(
                     creditCardDto.Number,
                     creditCardDto.ExpMonth,
-                    creditCardDto.ExpYear) 
+                    creditCardDto.ExpYear,
+                    creditCardDto.OwnerFirstName,
+                    creditCardDto.OwnerLastName) 
                 );
         }
 

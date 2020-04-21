@@ -19,5 +19,7 @@ namespace KursyTutoriale.Application.DataTransferObjects.Payments
 
         [Required]
         public int CVV { get; set; }
+        public string OwnerLastName { get; set; }
+        public string OwnerFirstName { get; set; }
     }
 }
