@@ -2,6 +2,7 @@
 using KursyTutoriale.Domain.Entities.Course;
 using KursyTutoriale.Domain.Entities.CoursePublication;
 using KursyTutoriale.Domain.Entities.Moderation;
+using KursyTutoriale.Domain.Entities.Statistics;
 using KursyTutoriale.Domain.Entities.UserProfiles;
 using KursyTutoriale.Infrastructure.Configuration.DataModels;
 using KursyTutoriale.Infrastructure.EventSourcing;
@@ -28,6 +29,8 @@ namespace KursyTutoriale.Infrastructure
         public DbSet<CoursePublicationProfile> PublicationProfiles { get; set; }
         public DbSet<ModAssignment> ModAssignments { get; set; }
         public DbSet<Rate> Rates { get; set; }
+        public DbSet<UserAccountDate> UserAccountDates { get; set; }
+        public DbSet<UserSignInDate> UserSignInDates { get; set; }
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -42,6 +45,8 @@ namespace KursyTutoriale.Infrastructure
             builder.ApplyConfiguration(new CoursePublicationProfileConfiguration());
             builder.ApplyConfiguration(new ModAssignmentConfiguration());
             builder.ApplyConfiguration(new RateConfiguration());
+            builder.ApplyConfiguration(new UserAccountDateConfiguration());
+            builder.ApplyConfiguration(new UserSignInDateConfiguration());
         }
     }
 }

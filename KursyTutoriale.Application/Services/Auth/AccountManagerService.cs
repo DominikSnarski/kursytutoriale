@@ -1,10 +1,12 @@
 ﻿using KursyTutoriale.Application.DataTransferObjects.Auth;
 using KursyTutoriale.Domain.Entities;
 using KursyTutoriale.Domain.Entities.Auth;
+using KursyTutoriale.Domain.Entities.Statistics;
 using KursyTutoriale.Domain.Entities.UserProfiles;
 using KursyTutoriale.Infrastructure.Repositories;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using URF.Core.Abstractions;
@@ -21,15 +23,18 @@ namespace KursyTutoriale.Infrastructure
         private UserManager<ApplicationUser> userManager;
         private IExtendedRepository<UserProfile> userProfileRepository;
         private IUnitOfWork unitOfWork;
+        private IExtendedRepository<UserAccountDate> userAccountDateRepository;
 
         public AccountManagerService(
             UserManager<ApplicationUser> userManager,
             IExtendedRepository<UserProfile> userProfileRepository,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            IExtendedRepository<UserAccountDate> userAccountDateRepository)
         {
             this.userManager = userManager;
             this.userProfileRepository = userProfileRepository;
             this.unitOfWork = unitOfWork;
+            this.userAccountDateRepository = userAccountDateRepository;
         }
 
         public async Task<IdentityResult> CreateAccount(CreateUserRequestDto request)
@@ -46,6 +51,8 @@ namespace KursyTutoriale.Infrastructure
             await userManager.AddToRoleAsync(user, "User");
 
             userProfileRepository.Insert(userProfile);
+
+            userAccountDateRepository.Insert(new UserAccountDate() {UserId = user.Id, Date = DateTime.Now });
 
             await unitOfWork.SaveChangesAsync();
 

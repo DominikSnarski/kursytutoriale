@@ -2,13 +2,13 @@
 
 namespace KursyTutoriale.Domain.Entities.CoursePublication
 {
-    public class Observer
+    public class Participant
     {
-        public Observer(Guid userId)
+        public Participant(Guid userId)
         {
             UserId = userId;
         }
-        private Observer()
+        private Participant()
         {
 
         }

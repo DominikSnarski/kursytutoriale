@@ -14,6 +14,7 @@ import {
 import AdminUsersPanel from './AdminUsersPanel';
 import AdminModeratorsPanel from './AdminModeratorsPanel';
 import AdminUnverifiedCoursesPanel from './AdminUnverfiedCoursesPanel';
+import AdminStatisticsPanel from './AdminStatisticsPanel';
 
 const AdminMainPanel = () => {
   const [activeTab, setActiveTab] = useState('1');
@@ -128,7 +129,7 @@ const AdminMainPanel = () => {
 
       <TabContent activeTab={activeTab}>
         <TabPane tabId="6">
-
+            <AdminStatisticsPanel/>
         </TabPane>
       </TabContent>
     </Container>

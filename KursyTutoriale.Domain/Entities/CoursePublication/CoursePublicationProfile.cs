@@ -8,7 +8,7 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
     public class CoursePublicationProfile
     {
         private List<CourseVersion> versions;
-        private List<Observer> observers;
+        private List<Participant> participants;
         private List<Comment> comments;
         private List<CourseProgress> progresses;
 
@@ -20,7 +20,7 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
 
 
         public IReadOnlyCollection<CourseVersion> Versions { get => versions.AsReadOnly(); }
-        public IReadOnlyCollection<Observer> Observers { get => observers.AsReadOnly(); }
+        public IReadOnlyCollection<Participant> Participants { get => participants.AsReadOnly(); }
         public IReadOnlyCollection<Comment> Comments { get => CommentsEnabled ? comments.AsReadOnly() : new List<Comment>().AsReadOnly(); }
         public IReadOnlyCollection<CourseProgress> Progresses { get => progresses.AsReadOnly(); }
 
@@ -35,7 +35,7 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
 
             CommentsEnabled = true;
 
-            observers = new List<Observer>();
+            participants = new List<Participant>();
 
             progresses = new List<CourseProgress>();
         }
@@ -56,20 +56,20 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
 
         public CourseVersion GetLatestVersion() => versions.OrderByDescending(version => version.PublicationDate).First();
 
-        public void AddObserver(Guid userId)
+        public void AddParticipant(Guid userId)
         {
-            if (observers.Any(obs => obs.UserId == userId))
+            if (participants.Any(obs => obs.UserId == userId))
                 throw new InvalidStateException($"User with id: {userId} is already observing course: {CourseId}");
 
-            observers.Add(new Observer(userId));
+            participants.Add(new Participant(userId));
         }
 
-        public void RemoveObserver(Guid userId)
+        public void RemoveParticipant(Guid userId)
         {
-            if (!observers.Any(obs => obs.UserId == userId))
+            if (!participants.Any(obs => obs.UserId == userId))
                 return;
 
-            observers = observers.Where(obs => obs.UserId != userId).ToList();
+            participants = participants.Where(obs => obs.UserId != userId).ToList();
         }
 
         public void AddComment(Comment comment)

@@ -58,7 +58,7 @@ namespace KursyTutoriale.Application.Services.CoursePublication
 
             List<CourseBasicInformationsDTO> courses = new List<CourseBasicInformationsDTO>();
 
-            var profiles = profilesRepository.Queryable().Where(p => p.Observers.Any(o => o.UserId == userId)).ToList();
+            var profiles = profilesRepository.Queryable().Where(p => p.Participants.Any(o => o.UserId == userId)).ToList();
 
             if (profiles is null) return courses;
 
@@ -81,7 +81,7 @@ namespace KursyTutoriale.Application.Services.CoursePublication
 
             List<CourseBasicInformationsDTO> courses = new List<CourseBasicInformationsDTO>();
 
-            var profiles = profilesRepository.Queryable().Where(p => p.Observers.Any(o => o.UserId == userId)).ToList();
+            var profiles = profilesRepository.Queryable().Where(p => p.Participants.Any(o => o.UserId == userId)).ToList();
 
             if (profiles is null) return courses;
 
@@ -104,7 +104,7 @@ namespace KursyTutoriale.Application.Services.CoursePublication
 
             var userId = executionContextAccessor.GetUserId();
             if (userId.Equals(profile.OwnerId)) progress = 100;
-            else if (!profile.Observers.Any(o => o.UserId == userId)) progress = 0;
+            else if (!profile.Participants.Any(o => o.UserId == userId)) progress = 0;
             else
             {
                 var progresses = profile.Progresses.AsQueryable().Where(pr => pr.UserId == userId);

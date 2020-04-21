@@ -27,6 +27,7 @@
     "react-scripts": "^3.3.0",
     "react-star-rating-component": "^1.4.1",
     "react-sticky": "^6.0.3",
+    "react-vis": "^1.11.7",
     "reactstrap": "^8.1.1"
   },
   "scripts": {
