@@ -178,7 +178,7 @@ const App = () => {
               />
               <ProtectedRoute
                 exact
-                path={AppRoutes.Payment}
+                path={AppRoutes.Payment + '/:courseId'}
                 component={Payment}
                 layout={MainLayout}
               />
