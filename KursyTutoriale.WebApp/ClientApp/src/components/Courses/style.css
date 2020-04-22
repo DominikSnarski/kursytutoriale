@@ -1,33 +1,41 @@
-.spans{
-    padding-bottom: 2%;
-    padding-top: 2%;
-    background-color: #ffb606 !important;
+.spans {
+  padding-bottom: 2%;
+  padding-top: 2%;
+  background-color: #ffb606 !important;
 }
 
-.column-text{
-    text-align: center;
+.column-text {
+  text-align: center;
 }
-.card-height{
-    min-height: 3rem;
-    max-height: 3rem;
+.card-height {
+  min-height: 3rem;
+  max-height: 3rem;
 }
 
-.jumbotron_courseView{
-    background-color: #f5dfae;
+.jumbotron_courseView {
+  background-color: #f5dfae;
 }
 
 h1 {
-    text-align: center;
-    color: #ffb606;
-    font-size: 60px;
-    font-weight: 900;
-    opacity: 1.0; 
-    text-shadow: 2px 2px 2px #000000;
+  text-align: center;
+  color: #ffb606;
+  font-size: 60px;
+  font-weight: 900;
+  opacity: 1;
+  text-shadow: 2px 2px 2px #000000;
 }
 
 .button:hover {
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-    background: #000000;
-    transition: all 200ms ease;
-    cursor: pointer;
-  }
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+  background: #000000;
+  transition: all 200ms ease;
+  cursor: pointer;
+}
+
+.link {
+  text-decoration: underline;
+}
+
+.link:hover {
+  background-color: rgb(235, 235, 235);
+}

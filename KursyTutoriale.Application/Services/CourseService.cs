@@ -416,19 +416,26 @@ namespace KursyTutoriale.Application.Services
         {
             if (UserId == executionContext.GetUserId())
             {
-                //TODO return both public and private courses
+                var query = courseRepository.Queryable()
+                .Where(c => c.OwnerId == UserId)
+                .Include(c => c.Tags)
+                .ThenInclude(t => t.Tag);
+                return mapper.Map<IEnumerable<CourseBasicInformationsDTO>>(query.AsEnumerable());
             }
 
             List<CourseBasicInformationsDTO> result = new List<CourseBasicInformationsDTO>();
 
-            foreach (var course in courseRepository
-                .Queryable()
-                .Where(c => c.OwnerId == UserId))
-            { 
-                result.Add(mapper.Map<CourseBasicInformationsDTO>(course));
-            }
+            var courseIds = publicationRepository.Queryable()
+                                  .Where(c=>c.OwnerId == UserId)
+                                  .Select(p => p.CourseId)
+                                  .ToList();
 
-            return result.AsEnumerable();
+            var courses = courseRepository.Queryable()
+                .Where(c => courseIds.Contains(c.Id) && c.OwnerId == UserId)
+                .Include(c => c.Tags)
+                .ThenInclude(t => t.Tag);
+
+            return mapper.Map<IEnumerable<CourseBasicInformationsDTO>>(courses.AsEnumerable());
         }
 
         /// <summary>

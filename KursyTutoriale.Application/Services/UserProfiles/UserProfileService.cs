@@ -51,6 +51,7 @@ namespace KursyTutoriale.Application.Services.UserProfiles
             userProfile.Name = request.Name;
             userProfile.SiteLink = request.SiteLink;
             userProfile.Age = request.Age;
+            userProfile.ProfileDescription = request.ProfileDescription;
 
             if(!(newGender is null))
                 userProfile.Gender = newGender;
