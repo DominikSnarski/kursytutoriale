@@ -135,7 +135,7 @@ class AdminStatisticsPanel extends React.Component {
                         >
                         <HorizontalGridLines />
                         <VerticalGridLines />
-                        <XAxis title="Date" position="middle" orientation="bottom" />
+                        <XAxis title="Date" position="middle" orientation="bottom" tickTotal={10}/>
                         <YAxis title="Number of courses" position="middle" orientation="left"  />
 
                         <VerticalBarSeries
