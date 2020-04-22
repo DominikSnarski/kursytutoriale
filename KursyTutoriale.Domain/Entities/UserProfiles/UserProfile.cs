@@ -13,5 +13,6 @@ namespace KursyTutoriale.Domain.Entities.UserProfiles
         public string AvatarPath { get; set; }
         public int Age { get; set; }
         public Gender Gender { get; set; }
+        public string ProfileDescription { get; set; }
     }
 }

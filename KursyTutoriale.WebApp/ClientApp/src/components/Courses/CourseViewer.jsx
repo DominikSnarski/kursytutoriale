@@ -12,7 +12,7 @@ import {
   Alert,
 } from 'reactstrap';
 import StarRating from 'react-star-rating-component';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import './style.css';
 import Modules from './Modules';
@@ -159,7 +159,19 @@ const CourseViewer = (props) => {
         </Row>
 
         <Row className="d-flex mb-3">
-          <Col className="column-text">Author: {ownerUserName}</Col>
+          <Col className="column-text">
+            Author:
+            <Link
+              to={`/userProfile/${course.ownerId}`}
+              style={{
+                color: '#0f0f0f',
+                fontWeight: 'bold',
+              }}
+              className="link"
+            >
+              {ownerUserName}
+            </Link>
+          </Col>
           <Col className="column-text">
             Price: {course.price === 0 ? 'Free' : course.price} $
           </Col>

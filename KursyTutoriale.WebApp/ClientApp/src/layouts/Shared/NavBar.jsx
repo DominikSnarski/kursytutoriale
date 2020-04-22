@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Nav, NavItem} from 'reactstrap';
+import { Button, Nav, NavItem } from 'reactstrap';
 import { UserContext } from '../../contexts/UserContext';
 import apiClient from '../../api/ApiClient';
 import AppRoutes from '../../routing/AppRoutes';
@@ -29,7 +29,7 @@ const NavBar = () => {
         <Nav className="nav_container">
           <NavItem className="nav_item">
             <Link className="font-weight-bold" to={AppRoutes.AddNewCourse}>
-              Add New Course
+              Create New Course
             </Link>
           </NavItem>
         </Nav>
@@ -55,7 +55,7 @@ const NavBar = () => {
               </Link>
             </span>
           )}
-          {userContext !== undefined &&
+        {userContext !== undefined &&
           userContext.authenticated &&
           userContext.userRoles.includes('Admin') && (
             <span className="user_controls_nav">
@@ -64,16 +64,18 @@ const NavBar = () => {
               </Link>
             </span>
           )}
-        {userContext !== undefined && userContext.authenticated&& !userContext.userRoles.includes('Admin') && (
-          <span className="user_controls_nav">
-            <Link
-              to={`/userProfile/${userContext.userid}`}
-              style={{ color: '#eaebec', fontWeight: 'bold' }}
-            >
-              {userContext.username}
-            </Link>
-          </span>
-        )}
+        {userContext !== undefined &&
+          userContext.authenticated &&
+          !userContext.userRoles.includes('Admin') && (
+            <span className="user_controls_nav">
+              <Link
+                to={`/userProfile/${userContext.userid}`}
+                style={{ color: '#eaebec', fontWeight: 'bold' }}
+              >
+                {userContext.username}
+              </Link>
+            </span>
+          )}
         {userContext !== undefined && !userContext.authenticated && (
           <span className="user_controls_nav">
             <Link to={AppRoutes.Signin} style={{ color: '#FFFFFF' }}>

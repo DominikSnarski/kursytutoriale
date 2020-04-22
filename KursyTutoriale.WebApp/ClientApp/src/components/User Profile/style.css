@@ -1,33 +1,50 @@
-.col_bg{
-    padding:2%;
-    background-color: #7CC3D8 !important;
+.col_bg {
+  padding: 2%;
+  background-color: #eaebec !important;
 }
 
-.left_side{
-    padding:2%;
+.left_side {
+  padding: 2%;
 }
 
-.right_side{
-    margin-left: 10%;
-    width:90%;
+.right_side {
+  width: 100%;
 }
 
-.row-width{
-    width:110%
+.row-width {
+  width: 110%;
 }
 
-.name{
-    font-size: 30pt;
+.name {
+  font-size: 30pt;
 }
 
-.badge{
-    font-size: 20pt;
+.badge {
+  font-size: 20pt;
 }
 
-.stats{
-    font-size: 16pt;
+.stats {
+  font-size: 16pt;
 }
 
-.about{
-    font-size: 14pt;
+.about {
+  font-size: 14pt;
+}
+
+.contact {
+  font-size: 14pt;
+}
+
+.tabItem {
+  cursor: pointer;
+}
+
+.courseListItem {
+  background-color: #ffd46f;
+  padding: 5px;
+  margin: 3px;
+}
+
+.courseListItem:hover {
+  background-color: #fcc139;
 }

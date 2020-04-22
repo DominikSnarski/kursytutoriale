@@ -38,12 +38,7 @@ export const CourseService = {
     });
   },
   getUsersCourses: (id) => {
-    return new Promise((resolve, reject) =>
-      apiClient
-        .get(`api/CoursesViewer/GetUsersCourses?UserId=${id}`)
-        .then((response) => resolve(response.data))
-        .catch((error) => reject(error)),
-    );
+    return apiClient.get(`api/CoursesViewer/GetUsersCourses?UserId=${id}`);
   },
   publishCourse: (id) => {
     return new Promise((resolve, reject) =>
