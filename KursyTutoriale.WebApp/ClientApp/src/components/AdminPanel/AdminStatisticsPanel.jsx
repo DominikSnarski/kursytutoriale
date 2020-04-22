@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import {
     // Button,
@@ -13,7 +13,6 @@ import {
 } from 'reactstrap';
 
 import StatisticsChart from './StatisticsChart';
-import { StatisticsService } from '../../api/Services/StatisticsService';
 
 const AdminStatisticsPanel = () => {
     const [activeTab, setActiveTab] = useState('1');

@@ -9,9 +9,8 @@ import {
   // Jumbotron,
   Row,
   Spinner,
-  Table,
 } from 'reactstrap';
-import {XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries, VerticalBarSeries,Borders,VerticalGridLines} from 'react-vis';
+import {XYPlot, XAxis, YAxis, HorizontalGridLines, VerticalBarSeries,VerticalGridLines} from 'react-vis';
 // import Filters from './Filters';
 // import Pagination from '../Shared/Pagination';
 import { StatisticsService } from '../../api/Services/StatisticsService';
