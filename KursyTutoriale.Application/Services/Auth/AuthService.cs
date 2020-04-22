@@ -2,6 +2,7 @@
 using KursyTutoriale.Application.DataTransferObjects.Auth;
 using KursyTutoriale.Domain.Entities.Auth;
 using KursyTutoriale.Domain.Entities.Statistics;
+using KursyTutoriale.Domain.Repositories;
 using KursyTutoriale.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;

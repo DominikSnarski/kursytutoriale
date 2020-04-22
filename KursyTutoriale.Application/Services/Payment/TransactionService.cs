@@ -98,7 +98,7 @@ namespace KursyTutoriale.Application.Services.Payment
             }
 
             addTransactionMethod(customer);
-            courseProfile.Join(userId);
+            courseProfile.AddParticipant(userId);
 
             await unitOfWork.SaveChangesAsync();
         }

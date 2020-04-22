@@ -73,11 +73,6 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
             participants = participants.Where(obs => obs.UserId != userId).ToList();
         }
 
-        public void Join(Guid userId)
-        {
-
-        }
-
         public void AddComment(Comment comment)
         {
             if (!CommentsEnabled)
@@ -106,6 +101,6 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
 
         public bool CanBePaidFor() => Price != 0;
 
-        public bool CanJoin(Guid userId) => true; 
+        public bool CanJoin(Guid userId) => !participants.Any(obs => obs.UserId == userId); 
     }
 }
