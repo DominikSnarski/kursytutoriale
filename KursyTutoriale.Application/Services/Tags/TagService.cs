@@ -1,10 +1,8 @@
-﻿using System;
+﻿using KursyTutoriale.Application.DataTransferObjects.Tags;
+using KursyTutoriale.Domain.Entities.Course;
+using KursyTutoriale.Domain.Repositories;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using KursyTutoriale.Application.DataTransferObjects.Tags;
-using KursyTutoriale.Domain.Entities.Course;
-using KursyTutoriale.Infrastructure.Repositories;
 
 namespace KursyTutoriale.Application.Services.Tags
 {

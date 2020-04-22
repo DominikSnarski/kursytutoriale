@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
-using KursyTutoriale.Application.DataTransferObjects.UserProfiles;
+﻿using KursyTutoriale.Application.DataTransferObjects.UserProfiles;
 using KursyTutoriale.Domain.Entities.UserProfiles;
-using KursyTutoriale.Infrastructure.Repositories;
+using KursyTutoriale.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
 using URF.Core.Abstractions;
 
 namespace KursyTutoriale.Application.Services.UserProfiles

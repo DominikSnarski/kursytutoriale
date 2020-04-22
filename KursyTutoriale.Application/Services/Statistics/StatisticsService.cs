@@ -1,14 +1,11 @@
 ﻿using KursyTutoriale.Application.DataTransferObjects.Statistics;
-using KursyTutoriale.Domain.Entities.Auth;
 using KursyTutoriale.Domain.Entities.Course;
 using KursyTutoriale.Domain.Entities.Statistics;
-using KursyTutoriale.Infrastructure.Repositories;
+using KursyTutoriale.Domain.Repositories;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
-using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace KursyTutoriale.Application.Services.Statistics
 {

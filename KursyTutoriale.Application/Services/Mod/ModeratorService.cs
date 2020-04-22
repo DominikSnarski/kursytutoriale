@@ -6,15 +6,13 @@ using KursyTutoriale.Domain.Entities.Auth;
 using KursyTutoriale.Domain.Entities.Course;
 using KursyTutoriale.Domain.Entities.Course.Events;
 using KursyTutoriale.Domain.Entities.Moderation;
-using KursyTutoriale.Infrastructure.Repositories;
+using KursyTutoriale.Domain.Repositories;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using KursyTutoriale.Shared;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using URF.Core.Abstractions;
 

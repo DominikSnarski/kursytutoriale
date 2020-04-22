@@ -6,7 +6,7 @@ using KursyTutoriale.Application.Services.CoursePublication;
 using KursyTutoriale.Domain.Entities.Course;
 using KursyTutoriale.Domain.Entities.Course.Events;
 using KursyTutoriale.Domain.Entities.CoursePublication;
-using KursyTutoriale.Infrastructure.Repositories;
+using KursyTutoriale.Domain.Repositories;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using KursyTutoriale.Shared;
 using Microsoft.Data.SqlClient;
@@ -81,13 +81,13 @@ namespace KursyTutoriale.Application.Services
         /// </returns>
         public CourseDetailsDTO GetCourseDetails(Guid courseId)
         {
-            var query = courseRepository.Queryable();
-            var result = query.FirstOrDefault(q => q.Id.Equals(courseId));
+            var result = courseRepository.Find(courseId, DateTime.UtcNow);
 
             if (result == null)
                 throw new NullReferenceException("Error 1000! GetCourseDetail service returned null");
 
-            var dto = mapper.Map<CourseDetailsDTO>(result);
+            var courseReadModel = mapper.Map<CourseReadModel>(result);
+            var dto = mapper.Map<CourseDetailsDTO>(courseReadModel);
 
             dto.Verified = result.VerificationStamp.Status == StampStatus.Verified;
 
@@ -103,7 +103,7 @@ namespace KursyTutoriale.Application.Services
                 dto.Rating = publication.Rating;
                 dto.Popularity = publication.Popularity;
 
-                int progress = progressService.GetProgress(result,publication);
+                int progress = progressService.GetProgress(courseReadModel, publication);
 
                 dto.Progress = progress;
 

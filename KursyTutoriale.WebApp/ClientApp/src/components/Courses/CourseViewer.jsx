@@ -12,7 +12,7 @@ import {
   Alert,
 } from 'reactstrap';
 import StarRating from 'react-star-rating-component';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import './style.css';
 import Modules from './Modules';
@@ -53,20 +53,15 @@ const CourseViewer = (props) => {
       .then(() => history.push(`/courseview/${course.id}`));
   };
 
- const handleButtonJoinCourseClick = () => {
-  if (course.price !== 0)
-  {
-    history.push(`/payment/${course.id}`);
-  }
-  
-  else
-  {
-    ParticipantService.addParticipant(course.id)
-     .then(() => history.push('/'))
-     .then(() => history.push(`/courseview/${course.id}`));
-  }
-   
-};
+  const handleButtonJoinCourseClick = () => {
+    if (course.price !== 0) {
+      history.push(`${AppRoutes.Payment}/${course.id}`);
+    } else {
+      ParticipantService.addParticipant(course.id)
+        .then(() => history.push('/'))
+        .then(() => history.push(`/courseview/${course.id}`));
+    }
+  };
 
   const handleButtonLeaveCourseClick = () => {
     ParticipantService.removeParticipant(course.id)
@@ -289,19 +284,10 @@ const CourseViewer = (props) => {
           <Container>
             <Row className="justify-content-md-center"></Row>
             <Row className="justify-content-md-center">
-              
-              <Link className="font-weight-bold" 
-                  to={{
-                  pathname: AppRoutes.Payment,
-                  state: {
-                    courseid: props.courseID,
-                  },
-                }}>
-               <Button
+              <Button
                 onClick={() => handleButtonJoinCourseClick()}
                 text="Join Course"
               />
-              </Link>
             </Row>
           </Container>
         )}

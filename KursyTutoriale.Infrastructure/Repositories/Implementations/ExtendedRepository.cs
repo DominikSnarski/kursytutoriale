@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using KursyTutoriale.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 using URF.Core.EF;
 
 namespace KursyTutoriale.Infrastructure.Repositories

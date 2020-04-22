@@ -1,7 +1,6 @@
 ﻿using KursyTutoriale.Application.Contracts;
 using KursyTutoriale.Domain.Entities.CoursePublication;
-using KursyTutoriale.Infrastructure.Repositories;
-using KursyTutoriale.Infrastructure.Repositories.Interfaces;
+using KursyTutoriale.Domain.Repositories;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

@@ -3,6 +3,7 @@ using KursyTutoriale.Domain.Entities.Course;
 using KursyTutoriale.Domain.Entities.CoursePublication;
 using KursyTutoriale.Domain.Entities.Moderation;
 using KursyTutoriale.Domain.Entities.Statistics;
+using KursyTutoriale.Domain.Entities.Payments;
 using KursyTutoriale.Domain.Entities.UserProfiles;
 using KursyTutoriale.Infrastructure.Configuration.DataModels;
 using KursyTutoriale.Infrastructure.EventSourcing;
@@ -31,7 +32,8 @@ namespace KursyTutoriale.Infrastructure
         public DbSet<Rate> Rates { get; set; }
         public DbSet<UserAccountDate> UserAccountDates { get; set; }
         public DbSet<UserSignInDate> UserSignInDates { get; set; }
-        
+        public DbSet<PaymentCustomer> PaymentCustomers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -47,6 +49,8 @@ namespace KursyTutoriale.Infrastructure
             builder.ApplyConfiguration(new RateConfiguration());
             builder.ApplyConfiguration(new UserAccountDateConfiguration());
             builder.ApplyConfiguration(new UserSignInDateConfiguration());
+
+            builder = PaymentMethodConfiguration.Configure(builder);
         }
     }
 }

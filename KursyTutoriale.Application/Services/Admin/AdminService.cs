@@ -1,6 +1,7 @@
 ﻿using KursyTutoriale.Domain.Entities.Administration;
 using KursyTutoriale.Domain.Entities.Auth;
 using KursyTutoriale.Domain.Entities.Moderation;
+using KursyTutoriale.Domain.Repositories;
 using KursyTutoriale.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using System;

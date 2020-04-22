@@ -12,5 +12,6 @@ namespace KursyTutoriale.Infrastructure.Repositories.Interfaces
         Course Find(Guid id);
         Course HandleEvent(BaseEvent<Course> @event, Course entity);
         IQueryable<CourseReadModel> Queryable();
+        Course Find(Guid id, DateTime stateDate);
     }
 }

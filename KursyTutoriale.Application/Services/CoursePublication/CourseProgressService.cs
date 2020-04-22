@@ -3,12 +3,11 @@ using KursyTutoriale.Application.DataTransferObjects.Course;
 using KursyTutoriale.Application.DataTransferObjects.Course.Verification;
 using KursyTutoriale.Domain.Entities.Course;
 using KursyTutoriale.Domain.Entities.CoursePublication;
-using KursyTutoriale.Infrastructure.Repositories;
+using KursyTutoriale.Domain.Repositories;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using URF.Core.Abstractions;
 

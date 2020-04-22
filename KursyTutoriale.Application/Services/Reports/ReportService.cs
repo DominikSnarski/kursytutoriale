@@ -1,6 +1,6 @@
 ﻿using KursyTutoriale.Application.Contracts;
 using KursyTutoriale.Domain.Entities.Course;
-using KursyTutoriale.Infrastructure.Repositories;
+using KursyTutoriale.Domain.Repositories;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using KursyTutoriale.Shared;
 using System;
