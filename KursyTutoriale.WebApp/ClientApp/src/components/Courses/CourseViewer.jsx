@@ -12,7 +12,7 @@ import {
   Alert,
 } from 'reactstrap';
 import StarRating from 'react-star-rating-component';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import './style.css';
 import Modules from './Modules';
