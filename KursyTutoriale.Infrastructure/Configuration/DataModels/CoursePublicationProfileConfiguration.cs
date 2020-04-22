@@ -17,9 +17,9 @@ namespace KursyTutoriale.Infrastructure.Configuration.DataModels
                 config.ToTable("KTCourseVersion");
             });
 
-            builder.OwnsMany(pp => pp.Observers, config =>
+            builder.OwnsMany(pp => pp.Participants, config =>
             {
-                config.ToTable("KTObservers");
+                config.ToTable("KTParticipants");
                 config.HasKey(o => o.Id);
             });
 

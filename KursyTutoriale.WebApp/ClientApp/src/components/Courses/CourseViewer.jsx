@@ -17,7 +17,7 @@ import { UserContext } from '../../contexts/UserContext';
 import './style.css';
 import Modules from './Modules';
 import { CourseService } from '../../api/Services/CourseService';
-import { ObserverService } from '../../api/Services/ObserverService';
+import { ParticipantService } from '../../api/Services/ParticipantService';
 import Button from '../../layouts/CSS/Button/Button';
 import { UserService } from '../../api/Services/UserService';
 import DiscountGenerator from './DiscountGenerator';
@@ -61,7 +61,7 @@ const CourseViewer = (props) => {
   
   else
   {
-    ObserverService.observe(course.id)
+    ParticipantService.addParticipant(course.id)
      .then(() => history.push('/'))
      .then(() => history.push(`/courseview/${course.id}`));
   }
@@ -69,7 +69,7 @@ const CourseViewer = (props) => {
 };
 
   const handleButtonLeaveCourseClick = () => {
-    ObserverService.unobserve(course.id)
+    ParticipantService.removeParticipant(course.id)
       .then(() => history.push('/'))
       .then(() => history.push(`/courseview/${course.id}`));
   };
@@ -214,7 +214,7 @@ const CourseViewer = (props) => {
           courseID={props.id}
           ownerID={course.ownerId}
           courseTitle={course.title}
-          isObserving={props.isObserving}
+          isParticipating={props.isParticipating}
         />
         <DiscountGenerator />
       </Jumbotron>
@@ -273,7 +273,7 @@ const CourseViewer = (props) => {
       {userContext.userid !== course.ownerId &&
         course.verified &&
         course.public &&
-        props.isObserving === false && (
+        props.isParticipating === false && (
           <Container>
             <Row className="justify-content-md-center"></Row>
             <Row className="justify-content-md-center">
@@ -297,7 +297,7 @@ const CourseViewer = (props) => {
       {userContext.userid !== course.ownerId &&
         course.verified &&
         course.public &&
-        props.isObserving === true && (
+        props.isParticipating === true && (
           <Container>
             <Row className="justify-content-md-center"></Row>
             <Row className="justify-content-md-center">

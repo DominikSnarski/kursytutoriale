@@ -2,6 +2,7 @@
 using KursyTutoriale.API.Responses;
 using KursyTutoriale.Application.DataTransferObjects.Auth;
 using KursyTutoriale.Application.Services.Auth;
+using KursyTutoriale.Application.Services.Statistics;
 using KursyTutoriale.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -18,15 +19,18 @@ namespace KursyTutoriale.API.Controllers
     {
         IAccountManagerService accountManager;
         IAuthService authService;
+        private IStatisticsService statisticsService;
         private ILogger<LoginController> logger;
         public LoginController(
             IAccountManagerService accountManager,
             IAuthService authService, 
-            ILogger<LoginController> logger)
+            ILogger<LoginController> logger,
+            IStatisticsService statisticsService)
         {
             this.accountManager = accountManager;
             this.authService = authService;
             this.logger = logger;
+            this.statisticsService = statisticsService;
         }
 
         [HttpPost("SignUp")]

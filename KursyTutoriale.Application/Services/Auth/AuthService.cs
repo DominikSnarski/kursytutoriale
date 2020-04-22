@@ -1,6 +1,8 @@
 ﻿using KursyTutoriale.Application.Configuration.Options;
 using KursyTutoriale.Application.DataTransferObjects.Auth;
 using KursyTutoriale.Domain.Entities.Auth;
+using KursyTutoriale.Domain.Entities.Statistics;
+using KursyTutoriale.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -11,6 +13,7 @@ using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using URF.Core.Abstractions;
 
 namespace KursyTutoriale.Application.Services.Auth
 {
@@ -18,14 +21,21 @@ namespace KursyTutoriale.Application.Services.Auth
     {
         private UserManager<ApplicationUser> userManager;
         private JWTOptions jwtOptions;
+        private IExtendedRepository<UserSignInDate> userSignInDateRepository;
+        private IUnitOfWork unitOfWork;
 
         private const string REFRESH_TOKEN_KEY = "RefreshToken";
         private const string REFRESH_TOKEN_PROVIDER = "Default";
 
-        public AuthService(UserManager<ApplicationUser> userManager,IOptions<JWTOptions> options)
+        public AuthService(UserManager<ApplicationUser> userManager,
+            IOptions<JWTOptions> options,
+            IExtendedRepository<UserSignInDate> userSignInDateRepository,
+            IUnitOfWork unitOfWork)
         {
             jwtOptions = options.Value;
             this.userManager = userManager;
+            this.userSignInDateRepository = userSignInDateRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         public async Task<JWTTokenDto> GenerateTokenAsync(string username, string password)
@@ -46,6 +56,10 @@ namespace KursyTutoriale.Application.Services.Auth
             }
 
             var accessToken = await GenerateAccessToken(user);
+
+            userSignInDateRepository.Insert(new UserSignInDate() { UserId=user.Id,Date=DateTime.Now});
+
+            await unitOfWork.SaveChangesAsync();
 
             return new JWTTokenDto
             {

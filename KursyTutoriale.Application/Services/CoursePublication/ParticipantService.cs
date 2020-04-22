@@ -9,13 +9,13 @@ using URF.Core.Abstractions;
 
 namespace KursyTutoriale.Application.Services.CoursePublication
 {
-    class ObserverService : IObserverService
+    class ParticipantService : IParticipantService
     {
         private IExtendedRepository<CoursePublicationProfile> profilesRepository;
         private IUnitOfWork unitOfWork;
         private IExecutionContextAccessor executionContextAccessor;
 
-        public ObserverService(
+        public ParticipantService(
             IExtendedRepository<CoursePublicationProfile> profilesRepository,
             IUnitOfWork unitOfWork,
             IExecutionContextAccessor executionContextAccessor)
@@ -25,7 +25,7 @@ namespace KursyTutoriale.Application.Services.CoursePublication
             this.executionContextAccessor = executionContextAccessor;
         }
 
-        public async Task AddObserver(Guid courseId)
+        public async Task AddParticipant(Guid courseId)
         {
             var userId = executionContextAccessor.GetUserId();
 
@@ -33,13 +33,13 @@ namespace KursyTutoriale.Application.Services.CoursePublication
             if (profile is null)
                 throw new Exception("Cannot add observer to non-public course");
 
-            profile.AddObserver(userId);
+            profile.AddParticipant(userId);
 
             await unitOfWork.SaveChangesAsync();
         }
 
 
-        public async Task RemoveObserver(Guid courseId)
+        public async Task RemoveParticipant(Guid courseId)
         {
             var userId = executionContextAccessor.GetUserId();
 
@@ -47,12 +47,12 @@ namespace KursyTutoriale.Application.Services.CoursePublication
             if (profile is null)
                 throw new Exception("Cannot remove observer from non-public course");
 
-            profile.RemoveObserver(userId);
+            profile.RemoveParticipant(userId);
 
             await unitOfWork.SaveChangesAsync();
         }
 
-        public bool IsObserving(Guid courseId)
+        public bool IsParticipating(Guid courseId)
         {
             if (executionContextAccessor.GetUserRoles().Contains("Admin")) return true;
 
@@ -60,7 +60,7 @@ namespace KursyTutoriale.Application.Services.CoursePublication
             var profile = profilesRepository.Queryable().FirstOrDefault(p => p.CourseId == courseId);
             if (profile is null)
                 return false;
-            if (profile.Observers.FirstOrDefault(o => o.UserId == userId) != null) return true;
+            if (profile.Participants.FirstOrDefault(o => o.UserId == userId) != null) return true;
             else return false;
 
         }

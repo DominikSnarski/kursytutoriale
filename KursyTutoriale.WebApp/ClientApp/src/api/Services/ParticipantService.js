@@ -1,30 +1,30 @@
 import apiClient from '../ApiClient';
 
-export const ObserverService = {
-  observe: (courseId) => {
+export const ParticipantService = {
+  addParticipant: (courseId) => {
     return new Promise((resolve, reject) =>
       apiClient
-        .post(`/api/Observer/Observe?courseId=${courseId}`)
+        .post(`/api/Participant/AddParticipant?courseId=${courseId}`)
         .then((resp) => resolve(resp))
         .catch((error) => reject(error)),
     );
   },
-  unobserve: (courseId) => {
+  removeParticipant: (courseId) => {
     return new Promise((resolve, reject) =>
       apiClient
-        .delete(`/api/Observer/Unobserve?courseId=${courseId}`)
+        .delete(`/api/Participant/RemoveParticipant?courseId=${courseId}`)
         .then((resp) => resolve(resp))
         .catch((error) => reject(error)),
     );
   },
-  isObserving: (courseId) => {
+  isParticipating: (courseId) => {
     return new Promise((resolve, reject) =>
       apiClient
-        .get(`/api/Observer/IsObserving?courseId=${courseId}`)
+        .get(`/api/Participant/IsParticipating?courseId=${courseId}`)
         .then((resp) => resolve(resp))
         .catch((error) => reject(error)),
     );
   },
 };
 
-export default ObserverService;
+export default ParticipantService;

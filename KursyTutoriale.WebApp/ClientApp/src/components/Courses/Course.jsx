@@ -7,7 +7,7 @@ import { CourseService } from '../../api/Services/CourseService';
 import { UserContext } from '../../contexts/UserContext';
 import { ReportService } from '../../api/Services/ReportService';
 import CourseReportModal from './CourseReportModal';
-import { ObserverService } from '../../api/Services/ObserverService';
+import { ParticipantService } from '../../api/Services/ParticipantService';
 
 const Course = (props) => {
   const userContext = React.useContext(UserContext);
@@ -18,7 +18,7 @@ const Course = (props) => {
   const [error] = useState(false);
   const [rating, setRating] = useState(0);
   const [modal, setModal] = useState(false);
-  const [isObserving, setObservation] = useState(false);
+  const [isParticipating, setParticipation] = useState(false);
 
   const report = (comment, type) => {
     ReportService.reportCourse(course.id, comment, type);
@@ -37,10 +37,10 @@ const Course = (props) => {
           userContext.userid === response.data.ownerId ||
           userContext.userRoles.includes('Admin')
         ) {
-          setObservation(true);
+          setParticipation(true);
         } else {
-          ObserverService.isObserving(response.data.id).then((_response) => {
-            setObservation(_response.data);
+          ParticipantService.isParticipating(response.data.id).then((_response) => {
+            setParticipation(_response.data);
           });
         }
       });
@@ -92,7 +92,7 @@ const Course = (props) => {
         onSend={report}
       />
       <CourseViewer
-        isObserving={isObserving}
+        isParticipating={isParticipating}
         course={course}
         rating={rating}
         id={match.params.id}
