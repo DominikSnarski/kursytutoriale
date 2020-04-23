@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Col, Container, Spinner, Table} from 'reactstrap';
+import { Alert, Col, Container, Spinner, Table } from 'reactstrap';
 import Pagination from '../Shared/Pagination';
 import Transaction from '../Transactions/Transaction';
 
@@ -7,7 +7,7 @@ class Transactions extends React.Component {
   constructor() {
     super();
     const exampleItems = [...Array(5)].map((i) => ({
-      date: '2019-1-1',
+      date: '2019-1-1' + i,
     }));
 
     this.state = {
@@ -29,7 +29,6 @@ class Transactions extends React.Component {
     // update state with new page of items
     this.setState({ pageOfItems });
   }
-
 
   render() {
     if (this.state.error) {
