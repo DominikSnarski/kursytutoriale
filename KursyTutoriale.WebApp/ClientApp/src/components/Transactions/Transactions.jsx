@@ -77,7 +77,7 @@ class Transactions extends React.Component {
             </thead>
             {this.state.pageOfItems.map((item, i) => (
               <div>
-                <Transaction transaction={item} />
+                <Transaction key={i} transaction={item} />
               </div>
             ))}
           </Table>
