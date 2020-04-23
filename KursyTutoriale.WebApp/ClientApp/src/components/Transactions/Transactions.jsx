@@ -7,7 +7,7 @@ class Transactions extends React.Component {
   constructor() {
     super();
     const exampleItems = [...Array(5)].map((i) => ({
-      date: '2019-1-1' + i,
+      date: i,
     }));
 
     this.state = {
@@ -77,7 +77,7 @@ class Transactions extends React.Component {
             </thead>
             {this.state.pageOfItems.map((item, i) => (
               <div>
-                <Transaction key={i} transaction={item} />
+                <Transaction transaction={item} />
               </div>
             ))}
           </Table>
