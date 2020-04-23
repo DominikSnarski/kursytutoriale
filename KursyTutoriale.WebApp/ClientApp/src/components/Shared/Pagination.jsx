@@ -108,6 +108,7 @@ class Pagination extends React.Component {
     return (
       <Container className="d-none d-lg-flex justify-content-center">
         <Fade left>
+          {pager.pages !== undefined && 
           <ButtonGroup>
             <Button
               onClick={() => this.setPage(1)}
@@ -121,7 +122,7 @@ class Pagination extends React.Component {
               color="#000000"
               width="75px"
             ></Button>
-            {pager.pages.map((page, i) => (
+            {pager.pages !== undefined && pager.pages.map((page, i) => (
               <Button
                 text={i + 1}
                 color="#000000"
@@ -135,7 +136,7 @@ class Pagination extends React.Component {
               onClick={() => this.setPage(pager.totalPages)}
               width="75px"
             ></Button>
-          </ButtonGroup>
+          </ButtonGroup>}
         </Fade>
       </Container>
     );

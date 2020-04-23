@@ -1,22 +1,16 @@
 import React from 'react';
-import { Fade } from 'react-reveal';
-import { Alert, Col, Container, Spinner, Table, Input, Row } from 'reactstrap';
+import { Alert, Col, Container, Spinner, Table, Input, Form } from 'reactstrap';
 import Button from '../../layouts/CSS/Button/Button';
 import Pagination from '../Shared/Pagination';
 import Comment from '../Comments/Comment';
+import {CommentService} from '../../api/Services/CommentService';
 
 class Comments extends React.Component {
-  constructor() {
-    super();
-    const exampleItems = [...Array(5)].map((i) => ({
-      user: 'Sample_User',
-      comment:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic",
-      date: '2019-1-1',
-    }));
+  constructor(props) {
+    super(props);
 
     this.state = {
-      exampleItems,
+      exampleItems: this.props.comments,
       pageOfItems: [],
       showDetails: false,
       isLoading: true,
@@ -29,9 +23,9 @@ class Comments extends React.Component {
     // bind function in constructor instead of render
     this.onChangePage = this.onChangePage.bind(this);
     this.toggle = this.toggle.bind(this);
-    this.toggleFilters = this.toggleFilters.bind(this);
     this.formRef = React.createRef();
     this.formReset = this.formReset.bind(this);
+    this.sendComment = this.sendComment.bind(this);
   }
 
   componentDidMount() {
@@ -50,15 +44,15 @@ class Comments extends React.Component {
     });
   }
 
-  toggleFilters() {}
+  
+  sendComment = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
 
-  send_comment() {
-    var help = new Array();
-    help = this.state.exampleItems;
-    help.push({ user: 'JUREK', comment: this.state.comment, date: "12-12-12"});
-    this.setState({
-        exampleItems: help,
-    });
+    CommentService.addComment(
+      formData.get('comment'),
+      this.props.courseID
+    )
   }
 
   getComment(e) {
@@ -112,23 +106,26 @@ class Comments extends React.Component {
     return (
       <Container>
         <Container className="p-5">
+          <Form onSubmit={(e) => this.sendComment(e)}>
           <Input
             type="textarea"
             id="comment_text"
             className="input_field"
+            name='comment'
             maxLength="500"
             style={{ minHeight: 150, resize: 'none' }}
             onChange={(e) => this.getComment(e.target.value)}
           />
-          <Button text="Comment" onClick={(e) => this.send_comment()}></Button>
+          </Form>
+          <Button text="Comment" onClick={(event) => this.sendComment(event)}></Button>
         </Container>
-        <div>
+        { <div>
           <Table style={{ backgroundColor: 'transparent' }}>
             <thead>
               <tr></tr>
             </thead>
             {this.state.pageOfItems.map((item, i) => (
-              <div>
+              <div key={i}>
                 <Comment key={i} comment={item} />
                 <Container>
                   <Button
@@ -146,7 +143,7 @@ class Comments extends React.Component {
             items={this.state.exampleItems}
             onChangePage={this.onChangePage}
           />
-        </div>
+        </div>}
         <hr />
       </Container>
     );
