@@ -26,6 +26,7 @@ import CourseProgressService from '../../api/Services/CourseProgressService';
 import CourseListItem from './CourseListItem';
 import { UserContext } from '../../contexts/UserContext';
 import { useRouteMatch } from 'react-router-dom';
+import Transactions from '../Transactions/Transactions';
 
 const UserProfile = () => {
   const userContext = React.useContext(UserContext);
@@ -226,6 +227,25 @@ const UserProfile = () => {
                             </l>
                           </NavLink>
                         </NavItem>
+                        <NavItem className="tabItem">
+                        {userid == userContext.userid && (<NavLink
+                            className={classnames({
+                              active: activeTab === '3',
+                            })}
+                            onClick={() => {
+                              toggle('3');
+                            }}
+                          >
+                            <l className="stats">
+                              <span role="img" aria-label="billing">
+                              💳
+                              </span>{' '}
+                              Billing History
+                            </l>
+                            
+                        
+                          </NavLink>)}
+                        </NavItem>
                       </Nav>
                       <TabContent activeTab={activeTab}>
                         <TabPane tabId="1" className="about">
@@ -238,6 +258,11 @@ const UserProfile = () => {
                               ? `Contact E-mail: ${user.mail}`
                               : ''}
                           </a>
+                        </TabPane>
+                        <TabPane tabId="3" className="billing">
+                        {userid == userContext.userid && (
+                          <Transactions></Transactions>
+                        )}
                         </TabPane>
                       </TabContent>
                     </Container>
