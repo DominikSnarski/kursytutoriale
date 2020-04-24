@@ -1,16 +1,37 @@
 import React from 'react';
-import { Alert, Col, Container, Spinner, Table, Input, Form } from 'reactstrap';
+import {
+  Alert,
+  Col,
+  Container,
+  Spinner,
+  Table,
+  Input,
+  Form,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Card,
+  CardBody,
+  CardText,
+} from 'reactstrap';
 import Button from '../../layouts/CSS/Button/Button';
 import Pagination from '../Shared/Pagination';
 import Comment from '../Comments/Comment';
-import {CommentService} from '../../api/Services/CommentService';
+import { CommentService } from '../../api/Services/CommentService';
 
 class Comments extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      exampleItems: this.props.comments,
+      exampleItems: [
+        {
+          username: 'JUREK',
+          content: 'ale bym se piwerko wypil',
+          insertDate: '2020-04-24T11:48:27.262Z',
+        },
+      ],
       pageOfItems: [],
       showDetails: false,
       isLoading: true,
@@ -18,6 +39,7 @@ class Comments extends React.Component {
       error: false,
       courseID: '',
       comment: '',
+      isModalOpen: false,
     };
     // an example array of items to be paged
     // bind function in constructor instead of render
@@ -26,6 +48,11 @@ class Comments extends React.Component {
     this.formRef = React.createRef();
     this.formReset = this.formReset.bind(this);
     this.sendComment = this.sendComment.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
+  }
+
+  toggleModal() {
+    this.setState({ isModalOpen: !this.state.isModalOpen });
   }
 
   componentDidMount() {
@@ -44,16 +71,14 @@ class Comments extends React.Component {
     });
   }
 
-  
   sendComment = (event) => {
     event.preventDefault();
-    const formData = new FormData(event.target);
 
-    CommentService.addComment(
-      formData.get('comment'),
-      this.props.courseID
-    )
-  }
+    // const newComment = {content: this.state.comment, courseId: this.props.courseID}
+
+    CommentService.addComment(this.state.comment, this.props.courseID);
+    this.setState({ comment: '' });
+  };
 
   getComment(e) {
     this.setState({
@@ -107,44 +132,74 @@ class Comments extends React.Component {
       <Container>
         <Container className="p-5">
           <Form onSubmit={(e) => this.sendComment(e)}>
-          <Input
-            type="textarea"
-            id="comment_text"
-            className="input_field"
-            name='comment'
-            maxLength="500"
-            style={{ minHeight: 150, resize: 'none' }}
-            onChange={(e) => this.getComment(e.target.value)}
-          />
+            <Input
+              type="textarea"
+              id="comment_text"
+              className="input_field"
+              name="comment"
+              maxLength="500"
+              style={{ minHeight: 150, resize: 'none' }}
+              onChange={(e) => this.getComment(e.target.value)}
+            />
           </Form>
-          <Button text="Comment" onClick={(event) => this.sendComment(event)}></Button>
+          <Button
+            text="Comment"
+            onClick={(event) => this.sendComment(event)}
+          ></Button>
         </Container>
-        { <div>
-          <Table style={{ backgroundColor: 'transparent' }}>
-            <thead>
-              <tr></tr>
-            </thead>
-            {this.state.pageOfItems.map((item, i) => (
-              <div key={i}>
-                <Comment key={i} comment={item} />
+        {this.state.pageOfItems.length >= 0 && (
+          <div>
+            <Table style={{ backgroundColor: 'transparent' }}>
+              <thead>
+                <tr></tr>
+              </thead>
+              {this.state.pageOfItems.map((item, i) => (
+                <div key={i}>
+                  <Comment key={i} comment={item} />
+                  <Container>
+                    <Button
+                      text="Report"
+                      onClick={() => this.toggleModal()}
+                      color="red"
+                      width={50}
+                      height={30}
+                      fontSize={10}
+                    ></Button>
+                  </Container>
+                </div>
+              ))}
+
+              {this.state.pageOfItems.length <= 0 && (
                 <Container>
-                  <Button
-                    text="Report"
-                    color="red"
-                    width={50}
-                    height={30}
-                    fontSize={10}
-                  ></Button>
+                  <Card fluid outline style={{ borderColor: '#ffb606' }} className="text-center">
+                    <CardBody style={{ backgroundColor: '#f5dfae' }}>
+                      <CardText style={{ color: 'black' }}>
+                        There are no comments here. Be the first one!
+                      </CardText>
+                    </CardBody>
+                  </Card>
                 </Container>
-              </div>
-            ))}
-          </Table>
-          <Pagination
-            items={this.state.exampleItems}
-            onChangePage={this.onChangePage}
-          />
-        </div>}
+              )}
+            </Table>
+            <Pagination
+              items={this.state.exampleItems}
+              onChangePage={this.onChangePage}
+            />
+          </div>
+        )}
         <hr />
+
+        <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+          <ModalHeader toggle={this.toggleModal}>Report coment</ModalHeader>
+          <ModalBody>
+            Report description
+            <Input placeholder="Tell us what is wrong with this comment" />
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={() => this.toggleModal()} text="Send report" />
+            <Button onClick={() => this.toggleModal()} text="Cancel" />
+          </ModalFooter>
+        </Modal>
       </Container>
     );
   }

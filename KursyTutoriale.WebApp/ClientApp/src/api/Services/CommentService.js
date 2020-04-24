@@ -4,13 +4,8 @@ export const CommentService = {
   getComments: (courseId) => {
     return apiClient.get(`api/Comment/GetComments?courseId=${courseId}`);
   },
-  addComment: (content, courseID) => {
-    return new Promise((resolve, reject) =>
-      apiClient
-        .post('/api/Comment/AddComment', { content, courseID })
-        .then((response) => resolve(response.data))
-        .catch((error) => reject(error)),
-    );
+  addComment: (newComment) => {
+    return apiClient.post('api/Comment/AddComment', {newComment});
   },
   resolveReport: (enable, courseID) => {
     return apiClient.put('/api/Comment/EnableComments', {

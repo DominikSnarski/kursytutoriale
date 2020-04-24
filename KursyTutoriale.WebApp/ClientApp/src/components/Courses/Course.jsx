@@ -8,14 +8,14 @@ import { UserContext } from '../../contexts/UserContext';
 import { ReportService } from '../../api/Services/ReportService';
 import CourseReportModal from './CourseReportModal';
 import { ParticipantService } from '../../api/Services/ParticipantService';
-import { CommentService } from '../../api/Services/CommentService';
+// import { CommentService } from '../../api/Services/CommentService';
 
 const Course = (props) => {
   const userContext = React.useContext(UserContext);
   const match = useRouteMatch();
   const [course, setCourse] = useState(props.course);
   const [courseLoaded, setCourseLoaded] = useState(false);
-  const [comments, setComments] = useState([]);
+  const [comments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error] = useState(false);
   const [rating, setRating] = useState(0);
@@ -33,7 +33,7 @@ const Course = (props) => {
       CourseService.getCourse(match.params.id).then((response) => {
         setCourse(response.data);
         setRating(response.data.rating);
-          setCourseLoaded(true);
+        setCourseLoaded(true);
         
         CourseService.incrementViewCount(match.params.id);
         if (
