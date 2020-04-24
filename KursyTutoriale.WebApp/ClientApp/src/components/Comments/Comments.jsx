@@ -1,22 +1,37 @@
 import React from 'react';
-import { Fade } from 'react-reveal';
-import { Alert, Col, Container, Spinner, Table, Input, Row } from 'reactstrap';
+import {
+  Alert,
+  Col,
+  Container,
+  Spinner,
+  Table,
+  Input,
+  Form,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Card,
+  CardBody,
+  CardText,
+} from 'reactstrap';
 import Button from '../../layouts/CSS/Button/Button';
 import Pagination from '../Shared/Pagination';
 import Comment from '../Comments/Comment';
+import { CommentService } from '../../api/Services/CommentService';
 
 class Comments extends React.Component {
-  constructor() {
-    super();
-    const exampleItems = [...Array(5)].map((i) => ({
-      user: 'Sample_User',
-      comment:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic",
-      date: '2019-1-1',
-    }));
+  constructor(props) {
+    super(props);
 
     this.state = {
-      exampleItems,
+      exampleItems: [
+        {
+          username: 'JUREK',
+          content: 'ale bym se piwerko wypil',
+          insertDate: '2020-04-24T11:48:27.262Z',
+        },
+      ],
       pageOfItems: [],
       showDetails: false,
       isLoading: true,
@@ -24,14 +39,20 @@ class Comments extends React.Component {
       error: false,
       courseID: '',
       comment: '',
+      isModalOpen: false,
     };
     // an example array of items to be paged
     // bind function in constructor instead of render
     this.onChangePage = this.onChangePage.bind(this);
     this.toggle = this.toggle.bind(this);
-    this.toggleFilters = this.toggleFilters.bind(this);
     this.formRef = React.createRef();
     this.formReset = this.formReset.bind(this);
+    this.sendComment = this.sendComment.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
+  }
+
+  toggleModal() {
+    this.setState({ isModalOpen: !this.state.isModalOpen });
   }
 
   componentDidMount() {
@@ -50,16 +71,14 @@ class Comments extends React.Component {
     });
   }
 
-  toggleFilters() {}
+  sendComment = (event) => {
+    event.preventDefault();
 
-  send_comment() {
-    var help = new Array();
-    help = this.state.exampleItems;
-    help.push({ user: 'JUREK', comment: this.state.comment, date: "12-12-12"});
-    this.setState({
-        exampleItems: help,
-    });
-  }
+    // const newComment = {content: this.state.comment, courseId: this.props.courseID}
+
+    CommentService.addComment(this.state.comment, this.props.courseID);
+    this.setState({ comment: '' });
+  };
 
   getComment(e) {
     this.setState({
@@ -112,42 +131,75 @@ class Comments extends React.Component {
     return (
       <Container>
         <Container className="p-5">
-          <Input
-            type="textarea"
-            id="comment_text"
-            className="input_field"
-            maxLength="500"
-            style={{ minHeight: 150, resize: 'none' }}
-            onChange={(e) => this.getComment(e.target.value)}
-          />
-          <Button text="Comment" onClick={(e) => this.send_comment()}></Button>
+          <Form onSubmit={(e) => this.sendComment(e)}>
+            <Input
+              type="textarea"
+              id="comment_text"
+              className="input_field"
+              name="comment"
+              maxLength="500"
+              style={{ minHeight: 150, resize: 'none' }}
+              onChange={(e) => this.getComment(e.target.value)}
+            />
+          </Form>
+          <Button
+            text="Comment"
+            onClick={(event) => this.sendComment(event)}
+          ></Button>
         </Container>
-        <div>
-          <Table style={{ backgroundColor: 'transparent' }}>
-            <thead>
-              <tr></tr>
-            </thead>
-            {this.state.pageOfItems.map((item, i) => (
-              <div>
-                <Comment key={i} comment={item} />
+        {this.state.pageOfItems.length >= 0 && (
+          <div>
+            <Table style={{ backgroundColor: 'transparent' }}>
+              <thead>
+                <tr></tr>
+              </thead>
+              {this.state.pageOfItems.map((item, i) => (
+                <div key={i}>
+                  <Comment key={i} comment={item} ownerId={this.props.ownerId}/>
+                  <Container>
+                    <Button
+                      text="Report"
+                      onClick={() => this.toggleModal()}
+                      color="red"
+                      width={50}
+                      height={30}
+                      fontSize={10}
+                    ></Button>
+                  </Container>
+                </div>
+              ))}
+
+              {this.state.pageOfItems.length <= 0 && (
                 <Container>
-                  <Button
-                    text="Report"
-                    color="red"
-                    width={50}
-                    height={30}
-                    fontSize={10}
-                  ></Button>
+                  <Card fluid outline style={{ borderColor: '#ffb606' }} className="text-center">
+                    <CardBody style={{ backgroundColor: '#f5dfae' }}>
+                      <CardText style={{ color: 'black' }}>
+                        There are no comments here. Be the first one!
+                      </CardText>
+                    </CardBody>
+                  </Card>
                 </Container>
-              </div>
-            ))}
-          </Table>
-          <Pagination
-            items={this.state.exampleItems}
-            onChangePage={this.onChangePage}
-          />
-        </div>
+              )}
+            </Table>
+            <Pagination
+              items={this.state.exampleItems}
+              onChangePage={this.onChangePage}
+            />
+          </div>
+        )}
         <hr />
+
+        <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+          <ModalHeader toggle={this.toggleModal}>Report coment</ModalHeader>
+          <ModalBody>
+            Report description
+            <Input placeholder="Tell us what is wrong with this comment" />
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={() => this.toggleModal()} text="Send report" />
+            <Button onClick={() => this.toggleModal()} text="Cancel" />
+          </ModalFooter>
+        </Modal>
       </Container>
     );
   }

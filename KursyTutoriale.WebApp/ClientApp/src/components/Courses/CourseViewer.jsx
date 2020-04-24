@@ -23,6 +23,7 @@ import { UserService } from '../../api/Services/UserService';
 import DiscountGenerator from './DiscountGenerator';
 
 import AppRoutes from '../../routing/AppRoutes';
+import Comments from '../Comments/Comments';
 
 const CourseViewer = (props) => {
   const history = useHistory();
@@ -223,8 +224,10 @@ const CourseViewer = (props) => {
           courseTitle={course.title}
           isParticipating={props.isParticipating}
         />
-        <DiscountGenerator />
+
+        {userContext.userid === course.ownerId && <DiscountGenerator />}
       </Jumbotron>
+
       {userContext.userid === course.ownerId && !course.verified && (
         <Container>
           <Row className="justify-content-md-center">
@@ -280,7 +283,7 @@ const CourseViewer = (props) => {
       {userContext.userid !== course.ownerId &&
         course.verified &&
         course.public &&
-        props.isParticipating === false && (
+        !props.isParticipating && (
           <Container>
             <Row className="justify-content-md-center"></Row>
             <Row className="justify-content-md-center">
@@ -312,6 +315,8 @@ const CourseViewer = (props) => {
           history.goBack();
         }}
       />
+
+      <Comments courseID={props.id} comments={props.comments} ownerId={course.ownerId}/>
     </Container>
   );
 };

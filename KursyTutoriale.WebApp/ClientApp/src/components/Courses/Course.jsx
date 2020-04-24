@@ -8,12 +8,14 @@ import { UserContext } from '../../contexts/UserContext';
 import { ReportService } from '../../api/Services/ReportService';
 import CourseReportModal from './CourseReportModal';
 import { ParticipantService } from '../../api/Services/ParticipantService';
+// import { CommentService } from '../../api/Services/CommentService';
 
 const Course = (props) => {
   const userContext = React.useContext(UserContext);
   const match = useRouteMatch();
   const [course, setCourse] = useState(props.course);
   const [courseLoaded, setCourseLoaded] = useState(false);
+  const [comments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error] = useState(false);
   const [rating, setRating] = useState(0);
@@ -32,6 +34,7 @@ const Course = (props) => {
         setCourse(response.data);
         setRating(response.data.rating);
         setCourseLoaded(true);
+        
         CourseService.incrementViewCount(match.params.id);
         if (
           userContext.userid === response.data.ownerId ||
@@ -39,9 +42,11 @@ const Course = (props) => {
         ) {
           setParticipation(true);
         } else {
-          ParticipantService.isParticipating(response.data.id).then((_response) => {
-            setParticipation(_response.data);
-          });
+          ParticipantService.isParticipating(response.data.id).then(
+            (_response) => {
+              setParticipation(_response.data);
+            },
+          );
         }
       });
     }
@@ -73,6 +78,7 @@ const Course = (props) => {
       </Row>
     );
   }
+  
   return (
     <Container>
       {userContext !== undefined &&
@@ -96,6 +102,7 @@ const Course = (props) => {
         course={course}
         rating={rating}
         id={match.params.id}
+        comments={comments}
         {...props}
       />
     </Container>
