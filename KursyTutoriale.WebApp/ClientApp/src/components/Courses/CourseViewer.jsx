@@ -316,7 +316,7 @@ const CourseViewer = (props) => {
         }}
       />
 
-      <Comments courseID={props.id} comments={props.comments}/>
+      <Comments courseID={props.id} comments={props.comments} ownerId={course.ownerId}/>
     </Container>
   );
 };

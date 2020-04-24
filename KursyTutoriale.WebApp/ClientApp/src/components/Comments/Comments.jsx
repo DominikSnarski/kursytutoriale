@@ -155,7 +155,7 @@ class Comments extends React.Component {
               </thead>
               {this.state.pageOfItems.map((item, i) => (
                 <div key={i}>
-                  <Comment key={i} comment={item} />
+                  <Comment key={i} comment={item} ownerId={this.props.ownerId}/>
                   <Container>
                     <Button
                       text="Report"

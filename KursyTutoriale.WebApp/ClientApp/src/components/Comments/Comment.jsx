@@ -7,13 +7,15 @@ import {
   ModalFooter,
   ModalHeader,
 } from 'reactstrap';
+import { UserContext } from '../../contexts/UserContext';
 import Button from '../../layouts/CSS/Button/Button';
 
-function Comment({ comment }) {
+function Comment(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [isUpvoteOpen, setIsUpvoteOpen] = useState(false);
   const [isDownvoteOpen, setIsDownvoteOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const userContext = React.useContext(UserContext);
 
   const toggle = () => {
     setIsOpen(!isOpen);
@@ -43,9 +45,9 @@ function Comment({ comment }) {
     <div>
       <tbody>
         <tr onClick={() => toggle()} style={{ cursor: 'pointer' }}>
-          <td>{comment.username}</td>
-          <td>{comment.content}</td>
-          <td>{comment.insertDate}</td>
+          <td>{props.comment.username}</td>
+          <td>{props.comment.content}</td>
+          <td>{props.comment.insertDate}</td>
           <td id="Upvote">&#128077;</td>
 
           <Popover
@@ -67,7 +69,7 @@ function Comment({ comment }) {
             <PopoverHeader>-1</PopoverHeader>
           </Popover>
         </tr>
-        {isOpen && (
+        {isOpen && userContext.userid === props.ownerId && (
           <tr>
             <Button
               text="Delete"
