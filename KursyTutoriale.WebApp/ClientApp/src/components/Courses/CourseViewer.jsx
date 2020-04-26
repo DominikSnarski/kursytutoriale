@@ -12,7 +12,7 @@ import {
   Alert,
 } from 'reactstrap';
 import StarRating from 'react-star-rating-component';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory, Link, generatePath } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import './style.css';
 import Modules from './Modules';
@@ -56,7 +56,7 @@ const CourseViewer = (props) => {
 
   const handleButtonJoinCourseClick = () => {
     if (course.price !== 0) {
-      history.push(`${AppRoutes.Payment}/${course.id}`);
+      history.push(generatePath(AppRoutes.Payment, { courseId: course.id }));
     } else {
       ParticipantService.addParticipant(course.id)
         .then(() => history.push('/'))
@@ -316,7 +316,11 @@ const CourseViewer = (props) => {
         }}
       />
 
-      <Comments courseID={props.id} comments={props.comments} ownerId={course.ownerId}/>
+      <Comments
+        courseID={props.id}
+        comments={props.comments}
+        ownerId={course.ownerId}
+      />
     </Container>
   );
 };
