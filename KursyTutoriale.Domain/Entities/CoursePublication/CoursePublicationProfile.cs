@@ -1,4 +1,5 @@
-﻿using KursyTutoriale.Shared.Exceptions;
+﻿using KursyTutoriale.Domain.Entities.CoursePublication.Discounts;
+using KursyTutoriale.Shared.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
         private List<Participant> participants;
         private List<Comment> comments;
         private List<CourseProgress> progresses;
+        private List<Discount> discounts;
 
         public Guid CourseId { get; private set; }
         public Guid OwnerId { get; private set; }
@@ -23,7 +25,7 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
         public IReadOnlyCollection<Participant> Participants { get => participants.AsReadOnly(); }
         public IReadOnlyCollection<Comment> Comments { get => CommentsEnabled ? comments.AsReadOnly() : new List<Comment>().AsReadOnly(); }
         public IReadOnlyCollection<CourseProgress> Progresses { get => progresses.AsReadOnly(); }
-
+        public IReadOnlyCollection<Discount> Discounts { get => discounts.AsReadOnly(); }
 
         public CoursePublicationProfile(Guid courseId, Guid ownerId, int price)
         {
@@ -102,5 +104,18 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
         public bool CanBePaidFor() => Price != 0;
 
         public bool CanJoin(Guid userId) => !participants.Any(obs => obs.UserId == userId); 
+
+        public int GetPriceWithDiscount(string code)
+        {
+            var price = Price;
+
+            discounts.ForEach(dis =>
+            {
+                if (dis.ValidateCode(code))
+                    price = dis.GetAmountAfterDiscount(price);
+            });
+
+            return price;
+        }
     }
 }

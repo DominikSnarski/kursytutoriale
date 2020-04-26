@@ -32,6 +32,10 @@ namespace KursyTutoriale.Infrastructure.Configuration.DataModels
             transationBuilder.ToTable("KTTransation");
             transationBuilder.HasKey(t => t.Id);
             transationBuilder.HasOne(t => t.PaymentMethod);
+            transationBuilder.OwnsMany(t => t.OrderItems, opt =>
+            {
+                opt.ToTable("KTOrderItem");
+            });
 
             return modelBuilder;
         }

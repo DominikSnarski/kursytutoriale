@@ -19,7 +19,17 @@ namespace KursyTutoriale.Application.DataTransferObjects.Payments
 
         [Required]
         public int CVV { get; set; }
+        [Required]
         public string OwnerLastName { get; set; }
+        [Required]
         public string OwnerFirstName { get; set; }
+        public string DiscountCode { get; set; }
+    }
+
+    public class CreditCardIdInputDto
+    {
+        [Required]
+        public Guid CreditCardId { get; set; }
+        public string DiscountCode { get; set; }
     }
 }
