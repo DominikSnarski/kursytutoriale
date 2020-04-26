@@ -246,6 +246,25 @@ const UserProfile = () => {
                         
                           </NavLink>)}
                         </NavItem>
+                        <NavItem className="tabItem">
+                        {userid == userContext.userid && (<NavLink
+                            className={classnames({
+                              active: activeTab === '4',
+                            })}
+                            onClick={() => {
+                              toggle('4');
+                            }}
+                          >
+                            <l className="stats">
+                              <span role="img" aria-label="cards">
+                              💲
+                              </span>{' '}
+                              User Cards
+                            </l>
+                            
+                        
+                          </NavLink>)}
+                        </NavItem>
                       </Nav>
                       <TabContent activeTab={activeTab}>
                         <TabPane tabId="1" className="about">
@@ -260,6 +279,11 @@ const UserProfile = () => {
                           </a>
                         </TabPane>
                         <TabPane tabId="3" className="billing">
+                        {userid == userContext.userid && (
+                          <Transactions></Transactions>
+                        )}
+                        </TabPane>
+                        <TabPane tabId="4" className="cards">
                         {userid == userContext.userid && (
                           <Transactions></Transactions>
                         )}
