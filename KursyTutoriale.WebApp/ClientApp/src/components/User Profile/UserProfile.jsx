@@ -27,6 +27,7 @@ import CourseListItem from './CourseListItem';
 import { UserContext } from '../../contexts/UserContext';
 import { useRouteMatch } from 'react-router-dom';
 import Transactions from '../Transactions/Transactions';
+import Cards from '../Payment/Cards';
 
 const UserProfile = () => {
   const userContext = React.useContext(UserContext);
@@ -246,6 +247,26 @@ const UserProfile = () => {
                         
                           </NavLink>)}
                         </NavItem>
+                        <NavItem className="tabItem">
+                        {userid == userContext.userid && (<NavLink
+                            className={classnames({
+                              active: activeTab === '4',
+                            })}
+                            onClick={() => {
+                              toggle('4');
+                            }}
+                          >
+                            <l className="stats">
+                              <span role="img" aria-label="cards">
+                              💲
+                              </span>{' '}
+                              User Cards
+                            </l>
+                            
+                        
+                          </NavLink>)}
+                        </NavItem>
+
                       </Nav>
                       <TabContent activeTab={activeTab}>
                         <TabPane tabId="1" className="about">
@@ -264,6 +285,12 @@ const UserProfile = () => {
                           <Transactions></Transactions>
                         )}
                         </TabPane>
+                        <TabPane tabId="4" className="cards">
+                        {userid == userContext.userid && (
+                          <Cards></Cards>
+                        )}
+                        </TabPane>
+
                       </TabContent>
                     </Container>
                   </Row>
