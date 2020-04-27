@@ -27,5 +27,12 @@ export const PaymentService = {
         .catch((error) => reject(error)),
     );
   },
+  getCreditCards: () =>
+    new Promise((resolve, reject) =>
+      apiClient
+        .get(`api/PaymentCustomer/GetCreditCards`)
+        .then((res) => resolve(res.data))
+        .catch((error) => reject(error)),
+    ),
 };
 export default PaymentService;
