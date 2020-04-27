@@ -24,6 +24,7 @@ namespace KursyTutoriale.Application.DataTransferObjects.Payments
         [Required]
         public string OwnerFirstName { get; set; }
         public string DiscountCode { get; set; }
+        public bool AddCardToList { get; set; }
     }
 
     public class CreditCardIdInputDto

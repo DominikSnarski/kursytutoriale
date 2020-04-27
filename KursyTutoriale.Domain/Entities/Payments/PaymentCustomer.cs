@@ -27,14 +27,23 @@ namespace KursyTutoriale.Domain.Entities.Payments
         public IReadOnlyCollection<CreditCard> CreditCards{ get => creditCards.AsReadOnly(); }
         public IReadOnlyCollection<Transaction> Transactions{ get => transactions.AsReadOnly(); }
 
-        public Transaction AddCreditCardTransation(string CCNumber, int CCExpMonth, int CCExpYear, string ownerFirstName, string ownerLastName, int amount)
+        public Transaction AddCreditCardTransation(
+            string CCNumber,
+            int CCExpMonth,
+            int CCExpYear,
+            string ownerFirstName,
+            string ownerLastName,
+            int amount,
+            bool addToCreditCards)
         {
             var creditCard = new CreditCard(CCNumber, CCExpMonth, CCExpYear, ownerFirstName, ownerLastName);
 
             var transaction = new Transaction(creditCard, amount);
 
             transactions.Add(transaction);
-            creditCards.Add(creditCard);
+
+            if(addToCreditCards)
+                creditCards.Add(creditCard);
 
             return transaction;
         }

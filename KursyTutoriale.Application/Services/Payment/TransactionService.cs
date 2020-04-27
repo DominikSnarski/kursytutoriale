@@ -52,7 +52,8 @@ namespace KursyTutoriale.Application.Services.Payment
                     creditCardDto.ExpYear,
                     creditCardDto.OwnerFirstName,
                     creditCardDto.OwnerLastName,
-                    amount
+                    amount,
+                    creditCardDto.AddCardToList
                     ),
                 discountCode
                 );
@@ -72,7 +73,11 @@ namespace KursyTutoriale.Application.Services.Payment
                 );
         }
 
-        private async Task PayForCourseAccess(Guid courseId, Func<Guid, int, bool> paymentMethod, Func<PaymentCustomer, int, Transaction> addTransactionMethod, string code)
+        private async Task PayForCourseAccess(
+            Guid courseId,
+            Func<Guid, int, bool> paymentMethod,
+            Func<PaymentCustomer, int, Transaction> addTransactionMethod,
+            string code)
         {
             var courseProfile = courseProfileRepository
                 .Queryable()

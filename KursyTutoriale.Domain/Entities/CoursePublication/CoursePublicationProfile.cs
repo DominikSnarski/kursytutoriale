@@ -27,6 +27,15 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
         public IReadOnlyCollection<CourseProgress> Progresses { get => progresses.AsReadOnly(); }
         public IReadOnlyCollection<Discount> Discounts { get => discounts.AsReadOnly(); }
 
+        private CoursePublicationProfile()
+        {
+            versions = new List<CourseVersion>();
+            participants = new List<Participant> ();
+            comments = new List<Comment>() ;
+            progresses = new List<CourseProgress>();
+            discounts = new List<Discount>();
+        }
+
         public CoursePublicationProfile(Guid courseId, Guid ownerId, int price)
         {
             CourseId = courseId;
