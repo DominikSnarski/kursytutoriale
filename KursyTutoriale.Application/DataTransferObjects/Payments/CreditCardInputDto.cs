@@ -30,6 +30,6 @@ namespace KursyTutoriale.Application.DataTransferObjects.Payments
     {
         [Required]
         public Guid CreditCardId { get; set; }
-        public string DiscountCode { get; set; }
+        public string? DiscountCode { get; set; }
     }
 }

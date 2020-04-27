@@ -22,7 +22,7 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication.Discounts
 
         public override int GetAmountAfterDiscount(int amount)
         {
-            return amount * Percent / 100;
+            return amount * (100 - Percent) / 100;
         }
     }
 }
