@@ -30,7 +30,6 @@ class Cards extends React.Component {
   componentDidMount() {
     this.setState({ isLoading: true });
     PaymentService.getCreditCards().then((data) => {
-      console.log(data);
       this.setState({ pageOfItems: data, isLoading: false });
     });
 
