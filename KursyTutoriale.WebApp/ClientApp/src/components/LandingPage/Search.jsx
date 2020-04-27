@@ -1,25 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Button, Form, Input, Container } from 'reactstrap';
 import './Search.css';
+import Select from 'react-select';
+import UserService from '../../api/Services/UserService';
 
-const Search = () => (
-  <Container
-    style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-  >
-    <Form inline>
-      <Input
-        type="search"
-        className="form-control-lg"
-        placeholder="Search by course name"
+const Search = (props) => {
+  const [options, setOptions] = useState([]);
+
+  const handleChange = (selectedOption) => {
+    if (props.onSelection == null) return;
+    props.onSelection(selectedOption);
+  };
+
+  const handleInputChange = (value) => {
+    if (props.onInputChange == null) return;
+    props.onInputChange(value).then((response) => {
+      setOptions([
+        ...response.data.map((v) => {
+          return {
+            ...v,
+            label: v.username ?? v.name,
+          };
+        }),
+      ]);
+    });
+  };
+
+  return (
+    <Container
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Select
+        options={options}
+        onChange={handleChange}
+        onInputChange={handleInputChange}
+        placeholder={props.place}
+        openMenuOnClick={false}
+        className="bar"
       />
-      <Button type="submit" size="lg" color="primary" outline>
-        <span role="img" aria-label="">
-          🔍
-        </span>
-      </Button>
-    </Form>
-  </Container>
-);
+    </Container>
+  );
+};
 
 export default Search;

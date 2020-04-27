@@ -409,7 +409,6 @@ const UserProfile = () => {
           </Container>
         </Zoom>
       </Jumbotron>
-      )}
     </div>
   );
 };

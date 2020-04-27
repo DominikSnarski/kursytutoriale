@@ -1,13 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Nav, NavItem } from 'reactstrap';
+import {
+  Button,
+  Nav,
+  NavItem,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+} from 'reactstrap';
 import { UserContext } from '../../contexts/UserContext';
 import apiClient from '../../api/ApiClient';
 import AppRoutes from '../../routing/AppRoutes';
 import './NavBar.css';
+import Search from '../../components/LandingPage/Search';
+import { UserService } from '../../api/Services/UserService';
+import { useHistory } from 'react-router-dom';
 
 const NavBar = () => {
   const userContext = React.useContext(UserContext);
+  const history = useHistory();
 
   const handleSubmit = () => {
     apiClient.logout();
@@ -31,6 +43,21 @@ const NavBar = () => {
             <Link className="font-weight-bold" to={AppRoutes.AddNewCourse}>
               Create New Course
             </Link>
+          </NavItem>
+          <NavItem className="nav_item">
+            <Search
+              onSelection={(selectedOption) => {
+                history.push(`/userProfile/${selectedOption.id}`);
+                window.location.reload();
+              }}
+              onInputChange={(value) => {
+                return UserService.getUserProfilesByName(value);
+              }}
+              placeholder="Users"
+              onSubmit={(query) => {
+                UserService.getUserProfilesByName(query).then((result) => {});
+              }}
+            />
           </NavItem>
         </Nav>
       </div>
