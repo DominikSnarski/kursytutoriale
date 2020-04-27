@@ -37,6 +37,8 @@ namespace KursyTutoriale.Application.Services.Payment
 
             var customer = customerRepository.Queryable().Include(c => c.CreditCards).FirstOrDefault(c => c.UserId == userId);
 
+            if (customer == null) return new List<CreditCardDto>();
+
             var creditCards = customer.CreditCards;
 
             return mapper.Map<List<CreditCardDto>>(creditCards);

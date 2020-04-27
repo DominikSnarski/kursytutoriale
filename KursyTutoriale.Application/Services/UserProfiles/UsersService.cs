@@ -37,11 +37,10 @@ namespace KursyTutoriale.Application.Services.UserProfiles
         {
             if (String.IsNullOrWhiteSpace(query)) return new List<UserProfileListItemDTO>();
             var users = profileRepository.Queryable().Where(
-                u => u.Username != null ? u.Username.ToUpper().Contains(query.ToUpper()) : false || 
-                u.Name != null ? u.Name.ToUpper().Contains(query.ToUpper()) : false)
-                .AsEnumerable();
+                u => u.Username != null ? u.Username.ToUpper().Contains(query.ToUpper()) : false ||
+                u.Name != null ? u.Name.ToUpper().Contains(query.ToUpper()) : false);
 
-            return mapper.Map<IEnumerable<UserProfileListItemDTO>>(users);
+            return mapper.Map<IEnumerable<UserProfileListItemDTO>>(users.AsEnumerable());
         }
     }
 }

@@ -71,11 +71,11 @@ const UserProfile = () => {
         .then((result) => setCourseList(result.data))
         .catch((error) => console.log(error));
 
-      CourseProgressService.getUserCompletedCourses()
+      CourseProgressService.getUserCompletedCourses(userid)
         .then((result) => setCompletedCoursesList(result.data))
         .catch((error) => console.log(error));
 
-      CourseProgressService.getUserUncompletedCourses()
+      CourseProgressService.getUserUncompletedCourses(userid)
         .then((result) => setUncompletedCoursesList(result.data))
         .catch((error) => console.log(error));
     }

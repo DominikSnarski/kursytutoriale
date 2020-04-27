@@ -152,7 +152,7 @@ const App = () => {
                 component={NewModule}
                 layout={MainLayout}
               />
-              <ProtectedRoute
+              <AppRoute
                 exact
                 path={AppRoutes.UserProfile}
                 component={UserProfile}

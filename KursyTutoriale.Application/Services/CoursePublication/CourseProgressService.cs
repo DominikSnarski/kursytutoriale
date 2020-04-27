@@ -51,10 +51,8 @@ namespace KursyTutoriale.Application.Services.CoursePublication
             await unitOfWork.SaveChangesAsync();
         }
 
-        public IEnumerable<CourseBasicInformationsDTO> GetUserCompletedCourses()
+        public IEnumerable<CourseBasicInformationsDTO> GetUserCompletedCourses(Guid userId)
         {
-            var userId = executionContextAccessor.GetUserId();
-
             List<CourseBasicInformationsDTO> courses = new List<CourseBasicInformationsDTO>();
 
             var profiles = profilesRepository.Queryable().Where(p => p.Participants.Any(o => o.UserId == userId)).ToList();
@@ -74,10 +72,8 @@ namespace KursyTutoriale.Application.Services.CoursePublication
 
         }
 
-        public IEnumerable<CourseBasicInformationsDTO> GetUserUncompletedCourses()
+        public IEnumerable<CourseBasicInformationsDTO> GetUserUncompletedCourses(Guid userId)
         {
-            var userId = executionContextAccessor.GetUserId();
-
             List<CourseBasicInformationsDTO> courses = new List<CourseBasicInformationsDTO>();
 
             var profiles = profilesRepository.Queryable().Where(p => p.Participants.Any(o => o.UserId == userId)).ToList();

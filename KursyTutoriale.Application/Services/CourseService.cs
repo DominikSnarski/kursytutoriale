@@ -414,7 +414,7 @@ namespace KursyTutoriale.Application.Services
         /// <returns>the list of user's owned courses</returns>
         public IEnumerable<CourseBasicInformationsDTO> GetUsersCourses(Guid UserId)
         {
-            if (UserId == executionContext.GetUserId())
+            if (executionContext.IsAuthorized && UserId == executionContext.GetUserId())
             {
                 var query = courseRepository.Queryable()
                 .Where(c => c.OwnerId == UserId)
