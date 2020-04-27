@@ -1,6 +1,5 @@
 import React from 'react';
 import { Alert, Col, Container, Spinner, Table } from 'reactstrap';
-import Pagination from '../Shared/Pagination';
 import Card from '../Payment/Card';
 import { PaymentService } from '../../api/Services/PaymentService';
 
@@ -30,8 +29,8 @@ class Cards extends React.Component {
 
   componentDidMount() {
     this.setState({ isLoading: true });
-
     PaymentService.getCreditCards().then((data) => {
+      console.log(data);
       this.setState({ pageOfItems: data, isLoading: false });
     });
 
@@ -91,10 +90,6 @@ class Cards extends React.Component {
               <Card key={i} card={item} />
             ))}
           </Table>
-          <Pagination
-            items={this.state.exampleItems}
-            onChangePage={this.onChangePage}
-          />
         </div>
         <hr />
       </Container>

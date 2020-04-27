@@ -3,10 +3,11 @@ import React from 'react';
 function Card({ card }) {
 
   return (
+      
     <tbody>
       <tr>
         <td>
-            {card.number}
+            **** **** **** {card.last4Digits}
         </td>
       </tr>
     </tbody>
