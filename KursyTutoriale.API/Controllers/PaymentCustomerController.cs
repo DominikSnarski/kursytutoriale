@@ -24,5 +24,12 @@ namespace KursyTutoriale.API.Controllers
         {
             return paymentCustomerService.GetCreditCards();
         }
+
+        [Authorize]
+        [HttpGet("GetTransactions")]
+        public IEnumerable<TransactionDto> GetTransactions()
+        {
+            return paymentCustomerService.GetTransations();
+        }
     }
 }

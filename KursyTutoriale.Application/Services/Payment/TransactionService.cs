@@ -46,12 +46,13 @@ namespace KursyTutoriale.Application.Services.Payment
                     creditCardDto.CVV,
                     amount
                     ),
-                (customer) => customer.AddCreditCardTransation(
+                (customer, amount) => customer.AddCreditCardTransation(
                     creditCardDto.Number,
                     creditCardDto.ExpMonth,
                     creditCardDto.ExpYear,
                     creditCardDto.OwnerFirstName,
-                    creditCardDto.OwnerLastName
+                    creditCardDto.OwnerLastName,
+                    amount
                     ),
                 discountCode
                 );
@@ -66,12 +67,12 @@ namespace KursyTutoriale.Application.Services.Payment
                     creditCardId,
                     amount
                     ),
-                (customer) => customer.AddCreditCardTransation(creditCardId),
+                (customer, amount) => customer.AddCreditCardTransation(creditCardId, amount),
                 discountCode
                 );
         }
 
-        private async Task PayForCourseAccess(Guid courseId, Func<Guid, int, bool> paymentMethod, Func<PaymentCustomer, Transaction> addTransactionMethod, string code)
+        private async Task PayForCourseAccess(Guid courseId, Func<Guid, int, bool> paymentMethod, Func<PaymentCustomer, int, Transaction> addTransactionMethod, string code)
         {
             var courseProfile = courseProfileRepository
                 .Queryable()
@@ -104,12 +105,17 @@ namespace KursyTutoriale.Application.Services.Payment
                 customerRepository.InsertAgreggate(customer);
             }
 
-            var transaction = addTransactionMethod(customer);
+            var transaction = addTransactionMethod(customer, price);
             transaction.AddCourseAccess(courseProfile);
 
             courseProfile.AddParticipant(userId);
 
             await unitOfWork.SaveChangesAsync();
+        }
+
+        public void GetTransations()
+        {
+
         }
     }
 }

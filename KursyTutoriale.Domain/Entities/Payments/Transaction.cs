@@ -13,6 +13,7 @@ namespace KursyTutoriale.Domain.Entities.Payments
         public Guid Id { get; private set; }
         public DateTime CreateDate { get; private set; }
         public TransationStatus Status { get; private set; }
+        public int Amount { get; set; }
         public PaymentMethod PaymentMethod { get; private set; }
         public IReadOnlyCollection<OrderItem> OrderItems { get => orderItems.AsReadOnly(); }
 
@@ -21,7 +22,7 @@ namespace KursyTutoriale.Domain.Entities.Payments
 
         }
 
-        public Transaction(CreditCard creditCard)
+        public Transaction(CreditCard creditCard, int amount)
         {
             var paymentMethod = new CreditCardPayment(creditCard);
 
@@ -29,6 +30,7 @@ namespace KursyTutoriale.Domain.Entities.Payments
             Status = TransationStatus.NotStarted;
             CreateDate = DateTime.UtcNow;
 
+            Amount = amount;
             orderItems = new List<OrderItem>();
         }
 

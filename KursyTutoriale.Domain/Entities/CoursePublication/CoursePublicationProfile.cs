@@ -117,5 +117,23 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
 
             return price;
         }
+
+        public void AddDiscountCode(Discount discountCode)
+        {
+            if (discounts.Any(d => d.Code == discountCode.Code))
+                throw new InvalidStateException("Discount with same code already exists");
+
+            discounts.Add(discountCode);
+        }
+
+        public void InvalidateCode(string code)
+        {
+            var discountCode = Discounts.FirstOrDefault(d => d.Code == code);
+
+            if (discountCode is null)
+                throw new InvalidStateException("Discount code doesnt exists");
+
+            discountCode.Invalidate();
+        }
     }
 }

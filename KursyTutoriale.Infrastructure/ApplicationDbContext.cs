@@ -49,6 +49,7 @@ namespace KursyTutoriale.Infrastructure
             builder.ApplyConfiguration(new RateConfiguration());
             builder.ApplyConfiguration(new UserAccountDateConfiguration());
             builder.ApplyConfiguration(new UserSignInDateConfiguration());
+            builder.ApplyConfiguration(new DiscountConfiguration());
 
             builder = PaymentMethodConfiguration.Configure(builder);
         }

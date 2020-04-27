@@ -1,36 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Text;
-
-namespace KursyTutoriale.API.Responses
+﻿namespace KursyTutoriale.API.Responses
 {
-    public class GenericResponse
+    public class GenericResponse<TReturn>
     {
-        public GenericResponse(){ }
-        public GenericResponse(int code)
+        public GenericResponse(TReturn data) 
         {
-            Code = code;
-            Description = "";
+            Data = data;
         }
 
-        public GenericResponse(int code, string description)
-        {
-            Code = code;
-            Description = description;
-        }
-
-        public GenericResponse(int code, IEnumerable<string> messages)
-        {
-            Code = code;
-
-            var sb = new StringBuilder();
-
-            foreach (var message in messages)
-                sb.Append(message + "\n");
-
-            Description = sb.ToString();
-        }
-
-        public int Code { get; set; }
-        public string Description { get; set; }
+        public TReturn Data { get; set; }
     }
 }

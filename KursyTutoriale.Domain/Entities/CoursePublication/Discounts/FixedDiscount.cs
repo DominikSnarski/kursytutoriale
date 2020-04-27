@@ -4,11 +4,16 @@ using System.Text;
 
 namespace KursyTutoriale.Domain.Entities.CoursePublication.Discounts
 {
-    class FixedDiscount : Discount
+    public class FixedDiscount : Discount
     {
         public int Amount { get; private set; }
 
-        public FixedDiscount(Guid courseId, string code, DateTime validTo, int amount) : base(courseId, code, validTo)
+        private FixedDiscount() : base()
+        {
+
+        }
+
+        public FixedDiscount(string code, DateTime validTo, int amount) : base(code, validTo)
         {
             Amount = amount;
         }

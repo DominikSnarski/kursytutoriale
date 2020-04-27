@@ -2,9 +2,13 @@
 
 namespace KursyTutoriale.Domain.Entities.CoursePublication.Discounts
 {
-    class FullDiscount : Discount
+    public class FullDiscount : Discount
     {
-        public FullDiscount(Guid courseId, string code, DateTime validTo) : base(courseId, code, validTo)
+        private FullDiscount() : base()
+        {
+
+        }
+        public FullDiscount(string code, DateTime validTo) : base(code, validTo)
         {
         }
 

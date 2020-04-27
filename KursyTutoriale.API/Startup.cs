@@ -75,6 +75,8 @@ namespace KursyTutoriale.API
                         new List<string>()
                     }
                 });
+
+                c.DescribeAllEnumsAsStrings();
             });
         }
 

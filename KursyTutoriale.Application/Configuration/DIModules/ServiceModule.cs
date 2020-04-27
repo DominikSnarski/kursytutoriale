@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using KursyTutoriale.Application.Services.Auth;
+using KursyTutoriale.Domain.Factories.CoursePublication.Discounts;
 using KursyTutoriale.Infrastructure.Services;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,11 @@ namespace KursyTutoriale.Application.Configuration.DIModules
             builder
                 .RegisterAssemblyTypes(typeof(AuthService).Assembly)
                 .Where(c => c.Name.EndsWith("Service"))
+                .AsImplementedInterfaces();
+
+            builder
+                .RegisterAssemblyTypes(typeof(DiscountCodeFactory).Assembly)
+                .Where(c => c.Name.EndsWith("Factory"))
                 .AsImplementedInterfaces();
 
             builder
