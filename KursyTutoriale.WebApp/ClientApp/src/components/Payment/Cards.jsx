@@ -6,37 +6,22 @@ import { PaymentService } from '../../api/Services/PaymentService';
 class Cards extends React.Component {
   constructor() {
     super();
-    const exampleItems = [...Array(5)].map((i) => ({
-      date: i,
-    }));
 
     this.state = {
-      exampleItems,
       pageOfItems: [],
       isLoading: true,
       error: false,
     };
-    // an example array of items to be paged
-    // bind function in constructor instead of render
-    this.onChangePage = this.onChangePage.bind(this);
   }
-
-  /*
-  componentDidMount() {
-    this.setState({ isLoading: false });
-  }
-  */
 
   componentDidMount() {
     this.setState({ isLoading: true });
     PaymentService.getCreditCards().then((data) => {
       this.setState({ pageOfItems: data, isLoading: false });
     });
-
   }
 
   onChangePage(pageOfItems) {
-    // update state with new page of items
     this.setState({ pageOfItems });
   }
 

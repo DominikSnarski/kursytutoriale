@@ -243,8 +243,6 @@ const UserProfile = () => {
                               </span>{' '}
                               Billing History
                             </l>
-                            
-                        
                           </NavLink>)}
                         </NavItem>
                         <NavItem className="tabItem">
@@ -261,9 +259,7 @@ const UserProfile = () => {
                               💲
                               </span>{' '}
                               User Cards
-                            </l>
-                            
-                        
+                            </l>                                                  
                           </NavLink>)}
                         </NavItem>
 
