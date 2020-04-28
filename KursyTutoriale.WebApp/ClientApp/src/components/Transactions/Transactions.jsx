@@ -1,12 +1,16 @@
 import React from 'react';
-import { Alert, Col, Container, Spinner, Table } from 'reactstrap';
+import { Alert, Col, Container, Table } from 'reactstrap';
 import Pagination from '../Shared/Pagination';
 import Transaction from '../Transactions/Transaction';
+import { PaymentService } from '../../api/Services/PaymentService';
 
 class Transactions extends React.Component {
   constructor() {
     super();
-    const exampleItems = [...Array(5)].map((i) => ({
+    const exampleItems = [...Array(1)].map((i) => ({
+      amount: i,
+      paymentMethodDetails: i,
+      orderItemName: i,
       date: i,
     }));
 
@@ -22,7 +26,10 @@ class Transactions extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ isLoading: false });
+    this.setState({ isLoading: true });
+    PaymentService.getTransactions().then((data) => {
+      this.setState({ exampleItems: data, isLoading: false });
+    });
   }
 
   onChangePage(pageOfItems) {
@@ -57,15 +64,7 @@ class Transactions extends React.Component {
             alignItems: 'center',
           }}
         >
-          <Col xs="6" sm="4"></Col>
-          <Col xs="6" sm="4">
-            <Spinner
-              className="d-lg-flex d-block h2"
-              style={{ width: '3rem', height: '3rem' }}
-              color="primary"
-            />
-          </Col>
-          <Col sm="4"></Col>
+          There's no previous transactions :(
         </Container>
       );
     return (
@@ -73,7 +72,12 @@ class Transactions extends React.Component {
         <div>
           <Table style={{ backgroundColor: 'transparent' }}>
             <thead>
-              <tr></tr>
+              <tr>
+                <th>Price</th>
+                <th>Card number</th>
+                <th>Product</th>
+                <th>Date</th>
+              </tr>
             </thead>
             {this.state.pageOfItems.map((item, i) => (
               <Transaction key={i} transaction={item} />
