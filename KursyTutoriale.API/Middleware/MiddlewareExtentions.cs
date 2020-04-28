@@ -8,5 +8,10 @@ namespace KursyTutoriale.API.Middleware
         {
             return builder.UseMiddleware<ExceptionHandling>();
         }
+
+        public static IApplicationBuilder UseUnitOfWorkHandling(this IApplicationBuilder builder)
+        {
+            return builder.UseMiddleware<UnitOfWorkHandling>();
+        }
     }
 }

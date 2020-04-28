@@ -152,7 +152,7 @@ namespace KursyTutoriale.Application.Services.CoursePublication
 
             courseProfile.InvalidateCode(code);
 
-            await unitOfWork.SaveChangesAsync();
+            //await unitOfWork.SaveChangesAsync();
         }
     }
 }
