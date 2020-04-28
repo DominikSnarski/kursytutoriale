@@ -21,6 +21,7 @@ function Payment(props) {
     '',
   );
   const [cvvErrorMessage, setCvvErrorMessage] = useState('');
+  const [addToList, setAddToList] = useState(false);
 
   const handleTextChange = () => {
     setNameErrorMessage('');
@@ -79,6 +80,12 @@ function Payment(props) {
     }
 
     if (
+      formData.get('cvv').ToString().length !== 3
+    ) {
+      setSurnameErrorMessage("CVV must contains 3 numbers. ");
+    }
+
+    if (
       formData.get('name') === '' ||
       formData.get('surname') === '' ||
       formData.get('numer1') === '' ||
@@ -106,6 +113,7 @@ function Payment(props) {
       formData.get('expirationDateMonth'),
       formData.get('expirationDateYear'),
       formData.get('cvv'),
+      addToList,
     ).then(() => {
       history.push(`/courseview/${courseId}`);
     });
@@ -268,7 +276,11 @@ function Payment(props) {
           <FormGroup className="mt-2" check>
             Add to my cards
             <Col>
-              <Input type="checkbox" />
+              <input
+                type="checkbox"
+                checked={addToList}
+                onClick={() => setAddToList(!addToList)}
+              />
             </Col>
           </FormGroup>
         </Row>
