@@ -136,6 +136,7 @@ namespace KursyTutoriale.API
             app.UseAuthorization();
 
             app.UseExceptionHandling();
+            app.UseUnitOfWorkHandling();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

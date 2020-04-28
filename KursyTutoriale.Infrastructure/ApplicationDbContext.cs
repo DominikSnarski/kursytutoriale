@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
+using KursyTutoriale.Domain.Entities.CoursePreview;
 
 namespace KursyTutoriale.Infrastructure
 {
@@ -33,6 +34,7 @@ namespace KursyTutoriale.Infrastructure
         public DbSet<UserAccountDate> UserAccountDates { get; set; }
         public DbSet<UserSignInDate> UserSignInDates { get; set; }
         public DbSet<PaymentCustomer> PaymentCustomers { get; set; }
+        public DbSet<CoursePreview> CoursePreviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -50,6 +52,7 @@ namespace KursyTutoriale.Infrastructure
             builder.ApplyConfiguration(new UserAccountDateConfiguration());
             builder.ApplyConfiguration(new UserSignInDateConfiguration());
             builder.ApplyConfiguration(new DiscountConfiguration());
+            builder.ApplyConfiguration(new CoursePreviewConfiguration());
 
             builder = PaymentMethodConfiguration.Configure(builder);
         }

@@ -24,23 +24,29 @@ namespace KursyTutoriale.API.Controllers
 
         [Authorize]
         [HttpPost("Publish")]
-        public async Task PublishCourse(Guid Id)
+        public IActionResult PublishCourse(Guid Id)
         {
-            await publicationService.PublishCourse(Id);
+            publicationService.PublishCourse(Id);
+
+            return Ok();
         }
 
         [Authorize]
         [HttpPost("PublishNewVersion")]
-        public async Task PublishNewCourseVersion(Guid Id)
+        public IActionResult PublishNewCourseVersion(Guid Id)
         {
-            await publicationService.PublishNewVersion(Id, true);
+            publicationService.PublishNewVersion(Id, true);
+
+            return Ok();
         }
 
         [Authorize]
         [HttpPost("AddPromotionCode")]
-        public async Task AddPromotionCode([FromQuery]Guid Id, [FromBody] DiscountConfigDto config)
+        public IActionResult AddPromotionCode([FromQuery]Guid Id, [FromBody] DiscountConfigDto config)
         {
-            await publicationService.AddPromotionCode(Id, config);
+            publicationService.AddPromotionCode(Id, config);
+
+            return Ok();
         }
 
 
@@ -61,9 +67,27 @@ namespace KursyTutoriale.API.Controllers
 
         [Authorize]
         [HttpPut("InvalidateCode")]
-        public async Task<IActionResult> InvalidateCode([FromQuery]Guid Id, [FromBody] CodeDto code)
+        public IActionResult InvalidateCode([FromQuery]Guid Id, [FromBody] CodeDto code)
         {
-            await publicationService.InvalidateCode(Id, code.Code);
+            publicationService.InvalidateCode(Id, code.Code);
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPost("AddLessonToPreview")]
+        public IActionResult AddLessonToPreview([FromQuery]Guid courseId, [FromBody] LessonPreviewRequest request)
+        {
+            publicationService.AddLessonToPreview(courseId, request.LessonId);
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpDelete("RemoveLessonFromPreview")]
+        public IActionResult RemoveLessonFromPreview([FromQuery]Guid courseId, [FromBody] LessonPreviewRequest request)
+        {
+            publicationService.RemoveLessonFromPreview(courseId, request.LessonId);
 
             return Ok();
         }

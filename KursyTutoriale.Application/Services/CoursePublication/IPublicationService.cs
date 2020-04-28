@@ -8,11 +8,13 @@ namespace KursyTutoriale.Application.Services.CoursePublication
 {
     public interface IPublicationService
     {
-        Task AddPromotionCode(Guid courseId, DiscountConfigDto config);
+        void AddLessonToPreview(Guid courseId, Guid lessonId);
+        void AddPromotionCode(Guid courseId, DiscountConfigDto config);
         List<DiscountCodeDto> GetCourseDiscountCodes(Guid courseId);
         int GetPriceWithDiscountCode(Guid courseId, string code);
-        Task InvalidateCode(Guid courseId, string code);
-        Task<CourseVersion> PublishCourse(Guid courseId);
-        Task<CourseVersion> PublishNewVersion(Guid courseId, bool isMajor);
+        void InvalidateCode(Guid courseId, string code);
+        CourseVersion PublishCourse(Guid courseId);
+        CourseVersion PublishNewVersion(Guid courseId, bool isMajor);
+        void RemoveLessonFromPreview(Guid courseId, Guid lessonId);
     }
 }

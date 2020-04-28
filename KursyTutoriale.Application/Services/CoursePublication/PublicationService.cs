@@ -1,5 +1,6 @@
 ﻿using KursyTutoriale.Application.Contracts;
 using KursyTutoriale.Application.DataTransferObjects.Payments;
+using KursyTutoriale.Domain.Entities.CoursePreview;
 using KursyTutoriale.Domain.Entities.CoursePublication;
 using KursyTutoriale.Domain.Entities.CoursePublication.Discounts;
 using KursyTutoriale.Domain.Factories.CoursePublication.Discounts;
@@ -11,34 +12,32 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Authentication;
-using System.Threading.Tasks;
-using URF.Core.Abstractions;
 
 namespace KursyTutoriale.Application.Services.CoursePublication
 {
     class PublicationService : IPublicationService
     {
         private IExtendedRepository<CoursePublicationProfile> profilesRepository;
+        private IExtendedRepository<CoursePreview> previewRepository;
         private IExecutionContextAccessor executionContextAccessor;
         private ICourseRepository coursesRepository;
-        private IUnitOfWork unitOfWork;
         private IDiscountCodeFactory discountCodeFactory;
 
         public PublicationService(
             IExtendedRepository<CoursePublicationProfile> profilesRepository,
             ICourseRepository coursesRepository,
-            IUnitOfWork unitOfWork,
             IExecutionContextAccessor executionContextAccessor,
-            IDiscountCodeFactory discountCodeFactory)
+            IDiscountCodeFactory discountCodeFactory, 
+            IExtendedRepository<CoursePreview> previewRepository)
         {
             this.profilesRepository = profilesRepository;
             this.coursesRepository = coursesRepository;
-            this.unitOfWork = unitOfWork;
             this.executionContextAccessor = executionContextAccessor;
             this.discountCodeFactory = discountCodeFactory;
+            this.previewRepository = previewRepository;
         }
 
-        public async Task<CourseVersion> PublishCourse(Guid courseId)
+        public CourseVersion PublishCourse(Guid courseId)
         {
             if (profilesRepository.Queryable().Any(p => p.CourseId == courseId))
                 throw new Exception($"Course: {courseId} already published");
@@ -57,12 +56,10 @@ namespace KursyTutoriale.Application.Services.CoursePublication
 
             profilesRepository.InsertAgreggate(newProfile);
 
-            var result = await unitOfWork.SaveChangesAsync();
-
             return newProfile.GetLatestVersion();
         }
 
-        public async Task<CourseVersion> PublishNewVersion(Guid courseId, bool isMajor)
+        public CourseVersion PublishNewVersion(Guid courseId, bool isMajor)
         {
             if (!profilesRepository.Queryable().Any(p => p.CourseId == courseId))
                 throw new Exception($"Course: {courseId} hasnt been published");
@@ -79,12 +76,10 @@ namespace KursyTutoriale.Application.Services.CoursePublication
 
             var newVersion = profile.PublishNewMajorVersion();
 
-            await unitOfWork.SaveChangesAsync();
-
             return newVersion;
         }
 
-        public async Task AddPromotionCode(Guid courseId, DiscountConfigDto config)
+        public void AddPromotionCode(Guid courseId, DiscountConfigDto config)
         {
             var courseProfile = profilesRepository
                 .Queryable()
@@ -96,8 +91,6 @@ namespace KursyTutoriale.Application.Services.CoursePublication
 
             var discountCode = discountCodeFactory.CreateDiscountCode(config.Code, config.Type, config.Amount);
             courseProfile.AddDiscountCode(discountCode);
-
-            await unitOfWork.SaveChangesAsync();
         }
 
         public List<DiscountCodeDto> GetCourseDiscountCodes(Guid courseId)
@@ -143,7 +136,7 @@ namespace KursyTutoriale.Application.Services.CoursePublication
             return courseProfile.GetPriceWithDiscount(code);
         }
 
-        public async Task InvalidateCode(Guid courseId, string code)
+        public void InvalidateCode(Guid courseId, string code)
         {
             var courseProfile = profilesRepository
                 .Queryable()
@@ -151,8 +144,46 @@ namespace KursyTutoriale.Application.Services.CoursePublication
                 .FirstOrDefault(profile => profile.CourseId == courseId);
 
             courseProfile.InvalidateCode(code);
+        }
 
-            await unitOfWork.SaveChangesAsync();
+        public void AddLessonToPreview(Guid courseId, Guid lessonId)
+        {
+            var course = coursesRepository.Find(courseId);
+
+            if(course is null)
+                throw new Exception("Course doesnt exist");
+
+            if(!course.Lessons.Any(lesson => lesson.Id == lessonId))
+                    throw new Exception("Lesson doesnt exist");
+
+            var preview = previewRepository
+                .Queryable()
+                .Include(cp => cp.LessonPreviews)
+                .FirstOrDefault(cp => cp.Id == courseId);
+
+            if (preview is null)
+            {
+                preview = new CoursePreview(courseId);
+                preview.AddToPreview(lessonId);
+                previewRepository.InsertAgreggate(preview);
+
+                return;
+            }
+
+            preview.AddToPreview(lessonId);
+        }
+
+        public void RemoveLessonFromPreview(Guid courseId, Guid lessonId)
+        {
+            var preview = previewRepository
+                .Queryable()
+                .Include(cp => cp.LessonPreviews)
+                .FirstOrDefault(cp => cp.Id == courseId);
+
+            if (preview is null)
+                throw new Exception("Course doesnt have preview");
+
+            preview.RemoveFromPreview(lessonId);
         }
     }
 }
