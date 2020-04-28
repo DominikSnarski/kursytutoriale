@@ -36,5 +36,12 @@ export const PaymentService = {
         .then((res) => resolve(res.data))
         .catch((error) => reject(error)),
     ),
+  getTransactions: () =>
+    new Promise((resolve, reject) =>
+      apiClient
+        .get(`/api/PaymentCustomer/GetTransactions`)
+        .then((res) => resolve(res.data))
+        .catch((error) => reject(error)),
+    ),
 };
 export default PaymentService;
