@@ -33,6 +33,9 @@ namespace KursyTutoriale.Infrastructure.Configuration.DataModels
                 config.ToTable("KTProgresses");
                 config.HasKey(o => o.Id);
             });
+
+            builder.HasMany(pp => pp.Discounts);
+
         }
     }
 }

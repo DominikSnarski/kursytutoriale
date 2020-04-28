@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace KursyTutoriale.API.Controllers
 {
     [Route("api/[controller]")]
@@ -21,7 +19,14 @@ namespace KursyTutoriale.API.Controllers
         [HttpPost("PayForCourseAccess")]
         public async Task PayForCourseAccess([FromQuery] Guid courseId, [FromBody] CreditCardInputDto creditCardDto)
         {
-            await transactionService.PayForCourseAccess(courseId, creditCardDto);
+            await transactionService.PayForCourseAccess(courseId, creditCardDto, creditCardDto.DiscountCode);
         }
+
+        [HttpPost("PayForCourseAccessId")]
+        public async Task PayForCourseAccessId([FromQuery] Guid courseId, [FromBody] CreditCardIdInputDto creditCardDto)
+        {
+            await transactionService.PayForCourseAccess(courseId, creditCardDto.CreditCardId, creditCardDto.DiscountCode);
+        }
+
     }
 }

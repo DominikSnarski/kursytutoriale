@@ -6,5 +6,6 @@ namespace KursyTutoriale.Application.Services.Payment
     public interface IPaymentCustomerService
     {
         List<CreditCardDto> GetCreditCards();
+        List<TransactionDto> GetTransations();
     }
 }

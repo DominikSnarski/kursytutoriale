@@ -34,39 +34,50 @@ namespace KursyTutoriale.Application.Services.Payment
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task PayForCourseAccess(Guid courseId, CreditCardInputDto creditCardDto)
+        public async Task PayForCourseAccess(Guid courseId, CreditCardInputDto creditCardDto, string discountCode)
         {
             await PayForCourseAccess(
                 courseId,
-                (userId) => paymentService.MakeCreditCardPayment(
+                (userId, amount) => paymentService.MakeCreditCardPayment(
                     userId,
                     creditCardDto.Number,
                     creditCardDto.ExpMonth,
                     creditCardDto.ExpYear,
-                    creditCardDto.CVV
+                    creditCardDto.CVV,
+                    amount
                     ),
-                (customer) => customer.AddCreditCardTransation(
+                (customer, amount) => customer.AddCreditCardTransation(
                     creditCardDto.Number,
                     creditCardDto.ExpMonth,
                     creditCardDto.ExpYear,
                     creditCardDto.OwnerFirstName,
-                    creditCardDto.OwnerLastName) 
+                    creditCardDto.OwnerLastName,
+                    amount,
+                    creditCardDto.AddCardToList
+                    ),
+                discountCode
                 );
         }
 
-        public async Task PayForCourseAccess(Guid courseId, Guid creditCardId)
+        public async Task PayForCourseAccess(Guid courseId, Guid creditCardId, string discountCode)
         {
             await PayForCourseAccess(
                 courseId,
-                (userId) => paymentService.MakeCreditCardPayment(
+                (userId, amount) => paymentService.MakeCreditCardPayment(
                     userId,
-                    creditCardId
+                    creditCardId,
+                    amount
                     ),
-                (customer) => customer.AddCreditCardTransation(creditCardId)
+                (customer, amount) => customer.AddCreditCardTransation(creditCardId, amount),
+                discountCode
                 );
         }
 
-        private async Task PayForCourseAccess(Guid courseId, Func<Guid, bool> paymentMethod, Action<PaymentCustomer> addTransactionMethod)
+        private async Task PayForCourseAccess(
+            Guid courseId,
+            Func<Guid, int, bool> paymentMethod,
+            Func<PaymentCustomer, int, Transaction> addTransactionMethod,
+            string code)
         {
             var courseProfile = courseProfileRepository
                 .Queryable()
@@ -83,7 +94,9 @@ namespace KursyTutoriale.Application.Services.Payment
             if (!courseProfile.CanJoin(userId))
                 throw new InvalidStateException("Cannot join course");
 
-            var success = paymentMethod(userId);
+            var price = courseProfile.GetPriceWithDiscount(code);
+
+            var success = paymentMethod(userId, price);
 
             if (!success)
                 throw new InvalidStateException("CreditCard payment failed");
@@ -97,10 +110,17 @@ namespace KursyTutoriale.Application.Services.Payment
                 customerRepository.InsertAgreggate(customer);
             }
 
-            addTransactionMethod(customer);
+            var transaction = addTransactionMethod(customer, price);
+            transaction.AddCourseAccess(courseProfile);
+
             courseProfile.AddParticipant(userId);
 
             await unitOfWork.SaveChangesAsync();
+        }
+
+        public void GetTransations()
+        {
+
         }
     }
 }

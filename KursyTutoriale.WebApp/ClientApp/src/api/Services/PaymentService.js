@@ -9,6 +9,7 @@ export const PaymentService = {
     expMonth,
     expYear,
     cvv,
+    addCardToList,
   ) => {
     return new Promise((resolve, reject) =>
       apiClient
@@ -21,6 +22,7 @@ export const PaymentService = {
             expMonth,
             expYear,
             cvv,
+            addCardToList,
           },
         )
         .then((resp) => resolve(resp))
