@@ -5,6 +5,7 @@ using KursyTutoriale.Application.DataTransferObjects.NewCourse.CourseEdit;
 using KursyTutoriale.Application.Services.CoursePublication;
 using KursyTutoriale.Domain.Entities.Course;
 using KursyTutoriale.Domain.Entities.Course.Events;
+using KursyTutoriale.Domain.Entities.CoursePreview;
 using KursyTutoriale.Domain.Entities.CoursePublication;
 using KursyTutoriale.Domain.Repositories;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
@@ -49,6 +50,7 @@ namespace KursyTutoriale.Application.Services
         private IDTOMapper mapper;
         private ICourseRepository courseRepository;
         private IExtendedRepository<CoursePublicationProfile> publicationRepository;
+        private IExtendedRepository<CoursePreview> previewRepository;
         private IExecutionContextAccessor executionContext;
         private IExtendedRepository<Rate> rateRepository;
         private ICourseProgressService progressService;
@@ -60,7 +62,8 @@ namespace KursyTutoriale.Application.Services
             ICourseRepository courseRepository,
             IExtendedRepository<CoursePublicationProfile> publicationRepository,
             IExtendedRepository<Rate> rateRepository,
-            ICourseProgressService progressService)
+            ICourseProgressService progressService,
+            IExtendedRepository<CoursePreview> previewRepository)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
@@ -69,6 +72,7 @@ namespace KursyTutoriale.Application.Services
             this.publicationRepository = publicationRepository;
             this.rateRepository = rateRepository;
             this.progressService = progressService;
+            this.previewRepository = previewRepository;
         }
 
 
@@ -109,9 +113,34 @@ namespace KursyTutoriale.Application.Services
 
             }
 
+            dto = MarkPreviewLessons(dto);
+
             return dto;
         }
         
+        private CourseDetailsDTO MarkPreviewLessons(CourseDetailsDTO courseDto)
+        {
+            var preview = previewRepository.Queryable().Include(p => p.LessonPreviews).FirstOrDefault(p => p.Id == courseDto.Id);
+
+            if (preview is null)
+                return courseDto;
+
+            var previewLessonsIds = preview.LessonPreviews.Select(l => l.LessonId).ToList();
+
+            courseDto.Modules.ForEach(m => 
+            {
+                m.Lessons.ForEach(l =>
+                {
+                    if (previewLessonsIds.Contains(l.Id))
+                        l.IsInPreview = true;
+                    else
+                        l.IsInPreview = false;
+                });
+            });
+
+            return courseDto;
+        }
+
         /// <summary>
         /// Used to get module details
         /// </summary>

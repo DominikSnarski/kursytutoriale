@@ -2,6 +2,7 @@
 using KursyTutoriale.Application.DataTransferObjects.Course;
 using KursyTutoriale.Application.Services;
 using KursyTutoriale.Domain.Entities.Course;
+using KursyTutoriale.Domain.Entities.CoursePreview;
 using KursyTutoriale.Domain.Entities.CoursePublication;
 using KursyTutoriale.Domain.Repositories;
 using KursyTutoriale.Infrastructure.Repositories.Interfaces;
@@ -24,7 +25,15 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
             var repositoryMock = new Mock<ICourseRepository>();
             repositoryMock.Setup(m => m.Queryable()).Returns(courseQuery);
 
-            var service = new CourseService(null, null, null, repositoryMock.Object, null,null,null);
+            var service = new CourseService(
+                null,
+                null,
+                null,
+                repositoryMock.Object,
+                null,
+                null,
+                null,
+                new Mock<IExtendedRepository<CoursePreview>>().Object);
 
             Assert.Throws<NullReferenceException>(()=>service.GetCourseDetails(Guid.Empty));
         }
@@ -57,7 +66,8 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
                 repositoryMock.Object,
                 new Mock<IExtendedRepository<CoursePublicationProfile>>().Object,
                 null,
-                null);
+                null,
+                new Mock<IExtendedRepository<CoursePreview>>().Object);
 
             //Act
             var details = service.GetCourseDetails(courseId);
@@ -98,7 +108,8 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
                 repositoryMock.Object,
                 new Mock<IExtendedRepository<CoursePublicationProfile>>().Object,
                 null,
-                null);
+                null,
+                new Mock<IExtendedRepository<CoursePreview>>().Object);
 
             //Act
             var details = service.GetCourseDetails(courseId);
@@ -133,7 +144,8 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
                 repositoryMock.Object,
                 profileMock.Object,
                 null,
-                null);
+                null,
+                new Mock<IExtendedRepository<CoursePreview>>().Object);
 
             //Act
             var details = service.GetCourseDetails(courseId);

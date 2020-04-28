@@ -74,5 +74,22 @@ namespace KursyTutoriale.API.Controllers
             return Ok();
         }
 
+        [Authorize]
+        [HttpPost("AddLessonToPreview")]
+        public IActionResult AddLessonToPreview([FromQuery]Guid courseId, [FromBody] LessonPreviewRequest request)
+        {
+            publicationService.AddLessonToPreview(courseId, request.LessonId);
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpDelete("RemoveLessonFromPreview")]
+        public IActionResult RemoveLessonFromPreview([FromQuery]Guid courseId, [FromBody] LessonPreviewRequest request)
+        {
+            publicationService.RemoveLessonFromPreview(courseId, request.LessonId);
+
+            return Ok();
+        }
     }
 }

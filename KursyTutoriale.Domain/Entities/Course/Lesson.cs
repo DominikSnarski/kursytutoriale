@@ -29,6 +29,7 @@ namespace KursyTutoriale.Domain.Entities.Course
         public string Title { get; private set; }
         public string Description { get; private set; }
         public int Index { get; set; }
+        public bool IsInPreview { get; set; }
         public List<LessonPart> Content { get; set; }
 
         public void AddPart(LessonPart lessonPart)

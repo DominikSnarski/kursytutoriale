@@ -1,5 +1,6 @@
 ﻿using KursyTutoriale.Application.Contracts;
 using KursyTutoriale.Application.DataTransferObjects.Payments;
+using KursyTutoriale.Domain.Entities.CoursePreview;
 using KursyTutoriale.Domain.Entities.CoursePublication;
 using KursyTutoriale.Domain.Entities.CoursePublication.Discounts;
 using KursyTutoriale.Domain.Factories.CoursePublication.Discounts;
@@ -11,13 +12,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Authentication;
-using URF.Core.Abstractions;
 
 namespace KursyTutoriale.Application.Services.CoursePublication
 {
     class PublicationService : IPublicationService
     {
         private IExtendedRepository<CoursePublicationProfile> profilesRepository;
+        private IExtendedRepository<CoursePreview> previewRepository;
         private IExecutionContextAccessor executionContextAccessor;
         private ICourseRepository coursesRepository;
         private IDiscountCodeFactory discountCodeFactory;
@@ -26,12 +27,14 @@ namespace KursyTutoriale.Application.Services.CoursePublication
             IExtendedRepository<CoursePublicationProfile> profilesRepository,
             ICourseRepository coursesRepository,
             IExecutionContextAccessor executionContextAccessor,
-            IDiscountCodeFactory discountCodeFactory)
+            IDiscountCodeFactory discountCodeFactory, 
+            IExtendedRepository<CoursePreview> previewRepository)
         {
             this.profilesRepository = profilesRepository;
             this.coursesRepository = coursesRepository;
             this.executionContextAccessor = executionContextAccessor;
             this.discountCodeFactory = discountCodeFactory;
+            this.previewRepository = previewRepository;
         }
 
         public CourseVersion PublishCourse(Guid courseId)
@@ -141,6 +144,46 @@ namespace KursyTutoriale.Application.Services.CoursePublication
                 .FirstOrDefault(profile => profile.CourseId == courseId);
 
             courseProfile.InvalidateCode(code);
+        }
+
+        public void AddLessonToPreview(Guid courseId, Guid lessonId)
+        {
+            var course = coursesRepository.Find(courseId);
+
+            if(course is null)
+                throw new Exception("Course doesnt exist");
+
+            if(!course.Lessons.Any(lesson => lesson.Id == lessonId))
+                    throw new Exception("Lesson doesnt exist");
+
+            var preview = previewRepository
+                .Queryable()
+                .Include(cp => cp.LessonPreviews)
+                .FirstOrDefault(cp => cp.Id == courseId);
+
+            if (preview is null)
+            {
+                preview = new CoursePreview(courseId);
+                preview.AddToPreview(lessonId);
+                previewRepository.InsertAgreggate(preview);
+
+                return;
+            }
+
+            preview.AddToPreview(lessonId);
+        }
+
+        public void RemoveLessonFromPreview(Guid courseId, Guid lessonId)
+        {
+            var preview = previewRepository
+                .Queryable()
+                .Include(cp => cp.LessonPreviews)
+                .FirstOrDefault(cp => cp.Id == courseId);
+
+            if (preview is null)
+                throw new Exception("Course doesnt have preview");
+
+            preview.RemoveFromPreview(lessonId);
         }
     }
 }
