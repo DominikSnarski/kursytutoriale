@@ -6,18 +6,15 @@ import {
   Card,
   CardBody,
   CardText,
+  Row,
+  Col,
 } from 'reactstrap';
 import Button from '../../layouts/CSS/Button/Button';
 import InputField from '../../layouts/CSS/InputField/InputField';
 import './style.css';
 
 function DiscountGenerator() {
-  const [discounts] = useState([
-    'elo',
-    'witam',
-    'dzien dobry',
-    'eluwina',
-  ]);
+  const [discounts] = useState(['elo', 'witam', 'dzien dobry', 'eluwina']);
   const [showDiscounts, setShowDiscounts] = useState(false);
 
   return (
@@ -31,12 +28,30 @@ function DiscountGenerator() {
               your course! Remember to write those codes down! Once you leave
               this page they will be gone!
             </CardText>
-            <InputField
-              type="number"
-              name="amount"
-              id="exampleText"
-              placeholder="How many codes should we generate?"
-            />
+            <Container className="mb-3">
+              <Row>
+
+                <Col>
+                  <InputField
+                    type="number"
+                    name="amount"
+                    id="exampleText"
+                    placeholder="How many codes should we generate..."
+                  />
+
+                </Col>
+
+                <Col>
+                <InputField
+                  type="number"
+                  name="amount"
+                  id="exampleText"
+                  placeholder="How big discount do you want to give..."
+                />
+                </Col>
+              </Row>
+            </Container>
+
             <Button
               text="generate"
               onClick={() => {
