@@ -80,6 +80,12 @@ function Payment(props) {
     }
 
     if (
+      formData.get('cvv').ToString().length !== 3
+    ) {
+      setSurnameErrorMessage("CVV must contains 3 numbers. ");
+    }
+
+    if (
       formData.get('name') === '' ||
       formData.get('surname') === '' ||
       formData.get('numer1') === '' ||
