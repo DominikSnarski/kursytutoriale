@@ -25,6 +25,7 @@ function NewCourse() {
   const [tags, setTags] = useState([]);
   const [title, setTitle] = useState();
   const [titleErrorMessage, setTitleErrorMessage] = useState('');
+  const [image, setImage] = useState('');
   const [tagsState, setTagsState] = useState({
     tagsList: [],
     inputValue: '',
@@ -82,6 +83,19 @@ function NewCourse() {
     });
   };
 
+  const getBase64 = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      setImage(reader.result);
+    };
+  };
+
+  const addImage = (event) => {
+    const file = event.target.files[0];
+    getBase64(file);
+  };
+
   const { error, tagsList, inputValue } = tagsState;
 
   const handleSubmit = (event) => {
@@ -99,6 +113,7 @@ function NewCourse() {
       tagsList,
       parseFloat(formData.get('price')),
       formData.get('title'),
+      image,
     ).then((response) => {
       history.push(`/courseview/${response.data}`);
     });
@@ -233,6 +248,31 @@ function NewCourse() {
                 </Col>
               </Row>
             </FormGroup>
+
+            <Row>
+              <Label sm={2} for="price">
+                Image (Optional){' '}
+              </Label>
+              <Col sm={10}>
+                <div className="input-group mb-3">
+                  <div className="custom-file">
+                    <input
+                      type="file"
+                      className="custom-file-input"
+                      id="inputGroupFile01"
+                      onChange={(event) => addImage(event)}
+                      aria-describedby="inputGroupFileAddon01"
+                    />
+                    <label
+                      className="custom-file-label"
+                      htmlFor="inputGroupFile01"
+                    >
+                      Add image
+                    </label>
+                  </div>
+                </div>
+              </Col>
+            </Row>
 
             <br />
 
