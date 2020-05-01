@@ -81,40 +81,38 @@ const UnverifiedCourseDetails = (props) => {
     );
   }
   return (
-    <Container>
-      <tbody>
-        <tr onClick={() => toggle()} style={{ cursor: 'pointer' }}>
-          <td>{props.course.title}</td>
-          <td>{props.course.date}</td>
-          <td>{props.course.id}</td>
-          <td>{props.course.ownerId}</td>
-          <td>{props.course.price}</td>
-        </tr>
-      </tbody>
-      <Collapse isOpen={isOpen}>
-        <Container>
-          <div>
+    <tbody>
+      <tr onClick={() => toggle()} style={{ cursor: 'pointer' }}>
+        <td>{props.course.title}</td>
+        <td>{props.course.date}</td>
+        <td>{props.course.id}</td>
+        <td>{props.course.ownerId}</td>
+        <td>{props.course.price}</td>
+      </tr>
+      <td colSpan="5">
+        <Collapse isOpen={isOpen}>
+          <Container>
             <CourseViewer
               course={course}
               rating={rating}
               id={props.course.id}
             />
-          </div>
-        </Container>
-        <td>
-          <Button onClick={() => handleButtonVerifyClick()}>Verify</Button>
-        </td>
-        <td>
-          <Button onClick={() => handleButtonRejectClick()}>Reject</Button>
-        </td>
-        <Input
-          id="VerifierCommentTextArea"
-          type="textarea"
-          style={{ height: 150 }}
-          placeholder="Reason for rejection"
-        />
-      </Collapse>
-    </Container>
+          </Container>
+          <td>
+            <Button onClick={() => handleButtonVerifyClick()}>Verify</Button>
+          </td>
+          <td>
+            <Button onClick={() => handleButtonRejectClick()}>Reject</Button>
+          </td>
+          <Input
+            id="VerifierCommentTextArea"
+            type="textarea"
+            style={{ height: 150 }}
+            placeholder="Reason for rejection"
+          />
+        </Collapse>
+      </td>
+    </tbody>
   );
 };
 
