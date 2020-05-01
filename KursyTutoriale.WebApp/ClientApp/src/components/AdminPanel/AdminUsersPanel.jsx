@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Fade } from 'react-reveal';
 import {
@@ -16,18 +15,17 @@ import UserDetails from './UserDetails';
 // import Pagination from '../Shared/Pagination';
 import { AdminService } from '../../api/Services/AdminService';
 
-
 class AdminUsersPanel extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-        listOfUsers: [],
-        numberOfUsers: 0,
-        isLoading: true,
-        error: false
-    }
-}
+      listOfUsers: [],
+      numberOfUsers: 0,
+      isLoading: true,
+      error: false,
+    };
+  }
 
   componentDidMount() {
     this.setState({ isLoading: true });
@@ -35,7 +33,6 @@ class AdminUsersPanel extends React.Component {
     AdminService.getUsersList().then((data) => {
       this.setState({ listOfUsers: data, isLoading: false });
     });
-
   }
 
   render() {
@@ -71,7 +68,7 @@ class AdminUsersPanel extends React.Component {
             <Table className="courses_bg">
               <thead>
                 <tr>
-                <th>UserName</th>
+                  <th>UserName</th>
                   <th>Email</th>
                   <th>Id</th>
                 </tr>
@@ -80,7 +77,6 @@ class AdminUsersPanel extends React.Component {
                 <UserDetails key={i} user={item} />
               ))}
             </Table>
-
           </div>
           <hr />
         </Fade>
