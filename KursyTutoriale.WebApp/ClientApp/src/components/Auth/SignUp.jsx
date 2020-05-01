@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link, useHistory } from 'react-router-dom';
 // eslint-disable-next-line
 import {
@@ -17,10 +17,41 @@ import AppRoutes from '../../routing/AppRoutes';
 
 const SignUp = () => {
   const history = useHistory();
+  const [errorMessageUser, setErrorMessageUser] = useState('');
+  const [errorMessagePass, setErrorMessagePass] = useState('');
+  const [errorMessageEmail, setErrorMessageEmail] = useState('');
+  const [isWrong, setIsWrong] = useState(false);
+  const passwordRegex = /(.{3,})/g;
+  const usernameRegex = /(\w{3,})/g;
+  const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}/g;
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
+
+    if (passwordRegex.exec(formData.get('password')) === null) {
+      setIsWrong(true);
+      setErrorMessagePass('Password must have at least 3 characters.');
+      return;
+    }
+
+    if (usernameRegex.exec(formData.get('name')) === null) {
+      setIsWrong(true);
+      setErrorMessageUser('Username must have at least 3 characters. Special characters are not allowed.');
+      return;
+    }
+
+    if (emailRegex.exec(formData.get('email')) === null) {
+      setIsWrong(true);
+      setErrorMessageEmail('Please enter correct email address.');
+      return;
+    }
+
+    if (isWrong) 
+    {
+      setIsWrong(false);
+      return;
+    }
 
     AuthService.createAccount(
       formData.get('name'),
@@ -50,6 +81,11 @@ const SignUp = () => {
                 placeholder="Enter your full name"
               />
             </FormGroup>
+            <Row>
+              <p style={{ color: 'red', marginTop: '-2%' }}>
+                {errorMessageUser}
+              </p>
+            </Row>
 
             <FormGroup>
               <Label for="exampleEmail">E-mail adress</Label>
@@ -60,6 +96,11 @@ const SignUp = () => {
                 placeholder="Enter your email"
               />
             </FormGroup>
+            <Row>
+              <p style={{ color: 'red', marginTop: '-2%' }}>
+                {errorMessageEmail}
+              </p>
+            </Row>
 
             <FormGroup>
               <Label for="examplePassword">Password</Label>
@@ -70,6 +111,11 @@ const SignUp = () => {
                 placeholder="Enter your password"
               />
             </FormGroup>
+            <Row>
+              <p style={{ color: 'red', marginTop: '-2%' }}>
+                {errorMessagePass}
+              </p>
+            </Row>
 
             <Row style={{ marginTop: 20 }}>
               <Col xs="auto">

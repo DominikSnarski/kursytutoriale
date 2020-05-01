@@ -45,7 +45,7 @@ function DiscountGenerator(props) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     result += id.substring(0, 5);
-    result += owner.substring(0, 4);
+    result += owner.substring(0, 3);
     result += course.substring(0, 3);
     for (let i = 0; i < length; i += 1) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));

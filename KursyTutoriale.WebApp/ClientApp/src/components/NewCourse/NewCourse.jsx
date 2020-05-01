@@ -25,6 +25,8 @@ function NewCourse() {
   const [tags, setTags] = useState([]);
   const [title, setTitle] = useState();
   const [titleErrorMessage, setTitleErrorMessage] = useState('');
+  const [errorMessageDesc, setErrorMessageDesc] = useState('');
+  const [errorMessagePrice, setErrorMessagePrice] = useState('');
   const [image, setImage] = useState('');
   const [tagsState, setTagsState] = useState({
     tagsList: [],
@@ -102,8 +104,21 @@ function NewCourse() {
     event.preventDefault();
     const formData = new FormData(event.target);
 
+    setTitleErrorMessage("");
+    setErrorMessageDesc("");
+    setErrorMessagePrice("");
+
+
     if (formData.get('title') === '') {
-      setTitleErrorMessage("Module title can't be empty");
+      setTitleErrorMessage("Title can't be empty");
+      return;
+    }
+    if (formData.get('description') === '') {
+      setErrorMessageDesc("Description can't be empty");
+      return;
+    }
+    if (formData.get('price') === '') {
+      setErrorMessagePrice("Price can't be empty");
       return;
     }
 
@@ -231,6 +246,9 @@ function NewCourse() {
                 </Col>
               </Row>
             </FormGroup>
+            <Row>
+              <p style={{ color: 'red', marginTop: '-2%' }}>{errorMessageDesc}</p>
+            </Row>
 
             <br />
             <FormGroup>
@@ -248,6 +266,9 @@ function NewCourse() {
                 </Col>
               </Row>
             </FormGroup>
+            <Row>
+              <p style={{ color: 'red', marginTop: '-2%' }}>{errorMessagePrice}</p>
+            </Row>
 
             <Row>
               <Label sm={2} for="price">
