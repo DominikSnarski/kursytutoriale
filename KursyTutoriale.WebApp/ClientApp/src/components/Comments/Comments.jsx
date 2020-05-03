@@ -44,19 +44,26 @@ class Comments extends React.Component {
     // an example array of items to be paged
     // bind function in constructor instead of render
     this.onChangePage = this.onChangePage.bind(this);
-    this.toggle = this.toggle.bind(this);
     this.formRef = React.createRef();
     this.formReset = this.formReset.bind(this);
     this.sendComment = this.sendComment.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
   }
 
-  toggleModal() {
-    this.setState({ isModalOpen: !this.state.isModalOpen });
+  loadContent() {
+    this.setState({ isLoading: true });
+    CommentService.getComments(this.props.courseId).then(({ data }) => {
+      this.setState({ pageOfItems: data, exampleItems: data });
+      this.setState({ isLoading: false });
+    });
   }
 
   componentDidMount() {
-    this.setState({ isLoading: false });
+    this.loadContent();
+  }
+
+  toggleModal() {
+    this.setState({ isModalOpen: !this.state.isModalOpen });
   }
 
   onChangePage(pageOfItems) {
@@ -64,19 +71,12 @@ class Comments extends React.Component {
     this.setState({ pageOfItems });
   }
 
-  toggle(id) {
-    this.setState({
-      showDetails: !this.state.showDetails,
-      courseID: id,
-    });
-  }
-
   sendComment = (event) => {
     event.preventDefault();
 
     // const newComment = {content: this.state.comment, courseId: this.props.courseID}
 
-    CommentService.addComment(this.state.comment, this.props.courseID);
+    CommentService.addComment(this.state.comment, this.props.courseId);
     this.setState({ comment: '' });
   };
 
@@ -155,7 +155,11 @@ class Comments extends React.Component {
               </thead>
               {this.state.pageOfItems.map((item, i) => (
                 <div key={i}>
-                  <Comment key={i} comment={item} ownerId={this.props.ownerId}/>
+                  <Comment
+                    key={i}
+                    comment={item}
+                    ownerId={this.props.ownerId}
+                  />
                   <Container>
                     <Button
                       text="Report"
@@ -171,7 +175,12 @@ class Comments extends React.Component {
 
               {this.state.pageOfItems.length <= 0 && (
                 <Container>
-                  <Card fluid outline style={{ borderColor: '#ffb606' }} className="text-center">
+                  <Card
+                    fluid
+                    outline
+                    style={{ borderColor: '#ffb606' }}
+                    className="text-center"
+                  >
                     <CardBody style={{ backgroundColor: '#f5dfae' }}>
                       <CardText style={{ color: 'black' }}>
                         There are no comments here. Be the first one!
