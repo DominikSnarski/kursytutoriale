@@ -96,7 +96,7 @@ const UserProfile = () => {
     );
   }
   if (edit) {
-    return <EditProfile />;
+    return <EditProfile onEditEnd={() => setEdit(false)} />;
   }
   return (
     <div>
@@ -108,7 +108,7 @@ const UserProfile = () => {
                 <Container>
                   <Row>
                     <Media
-                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      src={user.avatarPath}
                       style={{ width: '100%', height: '100%' }}
                       alt="Generic placeholder image"
                     />
@@ -229,40 +229,43 @@ const UserProfile = () => {
                           </NavLink>
                         </NavItem>
                         <NavItem className="tabItem">
-                        {userid == userContext.userid && (<NavLink
-                            className={classnames({
-                              active: activeTab === '3',
-                            })}
-                            onClick={() => {
-                              toggle('3');
-                            }}
-                          >
-                            <l className="stats">
-                              <span role="img" aria-label="billing">
-                              💳
-                              </span>{' '}
-                              Billing History
-                            </l>
-                          </NavLink>)}
+                          {userid == userContext.userid && (
+                            <NavLink
+                              className={classnames({
+                                active: activeTab === '3',
+                              })}
+                              onClick={() => {
+                                toggle('3');
+                              }}
+                            >
+                              <l className="stats">
+                                <span role="img" aria-label="billing">
+                                  💳
+                                </span>{' '}
+                                Billing History
+                              </l>
+                            </NavLink>
+                          )}
                         </NavItem>
                         <NavItem className="tabItem">
-                        {userid == userContext.userid && (<NavLink
-                            className={classnames({
-                              active: activeTab === '4',
-                            })}
-                            onClick={() => {
-                              toggle('4');
-                            }}
-                          >
-                            <l className="stats">
-                              <span role="img" aria-label="cards">
-                              💲
-                              </span>{' '}
-                              User Cards
-                            </l>                                                  
-                          </NavLink>)}
+                          {userid == userContext.userid && (
+                            <NavLink
+                              className={classnames({
+                                active: activeTab === '4',
+                              })}
+                              onClick={() => {
+                                toggle('4');
+                              }}
+                            >
+                              <l className="stats">
+                                <span role="img" aria-label="cards">
+                                  💲
+                                </span>{' '}
+                                User Cards
+                              </l>
+                            </NavLink>
+                          )}
                         </NavItem>
-
                       </Nav>
                       <TabContent activeTab={activeTab}>
                         <TabPane tabId="1" className="about">
@@ -277,16 +280,13 @@ const UserProfile = () => {
                           </a>
                         </TabPane>
                         <TabPane tabId="3" className="billing">
-                        {userid == userContext.userid && (
-                          <Transactions></Transactions>
-                        )}
+                          {userid == userContext.userid && (
+                            <Transactions></Transactions>
+                          )}
                         </TabPane>
                         <TabPane tabId="4" className="cards">
-                        {userid == userContext.userid && (
-                          <Cards></Cards>
-                        )}
+                          {userid == userContext.userid && <Cards></Cards>}
                         </TabPane>
-
                       </TabContent>
                     </Container>
                   </Row>

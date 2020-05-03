@@ -17,6 +17,9 @@ import {
   TabContent,
   TabPane,
 } from 'reactstrap';
+import { UserService } from '../../api/Services/UserService';
+
+import FileHelper from '../../utils/FileHelper';
 import './style.css';
 
 class EditProfile extends React.Component {
@@ -36,9 +39,20 @@ class EditProfile extends React.Component {
       slider_val3: '',
       slider_val4: '',
       slider_val5: '',
+      imageDataUrl: '',
     };
     this.toggle = this.toggle.bind(this);
   }
+
+  updateProfile = () => {
+    UserService.updateUserProfile(
+      this.state.name_value,
+      this.state.site_value,
+      this.state.age_value,
+      '',
+      this.state.imageDataUrl,
+    ).then(() => this.props.onEditEnd());
+  };
 
   toggle(tab) {
     if (this.state.activeTab !== tab) this.setState({ activeTab: tab });
@@ -122,7 +136,15 @@ class EditProfile extends React.Component {
                     style={{ width: '100%', height: '100%' }}
                     alt="Generic placeholder image"
                   />
-                  <CustomInput type="file" label="Pick a file!" />
+                  <CustomInput
+                    type="file"
+                    label="Pick a file!"
+                    onChange={(event) =>
+                      FileHelper.getBase64(event.target.files[0], (result) =>
+                        this.setState({ imageDataUrl: result }),
+                      )
+                    }
+                  />
                   <hr width="100%"></hr>
                 </Row>
                 <Row>
@@ -196,7 +218,12 @@ class EditProfile extends React.Component {
                       <p className="text-primary">{this.state.type}</p>
                     </Col>
                     <Col>
-                      <Button color="primary" outline className="float-right">
+                      <Button
+                        color="primary"
+                        outline
+                        className="float-right"
+                        onClick={() => this.updateProfile()}
+                      >
                         Save profile
                       </Button>
                     </Col>

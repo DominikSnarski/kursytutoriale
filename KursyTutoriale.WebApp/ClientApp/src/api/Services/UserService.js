@@ -11,6 +11,21 @@ export const UserService = {
   getUserProfileById: (id) => {
     return apiClient.get(`/getProfileById?id=${id}`);
   },
+  updateUserProfile: (
+    name,
+    siteLink,
+    age,
+    profileDescription,
+    imageDataUrl,
+  ) => {
+    return apiClient.put(`/updateProfile`, {
+      name,
+      siteLink,
+      age,
+      profileDescription,
+      imageDataUrl,
+    });
+  },
 };
 
 export default UserService;
