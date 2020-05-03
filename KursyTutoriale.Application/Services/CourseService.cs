@@ -88,7 +88,7 @@ namespace KursyTutoriale.Application.Services
             var result = courseRepository.Find(courseId, DateTime.UtcNow);
 
             if (result == null)
-                throw new NullReferenceException("Error 1000! GetCourseDetail service returned null");
+                throw new NullReferenceException("Course doesnt exist");
 
             var courseReadModel = mapper.Map<CourseReadModel>(result);
             var dto = mapper.Map<CourseDetailsDTO>(courseReadModel);
