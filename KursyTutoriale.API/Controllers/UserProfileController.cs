@@ -20,9 +20,9 @@ namespace KursyTutoriale.API.Controllers
         }
 
         [HttpPut("/updateProfile")]
-        public async Task UpdateProfile([FromBody]UpdateUserProfileDto request)
+        public void UpdateProfile([FromBody]UpdateUserProfileDto request)
         {
-            await profileService.UpdateProfile(request);
+            profileService.UpdateProfile(request);
         }
 
         [HttpGet("/getProfile")]
