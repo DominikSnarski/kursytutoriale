@@ -23,7 +23,6 @@ namespace KursyTutoriale.API.Controllers
             this.courseService = courseService;
         }
 
-
         /// <summary>
         /// Used to get details of course.
         /// </summary>

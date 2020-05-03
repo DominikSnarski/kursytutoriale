@@ -41,7 +41,7 @@ namespace KursyTutoriale.API.Controllers
                 var result = await accountManager.CreateAccount(request);
 
                 if (!result.Succeeded)
-                    return StatusCode(400, ResponseHelper.GetErrorMessage(result.Errors.Select(e => e.Description)));
+                    throw new Exception(ResponseHelper.GetErrorMessage(result.Errors.Select(e => e.Description)));
 
                 return Ok();
             }

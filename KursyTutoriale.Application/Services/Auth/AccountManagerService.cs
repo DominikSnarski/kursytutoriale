@@ -39,7 +39,6 @@ namespace KursyTutoriale.Infrastructure
         {
             var user = new ApplicationUser { UserName = request.Username, Email = request.Email };
             
-
             var userProfile = new UserProfile(user.Id);
             userProfile.Username = user.UserName;
 
