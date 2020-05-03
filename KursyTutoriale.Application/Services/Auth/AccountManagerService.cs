@@ -45,6 +45,10 @@ namespace KursyTutoriale.Infrastructure
             user.UserProfileId = userProfile.Id;
 
             var result = await userManager.CreateAsync(user, request.Password);
+
+            if (!result.Succeeded)
+                return result;
+
             await userManager.AddToRoleAsync(user, "User");
 
             userProfileRepository.Insert(userProfile);

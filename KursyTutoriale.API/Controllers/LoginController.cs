@@ -4,6 +4,7 @@ using KursyTutoriale.Application.DataTransferObjects.Auth;
 using KursyTutoriale.Application.Services.Auth;
 using KursyTutoriale.Application.Services.Statistics;
 using KursyTutoriale.Infrastructure;
+using KursyTutoriale.Shared.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -41,7 +42,7 @@ namespace KursyTutoriale.API.Controllers
                 var result = await accountManager.CreateAccount(request);
 
                 if (!result.Succeeded)
-                    throw new Exception(ResponseHelper.GetErrorMessage(result.Errors.Select(e => e.Description)));
+                    throw new InvalidStateException(ResponseHelper.GetErrorMessage(result.Errors.Select(e => e.Description)));
 
                 return Ok();
             }
