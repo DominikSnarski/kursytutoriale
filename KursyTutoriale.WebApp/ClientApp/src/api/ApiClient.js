@@ -83,6 +83,12 @@ apiClient.interceptors.response.use(
     return new Promise((resolve, reject) => {
       const accessToken = localStorage.getItem('access_token');
       const refreshToken = localStorage.getItem('refresh_token');
+
+      if (!accessToken || !refreshToken) {
+        apiClient.logout();
+        resolve(false);
+      }
+
       const username = jwtDecode(accessToken).sub;
 
       apiClient.refreshRequestSent = true;
