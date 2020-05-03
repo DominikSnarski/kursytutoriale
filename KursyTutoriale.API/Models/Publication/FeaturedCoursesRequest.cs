@@ -2,9 +2,9 @@
 
 namespace KursyTutoriale.API.Models.Publication
 {
-    public class CodeDto
+    public class FeaturedCoursesRequest
     {
-        [Required]
-        public string Code { get; set; }
+        [Range(0,1000)]
+        public int CategoryCount { get; set; }
     }
 }

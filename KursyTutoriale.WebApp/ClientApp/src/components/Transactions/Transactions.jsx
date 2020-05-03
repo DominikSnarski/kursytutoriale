@@ -64,7 +64,7 @@ class Transactions extends React.Component {
             alignItems: 'center',
           }}
         >
-          There&apos;s no previous transactions :(
+          There is no previous transactions :(
         </Container>
       );
     return (

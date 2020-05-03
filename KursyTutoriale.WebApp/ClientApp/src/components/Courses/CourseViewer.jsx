@@ -33,6 +33,7 @@ const CourseViewer = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const course = { ...props.course };
   const [rating, setRating] = useState(0);
+
   useEffect(() => {
     if (!isLoading) {
       setIsLoading(true);
@@ -208,7 +209,9 @@ const CourseViewer = (props) => {
         <Row className="d-flex justify-content-center mb-2">
           Your progress into this course.
         </Row>
-        <Progress color="warning" value={course.progress} className="mb-4" />
+        {userContext.authenticated && (
+          <Progress color="warning" value={course.progress} className="mb-4" />
+        )}
 
         <br />
         <Row>
@@ -317,7 +320,7 @@ const CourseViewer = (props) => {
       />
 
       <Comments
-        courseID={props.id}
+        courseId={props.id}
         comments={props.comments}
         ownerId={course.ownerId}
       />

@@ -23,9 +23,9 @@ namespace KursyTutoriale.API.Controllers
         }
 
         [HttpPost("AddComment")]
-        public async Task AddComment([FromBody] AddCommentModel comment)
+        public async Task AddComment([FromQuery] Guid courseId, [FromBody] AddCommentModel comment)
         {
-           await commentService.AddComment(comment.Content, comment.CourseId);
+           await commentService.AddComment(comment.Content, courseId);
         }
 
         [HttpPut("EnableComments")]
@@ -36,7 +36,7 @@ namespace KursyTutoriale.API.Controllers
 
         [AllowAnonymous]
         [HttpGet("GetComments")]
-        public List<CommentDTO> GetComments(Guid courseId)
+        public List<CommentDTO> GetComments([FromQuery] Guid courseId)
         {
             return commentService.GetComments(courseId);
         }

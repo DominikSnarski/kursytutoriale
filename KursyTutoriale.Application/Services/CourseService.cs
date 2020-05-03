@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using URF.Core.Abstractions;
 
@@ -33,7 +34,7 @@ namespace KursyTutoriale.Application.Services
         int GetNumberOfCourses();
         List<CourseBasicInformationsDTO> GetPagesOfCoursesFiltered(int firstPageNumber, int lastPageNumber, int pageSize,
             bool isDescending, float lowestPrice, float ?highestPrice, ICollection<Guid> tags);
-        FeaturedCoursesDTO getFeaturesCourses(int numberInEachCategory);
+        FeaturedCoursesDTO GetFeaturedCourses(int numberInEachCategory);
         CourseReadModel GetCourse(Guid id);
         IEnumerable<CourseBasicInformationsDTO> GetUsersCourses(Guid UserId);
         IEnumerable<CourseBasicInformationsDTO> GetCoursesForVerification(int NrOfCourses);
@@ -88,7 +89,7 @@ namespace KursyTutoriale.Application.Services
             var result = courseRepository.Find(courseId, DateTime.UtcNow);
 
             if (result == null)
-                throw new NullReferenceException("Error 1000! GetCourseDetail service returned null");
+                throw new NullReferenceException("Course doesnt exist");
 
             var courseReadModel = mapper.Map<CourseReadModel>(result);
             var dto = mapper.Map<CourseDetailsDTO>(courseReadModel);
@@ -372,68 +373,38 @@ namespace KursyTutoriale.Application.Services
             return query;
         }
 
-        /// <summary>
-        /// Used to get the featured courses, contains: Recently Updated, New Popular, Now Popular, Discover
-        /// </summary>
-        /// <param name="numberInEachCategory">a number of courses in each cathegory</param>
-        /// <returns>
-        /// the object containing the lists of featured courses
-        /// </returns>
-        public FeaturedCoursesDTO getFeaturesCourses(int numberInEachCategory)
+        public FeaturedCoursesDTO GetFeaturedCourses(int numberInEachCategory)
         {
-            // number of days for a course to be published in to still be relevant in the context of this service
-            int daysRelevant = 7;
-            var query = courseRepository.Queryable();
-            if(query.Count() < numberInEachCategory) return null;
-            FeaturedCoursesDTO featuredCourses = new FeaturedCoursesDTO();
+            var topRatedCourses = GetCoursesByProfileProperty(pp => pp.Rating, false, numberInEachCategory);
+            var mostPopularCourses = GetCoursesByProfileProperty(pp => pp.Popularity, false, numberInEachCategory);
 
-            List<CourseBasicInformationsDTO> newPopular = new List<CourseBasicInformationsDTO>();
-            foreach(var course in query
-            //Take all courses that have been realesed in the relevant period of days
-                .Where(course => DateTime.Compare(course.Date.AddDays(daysRelevant), DateTime.Today) >= 0)
-                .OrderByDescending(course => course.Popularity)
-                .ThenBy(course => course.Rating)
-                .Take(numberInEachCategory))
+            return new FeaturedCoursesDTO
             {
-                newPopular.Add(mapper.Map<CourseBasicInformationsDTO>(course));
-            }
-            featuredCourses.NewPopular = newPopular;
+                TopRated = mapper.Map<List<CoursePageItemDTO>>(topRatedCourses),
+                MostPopular = mapper.Map<List<CoursePageItemDTO>>(mostPopularCourses)
+            };
+        }
 
-            List<CourseBasicInformationsDTO> recentlyUpdated = new List<CourseBasicInformationsDTO>();
-            foreach (var course in query
-            //Take all courses that's last edit have had happened in the last relevant period of days
-                .Where(course => DateTime.Compare(course.Date.AddDays(daysRelevant), DateTime.Today) <= 0 &&
-                DateTime.Compare(course.DateOfLastEdit.AddDays(daysRelevant), DateTime.Today) >= 0)
-                .OrderByDescending(course => course.Popularity)
-                .ThenBy(course => course.Rating)
-                .Take(numberInEachCategory))
-            {
-                recentlyUpdated.Add(mapper.Map<CourseBasicInformationsDTO>(course));
-            }
-            featuredCourses.RecentlyUpdated = recentlyUpdated;
+        private List<CourseReadModel> GetCoursesByProfileProperty<TProperty>(Expression<Func<CoursePublicationProfile, TProperty>> orderByProperty, bool asc, int take)
+        {
+            var ids = asc ?
+                publicationRepository
+                .Queryable()
+                .OrderBy(orderByProperty)
+                .Take(take)
+                .Select(pp => pp.CourseId)
+                .ToList() :
+                publicationRepository
+                .Queryable()
+                .OrderByDescending(orderByProperty)
+                .Take(take)
+                .Select(pp => pp.CourseId)
+                .ToList();
 
-            List<CourseBasicInformationsDTO> nowPopular = new List<CourseBasicInformationsDTO>();
-            foreach (var course in query
-                .OrderByDescending(course => course.Popularity)
-                .ThenBy(course => course.Rating)
-                .Take(numberInEachCategory))
-            {
-                nowPopular.Add(mapper.Map<CourseBasicInformationsDTO>(course));
-            }
-            featuredCourses.NowPopular = nowPopular;
-
-            List<CourseBasicInformationsDTO> discover = new List<CourseBasicInformationsDTO>();
-            foreach (var course in query
-            //Take all courses that have been realesed in the relevant period of days
-                .Where(course => DateTime.Compare(course.Date.AddDays(daysRelevant), DateTime.Today) >= 0)
-                .OrderBy(course => course.Popularity)
-                .Take(numberInEachCategory))
-            {
-                discover.Add(mapper.Map<CourseBasicInformationsDTO>(course));
-            }
-            featuredCourses.Discover = discover;
-
-            return featuredCourses;
+            return courseRepository
+                .Queryable()
+                .Where(c => ids.Contains(c.Id))
+                .ToList();
         }
 
         /// <summary>
@@ -531,11 +502,14 @@ namespace KursyTutoriale.Application.Services
 
                 var newRating = query.Where(r => r.CourseId == CourseId).Average(r => r.Rating);
 
-                var query1 = publicationRepository.Queryable();
-                var course = query1.Where(c => c.CourseId == CourseId).FirstOrDefault();
-                if (course != null)
+                var coursePublicationProfile = publicationRepository
+                    .Queryable()
+                    .Where(c => c.CourseId == CourseId)
+                    .FirstOrDefault();
+
+                if (coursePublicationProfile != null)
                 {
-                 course.Rating = newRating;
+                 coursePublicationProfile.Rating = newRating;
                 }
                 await unitOfWork.SaveChangesAsync();
             
