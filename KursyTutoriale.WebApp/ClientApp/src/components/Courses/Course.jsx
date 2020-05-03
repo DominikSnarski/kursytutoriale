@@ -34,11 +34,12 @@ const Course = (props) => {
         setCourse(response.data);
         setRating(response.data.rating);
         setCourseLoaded(true);
-        
+
         CourseService.incrementViewCount(match.params.id);
         if (
           userContext.userid === response.data.ownerId ||
-          userContext.userRoles.includes('Admin')
+          (userContext.userRoles !== undefined &&
+            userContext.userRoles.includes('Admin'))
         ) {
           setParticipation(true);
         } else {
@@ -78,7 +79,7 @@ const Course = (props) => {
       </Row>
     );
   }
-  
+
   return (
     <Container>
       {userContext !== undefined &&

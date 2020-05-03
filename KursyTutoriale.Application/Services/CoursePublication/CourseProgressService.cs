@@ -101,7 +101,11 @@ namespace KursyTutoriale.Application.Services.CoursePublication
         {
             int progress = 0;
 
-            var userId = executionContextAccessor.GetUserId();
+            Guid userId;
+            var userAuthenticated = executionContextAccessor.TryGetUserId(out userId);
+            if (!userAuthenticated)
+                return 0;
+
             if (userId.Equals(profile.OwnerId)) progress = 100;
             else if (!profile.Participants.Any(o => o.UserId == userId)) progress = 0;
             else

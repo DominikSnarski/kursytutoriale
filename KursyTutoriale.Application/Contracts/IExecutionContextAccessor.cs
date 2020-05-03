@@ -7,5 +7,6 @@ namespace KursyTutoriale.Application.Contracts
     {
         Guid GetUserId();
         IEnumerable<string> GetUserRoles();
+        bool TryGetUserId(out Guid userId);
     }
 }
