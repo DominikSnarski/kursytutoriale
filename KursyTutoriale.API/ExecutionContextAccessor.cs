@@ -30,6 +30,20 @@ namespace KursyTutoriale.API
             return Guid.Parse(userId.Value);
         }
 
+        public bool TryGetUserId(out Guid userId)
+        {
+            try
+            {
+                userId = GetUserId();
+                return true;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                userId = Guid.Empty;
+                return false;
+            }
+        }
+
         public IEnumerable<string> GetUserRoles()
         {
             var userRoles = httpContext
