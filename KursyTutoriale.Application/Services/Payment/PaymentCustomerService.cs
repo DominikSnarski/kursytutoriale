@@ -42,6 +42,15 @@ namespace KursyTutoriale.Application.Services.Payment
             return mapper.Map<List<CreditCardDto>>(creditCards);
         }
 
+        public void DeleteCreditCard(Guid creditCardId)
+        {
+            var userId = executionContextAccessor.GetUserId();
+
+            var customer = customerRepository.Queryable().Include(c => c.CreditCards).FirstOrDefault(c => c.UserId == userId);
+
+            customer.DeleteCreditCard(creditCardId);
+        }
+
         public List<TransactionDto> GetTransations()
         {
             var userId = executionContextAccessor.GetUserId();
