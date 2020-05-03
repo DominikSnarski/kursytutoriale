@@ -16,6 +16,13 @@ namespace KursyTutoriale.Domain.Entities.Payments
             ExpYear = expYear;
             OwnerFirstName = ownerFirstName;
             OwnerLastName = ownerLastName;
+
+            IsDeleted = false;
+        }
+
+        public void Delete()
+        {
+            IsDeleted = true;
         }
 
         public Guid Id { get; private set; }
@@ -24,5 +31,6 @@ namespace KursyTutoriale.Domain.Entities.Payments
         public int ExpYear { get; private set; }
         public string OwnerFirstName { get; set; }
         public string OwnerLastName { get; set; }
+        public bool IsDeleted { get; private set; }
     }
 }

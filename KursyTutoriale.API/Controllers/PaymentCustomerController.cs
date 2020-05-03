@@ -2,6 +2,7 @@
 using KursyTutoriale.Application.Services.Payment;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -30,6 +31,13 @@ namespace KursyTutoriale.API.Controllers
         public IEnumerable<TransactionDto> GetTransactions()
         {
             return paymentCustomerService.GetTransations();
+        }
+
+        [Authorize]
+        [HttpDelete("DeleteCreditCard")]
+        public void DeleteCreditCard([FromQuery]Guid creditCardId)
+        {
+            paymentCustomerService.DeleteCreditCard(creditCardId);
         }
     }
 }

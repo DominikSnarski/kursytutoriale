@@ -60,5 +60,15 @@ namespace KursyTutoriale.Domain.Entities.Payments
 
             return transaction;
         }
+
+        public void DeleteCreditCard(Guid id)
+        {
+            var creditCard = creditCards.FirstOrDefault(cc => cc.Id == id);
+
+            if (creditCard is null)
+                throw new InvalidStateException("User doesnt own this credit card");
+
+            creditCard.Delete();    
+        }
     }
 }

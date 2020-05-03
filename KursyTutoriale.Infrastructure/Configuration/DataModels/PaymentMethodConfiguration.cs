@@ -19,6 +19,7 @@ namespace KursyTutoriale.Infrastructure.Configuration.DataModels
             var creditCardBuilder = modelBuilder.Entity<CreditCard>();
             creditCardBuilder.ToTable("KTCreditCard");
             creditCardBuilder.HasKey(cc => cc.Id);
+            creditCardBuilder.HasQueryFilter(cc => !cc.IsDeleted);
 
             var creditCardPaymentBuilder = modelBuilder.Entity<CreditCardPayment>();
             creditCardPaymentBuilder.HasOne(ccp => ccp.CreditCard);
