@@ -6,7 +6,6 @@ import {
   Container,
   FormGroup,
   Form,
-  FormFeedback,
   Input,
   Row,
   Progress,
@@ -26,7 +25,12 @@ function LessonEdit(props) {
   const history = useHistory();
   const [lessonTitle, setLessonTitle] = useState(props.location.state.title);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [uploadingMessage, setUploadingMessage] = useState(((100.0 * 50) / 400).toString());
+  const regex = /(\w{1,})/g;
+  const [uploadingMessage, setUploadingMessage] = useState(
+    ((100.0 * 50) / 400).toString(),
+  );
+  const [errorMessageTitle, setErrorMessageTitle] = useState('');
+  const [erorrMessageDesc, setErrorMessageDesc] = useState('');
   const [lessonDescription, setLessonDescription] = useState(
     props.location.state.description,
   );
@@ -82,7 +86,9 @@ function LessonEdit(props) {
     const xhr = new XMLHttpRequest();
 
     xhr.upload.onprogress = (evt) => {
-      setUploadingMessage((parseInt((100.0 * evt.loaded) / evt.total, 10)).toString());
+      setUploadingMessage(
+        parseInt((100.0 * evt.loaded) / evt.total, 10).toString(),
+      );
       setUploadProgress(parseInt((100.0 * evt.loaded) / evt.total, 10));
     };
 
@@ -138,8 +144,18 @@ function LessonEdit(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
     const formData = new FormData(event.target);
+
+    if (regex.exec(formData.get('title')) === null) {
+      setErrorMessageTitle('Title cannot be empty');
+      return;
+    }
+    
+    if (regex.exec(formData.get('description')) === null) {
+      setErrorMessageDesc('Description cannot be empty');
+      return;
+    }
+
     if (!props.location.state.isEdited) {
       LessonService.addLesson(
         props.location.state.courseid,
@@ -182,8 +198,10 @@ function LessonEdit(props) {
                     setLessonTitle(event.target.value);
                   }}
                 />
-                <FormFeedback valid>Sweet! that name is available</FormFeedback>
               </FormGroup>
+              <Row>
+                <p style={{ color: 'red', marginTop: '-2%' }}>{errorMessageTitle}</p>
+              </Row>
             </Zoom>
 
             <Zoom left duration={200}>
@@ -198,9 +216,15 @@ function LessonEdit(props) {
               />
             </Zoom>
 
+            <Row>
+              <p style={{ color: 'red', marginTop: '-2%' }}>{erorrMessageDesc}</p>
+            </Row>
+
             <h4>Lesson content</h4>
             {uploadProgress > 0 && uploadProgress < 100 && (
-                  <Progress className="mb-3" color="warning" value={uploadProgress}>{uploadingMessage}%</Progress>
+              <Progress className="mb-3" color="warning" value={uploadProgress}>
+                {uploadingMessage}%
+              </Progress>
             )}
 
             {items.length === 0 && (

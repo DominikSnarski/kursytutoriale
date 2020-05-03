@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 // eslint-disable-next-line
 import {
   Button,
@@ -18,14 +18,20 @@ import AppRoutes from '../../routing/AppRoutes';
 
 const SignIn = () => {
   const history = useHistory();
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const something=()=>{
+    setErrorMessage("We couldn't find given user in our database.");
+  }
 
   const handleSubmit = (event) => {
+    setErrorMessage('');
     event.preventDefault();
     const formData = new FormData(event.target);
 
     apiClient
-      .login(formData.get('name'), formData.get('password'))
-      .then(() => history.push('/'));
+      .login(formData.get('name'), formData.get('password'), something)
+      .then(() => { if(errorMessage !== '') history.push('/');});
   };
 
   return (
@@ -57,6 +63,9 @@ const SignIn = () => {
             placeholder="Enter your password"
           />
         </FormGroup>
+        <Row>
+          <p style={{ color: 'red', marginTop: '-2%' }}>{errorMessage}</p>
+        </Row>
 
         <Row>
           <Col xs="auto">

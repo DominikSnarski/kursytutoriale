@@ -200,7 +200,7 @@ const CourseViewer = (props) => {
             <Card fluid outline style={{ borderColor: '#ffb606' }}>
               <CardHeader className="spans">Course details</CardHeader>
               <CardBody style={{ backgroundColor: '#f5dfae' }}>
-                <CardText>{course.description}</CardText>
+                <CardText style={{ color: 'black' }}>{course.description}</CardText>
               </CardBody>
             </Card>
           </Col>
@@ -228,7 +228,7 @@ const CourseViewer = (props) => {
           isParticipating={props.isParticipating}
         />
 
-        {userContext.userid === course.ownerId && <DiscountGenerator />}
+        {userContext.userid === course.ownerId && <DiscountGenerator owner={course.ownerId} course={course.title} id={props.id}/>}
       </Jumbotron>
 
       {userContext.userid === course.ownerId && !course.verified && (

@@ -34,18 +34,23 @@ apiClient.fetchCourses = (firstPage, lastPage, caller) => {
   );
 };
 
-apiClient.login = async (username, password) => {
+apiClient.login = async (username, password, something) => {
+  let isOK = true;
   const res = await apiClient.post('api/Login/SignIn', {
     username,
     password,
-  });
+  }).catch(()=>{something(); isOK=false;})
 
+  if(!isOK)
+    return;
+    
   localStorage.setItem('access_token', res.data.accessToken);
   localStorage.setItem('refresh_token', res.data.refreshToken);
 
   const { sub, nameid, roles } = jwtDecode(res.data.accessToken);
   apiClient.onLogin(sub, nameid, roles);
 
+  // eslint-disable-next-line consistent-return
   return new Promise((resolve) => {
     resolve(true);
   });

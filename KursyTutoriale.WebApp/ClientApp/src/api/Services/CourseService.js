@@ -71,6 +71,12 @@ export const CourseService = {
       `/api/CoursesViewer/IncrementViewCount?CourseId=${courseId}`,
     );
   },
+  generateDiscounts: (courseId, discountProperties) => {
+    return apiClient.post(`/api/PublicCourses/AddPromotionCode?Id=${courseId}`, {discountProperties});
+  },
+  getDiscounts: (courseId) => {
+    return apiClient.get(`/api/PublicCourses/GetDiscountCodes?Id=${courseId}`)
+  }
 };
 
 export default CourseService;
