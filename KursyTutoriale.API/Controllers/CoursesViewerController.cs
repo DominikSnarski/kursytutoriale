@@ -1,4 +1,5 @@
 
+using KursyTutoriale.API.Models.Publication;
 using KursyTutoriale.Application.DataTransferObjects.Course;
 using KursyTutoriale.Application.DataTransferObjects.NewCourse;
 using KursyTutoriale.Application.Services;
@@ -127,9 +128,9 @@ namespace KursyTutoriale.API.Controllers
         /// <param name="numberInEachCathegory">number of featured courses in each cathegory</param>
         /// <returns>An object containing the lists of </returns>
         [HttpGet("GetFeaturedCourses")]
-        public FeaturedCoursesDTO GetFeaturedCourses(int numberInEachCategory)
+        public FeaturedCoursesDTO GetFeaturedCourses([FromBody]FeaturedCoursesRequest request)
         {
-            return courseService.getFeaturesCourses(numberInEachCategory);
+            return courseService.GetFeaturedCourses(request.CategoryCount);
         }
 
         /// <summary>
