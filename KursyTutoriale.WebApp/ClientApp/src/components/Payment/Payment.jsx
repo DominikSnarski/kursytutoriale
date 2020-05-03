@@ -79,10 +79,8 @@ function Payment(props) {
       setSurnameErrorMessage("Expiration date isn't complete. ");
     }
 
-    if (
-      formData.get('cvv').ToString().length !== 3
-    ) {
-      setSurnameErrorMessage("CVV must contains 3 numbers. ");
+    if (formData.get('cvv').length !== 3) {
+      setSurnameErrorMessage('CVV must contains 3 numbers. ');
     }
 
     if (
