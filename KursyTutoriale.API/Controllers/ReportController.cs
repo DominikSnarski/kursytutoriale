@@ -60,6 +60,7 @@ namespace KursyTutoriale.API.Controllers
         /// gets report codes and their respective meanings
         /// </summary>
         /// <returns>list of report codes with their values</returns>
+        [AllowAnonymous]
         [HttpGet("GetReportTypeCodes")]
         public IEnumerable<ReportTypeCodeDTO> GetReportCodes()
         {
