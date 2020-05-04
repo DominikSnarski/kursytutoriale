@@ -62,12 +62,12 @@ export const PaymentService = {
         .then((res) => resolve(res.data))
         .catch((error) => reject(error)),
     ),
-    removeCard: (cardId) =>
+    removeCard: (cardId, courseId) =>
     {
       return new Promise((resolve, reject) =>
         apiClient
           .delete(
-            `/api/PaymentCustomer/DeleteCreditCard`,
+            `/api/PaymentCustomer/DeleteCreditCard?courseId=${courseId}`,
             {
               cardId
             },

@@ -27,7 +27,7 @@ function Card(props) {
   const toggleModalClickYes = () => {
     setIsModalOpen(!isModalOpen);
 
-    PaymentService.removeCard(props.card.id)
+    PaymentService.removeCard(cardId, courseID)
       .then(() => history.push('/'))
       .then(() => history.push(`/userprofile/${userContext.id}`));
   }
