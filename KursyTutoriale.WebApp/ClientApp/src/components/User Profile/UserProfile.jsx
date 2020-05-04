@@ -283,7 +283,9 @@ const UserProfile = () => {
                         </TabPane>
                         <TabPane tabId="4" className="cards">
                         {userid == userContext.userid && (
-                          <Cards></Cards>
+                          <Cards
+                            deleteable={true}
+                          />
                         )}
                         </TabPane>
 

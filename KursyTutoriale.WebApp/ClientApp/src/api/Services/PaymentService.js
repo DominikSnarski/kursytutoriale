@@ -29,6 +29,25 @@ export const PaymentService = {
         .catch((error) => reject(error)),
     );
   },
+  paymentWithSelectedCreditCard: (
+    courseId,
+    creditCardId,
+    discountCode
+  ) => {
+    return new Promise((resolve, reject) =>
+      apiClient
+        .post(
+          `/api/CreditCardPayment/PayForCourseAccessId?courseId=${courseId}`,
+          {
+            courseId,
+            creditCardId,
+            discountCode
+          },
+        )
+        .then((resp) => resolve(resp))
+        .catch((error) => reject(error)),
+    );
+  },
   getCreditCards: () =>
     new Promise((resolve, reject) =>
       apiClient
@@ -43,5 +62,19 @@ export const PaymentService = {
         .then((res) => resolve(res.data))
         .catch((error) => reject(error)),
     ),
+    removeCard: (cardId) =>
+    {
+      return new Promise((resolve, reject) =>
+        apiClient
+          .delete(
+            `/api/PaymentCustomer/DeleteCreditCard`,
+            {
+              cardId
+            },
+          )
+          .then((resp) => resolve(resp))
+          .catch((error) => reject(error)),
+      );
+    },
 };
 export default PaymentService;
