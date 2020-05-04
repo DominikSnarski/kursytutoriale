@@ -55,7 +55,7 @@ const QuizViewer = (props) => {
                   checked={parseInt(answers[currentQuestionIndex]) == k}
                   onChange={answerChanged}
                   type="radio"
-                  name="answer"
+                  name={`ansK${k}Q${props.index}`}
                   value={k}
                 />{' '}
                 {answer}

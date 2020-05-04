@@ -61,7 +61,7 @@ function Lesson(props) {
               return (
                 <Container key={key}>
                   <Row className="justify-content-md-center">
-                    <QuizViewer content={item.Content} />
+                    <QuizViewer index={key} content={item.Content} />
                   </Row>
                 </Container>
               );
