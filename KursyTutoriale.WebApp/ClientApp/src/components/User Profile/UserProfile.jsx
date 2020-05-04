@@ -284,8 +284,14 @@ const UserProfile = () => {
                             <Transactions></Transactions>
                           )}
                         </TabPane>
+
                         <TabPane tabId="4" className="cards">
-                          {userid == userContext.userid && <Cards></Cards>}
+                        {userid == userContext.userid && (
+                          <Cards
+                            deleteable={true}
+                          />
+                        )}
+                        
                         </TabPane>
                       </TabContent>
                     </Container>
