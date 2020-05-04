@@ -41,10 +41,10 @@ namespace KursyTutoriale.Application.Services.CoursePublication
             var userId = executionContextAccessor.GetUserId();
 
             var profile = profilesRepository.Queryable().FirstOrDefault(p => p.CourseId == dto.CourseId);
+            if (userId.Equals(profile?.OwnerId)) return;
+
             if (profile is null)
                 throw new Exception("Cannot mark progress of non-public course");
-
-            if (userId.Equals(profile.OwnerId)) return;
 
             profile.AddCourseProgress(new CourseProgress(userId, dto.LessonId));
 

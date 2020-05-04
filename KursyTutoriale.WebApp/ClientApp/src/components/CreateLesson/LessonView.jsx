@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Jumbotron, Button, Container, Col, Row } from 'reactstrap';
 import { Fade } from 'react-reveal';
 import { useHistory, Link } from 'react-router-dom';
@@ -9,12 +9,20 @@ import './style.css';
 import './Kit.css';
 
 function Lesson(props) {
+  const [componentLoaded, setComponentLoaded] = useState(false);
   const MarkProgress = () => {
     CourseProgressService.markProgress(
       props.location.state.courseID,
       props.location.state.lessons[props.location.state.index].id,
     );
   };
+
+  useEffect(() => {
+    if (!componentLoaded) {
+      setComponentLoaded(true);
+      MarkProgress();
+    }
+  });
 
   const items = JSON.parse(
     props.location.state.lessons[props.location.state.index].content,
@@ -35,7 +43,6 @@ function Lesson(props) {
 
         <Jumbotron className="courses_bg pr-4">
           {items.map((item, key) => {
-            MarkProgress();
             // eslint-disable-next-line react/jsx-key
             if (item.Type.substring(0, 5) === 'image') {
               return (
