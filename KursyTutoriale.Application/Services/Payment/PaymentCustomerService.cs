@@ -65,6 +65,8 @@ namespace KursyTutoriale.Application.Services.Payment
                 .ThenInclude( t => (t.PaymentMethod as CreditCardPayment).CreditCard)
                 .FirstOrDefault(c => c.UserId == userId);
 
+            if (customer is null) return new List<TransactionDto>();
+
             var transactions = customer.Transactions
                 .Select(t => new TransactionDto
                 {
