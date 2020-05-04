@@ -43,6 +43,7 @@
   background-color: #ffd46f;
   padding: 5px;
   margin: 3px;
+  width: 100%;
 }
 
 .courseListItem:hover {
