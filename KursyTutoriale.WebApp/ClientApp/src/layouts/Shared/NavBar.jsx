@@ -1,21 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import {
-  Button,
-  Nav,
-  NavItem,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-} from 'reactstrap';
+import { Link, useHistory } from 'react-router-dom';
+import { Button, Nav, NavItem } from 'reactstrap';
 import { UserContext } from '../../contexts/UserContext';
 import apiClient from '../../api/ApiClient';
 import AppRoutes from '../../routing/AppRoutes';
 import './NavBar.css';
 import Search from '../../components/LandingPage/Search';
 import { UserService } from '../../api/Services/UserService';
-import { useHistory } from 'react-router-dom';
 
 const NavBar = () => {
   const userContext = React.useContext(UserContext);
@@ -54,9 +45,6 @@ const NavBar = () => {
                 return UserService.getUserProfilesByName(value);
               }}
               placeholder="Users"
-              onSubmit={(query) => {
-                UserService.getUserProfilesByName(query).then((result) => {});
-              }}
             />
           </NavItem>
         </Nav>

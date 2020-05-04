@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 
-import { Button, Form, Input, Container } from 'reactstrap';
+import { Container } from 'reactstrap';
 import './Search.css';
 import Select from 'react-select';
-import UserService from '../../api/Services/UserService';
 
 const Search = (props) => {
   const [options, setOptions] = useState([]);
