@@ -9,5 +9,6 @@ namespace KursyTutoriale.Application.DataTransferObjects.UserProfiles
         public int Age { get; set; }
         public Guid GenderId { get; set; }
         public string ProfileDescription { get; set; }
+        public string ImageDataUrl { get; set; }
     }
 }

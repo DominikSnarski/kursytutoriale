@@ -14,7 +14,6 @@ namespace KursyTutoriale.Application.Services.UserProfiles
         private IExecutionContextAccessor executionContext;
         private IExtendedRepository<UserProfile> profileRepository;
         private IExtendedRepository<Gender> genderRepository;
-        private IUnitOfWork unitOfWork;
         private IDTOMapper mapper;
 
         public UserProfileService(
@@ -27,7 +26,6 @@ namespace KursyTutoriale.Application.Services.UserProfiles
             this.executionContext = executionContext;
             this.profileRepository = profileRepository;
             this.genderRepository = genderRepository;
-            this.unitOfWork = unitOfWork;
             this.mapper = mapper;
         }
 
@@ -40,7 +38,7 @@ namespace KursyTutoriale.Application.Services.UserProfiles
             return mapper.Map<UserProfileDTO>(userProfile);
         }
 
-        public async Task UpdateProfile(UpdateUserProfileDto request)
+        public void UpdateProfile(UpdateUserProfileDto request)
         {
             var userId = executionContext.GetUserId();
 
@@ -52,13 +50,12 @@ namespace KursyTutoriale.Application.Services.UserProfiles
             userProfile.SiteLink = request.SiteLink;
             userProfile.Age = request.Age;
             userProfile.ProfileDescription = request.ProfileDescription;
+            userProfile.AvatarPath = request.ImageDataUrl;
 
             if(!(newGender is null))
                 userProfile.Gender = newGender;
 
             profileRepository.Update(userProfile);
-
-            await unitOfWork.SaveChangesAsync();
         }
     }
 }

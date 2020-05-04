@@ -5,7 +5,7 @@ namespace KursyTutoriale.Application.Services.UserProfiles
 {
     public interface IUserProfileService
     {
-        Task UpdateProfile(UpdateUserProfileDto request);
+        void UpdateProfile(UpdateUserProfileDto request);
         UserProfileDTO GetProfile();
     }
 }
