@@ -57,5 +57,11 @@ namespace KursyTutoriale.API.Controllers
             var list = await adminService.GetListOfModerators();
             return list;
         }
+
+        [HttpPost("AwardKarmaPoints")]
+        public void AwardKarmaPoints(Guid userId, int amount)
+        {
+            adminService.AwardKarmaPoints(userId, amount);
+        }
     }
 }

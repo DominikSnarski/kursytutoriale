@@ -1,6 +1,7 @@
 ﻿using KursyTutoriale.Application.DataTransferObjects.UserProfiles;
 using KursyTutoriale.Domain.Entities.UserProfiles;
 using KursyTutoriale.Domain.Repositories;
+using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -14,22 +15,29 @@ namespace KursyTutoriale.Application.Services.UserProfiles
         private IExtendedRepository<Gender> genderRepository;
         private IUnitOfWork unitOfWork;
         private IDTOMapper mapper;
+        private IKarmaRepository karmaRepository;
         public UsersService(
             IExtendedRepository<UserProfile> profileRepository,
             IExtendedRepository<Gender> genderRepository,
             IUnitOfWork unitOfWork,
-            IDTOMapper mapper)
+            IDTOMapper mapper,
+            IKarmaRepository karmaRepository)
         {
             this.profileRepository = profileRepository;
             this.genderRepository = genderRepository;
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.karmaRepository = karmaRepository;
         }
         public UserProfileDTO GetProfile(Guid id)
         {
             var userProfile = profileRepository.Queryable().Include(up => up.Gender).Single(up => up.Id == id);
 
-            return mapper.Map<UserProfileDTO>(userProfile);
+            UserProfileDTO result = mapper.Map<UserProfileDTO>(userProfile);
+
+            result.Karma = karmaRepository.GetUserKarma(id);
+
+            return result;
         }
     }
 }

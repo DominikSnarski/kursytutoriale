@@ -9,5 +9,6 @@
         public string GenderName { get; set; }
         public string Username { get; set; }
         public string ProfileDescription { get; set; }
+        public int Karma { get; set; }
     }
 }
