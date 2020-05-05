@@ -2,6 +2,7 @@
 using KursyTutoriale.Application.Services.UserProfiles;
 using KursyTutoriale.Application.DataTransferObjects.UserProfiles;
 using System;
+using System.Collections.Generic;
 
 namespace KursyTutoriale.API.Controllers
 {
@@ -20,6 +21,12 @@ namespace KursyTutoriale.API.Controllers
         public UserProfileDTO GetProfileById(Guid id)
         {
             return usersService.GetProfile(id);
+        }
+
+        [HttpGet("/GetProfilesByName")]
+        public IEnumerable<UserProfileListItemDTO> GetProfilesByName(string query)
+        {
+            return usersService.GetProfilesByName(query);
         }
     }
 }

@@ -92,6 +92,15 @@ namespace KursyTutoriale.Application.Services
                 throw new NullReferenceException("Course doesnt exist");
 
             var courseReadModel = mapper.Map<CourseReadModel>(result);
+            foreach(var c in courseReadModel.Modules
+                .Zip(result.Modules, (rm, r) => new { ReadModel = rm, Result = r }))
+            {
+                foreach(var m in c.ReadModel.Lessons
+                    .Zip(c.Result.Lessons, (rm,r) => new { ReadModel = rm, Result = r }))
+                {
+                    m.ReadModel.Content = JsonConvert.SerializeObject(m.Result.Content);
+                }
+            }
             var dto = mapper.Map<CourseDetailsDTO>(courseReadModel);
 
             dto.Verified = result.VerificationStamp.Status == StampStatus.Verified;
@@ -414,7 +423,7 @@ namespace KursyTutoriale.Application.Services
         /// <returns>the list of user's owned courses</returns>
         public IEnumerable<CourseBasicInformationsDTO> GetUsersCourses(Guid UserId)
         {
-            if (UserId == executionContext.GetUserId())
+            if (executionContext.IsAuthorized && UserId == executionContext.GetUserId())
             {
                 var query = courseRepository.Queryable()
                 .Where(c => c.OwnerId == UserId)

@@ -23,7 +23,6 @@ const QuizViewer = (props) => {
     [...Array(props.content.questions.length)].map((x) => -1),
   );
   const [score, setScore] = useState(-1);
-  console.log(props.content);
 
   const checkAnswers = () => {
     let nscore = 0;
@@ -56,7 +55,7 @@ const QuizViewer = (props) => {
                   checked={parseInt(answers[currentQuestionIndex]) == k}
                   onChange={answerChanged}
                   type="radio"
-                  name="answer"
+                  name={`ansK${k}Q${props.index}`}
                   value={k}
                 />{' '}
                 {answer}

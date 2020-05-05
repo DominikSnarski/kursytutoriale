@@ -55,7 +55,7 @@ class Transactions extends React.Component {
         </Container>
       );
     }
-    if (this.state.isLoading)
+    if (this.state.isLoading || this.state.exampleItems.length === 0)
       return (
         <Container
           style={{

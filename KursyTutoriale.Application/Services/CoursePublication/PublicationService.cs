@@ -95,15 +95,17 @@ namespace KursyTutoriale.Application.Services.CoursePublication
 
         public List<DiscountCodeDto> GetCourseDiscountCodes(Guid courseId)
         {
+            var course = coursesRepository.Queryable().FirstOrDefault(c => c.Id == courseId);
+
             var courseProfile = profilesRepository
                 .Queryable()
                 .Include(pp => pp.Discounts)
                 .FirstOrDefault(profile => profile.CourseId == courseId);
 
-            if (courseProfile is null)
+            if (courseProfile is null && course.OwnerId != executionContextAccessor.GetUserId())
                 throw new Exception("Cannot get codes from private course");
 
-            var discountCodes = courseProfile.Discounts.Select(dis => new DiscountCodeDto
+            var discountCodes = courseProfile?.Discounts.Select(dis => new DiscountCodeDto
             {
                 Type = dis switch
                 {
@@ -121,9 +123,9 @@ namespace KursyTutoriale.Application.Services.CoursePublication
                 },
                 Value = dis.Code
             })
-            .ToList();
+            ?.ToList();
 
-            return discountCodes;
+            return discountCodes ?? new List<DiscountCodeDto>();
         }
 
         public int GetPriceWithDiscountCode(Guid courseId, string code)

@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace KursyTutoriale.API.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
     public class CourseProgressController : ControllerBase
     {
         private ICourseProgressService progressService;
@@ -22,6 +21,7 @@ namespace KursyTutoriale.API.Controllers
             this.progressService = progressService;
         }
 
+        [Authorize]
         [HttpPost("MarkProgress")]
         public async Task MarkProgress([FromBody]CourseProgressDTO dto)
         {
@@ -29,16 +29,16 @@ namespace KursyTutoriale.API.Controllers
         }
 
         [HttpGet("GetUserCompletedCourses")]
-        public IEnumerable<CourseBasicInformationsDTO> GetUserCompletedCourses()
+        public IEnumerable<CourseBasicInformationsDTO> GetUserCompletedCourses(Guid userId)
         {
-            var result = progressService.GetUserCompletedCourses();
+            var result = progressService.GetUserCompletedCourses(userId);
             return result;
         }
 
         [HttpGet("GetUserUncompletedCourses")]
-        public IEnumerable<CourseBasicInformationsDTO> GetUserUncompletedCourses()
+        public IEnumerable<CourseBasicInformationsDTO> GetUserUncompletedCourses(Guid userId)
         {
-            var result = progressService.GetUserUncompletedCourses();
+            var result = progressService.GetUserUncompletedCourses(userId);
             return result;
         }
 

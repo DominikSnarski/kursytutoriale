@@ -71,11 +71,11 @@ const UserProfile = () => {
         .then((result) => setCourseList(result.data))
         .catch((error) => console.log(error));
 
-      CourseProgressService.getUserCompletedCourses()
+      CourseProgressService.getUserCompletedCourses(userid)
         .then((result) => setCompletedCoursesList(result.data))
         .catch((error) => console.log(error));
 
-      CourseProgressService.getUserUncompletedCourses()
+      CourseProgressService.getUserUncompletedCourses(userid)
         .then((result) => setUncompletedCoursesList(result.data))
         .catch((error) => console.log(error));
     }
@@ -294,7 +294,7 @@ const UserProfile = () => {
               </Col>
             </Row>
             {/*<hr width="100%"></hr>*/}
-            <Row>
+            <Row style={{ width: '100%' }}>
               <Nav tabs>
                 <NavItem className="tabItem">
                   <NavLink
@@ -313,7 +313,6 @@ const UserProfile = () => {
                     </l>
                   </NavLink>
                 </NavItem>
-
                 <NavItem className="tabItem">
                   <NavLink
                     className={classnames({
@@ -331,7 +330,6 @@ const UserProfile = () => {
                     </l>
                   </NavLink>
                 </NavItem>
-
                 <NavItem className="tabItem">
                   <NavLink
                     className={classnames({
@@ -352,7 +350,10 @@ const UserProfile = () => {
               </Nav>
             </Row>
             <Row>
-              <TabContent activeTab={activeCoursesTab}>
+              <TabContent
+                style={{ width: '100%' }}
+                activeTab={activeCoursesTab}
+              >
                 <TabPane tabId="1">
                   {courseList.length === 0 ? (
                     <p>This User haven't published any courses yet.</p>
@@ -409,7 +410,6 @@ const UserProfile = () => {
           </Container>
         </Zoom>
       </Jumbotron>
-      )}
     </div>
   );
 };
