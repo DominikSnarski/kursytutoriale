@@ -27,6 +27,7 @@ namespace KursyTutoriale.Application.Services.Mod
         private IExecutionContextAccessor executionContext;
         private IDTOMapper mapper;
         private IExtendedRepository<ModAssignment> assignmentRepository;
+        private IKarmaRepository karmaRepository;
 
         public ModeratorService(IExtendedRepository<Report> reportRepository,
             IExtendedRepository<ApplicationUser> userRepository,
@@ -34,7 +35,8 @@ namespace KursyTutoriale.Application.Services.Mod
             IUnitOfWork unitOfWork,
             IExecutionContextAccessor executionContext,
             IDTOMapper mapper,
-            IExtendedRepository<ModAssignment> assignmentRepository)
+            IExtendedRepository<ModAssignment> assignmentRepository,
+            IKarmaRepository karmaRepository)
         {
             this.reportRepository = reportRepository;
             this.userRepository = userRepository;
@@ -43,6 +45,7 @@ namespace KursyTutoriale.Application.Services.Mod
             this.executionContext = executionContext;
             this.mapper = mapper;
             this.assignmentRepository = assignmentRepository;
+            this.karmaRepository = karmaRepository;
         }
 
         public async Task<int> BlockCourse(Guid courseId,string note)
@@ -140,6 +143,8 @@ namespace KursyTutoriale.Application.Services.Mod
             if(resolve == ReportStatusType.CourseBlocked)
             {
                 await BlockCourse(report.CourseId,resolverComment);
+
+                karmaRepository.AddKarma(report.ReporterId, report.Id, 1, KarmaRewardType.ReportedCourseBlocked);
             }
 
             report.ResolvedDate = DateTime.UtcNow;

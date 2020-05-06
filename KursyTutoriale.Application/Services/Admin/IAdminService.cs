@@ -12,5 +12,6 @@ namespace KursyTutoriale.Application.Services.Admin
         Task<bool> RemoveModerator(Guid moderatorId);
         Task<List<UserBasic>> GetListOfUsers();
         Task<List<UserBasic>> GetListOfModerators();
+        void AwardKarmaPoints(Guid userId, int amount);
     }
 }
