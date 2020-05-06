@@ -22,19 +22,22 @@ namespace KursyTutoriale.Application.Services.CoursePublication
         private IExecutionContextAccessor executionContextAccessor;
         private ICourseRepository coursesRepository;
         private IDiscountCodeFactory discountCodeFactory;
+        private IKarmaRepository karmaRepository;
 
         public PublicationService(
             IExtendedRepository<CoursePublicationProfile> profilesRepository,
             ICourseRepository coursesRepository,
             IExecutionContextAccessor executionContextAccessor,
             IDiscountCodeFactory discountCodeFactory, 
-            IExtendedRepository<CoursePreview> previewRepository)
+            IExtendedRepository<CoursePreview> previewRepository,
+            IKarmaRepository karmaRepository)
         {
             this.profilesRepository = profilesRepository;
             this.coursesRepository = coursesRepository;
             this.executionContextAccessor = executionContextAccessor;
             this.discountCodeFactory = discountCodeFactory;
             this.previewRepository = previewRepository;
+            this.karmaRepository = karmaRepository;
         }
 
         public CourseVersion PublishCourse(Guid courseId)
@@ -55,6 +58,8 @@ namespace KursyTutoriale.Application.Services.CoursePublication
             var newProfile = new CoursePublicationProfile(courseId, course.OwnerId, (int)(course.Price * 100));
 
             profilesRepository.InsertAgreggate(newProfile);
+
+            karmaRepository.AddKarma(userId, newProfile.CourseId, 3, KarmaRewardType.CoursePublished);
 
             return newProfile.GetLatestVersion();
         }

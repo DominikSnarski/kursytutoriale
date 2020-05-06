@@ -3,7 +3,9 @@ using KursyTutoriale.Application.DataTransferObjects.Payments;
 using KursyTutoriale.Domain.Entities.CoursePublication;
 using KursyTutoriale.Domain.Entities.Payments;
 using KursyTutoriale.Domain.Repositories;
+using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using KursyTutoriale.Infrastructure.Services;
+using KursyTutoriale.Shared;
 using KursyTutoriale.Shared.Exceptions;
 using System;
 using System.Linq;
@@ -19,19 +21,22 @@ namespace KursyTutoriale.Application.Services.Payment
         private IExtendedRepository<PaymentCustomer> customerRepository;
         private IExecutionContextAccessor executionContextAccessor;
         private IUnitOfWork unitOfWork;
+        private IKarmaRepository karmaRepository;
 
         public TransactionService(
             IPaymentService paymentService,
             IExtendedRepository<CoursePublicationProfile> courseProfileRepository,
             IExtendedRepository<PaymentCustomer> customerRepository,
             IExecutionContextAccessor executionContextAccessor,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            IKarmaRepository karmaRepository)
         {
             this.paymentService = paymentService;
             this.courseProfileRepository = courseProfileRepository;
             this.customerRepository = customerRepository;
             this.executionContextAccessor = executionContextAccessor;
             this.unitOfWork = unitOfWork;
+            this.karmaRepository = karmaRepository;
         }
 
         public async Task PayForCourseAccess(Guid courseId, CreditCardInputDto creditCardDto, string discountCode)
@@ -71,6 +76,8 @@ namespace KursyTutoriale.Application.Services.Payment
                 (customer, amount) => customer.AddCreditCardTransation(creditCardId, amount),
                 discountCode
                 );
+
+
         }
 
         private async Task PayForCourseAccess(
@@ -113,9 +120,12 @@ namespace KursyTutoriale.Application.Services.Payment
             var transaction = addTransactionMethod(customer, price);
             transaction.AddCourseAccess(courseProfile);
 
-            courseProfile.AddParticipant(userId);
+            var newParticipant = courseProfile.AddParticipant(userId);
 
             await unitOfWork.SaveChangesAsync();
+
+            karmaRepository.AddKarma(userId, transaction.Id, 1, KarmaRewardType.CourseBought);
+            karmaRepository.AddKarma(courseProfile.OwnerId, newParticipant.Id, 1, KarmaRewardType.OtherUserJoinedCourse);
         }
 
         public void GetTransations()

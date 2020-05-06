@@ -119,7 +119,9 @@ const UserProfile = () => {
                     </Col>
                   </Row>
                   <Row className="mb-3">
-                    <Col style={{ textAlign: 'center' }}>{0} Karma points</Col>
+                    <Col style={{ textAlign: 'center' }}>
+                      {user.karma} Karma points
+                    </Col>
                   </Row>
                   {/*<Row>
                     <Col className="left_side">

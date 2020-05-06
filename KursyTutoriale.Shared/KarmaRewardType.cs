@@ -7,6 +7,7 @@
         CoursePublished,
         OtherUserJoinedCourse,
         OtherUserCompletedCourse,
-        AwardedByAdmin
+        AwardedByAdmin,
+        ReportedCourseBlocked
     }
 }
