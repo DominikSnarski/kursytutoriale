@@ -43,6 +43,8 @@ namespace KursyTutoriale.Application.Services
         Task AddRating(Guid CourseId, Guid UserId, float rating);
         Task IncrementViewCount(Guid CourseId);
 
+        Task SendToVerification(Guid CourseId);
+
     }
 
     public class CourseService : ICourseService
@@ -103,7 +105,7 @@ namespace KursyTutoriale.Application.Services
             }
             var dto = mapper.Map<CourseDetailsDTO>(courseReadModel);
 
-            dto.Verified = result.VerificationStamp.Status == StampStatus.Verified;
+            dto.Verified = (int)result.VerificationStamp.Status;
 
             var profileQuery = publicationRepository
                 .Queryable();
@@ -532,6 +534,17 @@ namespace KursyTutoriale.Application.Services
             {
                 course.Popularity++;
             }
+            await unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task SendToVerification(Guid CourseId)
+        {
+            var course = courseRepository.Find(CourseId);
+
+            var @event = new VerificationChanged(CourseId, StampStatus.Pending, null, executionContext.GetUserId());
+
+            courseRepository.HandleEvent(@event, course);
+
             await unitOfWork.SaveChangesAsync();
         }
 

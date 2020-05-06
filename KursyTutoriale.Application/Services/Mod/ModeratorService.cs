@@ -222,12 +222,14 @@ namespace KursyTutoriale.Application.Services.Mod
         public IEnumerable<CourseBasicInformationsDTO> GetCoursesForVerification(int NrOfCourses)
         {
             List<CourseBasicInformationsDTO> result = new List<CourseBasicInformationsDTO>();
-            foreach (var course in
-                courseRepository.Queryable()
+
+            var query = courseRepository.Queryable()
                 .Include(c => c.VerificationStamp)
                 .Where(c => c.VerificationStamp.Status == StampStatus.Pending)
                 .OrderBy(s => s.VerificationStamp.Date)
-                .Take(NrOfCourses))
+                .Take(NrOfCourses);
+
+            foreach (var course in query)
             {
                 result.Add(mapper.Map<CourseBasicInformationsDTO>(course));
             }

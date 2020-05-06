@@ -97,6 +97,11 @@ const CourseViewer = (props) => {
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
+  const handleButtonSendToVerificationClick = () => {
+    CourseService.sendToVerification(course.id)
+    .then(() => history.push('/'))
+    .then(() => history.push(`/courseview/${course.id}`));
+  }
 
   return (
     <Container className="Container">
@@ -116,7 +121,58 @@ const CourseViewer = (props) => {
         <Row className="d-flex mb-3">
           <Col className="column-text">
             State of course:{' '}
-            {!course.verified ? (
+            {course.verified === 0 && (
+              <text
+                style={{
+                  backgroundColor: 'red',
+                  paddingLeft: '10px',
+                  paddingRight: '10px',
+                }}
+              >
+                {' '}
+                Waiting for Verification
+              </text>
+            )}
+            {course.verified === 1 && (
+              <text
+                style={{
+                  backgroundColor: 'lightgreen',
+                  paddingLeft: '10px',
+                  paddingRight: '10px',
+                }}
+              >
+                {' '}
+                Verified
+              </text>
+            )}
+
+            {course.verified === 2 && (
+              <text
+                style={{
+                  backgroundColor: 'red',
+                  paddingLeft: '10px',
+                  paddingRight: '10px',
+                }}
+              >
+                {' '}
+                Rejected
+              </text>
+            )}
+
+            {course.verified === 3 && (
+              <text
+                style={{
+                  backgroundColor: 'red',
+                  paddingLeft: '10px',
+                  paddingRight: '10px',
+                }}
+              >
+                {' '}
+                Blocked
+              </text>
+            )}
+
+            {course.verified === 4 && (
               <text
                 style={{
                   backgroundColor: 'red',
@@ -126,16 +182,6 @@ const CourseViewer = (props) => {
               >
                 {' '}
                 Not verified
-              </text>
-            ) : (
-              <text
-                style={{
-                  backgroundColor: 'lightgreen',
-                  paddingLeft: '10px',
-                  paddingRight: '10px',
-                }}
-              >
-                Verified
               </text>
             )}
           </Col>
@@ -282,7 +328,7 @@ const CourseViewer = (props) => {
         )}
       </Jumbotron>
 
-      {userContext.userid === course.ownerId && !course.verified && (
+      {userContext.userid === course.ownerId && course.verified === 4 && (
         <Container>
           <Row className="justify-content-md-center">
             <Alert>
@@ -291,12 +337,26 @@ const CourseViewer = (props) => {
             </Alert>
           </Row>
           <Row className="justify-content-md-center">
-            <Button text="Send to verification" />
+            <Button 
+            onClick={() => handleButtonSendToVerificationClick()}
+            text="Send to verification" 
+            />
+          </Row>
+        </Container>
+      )}
+      {userContext.userid === course.ownerId && course.verified === 0 && (
+        <Container>
+          <Row className="justify-content-md-center">
+            <Alert>
+              Your course is waiting for verification.
+            </Alert>
+          </Row>
+          <Row className="justify-content-md-center">
           </Row>
         </Container>
       )}
       {userContext.userid === course.ownerId &&
-        course.verified &&
+        course.verified ===1 &&
         !course.public && (
           <Container>
             <Row className="justify-content-md-center">
@@ -315,7 +375,7 @@ const CourseViewer = (props) => {
           </Container>
         )}
       {userContext.userid === course.ownerId &&
-        course.verified &&
+        course.verified === 1 &&
         course.public && (
           <Container>
             <Row className="justify-content-md-center">
@@ -335,7 +395,7 @@ const CourseViewer = (props) => {
         )}
 
       {userContext.userid !== course.ownerId &&
-        course.verified &&
+        course.verified === 1 &&
         course.public &&
         !props.isParticipating && (
           <Container>
@@ -350,7 +410,7 @@ const CourseViewer = (props) => {
         )}
 
       {userContext.userid !== course.ownerId &&
-        course.verified &&
+        course.verified === 1 &&
         course.public &&
         props.isParticipating === true && (
           <Container>
