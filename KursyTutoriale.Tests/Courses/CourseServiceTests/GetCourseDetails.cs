@@ -58,6 +58,10 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
             var mapperMock = new Mock<IDTOMapper>();
             mapperMock.Setup(m => m.Map<CourseDetailsDTO>(It.IsAny<CourseReadModel>()))
                 .Returns(new CourseDetailsDTO());
+            mapperMock.Setup(m => m.Map<CourseReadModel>(It.IsAny<Course>()))
+                .Returns(new CourseReadModel() { 
+                    Modules = new List<CourseModuleReadModel>()
+                });
 
             var service = new CourseService(
                 null,
@@ -97,9 +101,15 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
             var repositoryMock = new Mock<ICourseRepository>();
             repositoryMock.Setup(m => m.Find(It.IsAny<Guid>(), It.IsAny<DateTime>())).Returns(courseQuery);
 
+
             var mapperMock = new Mock<IDTOMapper>();
             mapperMock.Setup(m => m.Map<CourseDetailsDTO>(It.IsAny<CourseReadModel>()))
                 .Returns(new CourseDetailsDTO());
+            mapperMock.Setup(m => m.Map<CourseReadModel>(It.IsAny<Course>()))
+                .Returns(new CourseReadModel()
+                {
+                    Modules = new List<CourseModuleReadModel>()
+                });
 
             var service = new CourseService(
                 null,
@@ -132,6 +142,11 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
             var mapperMock = new Mock<IDTOMapper>();
             mapperMock.Setup(m => m.Map<CourseDetailsDTO>(It.IsAny<CourseReadModel>()))
                 .Returns(new CourseDetailsDTO());
+            mapperMock.Setup(m => m.Map<CourseReadModel>(It.IsAny<Course>()))
+                .Returns(new CourseReadModel()
+                {
+                    Modules = new List<CourseModuleReadModel>()
+                });
 
             var profileQuery = new List<CoursePublicationProfile>().AsQueryable();
             var profileMock = new Mock<IExtendedRepository<CoursePublicationProfile>>();

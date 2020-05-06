@@ -15,6 +15,14 @@ namespace KursyTutoriale.API
         {
             this.httpContext = httpContext;
         }
+        public bool IsAuthorized { get {
+                return httpContext
+                                ?.HttpContext
+                                ?.User
+                                ?.Claims
+                                ?.FirstOrDefault(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier") != null;
+            } 
+        }
 
         public Guid GetUserId()
         {

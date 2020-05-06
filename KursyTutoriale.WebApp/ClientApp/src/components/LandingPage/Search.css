@@ -1,4 +1,8 @@
-.Container{
-    padding:3%;
-    background-color: #eaebec !important;
+.Container {
+  padding: 3%;
+  background-color: #eaebec !important;
+}
+
+.bar {
+  width: 250px;
 }

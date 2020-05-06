@@ -12,8 +12,8 @@ namespace KursyTutoriale.Application.Services.CoursePublication
     public interface ICourseProgressService
     {
         Task MarkProgress(CourseProgressDTO dto);
-        IEnumerable<CourseBasicInformationsDTO> GetUserCompletedCourses();
-        IEnumerable<CourseBasicInformationsDTO> GetUserUncompletedCourses();
+        IEnumerable<CourseBasicInformationsDTO> GetUserCompletedCourses(Guid userId);
+        IEnumerable<CourseBasicInformationsDTO> GetUserUncompletedCourses(Guid userId);
         int GetProgress(CourseReadModel course, CoursePublicationProfile profile);
     }
 }
