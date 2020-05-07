@@ -98,7 +98,7 @@ const CourseViewer = (props) => {
         </Col>
       </Row>
 
-      <Jumbotron className="courses_bg pr-4">
+      <Jumbotron className="bg pr-4">
         <Row className="d-flex mb-3">
           <Col className="column-text">
             State of course:{' '}

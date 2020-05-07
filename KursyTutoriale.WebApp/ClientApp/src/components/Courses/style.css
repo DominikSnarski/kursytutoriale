@@ -1,41 +1,134 @@
-.spans {
-  padding-bottom: 2%;
-  padding-top: 2%;
-  background-color: #ffb606 !important;
+@media (prefers-color-scheme: dark) {
+  .spans {
+    padding-bottom: 2%;
+    padding-top: 2%;
+    background-color: #3d2323 !important;
+  }
+
+  .column-text {
+    text-align: center;
+  }
+  .card-height {
+    min-height: 3rem;
+    max-height: 3rem;
+  }
+
+  .jumbotron_courseView {
+    background-color: #5f2b2b;
+  }
+
+  h1 {
+    text-align: center;
+    color: #3d2323;
+    font-size: 60px;
+    font-weight: 900;
+    opacity: 1;
+    text-shadow: 2px 2px 2px #000000;
+  }
+
+  .button:hover {
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    background: #000000;
+    transition: all 200ms ease;
+    cursor: pointer;
+  }
+
+  .link {
+    text-decoration: underline;
+  }
+
+  .link:hover {
+    background-color: rgb(235, 235, 235);
+  }
+  .bg {
+    background-color: #5f2b2b;
+  }
 }
 
-.column-text {
-  text-align: center;
-}
-.card-height {
-  min-height: 3rem;
-  max-height: 3rem;
+@media (prefers-color-scheme: light) {
+  .spans {
+    padding-bottom: 2%;
+    padding-top: 2%;
+    background-color: #ffb606 !important;
+  }
+
+  .column-text {
+    text-align: center;
+  }
+  .card-height {
+    min-height: 3rem;
+    max-height: 3rem;
+  }
+
+  .jumbotron_courseView {
+    background-color: #f5dfae;
+  }
+
+  h1 {
+    text-align: center;
+    color: #ffb606;
+    font-size: 60px;
+    font-weight: 900;
+    opacity: 1;
+    text-shadow: 2px 2px 2px #000000;
+  }
+
+  .button:hover {
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    background: #000000;
+    transition: all 200ms ease;
+    cursor: pointer;
+  }
+
+  .link {
+    text-decoration: underline;
+  }
+
+  .link:hover {
+    background-color: rgb(235, 235, 235);
+  }
 }
 
-.jumbotron_courseView {
-  background-color: #f5dfae;
-}
+@media (prefers-color-scheme: no-preference) {
+  .spans {
+    padding-bottom: 2%;
+    padding-top: 2%;
+    background-color: #ffb606 !important;
+  }
 
-h1 {
-  text-align: center;
-  color: #ffb606;
-  font-size: 60px;
-  font-weight: 900;
-  opacity: 1;
-  text-shadow: 2px 2px 2px #000000;
-}
+  .column-text {
+    text-align: center;
+  }
+  .card-height {
+    min-height: 3rem;
+    max-height: 3rem;
+  }
 
-.button:hover {
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-  background: #000000;
-  transition: all 200ms ease;
-  cursor: pointer;
-}
+  .jumbotron_courseView {
+    background-color: #f5dfae;
+  }
 
-.link {
-  text-decoration: underline;
-}
+  h1 {
+    text-align: center;
+    color: #ffb606;
+    font-size: 60px;
+    font-weight: 900;
+    opacity: 1;
+    text-shadow: 2px 2px 2px #000000;
+  }
 
-.link:hover {
-  background-color: rgb(235, 235, 235);
+  .button:hover {
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    background: #000000;
+    transition: all 200ms ease;
+    cursor: pointer;
+  }
+
+  .link {
+    text-decoration: underline;
+  }
+
+  .link:hover {
+    background-color: rgb(235, 235, 235);
+  }
 }

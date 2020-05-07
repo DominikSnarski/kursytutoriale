@@ -138,7 +138,7 @@ function NewCourse() {
     <Jumbotron fluid className="jumbotron_newCourse">
       <Zoom duration="200">
         <Container
-          className="justify-content-center Container"
+          className="justify-content-center Container image"
           style={{
             backgroundColor: '#edf3f4',
             backgroundImage: `url(${backgroundImage})`,
