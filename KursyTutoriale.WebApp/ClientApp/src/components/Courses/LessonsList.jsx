@@ -30,7 +30,8 @@ function LessonsList(props) {
               >
                 <CardTitle>{item.title}</CardTitle>
                 <CardText className="card-height">{item.description}</CardText>
-                {((userContext.userid === props.ownerID) || props.isParticipating )&& (
+                {(userContext.userid === props.ownerID ||
+                  props.isParticipating) && (
                   <Link
                     to={{
                       pathname: AppRoutes.Lesson,
@@ -43,17 +44,21 @@ function LessonsList(props) {
                       },
                     }}
                   >
-                    <Button text="Let's go" color="lightgreen" />
+                    <Button text="Go to lesson" color="green" />
                   </Link>
                 )}
 
-                {userContext.userid === props.ownerID &&(
-                      <Button text="Edit lesson" color="grey" hover="black" />
-                  )}
+                {userContext.userid === props.ownerID && (
+                  <Button text="Edit lesson" color="grey" hover="black" />
+                )}
 
-                  {userContext.userid === props.ownerID &&(
-                      <Button text="Add lesson to preview" hover="black" />
-                    )}
+                {userContext.userid === props.ownerID && (
+                  <Button text="Check assignments" hover="black" />
+                )}
+
+                {userContext.userid === props.ownerID && (
+                  <Button text="Add lesson to preview" hover="black"/>
+                )}
               </Card>
             </Col>
           </Row>

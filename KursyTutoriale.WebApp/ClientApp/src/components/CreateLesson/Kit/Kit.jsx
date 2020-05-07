@@ -52,6 +52,11 @@ function Kit(props) {
             ></Button2>
             <Button2
               width="100%"
+              onClick={props.addAssignment}
+              text="Add assignment"
+            ></Button2>
+            <Button2
+              width="100%"
               onClick={props.clearLesson}
               text="Clear"
             ></Button2>

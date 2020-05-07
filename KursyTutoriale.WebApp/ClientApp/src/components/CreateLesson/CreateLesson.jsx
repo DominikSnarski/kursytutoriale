@@ -25,6 +25,7 @@ function LessonEdit(props) {
   const history = useHistory();
   const [lessonTitle, setLessonTitle] = useState(props.location.state.title);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [erorrMessage, setErrorMessage] = useState('');
   const regex = /(\w{1,})/g;
   const [uploadingMessage, setUploadingMessage] = useState(
     ((100.0 * 50) / 400).toString(),
@@ -35,6 +36,7 @@ function LessonEdit(props) {
     props.location.state.description,
   );
   const blankTextInput = { Type: 'text', Content: '' };
+  const blankAssignmentInput = { Type: 'assignment', Content: '' };
   const blankQuizInput = {
     Type: 'quiz',
     Content: {
@@ -150,7 +152,7 @@ function LessonEdit(props) {
       setErrorMessageTitle('Title cannot be empty');
       return;
     }
-    
+
     if (regex.exec(formData.get('description')) === null) {
       setErrorMessageDesc('Description cannot be empty');
       return;
@@ -200,7 +202,9 @@ function LessonEdit(props) {
                 />
               </FormGroup>
               <Row>
-                <p style={{ color: 'red', marginTop: '-2%' }}>{errorMessageTitle}</p>
+                <p style={{ color: 'red', marginTop: '-2%' }}>
+                  {errorMessageTitle}
+                </p>
               </Row>
             </Zoom>
 
@@ -217,7 +221,9 @@ function LessonEdit(props) {
             </Zoom>
 
             <Row>
-              <p style={{ color: 'red', marginTop: '-2%' }}>{erorrMessageDesc}</p>
+              <p style={{ color: 'red', marginTop: '-2%' }}>
+                {erorrMessageDesc}
+              </p>
             </Row>
 
             <h4>Lesson content</h4>
@@ -264,6 +270,21 @@ function LessonEdit(props) {
                     </Row>
                   </Container>
                 );
+              if (item.Type === 'assignment')
+                return (
+                    <Input
+                      key={key}
+                      className="input_field mb-3"
+                      type="text"
+                      name={`text${key}`}
+                      id={item.index}
+                      data-idx={key}
+                      value={items[key].Content}
+                      onChange={handleTextChange}
+                      placeholder='What trainee should do...'
+                    />
+                );
+
               return (
                 <Input
                   key={key}
@@ -277,6 +298,9 @@ function LessonEdit(props) {
                 />
               );
             })}
+            <Row>
+              <p style={{ color: 'red', marginTop: '-2%' }}>{erorrMessage}</p>
+            </Row>
 
             <Button
               onClick={() => {
@@ -300,6 +324,21 @@ function LessonEdit(props) {
                   },
                 ])
               }
+              addAssignment={() =>{
+                setErrorMessage('');
+                if(items.filter(e => e.Type === 'assignment').length > 0)
+                {
+                  setErrorMessage('You can only have one assignment per lesson.');
+                  return;
+                }
+
+                setItems([
+                  ...items,
+                  {
+                    ...blankAssignmentInput,
+                  },
+                ])}
+              }
               addImage={(event) => {
                 const file = event.target.files[0];
                 getBase64(file);
@@ -318,6 +357,7 @@ function LessonEdit(props) {
                 UploadFile(event);
               }}
               clearLesson={() => {
+                setErrorMessage('');
                 setItems([]);
                 setVideoSrc('');
               }}

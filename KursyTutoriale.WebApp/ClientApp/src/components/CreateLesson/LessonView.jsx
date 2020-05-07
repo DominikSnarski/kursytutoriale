@@ -77,6 +77,14 @@ function Lesson(props) {
                 </Container>
               );
             }
+            if (item.Type.substring(0, 10) === 'assignment') {
+              return (
+                <Container key={key}>
+                  <p>{item.Content}</p>
+                  <br />
+                </Container>
+              );
+            }
             return (
               <Container key={key}>
                 <p>{item.Content}</p>

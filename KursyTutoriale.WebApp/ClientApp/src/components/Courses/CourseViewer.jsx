@@ -33,12 +33,16 @@ const CourseViewer = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const course = { ...props.course };
   const [rating, setRating] = useState(0);
+  const [isParticipating, setIsParticipating] = useState(false);
 
   useEffect(() => {
     if (!isLoading) {
       setIsLoading(true);
       UserService.getUserProfileById(course.ownerId).then((response) => {
         setOwnerUserName(response.data.username);
+      });
+      ParticipantService.isParticipating(course.id).then((response) => {
+        setIsParticipating(response.data);
       });
     }
   }, [props.id]);
@@ -200,17 +204,25 @@ const CourseViewer = (props) => {
             <Card fluid outline style={{ borderColor: '#ffb606' }}>
               <CardHeader className="spans">Course details</CardHeader>
               <CardBody style={{ backgroundColor: '#f5dfae' }}>
-                <CardText style={{ color: 'black' }}>{course.description}</CardText>
+                <CardText style={{ color: 'black' }}>
+                  {course.description}
+                </CardText>
               </CardBody>
             </Card>
           </Col>
         </Row>
 
-        <Row className="d-flex justify-content-center mb-2">
-          Your progress into this course.
-        </Row>
-        {userContext.authenticated && (
-          <Progress color="warning" value={course.progress} className="mb-4" />
+        {userContext.authenticated || isParticipating && (
+          <Container>
+            <Row className="d-flex justify-content-center mb-2">
+              Your progress into this course.
+            </Row>
+            <Progress
+              color="warning"
+              value={course.progress}
+              className="mb-4"
+            />
+          </Container>
         )}
 
         <br />
@@ -228,7 +240,13 @@ const CourseViewer = (props) => {
           isParticipating={props.isParticipating}
         />
 
-        {userContext.userid === course.ownerId && <DiscountGenerator owner={course.ownerId} course={course.title} id={props.id}/>}
+        {userContext.userid === course.ownerId && (
+          <DiscountGenerator
+            owner={course.ownerId}
+            course={course.title}
+            id={props.id}
+          />
+        )}
       </Jumbotron>
 
       {userContext.userid === course.ownerId && !course.verified && (
