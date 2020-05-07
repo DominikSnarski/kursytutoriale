@@ -1,4 +1,27 @@
-.sidenav {
+@media (prefers-color-scheme: dark) {
+  .sidenav {
+    width: 11%;
+    position: absolute;
+    z-index: 1;
+    top: 150px;
+    right: 10px;
+    background: #9e9e9e;
+    overflow-x: hidden;
+    padding: 8px 0;
+    cursor: grab;
+  }
+
+  .wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .lesson {
+    justify-content: center;
+  }
+}
+@media (prefers-color-scheme: light) {
+  .sidenav {
     width: 11%;
     position: absolute;
     z-index: 1;
@@ -7,14 +30,38 @@
     background: #eee;
     overflow-x: hidden;
     padding: 8px 0;
-    cursor: grab
+    cursor: grab;
   }
 
-  .wrapper{
+  .wrapper {
     display: flex;
     justify-content: space-between;
   }
-  
-  .lesson{
+
+  .lesson {
     justify-content: center;
   }
+}
+
+@media (prefers-color-scheme: no-preference) {
+  .sidenav {
+    width: 11%;
+    position: absolute;
+    z-index: 1;
+    top: 150px;
+    right: 10px;
+    background: #eee;
+    overflow-x: hidden;
+    padding: 8px 0;
+    cursor: grab;
+  }
+
+  .wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .lesson {
+    justify-content: center;
+  }
+}

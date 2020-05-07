@@ -6,6 +6,10 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
+if (window.matchMedia('(prefers-color-scheme)').media === 'not all') {
+  console.log("Browser doesn't support dark mode");
+}
+
 ReactDOM.render(
   <BrowserRouter>
     <App />
