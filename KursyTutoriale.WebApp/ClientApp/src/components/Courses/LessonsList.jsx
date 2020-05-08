@@ -49,15 +49,34 @@ function LessonsList(props) {
                 )}
 
                 {userContext.userid === props.ownerID && (
-                  <Button text="Edit lesson" color="grey" hover="black" />
+                  <Link
+                    to={{
+                      pathname: AppRoutes.EditLesson,
+                      state: {
+                        courseTitle: props.courseTitle,
+                        lessons: props.lessons,
+                        index: i,
+                        ownerID: props.ownerID,
+                        courseID: props.courseid,
+                      },
+                    }}
+                  >
+                    <Button text="Edit lesson" color="grey" hover="black" />
+                  </Link>
                 )}
 
                 {userContext.userid === props.ownerID && (
-                  <Button text="Check assignments" hover="black" />
+                  <Link
+                    to={{
+                      pathname: AppRoutes.AssignmentsList,
+                    }}
+                  >
+                    <Button text="Check assignments" hover="black" />
+                  </Link>
                 )}
 
                 {userContext.userid === props.ownerID && (
-                  <Button text="Add lesson to preview" hover="black"/>
+                  <Button text="Add lesson to preview" hover="black" />
                 )}
               </Card>
             </Col>

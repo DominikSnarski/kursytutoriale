@@ -34,7 +34,7 @@ import ModRoute from './routing/ModRoute';
 import AdminMainPanel from './components/AdminPanel/AdminMainPanel';
 import AdminRoute from './routing/AdminRoute';
 import Payment from './components/Payment/Payment';
-import Assignments from './components/Lesson/Assignments';
+import AssignmentsList from './components/Lesson/AssignmentsList';
 
 const App = () => {
   const [userContext, setUserContext] = useState(
@@ -155,8 +155,8 @@ const App = () => {
               />
               <ProtectedRoute
                 exact
-                path={AppRoutes.Assignment}
-                component={Assignments}
+                path={AppRoutes.AssignmentsList}
+                component={AssignmentsList}
                 layout={MainLayout}
               />
               <AppRoute
