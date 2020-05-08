@@ -7,6 +7,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
 if (window.matchMedia('(prefers-color-scheme)').media === 'not all') {
+  // eslint-disable-next-line no-console
   console.log("Browser doesn't support dark mode");
 }
 

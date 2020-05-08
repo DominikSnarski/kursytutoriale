@@ -11,7 +11,11 @@
   .stickyToolKit {
     position: -webkit-sticky;
     position: sticky;
-    top: 3rem;
+    top: 2rem;
+  }
+  
+  .assignment{
+    font-size: 5rem;
   }
 }
 
@@ -30,6 +34,10 @@
     position: sticky;
     top: 3rem;
   }
+
+  .assignment{
+    font-size: 2rem;
+  }
 }
 
 @media (prefers-color-scheme: no-preference) {
@@ -46,5 +54,9 @@
     position: -webkit-sticky;
     position: sticky;
     top: 3rem;
+  }
+
+  .assignment{
+    font-size: 2rem;
   }
 }
