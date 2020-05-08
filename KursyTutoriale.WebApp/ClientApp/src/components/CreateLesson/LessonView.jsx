@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Jumbotron, Button, Container, Col, Row } from 'reactstrap';
+import { Jumbotron, Button, Container, Col, Row, Input } from 'reactstrap';
 import { Fade } from 'react-reveal';
 import { useHistory, Link } from 'react-router-dom';
 import AppRoutes from '../../routing/AppRoutes';
 import QuizViewer from './QuizViewer';
+import Button2 from '../../layouts/CSS/Button/Button';
 import { CourseProgressService } from '../../api/Services/CourseProgressService';
 import './style.css';
 import './Kit.css';
@@ -16,6 +17,7 @@ function Lesson(props) {
       props.location.state.lessons[props.location.state.index].id,
     );
   };
+  const [assignmentText, setAssignmentText] = useState('');
 
   useEffect(() => {
     if (!componentLoaded) {
@@ -23,6 +25,10 @@ function Lesson(props) {
       MarkProgress();
     }
   });
+
+  const handleTextChange = (e) => {
+    setAssignmentText(e.target.value);
+  };
 
   const items = JSON.parse(
     props.location.state.lessons[props.location.state.index].content,
@@ -80,8 +86,28 @@ function Lesson(props) {
             if (item.Type.substring(0, 10) === 'assignment') {
               return (
                 <Container key={key}>
+                  <b className="assignment">Assignment</b> <br />
                   <p>{item.Content}</p>
+                  <Input
+                    className="input_field mb-3"
+                    type="text"
+                    value={assignmentText}
+                    onChange={handleTextChange}
+                  />
                   <br />
+                  <Row style={{ marginTop: '-3%' }}>
+                    <Col >
+                    </Col>
+                    <Col >
+                    </Col>
+                    <Col >
+                    </Col>
+                    <Col >
+                    </Col>
+                    <Col >
+                      <Button2 text="Send assignment" />
+                    </Col>
+                  </Row>
                 </Container>
               );
             }
