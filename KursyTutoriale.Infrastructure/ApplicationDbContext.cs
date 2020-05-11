@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using KursyTutoriale.Domain.Entities.CoursePreview;
+using KursyTutoriale.Domain.Entities.Assignments;
 
 namespace KursyTutoriale.Infrastructure
 {
@@ -36,6 +37,8 @@ namespace KursyTutoriale.Infrastructure
         public DbSet<PaymentCustomer> PaymentCustomers { get; set; }
         public DbSet<CoursePreview> CoursePreviews { get; set; }
         public DbSet<KarmaReward> KarmaRewards { get; set; }
+        public DbSet<Assignment> Assignments { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -55,6 +58,7 @@ namespace KursyTutoriale.Infrastructure
             builder.ApplyConfiguration(new DiscountConfiguration());
             builder.ApplyConfiguration(new CoursePreviewConfiguration());
             builder.ApplyConfiguration(new KarmaRewardConfiguration());
+            builder.ApplyConfiguration(new AssignmentConfigurator());
 
             builder = PaymentMethodConfiguration.Configure(builder);
         }
