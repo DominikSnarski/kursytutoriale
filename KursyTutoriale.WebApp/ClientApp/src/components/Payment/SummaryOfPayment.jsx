@@ -1,18 +1,20 @@
 import React from 'react';
-import { generatePath, useHistory } from 'react-router-dom';
-import { Form, FormGroup, Label, Row, Col, Container } from 'reactstrap';
+import { generatePath, useHistory, useParams } from 'react-router-dom';
+import { Form, FormGroup, Row, Col, Container } from 'reactstrap';
 import AppRoutes from '../../routing/AppRoutes';
 
 import Button from '../../layouts/CSS/Button/Button';
-import Input from '../../layouts/CSS/InputField/InputField';
 
-const SummaryOfPayment = (props) => {
+function SummaryOfPayment(props) {
   const history = useHistory();
+  const { courseID } = useParams();
+  const { price } = useParams();
+  const { discount } = useParams();
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    history.push(generatePath(AppRoutes.Payment, { courseId: props.courseId }));
+    history.push(generatePath(AppRoutes.Payment, { courseId: courseID }));
   };
 
   return (
@@ -30,35 +32,23 @@ const SummaryOfPayment = (props) => {
               <Row className="mt-2">
                 <Col>
                   Price:
-                  <Label
-                    type="text"
-                    name="price"
-                    id="price"
-                    className="label"
-                    text={props.price}
-                  />
+                  <h2>
+                    {price}
+                  </h2>
                 </Col>
 
                 <Col>
                   Discount:
-                  <Input
-                    type="text"
-                    name="discount"
-                    id="discount"
-                    className="label"
-                    text={props.discount}
-                  />
+                  <h2>
+                    {discount}
+                  </h2>
                 </Col>
 
                 <Col>
                   Price with a discount:
-                  <Label
-                    type="text"
-                    name="priceWithDiscount"
-                    id="priceWithDiscount"
-                    className="label"
-                    text={''}
-                  />
+                  <h2>
+
+                  </h2>
                 </Col>
               </Row>
             </FormGroup>

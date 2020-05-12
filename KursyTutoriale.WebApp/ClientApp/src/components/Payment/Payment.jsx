@@ -11,7 +11,7 @@ import Button from '../../layouts/CSS/Button/Button';
 import Input from '../../layouts/CSS/InputField/InputField';
 import Cards from '../Payment/Cards';
 
-function Payment(props) {
+function Payment() {
   const history = useHistory();
   const { courseId } = useParams();
 
@@ -159,7 +159,7 @@ function Payment(props) {
         </Row>
       </div>
 
-      <Form onSubmit={(e) => handleSubmit(e)}>
+      <Form >
         <Row></Row>
         
         <Row className="mt-2">
@@ -324,12 +324,12 @@ function Payment(props) {
             <Button
               text="Back"
               onClick={() => {
-                history.push(`/courseview/${props.location.state.courseid}`);
+                history.push(`/courseview/${courseId}`);
               }}
             ></Button>
           </Col>
           <Col className="text-right">
-            <Button text="Submit"></Button>
+            <Button text="Submit" onClick={(e) => handleSubmit(e)}></Button>
           </Col>
         </Row>
       </Form>
