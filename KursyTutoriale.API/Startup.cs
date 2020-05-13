@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -40,6 +41,7 @@ namespace KursyTutoriale.API
             })
             .AddNewtonsoftJson(opt =>
             {
+                opt.SerializerSettings.Converters.Add(new StringEnumConverter());
                 opt.SerializerSettings.Error = (object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args) =>
                 {
                     throw args.ErrorContext.Error;

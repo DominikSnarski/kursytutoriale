@@ -24,7 +24,7 @@ function DiscountGenerator(props) {
   const [typeField, setTypeField] = useState('Fixed');
   const [amountField, setAmountField] = useState(0);
   const [errorMessage, setErrorMessage] = useState('');
-  
+
   useEffect(() => {
     if (!isLoading) {
       setIsLoading(true);
@@ -55,9 +55,7 @@ function DiscountGenerator(props) {
   };
 
   const generate = () => {
-
-    if(amountField <= 0)
-    {
+    if (amountField <= 0) {
       setErrorMessage('Value of discount must be greater than 0');
       return;
     }
@@ -67,11 +65,10 @@ function DiscountGenerator(props) {
     CourseService.generateDiscounts(props.id, {
       type: typeField,
       code: makeid(props.owner, props.course, props.id, 5),
-      amount: amountField,
+      amount: parseInt(amountField, 10),
     });
   };
 
-  
   if (!codesLoaded) {
     return (
       <Row>
@@ -100,7 +97,6 @@ function DiscountGenerator(props) {
             </CardText>
             <Container className="mb-3">
               <Row>
-
                 <Col sm={6}>
                   <Input
                     type="number"
@@ -128,9 +124,9 @@ function DiscountGenerator(props) {
                   </FormGroup>
                 </Col>
               </Row>
-                <Row>
-                <p style={{color: 'red', marginTop: '-2%'}}>{errorMessage}</p>
-                </Row>
+              <Row>
+                <p style={{ color: 'red', marginTop: '-2%' }}>{errorMessage}</p>
+              </Row>
               Flat - constant discount value. E.g.: (Total course cost: 20$,
               Discount: 10-Flat, Final price: 10$) <br />
               Percentage - percentage of course price. E.g.: (Total course cost:
@@ -143,7 +139,7 @@ function DiscountGenerator(props) {
                 generate();
               }}
             />
-              
+
             <Button
               text="Show codes"
               onClick={() => {
@@ -153,12 +149,17 @@ function DiscountGenerator(props) {
 
             {showDiscounts && (
               <Container>
-              {discounts.length <= 0 && 'There are no generated codes.'}
-              <ListGroup style={{ borderColor: '#ffb606' }}>
-                {discounts.length > 0 && discounts.map((item, i) => (
-                  <p key={i}>{item.value}: -{item.amount}{item.type === 0 && '$'}{item.type === 1 && '%'}</p>
-                ))}
-              </ListGroup>
+                {discounts.length <= 0 && 'There are no generated codes.'}
+                <ListGroup style={{ borderColor: '#ffb606' }}>
+                  {discounts.length > 0 &&
+                    discounts.map((item, i) => (
+                      <p key={i}>
+                        {item.value}: -{item.amount}
+                        {item.type === 0 && '$'}
+                        {item.type === 1 && '%'}
+                      </p>
+                    ))}
+                </ListGroup>
               </Container>
             )}
           </CardBody>
