@@ -25,9 +25,10 @@ import CourseService from '../../api/Services/CourseService';
 import CourseProgressService from '../../api/Services/CourseProgressService';
 import CourseListItem from './CourseListItem';
 import { UserContext } from '../../contexts/UserContext';
-import { useRouteMatch } from 'react-router-dom';
+import { useRouteMatch, Link } from 'react-router-dom';
 import Transactions from '../Transactions/Transactions';
 import Cards from '../Payment/Cards';
+import AppRoutes from '../../routing/AppRoutes';
 
 const UserProfile = () => {
   const userContext = React.useContext(UserContext);
@@ -366,6 +367,15 @@ const UserProfile = () => {
                         .map((course, index) => (
                           <Row key={index} sm="auto" p>
                             <CourseListItem course={course} />
+                            <Link
+                              to={{
+                                pathname: AppRoutes.SurveyList,
+                              }}
+                            >
+                              <Button color="warning" className="ml-1">
+                                See surveys
+                              </Button>
+                            </Link>
                           </Row>
                         ))}
                       {!(numberOfVisibleCourses >= courseList.length) && (
