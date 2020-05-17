@@ -212,16 +212,36 @@ const CourseViewer = (props) => {
           </Col>
         </Row>
 
-        {userContext.authenticated || isParticipating && (
+        {userContext.authenticated ||
+          (isParticipating && (
+            <Container>
+              <Row className="d-flex justify-content-center mb-2">
+                Your progress into this course.
+              </Row>
+              <Progress
+                color="warning"
+                value={course.progress}
+                className="mb-4"
+              />
+            </Container>
+          ))}
+
+        {course.progress === 0 && (
           <Container>
             <Row className="d-flex justify-content-center mb-2">
-              Your progress into this course.
+              Congratulations! You have finished this course. Now you can take
+              anonymous survey about this course to help the author in upgrading
+              it.
             </Row>
-            <Progress
-              color="warning"
-              value={course.progress}
-              className="mb-4"
-            />
+            <Row className="d-flex justify-content-center mb-2">
+              <Link
+                to={{
+                  pathname: AppRoutes.Survey,
+                }}
+              >
+                <Button text="Take survey" />
+              </Link>
+            </Row>
           </Container>
         )}
 

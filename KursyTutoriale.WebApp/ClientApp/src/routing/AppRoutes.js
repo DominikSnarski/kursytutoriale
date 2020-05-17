@@ -19,6 +19,8 @@ const AppRoutes = {
   AdminMainPanel: '/adminMainPanel',
   Payment: '/payment/:courseId',
   AssignmentsList: '/assignmentsList',
+  Survey: '/survey',
+  SurveyList: '/surveyList',
 };
 
 export default AppRoutes;

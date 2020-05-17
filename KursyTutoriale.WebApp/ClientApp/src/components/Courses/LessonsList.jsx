@@ -58,6 +58,7 @@ function LessonsList(props) {
                         index: i,
                         ownerID: props.ownerID,
                         courseID: props.courseid,
+                        isEdited: true
                       },
                     }}
                   >
