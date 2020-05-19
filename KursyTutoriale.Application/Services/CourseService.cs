@@ -526,7 +526,6 @@ namespace KursyTutoriale.Application.Services
 
         public async Task IncrementViewCount(Guid CourseId)
         {
-
             var query = publicationRepository.Queryable();
             var course = query.Where(c => c.CourseId == CourseId).FirstOrDefault();
             if(course != null)
