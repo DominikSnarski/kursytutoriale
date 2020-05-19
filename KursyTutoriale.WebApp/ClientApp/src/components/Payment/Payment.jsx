@@ -114,7 +114,7 @@ function Payment() {
       formData.get('expirationDateMonth'),
       formData.get('expirationDateYear'),
       formData.get('cvv'),
-      addToList,
+      formData.addToList,
     ).then(() => {
       history.push(`/courseview/${courseId}`);
     });
@@ -312,7 +312,7 @@ function Payment() {
             <Col>
               <input
                 type="checkbox"
-                checked={addToList}
+                value={addToList}
                 onClick={() => setAddToList(!addToList)}
               />
             </Col>
