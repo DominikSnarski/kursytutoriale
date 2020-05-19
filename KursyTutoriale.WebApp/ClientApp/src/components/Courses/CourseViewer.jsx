@@ -10,7 +10,13 @@ import {
   CardText,
   Progress,
   Alert,
+  Nav,
+  NavItem,
+  NavLink,
+  TabContent,
+  TabPane,
 } from 'reactstrap';
+import classnames from 'classnames';
 import StarRating from 'react-star-rating-component';
 import { useHistory, Link, generatePath } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
@@ -34,6 +40,8 @@ const CourseViewer = (props) => {
   const course = { ...props.course };
   const [rating, setRating] = useState(0);
   const [isParticipating, setIsParticipating] = useState(false);
+
+  const [activeTab, setActiveTab] = useState('1');
 
   useEffect(() => {
     if (!isLoading) {
@@ -86,6 +94,10 @@ const CourseViewer = (props) => {
 
   const onStarHoverOut = () => {
     setRating(course.rating);
+  };
+
+  const toggle = (tab) => {
+    if (activeTab !== tab) setActiveTab(tab);
   };
 
   return (
@@ -199,46 +211,69 @@ const CourseViewer = (props) => {
           <Col className="column-text">Views: {course.popularity}</Col>
         </Row>
 
-        <Row className="justify-content-center mb-2">
-          <Col>
-            <Card fluid outline style={{ borderColor: '#ffb606' }}>
-              <CardHeader className="spans">Course details</CardHeader>
+        <Row>
+          <Nav tabs>
+            <NavItem className="tabItem">
+              <NavLink
+                className={classnames({
+                  active: activeTab === '1',
+                })}
+                onClick={() => {
+                  toggle('1');
+                }}
+              >
+                <l className="stats">Details</l>
+              </NavLink>
+            </NavItem>
+            <NavItem className="tabItem">
+              <NavLink
+                className={classnames({
+                  active: activeTab === '2',
+                })}
+                onClick={() => {
+                  toggle('2');
+                }}
+              >
+                <l className="stats">Modules</l>
+              </NavLink>
+            </NavItem>
+          </Nav>
+          <TabContent activeTab={activeTab} style={{ width: '100%' }}>
+            <TabPane tabId="1" className="description">
               <CardBody style={{ backgroundColor: '#f5dfae' }}>
                 <CardText style={{ color: 'black' }}>
                   {course.description}
                 </CardText>
               </CardBody>
-            </Card>
-          </Col>
+            </TabPane>
+            <TabPane tabId="2" className="modules">
+              <CardBody style={{ backgroundColor: '#f5dfae' }}>
+                <Modules
+                  toggleLesson={props.toggleLesson}
+                  modules={course.modules}
+                  courseID={props.id}
+                  ownerID={course.ownerId}
+                  courseTitle={course.title}
+                  isParticipating={props.isParticipating}
+                />
+              </CardBody>
+            </TabPane>
+          </TabContent>
         </Row>
 
-        {userContext.authenticated || isParticipating && (
-          <Container>
-            <Row className="d-flex justify-content-center mb-2">
-              Your progress into this course.
-            </Row>
-            <Progress
-              color="warning"
-              value={course.progress}
-              className="mb-4"
-            />
-          </Container>
-        )}
-
-        <br />
-        <Row>
-          <h3 style={{ fontWeight: '900' }}>Modules</h3>
-        </Row>
-        <br />
-
-        <Modules
-          toggleLesson={props.toggleLesson}
-          modules={course.modules}
-          courseID={props.id}
-          ownerID={course.ownerId}
-          courseTitle={course.title}
-          isParticipating={props.isParticipating}
-        />
+        {userContext.authenticated ||
+          (isParticipating && (
+            <Container>
+              <Row className="d-flex justify-content-center mb-2">
+                Your progress into this course.
+              </Row>
+              <Progress
+                color="warning"
+                value={course.progress}
+                className="mb-4"
+              />
+            </Container>
+          ))}
 
         {userContext.userid === course.ownerId && (
           <DiscountGenerator
