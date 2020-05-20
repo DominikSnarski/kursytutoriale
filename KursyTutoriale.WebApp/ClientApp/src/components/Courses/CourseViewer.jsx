@@ -25,6 +25,7 @@ import { ParticipantService } from '../../api/Services/ParticipantService';
 import Button from '../../layouts/CSS/Button/Button';
 import { UserService } from '../../api/Services/UserService';
 import DiscountGenerator from './DiscountGenerator';
+import Chat from './Chat';
 
 import AppRoutes from '../../routing/AppRoutes';
 import Comments from '../Comments/Comments';
@@ -116,6 +117,15 @@ const CourseViewer = (props) => {
           />
         </Col>
       </Row>
+
+      {(isParticipating || userContext.userid === course.ownerId)  && (
+      <Chat
+        courseid = {course.id}
+        username = {userContext.username}
+      /> 
+      )
+      }
+
 
       <Jumbotron className="bg pr-4">
         <Row className="d-flex mb-3">
