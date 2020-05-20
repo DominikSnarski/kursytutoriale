@@ -4,8 +4,6 @@ import {
   Container,
   Col,
   Row,
-  Card,
-  CardHeader,
   CardBody,
   CardText,
   Progress,
