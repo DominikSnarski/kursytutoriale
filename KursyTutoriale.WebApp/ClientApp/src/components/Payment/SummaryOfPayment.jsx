@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { generatePath, useHistory, useParams } from 'react-router-dom';
-import { Form, FormGroup, Row, Col, Container, Spinner } from 'reactstrap';
+import { Form, FormGroup, Input, Row, Col, Container, Spinner } from 'reactstrap';
 import AppRoutes from '../../routing/AppRoutes';
 import { CourseService } from '../../api/Services/CourseService';
 
@@ -13,6 +13,7 @@ function SummaryOfPayment(props) {
   const [course, setCourse] = useState(props.course);
   const [courseLoaded, setCourseLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [newDiscount, setNewDiscount] = useState('');
 
   useEffect(() => {
     if (!isLoading) {
@@ -23,6 +24,18 @@ function SummaryOfPayment(props) {
       });
     }
   });
+
+  
+  const handleChangeDiscount = (event) => {
+    const formData = new FormData(event.target);
+    if (formData.get('newDisc')!== '')
+      setNewDiscount(formData.get('newDisc'));
+
+    
+    formData.set("priceWithDisc", CourseService.getPriceWithDiscount(course.id, newDiscount)
+      .then(() => history.push('/'))
+      .then(() => history.push(`/courseview/${course.id}`)));
+  };
 
   if (!courseLoaded) {
     return (
@@ -47,7 +60,7 @@ function SummaryOfPayment(props) {
 
   return (
     <Container className="Container">
-      <Form>
+      <Form onSubmit={(e) => handleSubmit(e)}>
         <Row></Row>
         <Row className="mt-2">
           <Col>
@@ -69,15 +82,13 @@ function SummaryOfPayment(props) {
                 <Col>
                   Discount:
                   <br/>
-                  <h3>
-
-                  </h3>
+                  <Input onChange={handleChangeDiscount} name="newDisc"/>
                 </Col>
 
                 <Col>
                   Price with a discount:
                   <br/>
-                  <h3>
+                  <h3 name="priceWithDisc">
 
                   </h3>
                 </Col>
@@ -96,7 +107,7 @@ function SummaryOfPayment(props) {
             ></Button>
           </Col>
           <Col className="text-right">
-            <Button text="Submit" onClick={(e) => handleSubmit(e)}></Button>
+            <Button text="Submit"></Button>
           </Col>
         </Row>
       </Form>

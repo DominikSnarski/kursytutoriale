@@ -76,6 +76,9 @@ export const CourseService = {
   },
   getDiscounts: (courseId) => {
     return apiClient.get(`/api/PublicCourses/GetDiscountCodes?Id=${courseId}`)
+  },
+  getPriceWithDiscount: (courseId, code) => {
+    return apiClient.get(`/api/PublicCourses/GetPriceWithDiscount?Id=${courseId}`, {code})
   }
 };
 

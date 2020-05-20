@@ -159,7 +159,7 @@ function Payment() {
         </Row>
       </div>
 
-      <Form >
+      <Form onSubmit={(e) => handleSubmit(e)}>
         <Row></Row>
         
         <Row className="mt-2">
@@ -329,7 +329,7 @@ function Payment() {
             ></Button>
           </Col>
           <Col className="text-right">
-            <Button text="Submit" onClick={(e) => handleSubmit(e)}></Button>
+            <Button text="Submit"></Button>
           </Col>
         </Row>
       </Form>
