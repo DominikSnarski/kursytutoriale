@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import * as signalIR from '@microsoft/signalr';
+import { Input,Container,Jumbotron } from 'reactstrap';
 import apiClient from '../../api/ApiClient';
 import Button from '../../layouts/CSS/Button/Button';
-import { Input,Container,Jumbotron } from 'reactstrap';
+
+
 class Chat extends Component {
     constructor(props) {
         super(props);
@@ -19,14 +21,14 @@ class Chat extends Component {
 
     componentDidMount = () => {
         this.setState({ courseid: this.props.courseid });
-        const username = this.props.username;
+        const {username} = this.props;
 
-        const connectionString = apiClient.baseURL;
+        const connectionString = `${apiClient.baseURL }hub`;
 
         const hubConnection = new signalIR.HubConnectionBuilder()
             .configureLogging(signalIR.LogLevel.Information)
             .withAutomaticReconnect()
-            .withUrl(connectionString + "hub", {
+            .withUrl(connectionString, {
                 skipNegotiation: true,
                 transport: signalIR.HttpTransportType.WebSockets
             })
