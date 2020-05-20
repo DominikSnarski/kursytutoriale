@@ -75,5 +75,11 @@ namespace KursyTutoriale.API.Controllers
         {
             await courseService.EditModule(module);
         }
+
+        [HttpPost("SendToVerification")]
+        public async Task SendToVerification(Guid CourseId)
+        {
+            await courseService.SendToVerification(CourseId);
+        }
     }
 }

@@ -11,7 +11,7 @@ namespace KursyTutoriale.Application.DataTransferObjects.Course
         public string Title { get; set; }
         public string Description { get; set; }
         public bool Public { get; set; }
-        public bool Verified { get; set; }
+        public int Verified { get; set; }
         public float Price { get; set; }
         public Guid OwnerId { get; set; }
         public DateTime Date { get; set; }

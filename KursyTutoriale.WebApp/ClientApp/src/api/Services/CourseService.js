@@ -78,7 +78,13 @@ export const CourseService = {
     );
   },
   getDiscounts: (courseId) => {
-    return apiClient.get(`/api/PublicCourses/GetDiscountCodes?Id=${courseId}`);
+    return apiClient.get(`/api/PublicCourses/GetDiscountCodes?Id=${courseId}`)
+  },
+
+  sendToVerification: (courseId) => {
+    return apiClient.post(
+      `/api/CourseCreator/SendToVerification?CourseId=${courseId}`,
+    );  
   },
 };
 
