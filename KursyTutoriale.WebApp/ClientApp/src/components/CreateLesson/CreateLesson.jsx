@@ -52,7 +52,9 @@ function LessonEdit(props) {
   const [items, setItems] = useState(
     !props.location.state.isEdited
       ? [{ ...blankTextInput }]
-      : props.location.state.content,
+      : JSON.parse(
+          props.location.state.lessons[props.location.state.index].content,
+        ),
   );
   const [videoSrc, setVideoSrc] = useState('');
   const userContext = React.useContext(UserContext);
@@ -245,8 +247,7 @@ function LessonEdit(props) {
                   <Container key={key}>
                     <Row className="justify-content-md-center">
                       <img
-                        className="mb-3"
-                        src={item.Content}
+                        src={!props.location.state.isEdited ? item.Content : item.Content.substring(1,item.Content.length-1)}
                         alt="Something, somewhere went terribly wrong"
                       />
                     </Row>
@@ -272,17 +273,17 @@ function LessonEdit(props) {
                 );
               if (item.Type === 'assignment')
                 return (
-                    <Input
-                      key={key}
-                      className="input_field mb-3"
-                      type="text"
-                      name={`text${key}`}
-                      id={item.index}
-                      data-idx={key}
-                      value={items[key].Content}
-                      onChange={handleTextChange}
-                      placeholder='What trainee should do...'
-                    />
+                  <Input
+                    key={key}
+                    className="input_field mb-3"
+                    type="text"
+                    name={`text${key}`}
+                    id={item.index}
+                    data-idx={key}
+                    value={items[key].Content}
+                    onChange={handleTextChange}
+                    placeholder="What trainee should do..."
+                  />
                 );
 
               return (
@@ -324,11 +325,12 @@ function LessonEdit(props) {
                   },
                 ])
               }
-              addAssignment={() =>{
+              addAssignment={() => {
                 setErrorMessage('');
-                if(items.filter(e => e.Type === 'assignment').length > 0)
-                {
-                  setErrorMessage('You can only have one assignment per lesson.');
+                if (items.filter((e) => e.Type === 'assignment').length > 0) {
+                  setErrorMessage(
+                    'You can only have one assignment per lesson.',
+                  );
                   return;
                 }
 
@@ -337,8 +339,8 @@ function LessonEdit(props) {
                   {
                     ...blankAssignmentInput,
                   },
-                ])}
-              }
+                ]);
+              }}
               addImage={(event) => {
                 const file = event.target.files[0];
                 getBase64(file);
