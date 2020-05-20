@@ -24,9 +24,7 @@ namespace KursyTutoriale.API.Middleware
         {
 
             var groupName = courseId.ToString();
-            //To Do 
-            //Add username
-            //chatEntryRepository.Add(new ChatEntry { Message = message, TripId = Int32.Parse(groupName), UserName = userName });
+
             await Clients.Group(groupName).SendAsync("GetMessage", $"{userName}: {message}");
         }
 
