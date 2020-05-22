@@ -17,7 +17,7 @@ import { CourseService } from '../../api/Services/CourseService';
 import SystemService from '../../api/Services/SystemService';
 import Button from '../../layouts/CSS/Button/Button';
 import InputField from '../../layouts/CSS/InputField/InputField';
-
+import SuvreyService from '../../api/Services/SurveyService';
 import './NewCourse.css';
 import backgroundImage from '../../images/Book_background.jpg';
 
@@ -130,6 +130,7 @@ function NewCourse() {
       formData.get('title'),
       image,
     ).then((response) => {
+      SuvreyService.addSurvey(response.data)
       history.push(`/courseview/${response.data}`);
     });
   };

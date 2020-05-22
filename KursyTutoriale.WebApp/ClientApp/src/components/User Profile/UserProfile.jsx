@@ -370,6 +370,7 @@ const UserProfile = () => {
                             <Link
                               to={{
                                 pathname: AppRoutes.SurveyList,
+                                state: {id: course.id}
                               }}
                             >
                               <Button color="warning" className="ml-1">

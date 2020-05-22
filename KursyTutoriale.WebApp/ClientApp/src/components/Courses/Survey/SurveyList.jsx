@@ -1,46 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Container, Table } from 'reactstrap';
+import { Container, Table, Row, Col, Spinner, Alert } from 'reactstrap';
 import CompleteSurvey from './CompleteSurvey';
 import Button from '../../../layouts/CSS/Button/Button';
+import { SurveyService } from '../../../api/Services/SurveyService';
 
-function SurveyList() {
+function SurveyList(props) {
   const history = useHistory();
-  const [items] = useState([
-    {
-      date: '1970-01-01',
-      rating: '5 - It is perfect',
-      ratingDesc: 'I Think it is perfect',
-      learnedSkills: 'Yes',
-      lessons: 'Yes',
-      lessonsDesc: 'Slow and loud voice',
-      recommendation: 'Yes',
-      recommendationDesc: 'Everyone needs to learn this skill',
-      suggestions: 'No',
-    },
-    {
-      date: '1970-01-01',
-      rating: '5 - It is perfect',
-      ratingDesc: 'I Think it is perfect',
-      learnedSkills: 'Yes',
-      lessons: 'Yes',
-      lessonsDesc: 'Slow and loud voice',
-      recommendation: 'Yes',
-      recommendationDesc: 'Everyone needs to learn this skill',
-      suggestions: 'No',
-    },
-    {
-      date: '1970-01-01',
-      rating: '5 - It is perfect',
-      ratingDesc: 'I Think it is perfect',
-      learnedSkills: 'Yes',
-      lessons: 'Yes',
-      lessonsDesc: 'Slow and loud voice',
-      recommendation: 'Yes',
-      recommendationDesc: 'Everyone needs to learn this skill',
-      suggestions: 'No',
-    },
-  ]);
+  const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [courseLoaded, setListLoaded] = useState(false);
+  const [error] = useState(false);
+
+  useEffect(() => {
+    if (!isLoading) {
+      setIsLoading(true);
+      SurveyService.getSurvey(props.location.state.id).then((response) => {
+        setItems([response.data]);
+        setListLoaded(true);
+      });
+    }
+  }, []);
+
+  if (error) {
+    return (
+      <Row>
+        <Col xs="6" sm="4"></Col>
+        <Col sm="12" md={{ size: 10, offset: 1 }}>
+          <Alert color="danger">Something went terribly wrong.</Alert>
+        </Col>
+        <Col sm="4"></Col>
+      </Row>
+    );
+  }
+  if (!courseLoaded) {
+    return (
+      <Row>
+        <Col xs="6" sm="4"></Col>
+        <Col xs="6" sm="4">
+          <Spinner
+            className="d-lg-flex d-block h2"
+            style={{ width: '3rem', height: '3rem' }}
+            color="primary"
+          />
+        </Col>
+        <Col sm="4"></Col>
+      </Row>
+    );
+  }
 
   return (
     <Container>

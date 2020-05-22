@@ -7,7 +7,6 @@ function CompleteSurvey(props) {
   const toggle = () => {
     setIsOpen(!isOpen);
   };
-
   return (
     <tbody>
       <tr onClick={() => toggle()} style={{ cursor: 'pointer' }}>
@@ -18,11 +17,11 @@ function CompleteSurvey(props) {
       <Collapse isOpen={isOpen}>
         <Container>
         <legend>How much did you like this course?</legend>
-      {props.survey.rating}
+      {props.survey.questions[props.num-1].answers[0]}
       <br />
       <b>Why?</b>
       <br />
-      {props.survey.ratingDesc}
+      {props.survey.questions[props.num-1].answers[1]}
       <br />
       <br />
 
