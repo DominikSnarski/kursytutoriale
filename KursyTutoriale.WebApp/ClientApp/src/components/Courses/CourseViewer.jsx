@@ -429,11 +429,13 @@ const CourseViewer = (props) => {
         }}
       />
 
-      <Comments
-        courseId={props.id}
-        comments={props.comments}
-        ownerId={course.ownerId}
-      />
+      {course.public && (
+        <Comments
+          courseId={props.id}
+          comments={props.comments}
+          ownerId={course.ownerId}
+        />
+      )}
     </Container>
   );
 };
