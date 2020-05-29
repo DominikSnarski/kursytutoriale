@@ -51,7 +51,7 @@ function NewCourse() {
       selectedTags,
       price,
       title,
-    );
+    ).then((resp) => history.push(`/courseview/${resp.data}`));
 
   const newCourseSchema = Yup.object().shape({
     title: Yup.string()
