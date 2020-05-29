@@ -1,61 +1,70 @@
 import classnames from 'classnames';
-import React, { useState } from 'react';
-import { Fade } from 'react-reveal';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import {
-  Button,
   Container,
-  Jumbotron,
   Nav,
   NavItem,
   NavLink,
   TabContent,
   TabPane,
+  Spinner,
+  Row,
+  Col,
+  Alert,
 } from 'reactstrap';
-import Details from '../Details/Details';
 import Featured2 from './Showcase/Featured';
-import TopCategories from './Showcase/TopCategories';
-import TopMentors from './Showcase/TopMentors';
+// eslint-disable-next-line import/no-named-as-default
+import CourseService from '../../api/Services/CourseService';
 import './Featured.css';
 
 const Featured = () => {
-  const [showDetails, setShowDetails] = useState(false);
+  const COURSE_COUNT = 3;
   const [activeTab, setActiveTab] = useState('1');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error] = useState(false);
+  const [featuresLoaded, setFeaturesLoaded] = useState(false);
+  const [topCourses, setTopCourses] = useState([]);
+  const [mostPopularCourses, setMosstPopularCourses] = useState([]);
 
   const toggleTabs = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
-  const toggle = () => setShowDetails(!showDetails);
+  useEffect(() => {
+    if (!isLoading) {
+      setIsLoading(true);
+      CourseService.getFeaturedCourses(COURSE_COUNT).then((response) => {
+        setMosstPopularCourses(response.data.mostPopular);
+        setTopCourses(response.data.topRated);
+        setFeaturesLoaded(true);
+      });
+    }
+  }, []);
 
-  if (showDetails) {
+  if (error) {
     return (
-      <Fade right duration="200">
-        <div>
-          <Jumbotron fluid className="jumbotron_bg">
-            <span className="d-lg-flex justify-content-center d-block h2 text-dark">
-              Course Details
-            </span>
-          </Jumbotron>
-          <Jumbotron fluid className="courses_bg">
-            <Details
-              title="Item1"
-              category="Cat1"
-              tags={['tag1']}
-              price="free"
-              description="Lorem "
-            />
-            <div className="float-right mr-4">
-              <Link to="/courseview">
-                <Button color="primary">Go to course&apos;s page</Button>
-              </Link>{' '}
-              <Button color="secondary" onClick={toggle}>
-                Back
-              </Button>
-            </div>
-          </Jumbotron>
-        </div>
-      </Fade>
+      <Row>
+        <Col xs="6" sm="4"></Col>
+        <Col sm="12" md={{ size: 10, offset: 1 }}>
+          <Alert color="danger">Something went terribly wrong.</Alert>
+        </Col>
+        <Col sm="4"></Col>
+      </Row>
+    );
+  }
+  if (!featuresLoaded) {
+    return (
+      <Row>
+        <Col xs="6" sm="4"></Col>
+        <Col xs="6" sm="4">
+          <Spinner
+            className="d-lg-flex d-block h2"
+            style={{ width: '3rem', height: '3rem' }}
+            color="primary"
+          />
+        </Col>
+        <Col sm="4"></Col>
+      </Row>
     );
   }
 
@@ -69,7 +78,7 @@ const Featured = () => {
               toggleTabs('1');
             }}
           >
-            Featured courses
+            Most popular courses
           </NavLink>
         </NavItem>
 
@@ -80,39 +89,38 @@ const Featured = () => {
               toggleTabs('2');
             }}
           >
-            Top categories
-          </NavLink>
-        </NavItem>
-
-        <NavItem>
-          <NavLink
-            className={classnames({ active: activeTab === '3' })}
-            onClick={() => {
-              toggleTabs('3');
-            }}
-          >
-            Top mentors
+            Top courses
           </NavLink>
         </NavItem>
       </Nav>
 
-      <TabContent activeTab={activeTab}>
-        <TabPane tabId="1">
-          <Featured2 toggle={toggle} />
-        </TabPane>
-      </TabContent>
+      {mostPopularCourses.length > 0 ? (
+        <TabContent activeTab={activeTab}>
+          <TabPane tabId="1">
+            <Featured2 coursesList={mostPopularCourses} />
+          </TabPane>
+        </TabContent>
+      ) : (
+        <TabContent activeTab={activeTab}>
+          <TabPane tabId="2">
+            Sorry but we could not find any courses here.
+          </TabPane>
+        </TabContent>
+      )}
 
-      <TabContent activeTab={activeTab}>
-        <TabPane tabId="2">
-          <TopCategories />
-        </TabPane>
-      </TabContent>
-
-      <TabContent activeTab={activeTab}>
-        <TabPane tabId="3">
-          <TopMentors />
-        </TabPane>
-      </TabContent>
+      {topCourses.length > 0 ? (
+        <TabContent activeTab={activeTab}>
+          <TabPane tabId="2">
+            <Featured2 coursesList={topCourses} />
+          </TabPane>
+        </TabContent>
+      ) : (
+        <TabContent activeTab={activeTab}>
+          <TabPane tabId="2">
+            Sorry but we could not find any courses here.
+          </TabPane>
+        </TabContent>
+      )}
     </Container>
   );
 };
