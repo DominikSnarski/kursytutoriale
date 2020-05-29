@@ -11,6 +11,9 @@ export const UserService = {
   getUserProfileById: (id) => {
     return apiClient.get(`/getProfileById?id=${id}`);
   },
+  isEmailConfirmed: () => {
+    return apiClient.get(`/IsEmailConfirmed`);
+  },
   updateUserProfile: (
     name,
     siteLink,

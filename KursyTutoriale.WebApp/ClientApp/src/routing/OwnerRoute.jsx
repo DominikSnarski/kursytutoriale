@@ -3,26 +3,24 @@ import React, { useState } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { InitialUserContext } from '../contexts/UserContext';
 
-const ProtectedRoute = ({ component: Component, layout: Layout, ...rest }) => { 
+
+const OwnerRoute = ({ component: Component, layout: Layout, ...rest }) => {
   const [userContext] = useState(
     JSON.parse(localStorage.getItem('user')) || InitialUserContext,
   );
 
-  
-
   return (
-    
     <Route
-      {...rest}   
-      render={
-        (props) =>
-        userContext.authenticated ? (
-          
+      {...rest}
+      render={(props) =>
+
+        ((userContext.authenticated && userContext.userid === props.match.params.id)) ? (
           <Layout>
             <Component {...props} />
           </Layout>
         ) : (
-          <Redirect
+            
+            <Redirect
             to={{
               pathname: '/signin',
               state: { from: props.location },
@@ -30,11 +28,8 @@ const ProtectedRoute = ({ component: Component, layout: Layout, ...rest }) => {
           />
         )
       }
-      
     />
-    
   );
-  
 };
 
-export default ProtectedRoute;
+export default OwnerRoute;

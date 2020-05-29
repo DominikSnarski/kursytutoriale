@@ -4,8 +4,10 @@ using KursyTutoriale.API.Middleware;
 using KursyTutoriale.API.Utils;
 using KursyTutoriale.Application.Configuration;
 using KursyTutoriale.Application.Configuration.DIModules;
+using KursyTutoriale.Application.DataTransferObjects.Email;
 using KursyTutoriale.Application.Services;
 using KursyTutoriale.Application.Services.Admin;
+using KursyTutoriale.Application.Services.Email;
 using KursyTutoriale.Infrastructure.Configuration;
 using KursyTutoriale.Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
@@ -81,7 +83,11 @@ namespace KursyTutoriale.API
                 });
 
                 c.DescribeAllEnumsAsStrings();
+
+                
             });
+
+            services.Configure<AuthMessageSenderOptions>(Configuration);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -89,6 +95,7 @@ namespace KursyTutoriale.API
             builder.RegisterType<CourseService>().As<ICourseService>();
             builder.RegisterType<SearchService>().As<ISearchService>();
             builder.RegisterType<FileService>().As<IFileService>();
+            builder.RegisterType<EmailSender>().As<IEmailSender>();
 
             builder.RegisterModule(new DataAccessModule(Configuration.GetConnectionString("default")));
 

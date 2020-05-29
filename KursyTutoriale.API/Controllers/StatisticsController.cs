@@ -57,5 +57,23 @@ namespace KursyTutoriale.API.Controllers
             return result;
         }
 
+        [Authorize]
+        [HttpGet("GetParticipantsData")]
+        public List<DataDTO> GetParticipantsData()
+        {
+            var result = statisticsService.GetParticipantsData();
+
+            return result;
+        }
+
+        [Authorize]
+        [HttpGet("GetProgressData")]
+        public List<UniversalDataDTO> GetProgressData()
+        {
+            var result = statisticsService.GetProgressData();
+
+            return result;
+        }
+
     }
 }

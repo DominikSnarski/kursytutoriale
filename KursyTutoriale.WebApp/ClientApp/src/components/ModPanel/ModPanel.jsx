@@ -19,9 +19,9 @@ import {
 import Button from '../../layouts/CSS/Button/Button';
 import Card from '../../layouts/CSS/Card/Card';
 import { ModService } from '../../api/Services/ModService';
-import CourseViewer from '../Courses/CourseViewer';
 import { CourseService } from '../../api/Services/CourseService';
 import { ReportService } from '../../api/Services/ReportService';
+import CourseViewerProtected from '../Courses/CourseViewerProtected';
 
 const ModPanel = () => {
   const [pageLoaded, setPageLoaded] = useState(false);
@@ -286,7 +286,7 @@ const ModPanel = () => {
             )}
             {courseViewLoaded && (
               <div>
-                <CourseViewer
+                <CourseViewerProtected
                   course={courseViewItem}
                   rating={courseViewItem.rating}
                   id={

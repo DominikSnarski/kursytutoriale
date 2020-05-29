@@ -7,6 +7,7 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
         public Participant(Guid userId)
         {
             UserId = userId;
+            Date = DateTime.Now;
         }
         private Participant()
         {
@@ -15,5 +16,6 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
 
         public Guid Id { get; private set; }
         public Guid UserId { get; private set; }
+        public DateTime Date { get;private set; }
     }
 }

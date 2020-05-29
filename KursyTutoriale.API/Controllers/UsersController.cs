@@ -3,9 +3,12 @@ using KursyTutoriale.Application.Services.UserProfiles;
 using KursyTutoriale.Application.DataTransferObjects.UserProfiles;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KursyTutoriale.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -27,6 +30,12 @@ namespace KursyTutoriale.API.Controllers
         public IEnumerable<UserProfileListItemDTO> GetProfilesByName(string query)
         {
             return usersService.GetProfilesByName(query);
+        }
+
+        [HttpGet("/IsEmailConfirmed")]
+        public Task<bool> IsEmailConfirmed()
+        {
+            return usersService.IsEmailConfirmed();
         }
     }
 }

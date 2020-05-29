@@ -17,7 +17,7 @@ import { StatisticsService } from '../../api/Services/StatisticsService';
 
 
 
-class StatisticsChart extends React.Component {
+class UserProfileStatisticChart extends React.Component {
   constructor(props) {
     super(props);
 
@@ -25,7 +25,9 @@ class StatisticsChart extends React.Component {
         data: [],
         dataNumber: props.dataNumber,
         isLoading: true,
-        error: false
+        error: false,
+        XAxis: "Date",
+        YAxis: ""
     }
 }
 
@@ -35,28 +37,21 @@ class StatisticsChart extends React.Component {
 
      if(this.state.dataNumber === 1)
      {
-        StatisticsService.getCreatedCoursesData().then((result) => {
+        StatisticsService.getParticipantsData().then((result) => {
             this.setState({ data: result, isLoading: false });
         });
+
+        this.setState({YAxis:"Participants"})
      }
      else if(this.state.dataNumber === 2)
      {
-        StatisticsService.getCreatedAccountsData().then((result) => {
+        StatisticsService.getProgressData().then((result) => {
             this.setState({ data: result, isLoading: false });
         });
+
+        this.setState({YAxis:"Progress"})
      }
-     else if(this.state.dataNumber === 3)
-     {
-        StatisticsService.getSignInData().then((result) => {
-            this.setState({ data: result, isLoading: false});
-        });
-     }
-     else if(this.state.dataNumber === 4)
-     {
-        StatisticsService.getDailySignInData().then((result) => {
-            this.setState({ data: result, isLoading: false });
-        });
-     }
+     
 
      // console.log(Array.from(result));
      };
@@ -91,7 +86,7 @@ class StatisticsChart extends React.Component {
           <Col sm="4"></Col>
         </Row>
       );
-      if(this.state.dataNumber === 4)
+      if(this.state.dataNumber === 2)
       return (
         <Container>
             <Fade left duration="200">
@@ -101,13 +96,13 @@ class StatisticsChart extends React.Component {
                 height = {600}
                     getX={d => d.date}
                     getY={d => d.amount}
-                    xDomain= {[0,24]}
+                    xDomain= {[0,102]}
                     
                     >
                     <HorizontalGridLines />
                     <VerticalGridLines />
-                    <XAxis title="Date" position="middle" orientation="bottom" />
-                    <YAxis title="Number of courses" position="middle" orientation="left"  />
+                    <XAxis title={this.state.XAxis} position="middle" orientation="bottom" />
+                    <YAxis title={this.state.YAxis} position="middle" orientation="left"  />
 
                     <VerticalBarSeries
                         data= {this.state.data}
@@ -134,8 +129,8 @@ class StatisticsChart extends React.Component {
                         >
                         <HorizontalGridLines />
                         <VerticalGridLines />
-                        <XAxis title="Date" position="middle" orientation="bottom" tickTotal={10}/>
-                        <YAxis title="Number of courses" position="middle" orientation="left"  />
+                        <XAxis title={this.state.XAxis} position="middle" orientation="bottom" tickTotal={10}/>
+                        <YAxis title={this.state.YAxis} position="middle" orientation="left"  />
 
                         <VerticalBarSeries
                             data= {this.state.data}
@@ -150,4 +145,4 @@ class StatisticsChart extends React.Component {
         );
     }
 }
-export default StatisticsChart;
+export default UserProfileStatisticChart;

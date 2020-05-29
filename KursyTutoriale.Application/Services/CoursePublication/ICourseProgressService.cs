@@ -15,5 +15,6 @@ namespace KursyTutoriale.Application.Services.CoursePublication
         IEnumerable<CourseBasicInformationsDTO> GetUserCompletedCourses(Guid userId);
         IEnumerable<CourseBasicInformationsDTO> GetUserUncompletedCourses(Guid userId);
         int GetProgress(CourseReadModel course, CoursePublicationProfile profile);
+        int GetUserProgress(Guid userId, CourseReadModel course, CoursePublicationProfile profile);
     }
 }

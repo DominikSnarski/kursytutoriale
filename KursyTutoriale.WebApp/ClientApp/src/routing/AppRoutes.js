@@ -1,3 +1,4 @@
+
 const AppRoutes = {
   Signin: '/signin',
   EditProfile: '/editprofile',
@@ -22,6 +23,9 @@ const AppRoutes = {
   AssignmentsList: '/assignmentsList',
   Survey: '/survey',
   SurveyList: '/surveyList',
+  ConfirmEmail: '/confirmEmail',
+  ChangePassword: '/changePassword',
+  ForgotPassword: '/forgotPassword',
 };
 
 export default AppRoutes;

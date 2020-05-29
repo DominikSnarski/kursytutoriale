@@ -31,7 +31,7 @@ class AdminUnverifiedCoursesPanel extends React.Component {
 componentDidMount() {
   this.setState({ isLoading: true });
 
-  AdminService.getCoursesForVerification(100).then((data) => {
+  AdminService.getCoursesForVerification(10).then((data) => {
     this.setState({ listOfCourses: data.data, isLoading: false });
   });
 

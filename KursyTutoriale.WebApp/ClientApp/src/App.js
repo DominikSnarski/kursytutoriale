@@ -38,6 +38,10 @@ import SummaryOfPayment from './components/Payment/SummaryOfPayment';
 import AssignmentsList from './components/Lesson/AssignmentsList';
 import Survey from './components/Courses/Survey/Survey';
 import SurveyList from './components/Courses/Survey/SurveyList';
+import ConfirmEmail from './components/User Profile/ConfirmEmail';
+import OwnerRoute from './routing/OwnerRoute';
+import ForgotPassword from './components/Auth/ForgotPassword';
+import ChangePassword from './components/Auth/ChangePassword';
 
 const App = () => {
   const [userContext, setUserContext] = useState(
@@ -162,7 +166,7 @@ const App = () => {
                 component={AssignmentsList}
                 layout={MainLayout}
               />
-              <AppRoute
+              <OwnerRoute
                 exact
                 path={AppRoutes.UserProfile}
                 component={UserProfile}
@@ -208,6 +212,24 @@ const App = () => {
                 exact
                 path={AppRoutes.SurveyList}
                 component={SurveyList}
+                layout={MainLayout}
+              />
+              <ProtectedRoute
+                exact
+                path={AppRoutes.ConfirmEmail}
+                component={ConfirmEmail}
+                layout={MainLayout}
+              />
+                <AppRoute
+                exact
+                path={AppRoutes.ForgotPassword}
+                component={ForgotPassword}
+                layout={MainLayout}
+              />
+                <AppRoute
+                exact
+                path={AppRoutes.ChangePassword}
+                component={ChangePassword}
                 layout={MainLayout}
               />
               <Route component={notfound} layout={MainLayout} />

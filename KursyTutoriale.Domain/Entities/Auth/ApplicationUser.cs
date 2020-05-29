@@ -9,5 +9,8 @@ namespace KursyTutoriale.Domain.Entities.Auth
     {
         public ApplicationUser() { Id = Guid.NewGuid(); }
         public Guid UserProfileId { get; set; }
+
+        public Guid EmailActivationCode { get; set; }
+
     }
 }
