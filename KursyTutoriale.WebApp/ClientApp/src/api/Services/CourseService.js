@@ -40,6 +40,9 @@ export const CourseService = {
   getUsersCourses: (id) => {
     return apiClient.get(`api/CoursesViewer/GetUsersCourses?UserId=${id}`);
   },
+  getFeaturedCourses: (categoryCount) => {
+    return apiClient.get(`/api/CoursesViewer/GetFeaturedCourses?CategoryCount=${categoryCount}`);
+  },
   publishCourse: (id) => {
     return new Promise((resolve, reject) =>
       apiClient
