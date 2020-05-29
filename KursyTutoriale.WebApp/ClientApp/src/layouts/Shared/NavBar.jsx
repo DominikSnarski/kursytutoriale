@@ -14,6 +14,7 @@ const NavBar = () => {
 
   const handleSubmit = () => {
     apiClient.logout();
+    history.push('/');
   };
 
   return (
