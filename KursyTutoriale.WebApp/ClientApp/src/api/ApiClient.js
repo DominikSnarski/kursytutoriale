@@ -34,16 +34,12 @@ apiClient.fetchCourses = (firstPage, lastPage, caller) => {
   );
 };
 
-apiClient.login = async (username, password, something) => {
-  let isOK = true;
+apiClient.login = async (username, password) => {
   const res = await apiClient.post('api/Login/SignIn', {
     username,
     password,
-  }).catch(()=>{something(); isOK=false;})
+  });
 
-  if(!isOK)
-    return;
-    
   localStorage.setItem('access_token', res.data.accessToken);
   localStorage.setItem('refresh_token', res.data.refreshToken);
 
