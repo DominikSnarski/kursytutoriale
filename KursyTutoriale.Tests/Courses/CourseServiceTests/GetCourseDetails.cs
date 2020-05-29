@@ -73,7 +73,7 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
                 null,
                 null,
                 new Mock<IExtendedRepository<CoursePreview>>().Object,
-                null);
+                new Mock<IExtendedRepository<Tag>>().Object);
 
             //Act
             var details = service.GetCourseDetails(courseId);
@@ -122,7 +122,7 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
                 null,
                 null,
                 new Mock<IExtendedRepository<CoursePreview>>().Object,
-                null);
+                new Mock<IExtendedRepository<Tag>>().Object);
 
             //Act
             var details = service.GetCourseDetails(courseId);
@@ -164,7 +164,7 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
                 null,
                 null,
                 new Mock<IExtendedRepository<CoursePreview>>().Object,
-                null);
+                new Mock<IExtendedRepository<Tag>>().Object);
 
             //Act
             var details = service.GetCourseDetails(courseId);
