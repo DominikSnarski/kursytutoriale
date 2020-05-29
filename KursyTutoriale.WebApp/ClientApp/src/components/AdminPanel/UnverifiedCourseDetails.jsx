@@ -19,6 +19,7 @@ import CourseViewerProtected from '../Courses/CourseViewerProtected';
 const UnverifiedCourseDetails = (props) => {
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
+  const [comment, setComment] = useState(false);
 
   const toggle = () => {
     setIsOpen(!isOpen);
@@ -39,6 +40,12 @@ const UnverifiedCourseDetails = (props) => {
   const [courseLoaded, setCourseLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error] = useState(false);
+
+  const onChange = (e) =>
+  {
+
+    setComment(e.target.value);
+  }
 
   useEffect(() => {
     if (!isLoading) {
@@ -104,6 +111,7 @@ const UnverifiedCourseDetails = (props) => {
             type="textarea"
             style={{ height: 150 }}
             placeholder="Reason for rejection"
+            onChange={(e) => onChange(e)}
           />
         </Collapse>
       </td>
