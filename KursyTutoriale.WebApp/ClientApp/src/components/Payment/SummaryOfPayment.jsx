@@ -37,6 +37,11 @@ function SummaryOfPayment(props) {
       .then(() => history.push(`/courseview/${course.id}`)));
   };
 
+  const handleButtonAddDiscountClick = () => {
+    // const formData = new FormData(event.target);
+    // if (formData.get('priceWithDisc') !== '')
+  }
+
   if (!courseLoaded) {
     return (
       <Row>
@@ -83,6 +88,15 @@ function SummaryOfPayment(props) {
                   Discount:
                   <br/>
                   <Input onChange={handleChangeDiscount} name="newDisc"/>
+                </Col>
+
+                <Col>
+                <br/>
+                <Button
+                height='40px'
+                onClick={() => handleButtonAddDiscountClick()}
+                text="Add discount"
+              />
                 </Col>
 
                 <Col>
