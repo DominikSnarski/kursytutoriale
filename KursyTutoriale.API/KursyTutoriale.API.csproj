@@ -31,11 +31,15 @@
     <ProjectReference Include="..\KursyTutoriale.Application\KursyTutoriale.Application.csproj" />
     <ProjectReference Include="..\KursyTutoriale.Shared\KursyTutoriale.Shared.csproj" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <Folder Include="Files\" />
   </ItemGroup>
 
-<ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties appsettings_1json__JsonSchema="" />
+    </VisualStudio>
+  </ProjectExtensions>
 
 </Project>

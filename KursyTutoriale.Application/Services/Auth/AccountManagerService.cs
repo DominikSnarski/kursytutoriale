@@ -8,6 +8,7 @@ using KursyTutoriale.Domain.Repositories;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using URF.Core.Abstractions;
 
