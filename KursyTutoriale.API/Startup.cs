@@ -8,6 +8,8 @@ using KursyTutoriale.Application.DataTransferObjects.Email;
 using KursyTutoriale.Application.Services;
 using KursyTutoriale.Application.Services.Admin;
 using KursyTutoriale.Application.Services.Email;
+using KursyTutoriale.Application.Services.CoursePublication;
+using KursyTutoriale.Application.Services.CoursePublication.CourPublicationShedule;
 using KursyTutoriale.Infrastructure.Configuration;
 using KursyTutoriale.Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
@@ -17,6 +19,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Converters;
+using Quartz;
+using Quartz.Impl;
+using Quartz.Spi;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -86,8 +92,13 @@ namespace KursyTutoriale.API
 
                 
             });
-
             services.Configure<AuthMessageSenderOptions>(Configuration);
+
+            services.AddSingleton<IJobFactory, PublicationScheduleJobFactory>();
+            services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+            services.AddSingleton<CoursePublicationJob>();
+            services.AddSingleton(new CoursePublicationJobData(Guid.NewGuid(),typeof(CoursePublicationJob),"Course Publication Job","0 0/1 * * * ?"));
+
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

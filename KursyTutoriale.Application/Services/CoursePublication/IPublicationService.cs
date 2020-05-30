@@ -2,7 +2,6 @@
 using KursyTutoriale.Domain.Entities.CoursePublication;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace KursyTutoriale.Application.Services.CoursePublication
 {
@@ -16,5 +15,8 @@ namespace KursyTutoriale.Application.Services.CoursePublication
         CourseVersion PublishCourse(Guid courseId);
         CourseVersion PublishNewVersion(Guid courseId, bool isMajor);
         void RemoveLessonFromPreview(Guid courseId, Guid lessonId);
+        bool CheckIfPublishable(Guid courseId);
+        void SchedulePublication(DateTime dateOfPublication, Guid courseId);
+        CourseVersion PublishCourseNoDataControl(Guid courseId);
     }
 }

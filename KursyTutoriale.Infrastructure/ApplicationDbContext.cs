@@ -40,7 +40,7 @@ namespace KursyTutoriale.Infrastructure
         public DbSet<Assignment> Assignments { get; set; }
         public DbSet<Survey> Surveys { get; set; }
         public DbSet<ChangePasswordToken> ChangePasswordTokens { get; set; }
-
+        public DbSet<PublicationSchedule> PublicationSchedules { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -63,6 +63,7 @@ namespace KursyTutoriale.Infrastructure
             builder.ApplyConfiguration(new AssignmentConfigurator());
             builder.ApplyConfiguration(new SurveyConfiguration());
             builder.ApplyConfiguration(new ChangePasswordTokenConfiguration());
+            builder.ApplyConfiguration(new PublicationScheduleConfiguration());
 
             builder = PaymentMethodConfiguration.Configure(builder);
         }
