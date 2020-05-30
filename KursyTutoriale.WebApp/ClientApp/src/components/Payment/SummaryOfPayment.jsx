@@ -14,6 +14,8 @@ function SummaryOfPayment(props) {
   const [courseLoaded, setCourseLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [newDiscount, setNewDiscount] = useState('');
+  const [newPrice, setNewPrice] = useState('');
+
 
   useEffect(() => {
     if (!isLoading) {
@@ -31,16 +33,19 @@ function SummaryOfPayment(props) {
     if (formData.get('newDisc')!== '')
       setNewDiscount(formData.get('newDisc'));
 
-    
+      setNewPrice("priceWithDisc", CourseService.getPriceWithDiscount(course.id, newDiscount)
+      .then(() => history.push('/'))
+      .then(() => history.push(`/courseview/${course.id}`)));
+   
     formData.set("priceWithDisc", CourseService.getPriceWithDiscount(course.id, newDiscount)
       .then(() => history.push('/'))
       .then(() => history.push(`/courseview/${course.id}`)));
   };
 
-  const handleButtonAddDiscountClick = () => {
-    // const formData = new FormData(event.target);
-    // if (formData.get('priceWithDisc') !== '')
-  }
+  // const handleButtonAddDiscountClick = () => {
+  //   // const formData = new FormData(event.target);
+  //   // if (formData.get('priceWithDisc') !== '')
+  // }
 
   if (!courseLoaded) {
     return (
@@ -90,20 +95,20 @@ function SummaryOfPayment(props) {
                   <Input onChange={handleChangeDiscount} name="newDisc"/>
                 </Col>
 
-                <Col>
+                {/* <Col>
                 <br/>
                 <Button
                 height='40px'
                 onClick={() => handleButtonAddDiscountClick()}
                 text="Add discount"
               />
-                </Col>
+                </Col> */}
 
                 <Col>
                   Price with a discount:
                   <br/>
                   <h3 name="priceWithDisc">
-
+                    {newPrice}
                   </h3>
                 </Col>
               </Row>
