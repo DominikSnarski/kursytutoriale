@@ -201,7 +201,7 @@ const UserProfile = () => {
                             Edit profile
                           </Button>
                         )}
-                        {!emailConfirmed && (
+                        {!emailConfirmed && userid == userContext.userid && (
                           <Link to={AppRoutes.ConfirmEmail}>
                             <Button 
                             color="warning"

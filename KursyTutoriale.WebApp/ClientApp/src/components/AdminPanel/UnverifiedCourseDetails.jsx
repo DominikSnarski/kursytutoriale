@@ -50,7 +50,7 @@ const UnverifiedCourseDetails = (props) => {
   useEffect(() => {
     if (!isLoading) {
       setIsLoading(true);
-      CourseService.getCourse(props.course.id).then((response) => {
+      CourseService.getCourseProtected(props.course.id).then((response) => {
         setCourse(response.data);
         setCourseLoaded(true);
       });

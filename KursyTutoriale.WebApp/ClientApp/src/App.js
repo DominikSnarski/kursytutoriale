@@ -39,7 +39,6 @@ import AssignmentsList from './components/Lesson/AssignmentsList';
 import Survey from './components/Courses/Survey/Survey';
 import SurveyList from './components/Courses/Survey/SurveyList';
 import ConfirmEmail from './components/User Profile/ConfirmEmail';
-import OwnerRoute from './routing/OwnerRoute';
 import ForgotPassword from './components/Auth/ForgotPassword';
 import ChangePassword from './components/Auth/ChangePassword';
 
@@ -166,7 +165,7 @@ const App = () => {
                 component={AssignmentsList}
                 layout={MainLayout}
               />
-              <OwnerRoute
+              <AppRoute
                 exact
                 path={AppRoutes.UserProfile}
                 component={UserProfile}
