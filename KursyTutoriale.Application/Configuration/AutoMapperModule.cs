@@ -46,7 +46,11 @@ namespace KursyTutoriale.Application.Configuration
                 cfg.CreateMap<CourseModuleReadModel, CourseModuleBasicInformationsDTO>();
                 cfg.CreateMap<LessonReadModel, LessonBasicInformationsDTO>();
 
-                cfg.CreateMap<CourseReadModel, CourseDetailsDTO>();
+                cfg.CreateMap<CourseReadModel, CourseDetailsDTO>()
+                    .ForMember(
+                        dto => dto.Tags,
+                        opt => opt.MapFrom(e => e.Tags.Select(tag => tag.Tag.Name).ToList())
+                        );
                 cfg.CreateMap<CourseModuleReadModel, CourseModuleDetailsDTO>();
                 cfg.CreateMap<LessonReadModel, LessonDetailsDTO>();
 

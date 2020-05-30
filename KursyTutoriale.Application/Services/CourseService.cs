@@ -43,6 +43,8 @@ namespace KursyTutoriale.Application.Services
         Task AddRating(Guid CourseId, Guid UserId, float rating);
         Task IncrementViewCount(Guid CourseId);
 
+        Task SendToVerification(Guid CourseId);
+
     }
 
     public class CourseService : ICourseService
@@ -54,6 +56,7 @@ namespace KursyTutoriale.Application.Services
         private IExtendedRepository<CoursePreview> previewRepository;
         private IExecutionContextAccessor executionContext;
         private IExtendedRepository<Rate> rateRepository;
+        private IExtendedRepository<Tag> tagRepository;
         private ICourseProgressService progressService;
 
         public CourseService(
@@ -64,7 +67,7 @@ namespace KursyTutoriale.Application.Services
             IExtendedRepository<CoursePublicationProfile> publicationRepository,
             IExtendedRepository<Rate> rateRepository,
             ICourseProgressService progressService,
-            IExtendedRepository<CoursePreview> previewRepository)
+            IExtendedRepository<CoursePreview> previewRepository, IExtendedRepository<Tag> tagRepository)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
@@ -74,6 +77,7 @@ namespace KursyTutoriale.Application.Services
             this.rateRepository = rateRepository;
             this.progressService = progressService;
             this.previewRepository = previewRepository;
+            this.tagRepository = tagRepository;
         }
 
 
@@ -91,10 +95,30 @@ namespace KursyTutoriale.Application.Services
             if (result == null)
                 throw new NullReferenceException("Course doesnt exist");
 
+
+
             var courseReadModel = mapper.Map<CourseReadModel>(result);
+            foreach(var c in courseReadModel.Modules
+                .Zip(result.Modules, (rm, r) => new { ReadModel = rm, Result = r }))
+            {
+                foreach(var m in c.ReadModel.Lessons
+                    .Zip(c.Result.Lessons, (rm,r) => new { ReadModel = rm, Result = r }))
+                {
+                    m.ReadModel.Content = JsonConvert.SerializeObject(m.Result.Content);
+                }
+            }
+
+            var tags = tagRepository.Queryable().Where(t => result.Tags.ToList().Contains(t.Id)).ToList();
+
+            courseReadModel.Tags = tags.Select(t => new CourseTag
+                {
+                    Tag = t
+                })
+                .ToList();
+
             var dto = mapper.Map<CourseDetailsDTO>(courseReadModel);
 
-            dto.Verified = result.VerificationStamp.Status == StampStatus.Verified;
+            dto.Verified = (int)result.VerificationStamp.Status;
 
             var profileQuery = publicationRepository
                 .Queryable();
@@ -414,7 +438,7 @@ namespace KursyTutoriale.Application.Services
         /// <returns>the list of user's owned courses</returns>
         public IEnumerable<CourseBasicInformationsDTO> GetUsersCourses(Guid UserId)
         {
-            if (UserId == executionContext.GetUserId())
+            if (executionContext.IsAuthorized && UserId == executionContext.GetUserId())
             {
                 var query = courseRepository.Queryable()
                 .Where(c => c.OwnerId == UserId)
@@ -517,13 +541,23 @@ namespace KursyTutoriale.Application.Services
 
         public async Task IncrementViewCount(Guid CourseId)
         {
-
             var query = publicationRepository.Queryable();
             var course = query.Where(c => c.CourseId == CourseId).FirstOrDefault();
             if(course != null)
             {
                 course.Popularity++;
             }
+            await unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task SendToVerification(Guid CourseId)
+        {
+            var course = courseRepository.Find(CourseId);
+
+            var @event = new VerificationChanged(CourseId, StampStatus.Pending, null, executionContext.GetUserId());
+
+            courseRepository.HandleEvent(@event, course);
+
             await unitOfWork.SaveChangesAsync();
         }
 

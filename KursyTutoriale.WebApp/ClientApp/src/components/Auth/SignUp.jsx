@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 // eslint-disable-next-line
 import {
@@ -6,59 +6,42 @@ import {
   Button,
   Col,
   Container,
-  Form,
   FormGroup,
   Input,
   Label,
   Row,
 } from 'reactstrap';
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
 import AuthService from '../../api/Services/AuthService';
 import AppRoutes from '../../routing/AppRoutes';
+import ErrorMessage from '../../layouts/CSS/ErrorMessage/ErrorMessage';
 
 const SignUp = () => {
   const history = useHistory();
-  const [errorMessageUser, setErrorMessageUser] = useState('');
-  const [errorMessagePass, setErrorMessagePass] = useState('');
-  const [errorMessageEmail, setErrorMessageEmail] = useState('');
-  const [isWrong, setIsWrong] = useState(false);
+
   const passwordRegex = /(.{3,})/g;
   const usernameRegex = /(\w{3,})/g;
-  const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}/g;
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-
-    if (passwordRegex.exec(formData.get('password')) === null) {
-      setIsWrong(true);
-      setErrorMessagePass('Password must have at least 3 characters.');
-      return;
-    }
-
-    if (usernameRegex.exec(formData.get('name')) === null) {
-      setIsWrong(true);
-      setErrorMessageUser('Username must have at least 3 characters. Special characters are not allowed.');
-      return;
-    }
-
-    if (emailRegex.exec(formData.get('email')) === null) {
-      setIsWrong(true);
-      setErrorMessageEmail('Please enter correct email address.');
-      return;
-    }
-
-    if (isWrong) 
-    {
-      setIsWrong(false);
-      return;
-    }
-
-    AuthService.createAccount(
-      formData.get('name'),
-      formData.get('password'),
-      formData.get('email'),
-    ).then(() => history.push('/editprofile'));
+  const handleSubmit = ({ login, password, email }) => {
+    AuthService.createAccount(login, password, email).then(() =>
+      history.push('/editprofile'),
+    );
   };
+
+  const signUpSchema = Yup.object().shape({
+    login: Yup.string()
+      .min(5)
+      .matches(usernameRegex)
+      .required('Field required'),
+    password: Yup.string()
+      .min(5)
+      .matches(passwordRegex)
+      .required('Field required'),
+    email: Yup.string()
+      .email('Valid email address required')
+      .required('Field required'),
+  });
 
   return (
     <Container>
@@ -71,63 +54,70 @@ const SignUp = () => {
       </Row>
       <Row>
         <Col>
-          <Form onSubmit={(e) => handleSubmit(e)}>
-            <FormGroup>
-              <Label for="exampleEmail">Name</Label>
-              <Input
-                type="text"
-                name="name"
-                id="exampleEmail"
-                placeholder="Enter your full name"
-              />
-            </FormGroup>
-            <Row>
-              <p style={{ color: 'red', marginTop: '-2%' }}>
-                {errorMessageUser}
-              </p>
-            </Row>
+          <Formik
+            initialValues={{ login: '', password: '', email: '' }}
+            validationSchema={signUpSchema}
+            onSubmit={(values) => handleSubmit(values)}
+          >
+            {({ values, handleChange, errors }) => (
+              <Form>
+                <FormGroup>
+                  <Label for="exampleEmail">Name</Label>
+                  <ErrorMessage error={!!errors.login} message={errors.login}>
+                    <Input
+                      type="text"
+                      name="login"
+                      placeholder="Enter your full name"
+                      value={values.login}
+                      onChange={handleChange}
+                    />
+                  </ErrorMessage>
+                </FormGroup>
 
-            <FormGroup>
-              <Label for="exampleEmail">E-mail adress</Label>
-              <Input
-                type="email"
-                name="email"
-                id="exampleEmail"
-                placeholder="Enter your email"
-              />
-            </FormGroup>
-            <Row>
-              <p style={{ color: 'red', marginTop: '-2%' }}>
-                {errorMessageEmail}
-              </p>
-            </Row>
+                <FormGroup>
+                  <Label for="exampleEmail">E-mail adress</Label>
+                  <ErrorMessage error={!!errors.email} message={errors.email}>
+                    <Input
+                      type="email"
+                      name="email"
+                      placeholder="Enter your email"
+                      value={values.email}
+                      onChange={handleChange}
+                    />
+                  </ErrorMessage>
+                </FormGroup>
 
-            <FormGroup>
-              <Label for="examplePassword">Password</Label>
-              <Input
-                type="password"
-                name="password"
-                id="examplePassword"
-                placeholder="Enter your password"
-              />
-            </FormGroup>
-            <Row>
-              <p style={{ color: 'red', marginTop: '-2%' }}>
-                {errorMessagePass}
-              </p>
-            </Row>
+                <FormGroup>
+                  <Label for="examplePassword">Password</Label>
+                  <ErrorMessage
+                    error={!!errors.password}
+                    message={errors.password}
+                  >
+                    <Input
+                      type="password"
+                      name="password"
+                      placeholder="Enter your password"
+                      value={values.password}
+                      onChange={handleChange}
+                    />
+                  </ErrorMessage>
+                </FormGroup>
 
-            <Row style={{ marginTop: 20 }}>
-              <Col xs="auto">
-                <Button color="primary">Sign up</Button>{' '}
-                <Link to={AppRoutes.Signin}>
-                  <Button outline color="primary">
-                    I already have an account
-                  </Button>
-                </Link>{' '}
-              </Col>
-            </Row>
-          </Form>
+                <Row style={{ marginTop: 20 }}>
+                  <Col xs="auto">
+                    <Button type="submit" color="primary">
+                      Sign up
+                    </Button>{' '}
+                    <Link to={AppRoutes.Signin}>
+                      <Button outline color="primary">
+                        I already have an account
+                      </Button>
+                    </Link>{' '}
+                  </Col>
+                </Row>
+              </Form>
+            )}
+          </Formik>
         </Col>
       </Row>
     </Container>

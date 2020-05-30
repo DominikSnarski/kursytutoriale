@@ -1,19 +1,33 @@
-import React from 'react';
-import { Jumbotron, Button, Container, Col, Row } from 'reactstrap';
+import React, { useEffect, useState } from 'react';
+import { Jumbotron, Button, Container, Col, Row, Input } from 'reactstrap';
 import { Fade } from 'react-reveal';
 import { useHistory, Link } from 'react-router-dom';
 import AppRoutes from '../../routing/AppRoutes';
 import QuizViewer from './QuizViewer';
+import Button2 from '../../layouts/CSS/Button/Button';
 import { CourseProgressService } from '../../api/Services/CourseProgressService';
 import './style.css';
 import './Kit.css';
 
 function Lesson(props) {
+  const [componentLoaded, setComponentLoaded] = useState(false);
   const MarkProgress = () => {
     CourseProgressService.markProgress(
       props.location.state.courseID,
       props.location.state.lessons[props.location.state.index].id,
     );
+  };
+  const [assignmentText, setAssignmentText] = useState('');
+
+  useEffect(() => {
+    if (!componentLoaded) {
+      setComponentLoaded(true);
+      MarkProgress();
+    }
+  });
+
+  const handleTextChange = (e) => {
+    setAssignmentText(e.target.value);
   };
 
   const items = JSON.parse(
@@ -35,7 +49,6 @@ function Lesson(props) {
 
         <Jumbotron className="courses_bg pr-4">
           {items.map((item, key) => {
-            MarkProgress();
             // eslint-disable-next-line react/jsx-key
             if (item.Type.substring(0, 5) === 'image') {
               return (
@@ -54,7 +67,7 @@ function Lesson(props) {
               return (
                 <Container key={key}>
                   <Row className="justify-content-md-center">
-                    <QuizViewer content={item.Content} />
+                    <QuizViewer index={key} content={item.Content} />
                   </Row>
                 </Container>
               );
@@ -66,6 +79,34 @@ function Lesson(props) {
                     <video controls>
                       <source src={item.Content} type="video/mp4" />
                     </video>
+                  </Row>
+                </Container>
+              );
+            }
+            if (item.Type.substring(0, 10) === 'assignment') {
+              return (
+                <Container key={key}>
+                  <b className="assignment">Assignment</b> <br />
+                  <p>{item.Content}</p>
+                  <Input
+                    className="input_field mb-3"
+                    type="text"
+                    value={assignmentText}
+                    onChange={handleTextChange}
+                  />
+                  <br />
+                  <Row style={{ marginTop: '-3%' }}>
+                    <Col >
+                    </Col>
+                    <Col >
+                    </Col>
+                    <Col >
+                    </Col>
+                    <Col >
+                    </Col>
+                    <Col >
+                      <Button2 text="Send assignment" />
+                    </Col>
                   </Row>
                 </Container>
               );

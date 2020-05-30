@@ -35,6 +35,9 @@ import AdminMainPanel from './components/AdminPanel/AdminMainPanel';
 import AdminRoute from './routing/AdminRoute';
 import Payment from './components/Payment/Payment';
 import SummaryOfPayment from './components/Payment/SummaryOfPayment';
+import AssignmentsList from './components/Lesson/AssignmentsList';
+import Survey from './components/Courses/Survey/Survey';
+import SurveyList from './components/Courses/Survey/SurveyList';
 
 const App = () => {
   const [userContext, setUserContext] = useState(
@@ -155,6 +158,12 @@ const App = () => {
               />
               <ProtectedRoute
                 exact
+                path={AppRoutes.AssignmentsList}
+                component={AssignmentsList}
+                layout={MainLayout}
+              />
+              <AppRoute
+                exact
                 path={AppRoutes.UserProfile}
                 component={UserProfile}
                 layout={MainLayout}
@@ -185,8 +194,19 @@ const App = () => {
               />
               <ProtectedRoute
                 exact
+<<<<<<< KursyTutoriale.WebApp/ClientApp/src/App.js
                 path={AppRoutes.SummaryOfPayment}
                 component={SummaryOfPayment}
+=======
+                path={AppRoutes.Survey}
+                component={Survey}
+                layout={MainLayout}
+              />
+              <ProtectedRoute
+                exact
+                path={AppRoutes.SurveyList}
+                component={SurveyList}
+>>>>>>> KursyTutoriale.WebApp/ClientApp/src/App.js
                 layout={MainLayout}
               />
               <Route component={notfound} layout={MainLayout} />

@@ -12,6 +12,10 @@ namespace KursyTutoriale.API.Filters
     {
         public void OnActionExecuted(ActionExecutedContext context)
         {
+        }
+
+        public void OnActionExecuting(ActionExecutingContext context)
+        {
             if (!context.ModelState.IsValid)
             {
                 var sb = new StringBuilder();
@@ -24,10 +28,6 @@ namespace KursyTutoriale.API.Filters
 
                 throw new ValidationException(sb.ToString());
             }
-        }
-
-        public void OnActionExecuting(ActionExecutingContext context)
-        {
         }
     }
 }

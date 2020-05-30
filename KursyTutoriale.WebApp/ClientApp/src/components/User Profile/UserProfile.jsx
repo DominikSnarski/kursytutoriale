@@ -25,9 +25,10 @@ import CourseService from '../../api/Services/CourseService';
 import CourseProgressService from '../../api/Services/CourseProgressService';
 import CourseListItem from './CourseListItem';
 import { UserContext } from '../../contexts/UserContext';
-import { useRouteMatch } from 'react-router-dom';
+import { useRouteMatch, Link } from 'react-router-dom';
 import Transactions from '../Transactions/Transactions';
 import Cards from '../Payment/Cards';
+import AppRoutes from '../../routing/AppRoutes';
 
 const UserProfile = () => {
   const userContext = React.useContext(UserContext);
@@ -71,11 +72,11 @@ const UserProfile = () => {
         .then((result) => setCourseList(result.data))
         .catch((error) => console.log(error));
 
-      CourseProgressService.getUserCompletedCourses()
+      CourseProgressService.getUserCompletedCourses(userid)
         .then((result) => setCompletedCoursesList(result.data))
         .catch((error) => console.log(error));
 
-      CourseProgressService.getUserUncompletedCourses()
+      CourseProgressService.getUserUncompletedCourses(userid)
         .then((result) => setUncompletedCoursesList(result.data))
         .catch((error) => console.log(error));
     }
@@ -119,7 +120,9 @@ const UserProfile = () => {
                     </Col>
                   </Row>
                   <Row className="mb-3">
-                    <Col style={{ textAlign: 'center' }}>{0} Karma points</Col>
+                    <Col style={{ textAlign: 'center' }}>
+                      {user.karma} Karma points
+                    </Col>
                   </Row>
                   {/*<Row>
                     <Col className="left_side">
@@ -300,7 +303,7 @@ const UserProfile = () => {
               </Col>
             </Row>
             {/*<hr width="100%"></hr>*/}
-            <Row>
+            <Row style={{ width: '100%' }}>
               <Nav tabs>
                 <NavItem className="tabItem">
                   <NavLink
@@ -319,7 +322,6 @@ const UserProfile = () => {
                     </l>
                   </NavLink>
                 </NavItem>
-
                 <NavItem className="tabItem">
                   <NavLink
                     className={classnames({
@@ -337,7 +339,6 @@ const UserProfile = () => {
                     </l>
                   </NavLink>
                 </NavItem>
-
                 <NavItem className="tabItem">
                   <NavLink
                     className={classnames({
@@ -358,7 +359,10 @@ const UserProfile = () => {
               </Nav>
             </Row>
             <Row>
-              <TabContent activeTab={activeCoursesTab}>
+              <TabContent
+                style={{ width: '100%' }}
+                activeTab={activeCoursesTab}
+              >
                 <TabPane tabId="1">
                   {courseList.length === 0 ? (
                     <p>This User haven't published any courses yet.</p>
@@ -369,6 +373,15 @@ const UserProfile = () => {
                         .map((course, index) => (
                           <Row key={index} sm="auto" p>
                             <CourseListItem course={course} />
+                            <Link
+                              to={{
+                                pathname: AppRoutes.SurveyList,
+                              }}
+                            >
+                              <Button color="warning" className="ml-1">
+                                See surveys
+                              </Button>
+                            </Link>
                           </Row>
                         ))}
                       {!(numberOfVisibleCourses >= courseList.length) && (
@@ -415,7 +428,6 @@ const UserProfile = () => {
           </Container>
         </Zoom>
       </Jumbotron>
-      )}
     </div>
   );
 };

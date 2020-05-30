@@ -127,7 +127,7 @@ namespace KursyTutoriale.API.Controllers
         /// <param name="numberInEachCathegory">number of featured courses in each cathegory</param>
         /// <returns>An object containing the lists of </returns>
         [HttpGet("GetFeaturedCourses")]
-        public FeaturedCoursesDTO GetFeaturedCourses([FromBody]FeaturedCoursesRequest request)
+        public FeaturedCoursesDTO GetFeaturedCourses([FromQuery]FeaturedCoursesRequest request)
         {
             return courseService.GetFeaturedCourses(request.CategoryCount);
         }

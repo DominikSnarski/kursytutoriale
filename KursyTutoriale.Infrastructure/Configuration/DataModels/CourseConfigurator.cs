@@ -26,7 +26,7 @@ namespace KursyTutoriale.Infrastructure.Configuration.DataModels
             builder.OwnsMany(c => c.Tags, t =>
             {
                 t.ToTable("KTCourseTags");
-                t.HasKey(tt => tt.Id);
+                t.HasKey(tt => new { tt.Id, tt.CourseId });
             });
 
             builder.OwnsOne(c => c.VerificationStamp, t =>

@@ -59,6 +59,7 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
                 publicationMock.Object,
                 null,
                 null,
+                null,
                 null);
 
             var result = service.GetFeaturedCourses(1);
@@ -113,6 +114,7 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
                 null,
                 courseRepoMock.Object,
                 publicationMock.Object,
+                null,
                 null,
                 null,
                 null);

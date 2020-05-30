@@ -68,12 +68,16 @@ namespace KursyTutoriale.Domain.Entities.CoursePublication
 
         public CourseVersion GetLatestVersion() => versions.OrderByDescending(version => version.PublicationDate).First();
 
-        public void AddParticipant(Guid userId)
+        public Participant AddParticipant(Guid userId)
         {
             if (participants.Any(obs => obs.UserId == userId))
                 throw new InvalidStateException($"User with id: {userId} is already observing course: {CourseId}");
 
-            participants.Add(new Participant(userId));
+            var newParticipant = new Participant(userId);
+
+            participants.Add(newParticipant);
+
+            return newParticipant;
         }
 
         public void RemoveParticipant(Guid userId)

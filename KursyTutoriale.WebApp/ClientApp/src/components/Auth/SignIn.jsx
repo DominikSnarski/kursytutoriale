@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 // eslint-disable-next-line
 import {
   Button,
-  Form,
   FormGroup,
   Label,
   Input,
@@ -11,28 +10,30 @@ import {
   Container,
   Alert,
 } from 'reactstrap';
+import { Formik, Form } from 'formik';
 import { Link, useHistory } from 'react-router-dom';
-
+import * as Yup from 'yup';
 import apiClient from '../../api/ApiClient';
 import AppRoutes from '../../routing/AppRoutes';
+import ErrorMessage from '../../layouts/CSS/ErrorMessage/ErrorMessage';
 
 const SignIn = () => {
   const history = useHistory();
-  const [errorMessage, setErrorMessage] = useState('');
 
-  const something=()=>{
-    setErrorMessage("We couldn't find given user in our database.");
-  }
-
-  const handleSubmit = (event) => {
-    setErrorMessage('');
-    event.preventDefault();
-    const formData = new FormData(event.target);
-
-    apiClient
-      .login(formData.get('name'), formData.get('password'), something)
-      .then(() => { if(errorMessage !== '') history.push('/');});
+  const handleSubmit = ({ login, password }) => {
+    apiClient.login(login, password).then(() => {
+      history.push('/');
+    });
   };
+
+  const signInShema = Yup.object().shape({
+    login: Yup.string()
+      .required('Field required')
+      .min(5),
+    password: Yup.string()
+      .required('Field required')
+      .min(5),
+  });
 
   return (
     <Container>
@@ -43,41 +44,51 @@ const SignIn = () => {
           </Alert>
         </Col>
       </Row>
-      <Form onSubmit={(e) => handleSubmit(e)}>
-        <FormGroup>
-          <Label for="exampleEmail">Username</Label>
-          <Input
-            type="text"
-            name="name"
-            id="exampleName"
-            placeholder="Enter your username"
-          />
-        </FormGroup>
+      <Formik
+        initialValues={{ login: '', password: '' }}
+        validationSchema={signInShema}
+        onSubmit={(values) => handleSubmit(values)}
+      >
+        {({ values, handleChange, errors }) => (
+          <Form>
+            <FormGroup>
+              <Label for="exampleEmail">Username</Label>
+              <ErrorMessage error={!!errors.login} message={errors.login}>
+                <Input
+                  type="text"
+                  name="login"
+                  placeholder="Enter your username"
+                  value={values.login}
+                  onChange={handleChange}
+                />
+              </ErrorMessage>
+            </FormGroup>
 
-        <FormGroup>
-          <Label for="examplePassword">Password</Label>
-          <Input
-            type="password"
-            name="password"
-            id="examplePassword"
-            placeholder="Enter your password"
-          />
-        </FormGroup>
-        <Row>
-          <p style={{ color: 'red', marginTop: '-2%' }}>{errorMessage}</p>
-        </Row>
-
-        <Row>
-          <Col xs="auto">
-            <Button color="primary">Sign in</Button>{' '}
-            <Link to={AppRoutes.Register}>
-              <Button outline color="primary">
-                I don&apos;t have an account
-              </Button>
-            </Link>{' '}
-          </Col>
-        </Row>
-      </Form>
+            <FormGroup>
+              <Label for="examplePassword">Password</Label>
+              <ErrorMessage error={!!errors.password} message={errors.password}>
+                <Input
+                  type="password"
+                  name="password"
+                  placeholder="Enter your password"
+                  value={values.password}
+                  onChange={handleChange}
+                />
+              </ErrorMessage>
+            </FormGroup>
+            <Row>
+              <Col xs="auto">
+                <Button color="primary">Sign in</Button>{' '}
+                <Link to={AppRoutes.Register}>
+                  <Button outline color="primary">
+                    I don&apos;t have an account
+                  </Button>
+                </Link>{' '}
+              </Col>
+            </Row>
+          </Form>
+        )}
+      </Formik>
     </Container>
   );
 };

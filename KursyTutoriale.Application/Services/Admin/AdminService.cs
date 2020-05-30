@@ -3,6 +3,8 @@ using KursyTutoriale.Domain.Entities.Auth;
 using KursyTutoriale.Domain.Entities.Moderation;
 using KursyTutoriale.Domain.Repositories;
 using KursyTutoriale.Infrastructure.Repositories;
+using KursyTutoriale.Infrastructure.Repositories.Interfaces;
+using KursyTutoriale.Shared;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -18,17 +20,20 @@ namespace KursyTutoriale.Application.Services.Admin
         IExtendedRepository<ModeratorProfile> moderatorRepo;
         IUnitOfWork unitOfWork;
         IDTOMapper mapper;
+        IKarmaRepository karmaRepository;
 
         public AdminService(
             UserManager<ApplicationUser> userManager,
             IExtendedRepository<ModeratorProfile> moderatorRepo,
             IUnitOfWork unitOfWork,
-            IDTOMapper mapper)
+            IDTOMapper mapper,
+            IKarmaRepository karmaRepository)
         {
             this.userManager = userManager;
             this.moderatorRepo = moderatorRepo;
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.karmaRepository = karmaRepository;
         }
 
         public async Task<bool> CreateModeratorProfile(Guid userId)
@@ -104,6 +109,11 @@ namespace KursyTutoriale.Application.Services.Admin
             {
                 return new List<UserBasic>();
             }
+        }
+
+        public void AwardKarmaPoints(Guid userId,int amount)
+        {
+            karmaRepository.AddKarma(userId, Guid.NewGuid(), amount, KarmaRewardType.AwardedByAdmin);
         }
     }
 }
