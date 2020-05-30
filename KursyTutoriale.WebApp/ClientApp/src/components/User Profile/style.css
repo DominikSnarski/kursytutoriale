@@ -1,50 +1,162 @@
-.col_bg {
-  padding: 2%;
-  background-color: #eaebec !important;
+
+@media (prefers-color-scheme: dark) {
+  .col_bg {
+    padding: 2%;
+    background-color: #9e9e9e !important;
+  }
+  
+  .left_side {
+    padding: 2%;
+  }
+  
+  .right_side {
+    width: 100%;
+  }
+  
+  .row-width {
+    width: 110%;
+  }
+  
+  .name {
+    font-size: 30pt;
+  }
+  
+  .badge {
+    font-size: 20pt;
+  }
+  
+  .stats {
+    font-size: 16pt;
+  }
+  
+  .about {
+    font-size: 14pt;
+  }
+  
+  .contact {
+    font-size: 14pt;
+  }
+  
+  .tabItem {
+    cursor: pointer;
+  }
+  
+  .courseListItem {
+    background-color: #3d2323;
+    padding: 5px;
+    margin: 3px;
+    width: 100%;
+  }
+  
+  .courseListItem:hover {
+    background-color: #572d2d;
+  }
 }
 
-.left_side {
-  padding: 2%;
+@media (prefers-color-scheme: light) {
+  .col_bg {
+    padding: 2%;
+    background-color: #eaebec !important;
+  }
+  
+  .left_side {
+    padding: 2%;
+  }
+  
+  .right_side {
+    width: 100%;
+  }
+  
+  .row-width {
+    width: 110%;
+  }
+  
+  .name {
+    font-size: 30pt;
+  }
+  
+  .badge {
+    font-size: 20pt;
+  }
+  
+  .stats {
+    font-size: 16pt;
+  }
+  
+  .about {
+    font-size: 14pt;
+  }
+  
+  .contact {
+    font-size: 14pt;
+  }
+  
+  .tabItem {
+    cursor: pointer;
+  }
+  
+  .courseListItem {
+    background-color: #ffd46f;
+    padding: 5px;
+    margin: 3px;
+    width: 100%;
+  }
+  
+  .courseListItem:hover {
+    background-color: #fcc139;
+  }
 }
 
-.right_side {
-  width: 100%;
-}
-
-.row-width {
-  width: 110%;
-}
-
-.name {
-  font-size: 30pt;
-}
-
-.badge {
-  font-size: 20pt;
-}
-
-.stats {
-  font-size: 16pt;
-}
-
-.about {
-  font-size: 14pt;
-}
-
-.contact {
-  font-size: 14pt;
-}
-
-.tabItem {
-  cursor: pointer;
-}
-
-.courseListItem {
-  background-color: #ffd46f;
-  padding: 5px;
-  margin: 3px;
-}
-
-.courseListItem:hover {
-  background-color: #fcc139;
+@media (prefers-color-scheme: no-preference) {
+  .col_bg {
+    padding: 2%;
+    background-color: #eaebec !important;
+  }
+  
+  .left_side {
+    padding: 2%;
+  }
+  
+  .right_side {
+    width: 100%;
+  }
+  
+  .row-width {
+    width: 110%;
+  }
+  
+  .name {
+    font-size: 30pt;
+  }
+  
+  .badge {
+    font-size: 20pt;
+  }
+  
+  .stats {
+    font-size: 16pt;
+  }
+  
+  .about {
+    font-size: 14pt;
+  }
+  
+  .contact {
+    font-size: 14pt;
+  }
+  
+  .tabItem {
+    cursor: pointer;
+  }
+  
+  .courseListItem {
+    background-color: #ffd46f;
+    padding: 5px;
+    margin: 3px;
+    width: 100%;
+  }
+  
+  .courseListItem:hover {
+    background-color: #fcc139;
+  }
 }

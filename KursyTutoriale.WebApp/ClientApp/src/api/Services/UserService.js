@@ -26,6 +26,9 @@ export const UserService = {
       imageDataUrl,
     });
   },
+  getUserProfilesByName: (query) => {
+    return apiClient.get(`/GetProfilesByName?query=${query}`);
+  },
 };
 
 export default UserService;

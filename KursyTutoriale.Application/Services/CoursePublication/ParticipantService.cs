@@ -1,6 +1,8 @@
 ﻿using KursyTutoriale.Application.Contracts;
 using KursyTutoriale.Domain.Entities.CoursePublication;
 using KursyTutoriale.Domain.Repositories;
+using KursyTutoriale.Infrastructure.Repositories.Interfaces;
+using KursyTutoriale.Shared;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,15 +15,18 @@ namespace KursyTutoriale.Application.Services.CoursePublication
         private IExtendedRepository<CoursePublicationProfile> profilesRepository;
         private IUnitOfWork unitOfWork;
         private IExecutionContextAccessor executionContextAccessor;
+        private IKarmaRepository karmaRepository;
 
         public ParticipantService(
             IExtendedRepository<CoursePublicationProfile> profilesRepository,
             IUnitOfWork unitOfWork,
-            IExecutionContextAccessor executionContextAccessor)
+            IExecutionContextAccessor executionContextAccessor,
+            IKarmaRepository karmaRepository)
         {
             this.profilesRepository = profilesRepository;
             this.unitOfWork = unitOfWork;
             this.executionContextAccessor = executionContextAccessor;
+            this.karmaRepository = karmaRepository;
         }
 
         public async Task AddParticipant(Guid courseId)
@@ -32,9 +37,11 @@ namespace KursyTutoriale.Application.Services.CoursePublication
             if (profile is null)
                 throw new Exception("Cannot add observer to non-public course");
 
-            profile.AddParticipant(userId);
+            var newParticipant = profile.AddParticipant(userId);
 
             await unitOfWork.SaveChangesAsync();
+
+            karmaRepository.AddKarma(profile.OwnerId, newParticipant.Id, 1, KarmaRewardType.OtherUserJoinedCourse);
         }
 
 

@@ -22,19 +22,22 @@ namespace KursyTutoriale.Application.Services.CoursePublication
         private IExecutionContextAccessor executionContextAccessor;
         private ICourseRepository coursesRepository;
         private IDiscountCodeFactory discountCodeFactory;
+        private IKarmaRepository karmaRepository;
 
         public PublicationService(
             IExtendedRepository<CoursePublicationProfile> profilesRepository,
             ICourseRepository coursesRepository,
             IExecutionContextAccessor executionContextAccessor,
             IDiscountCodeFactory discountCodeFactory, 
-            IExtendedRepository<CoursePreview> previewRepository)
+            IExtendedRepository<CoursePreview> previewRepository,
+            IKarmaRepository karmaRepository)
         {
             this.profilesRepository = profilesRepository;
             this.coursesRepository = coursesRepository;
             this.executionContextAccessor = executionContextAccessor;
             this.discountCodeFactory = discountCodeFactory;
             this.previewRepository = previewRepository;
+            this.karmaRepository = karmaRepository;
         }
 
         public CourseVersion PublishCourse(Guid courseId)
@@ -55,6 +58,8 @@ namespace KursyTutoriale.Application.Services.CoursePublication
             var newProfile = new CoursePublicationProfile(courseId, course.OwnerId, (int)(course.Price * 100));
 
             profilesRepository.InsertAgreggate(newProfile);
+
+            karmaRepository.AddKarma(userId, newProfile.CourseId, 3, KarmaRewardType.CoursePublished);
 
             return newProfile.GetLatestVersion();
         }
@@ -95,15 +100,17 @@ namespace KursyTutoriale.Application.Services.CoursePublication
 
         public List<DiscountCodeDto> GetCourseDiscountCodes(Guid courseId)
         {
+            var course = coursesRepository.Queryable().FirstOrDefault(c => c.Id == courseId);
+
             var courseProfile = profilesRepository
                 .Queryable()
                 .Include(pp => pp.Discounts)
                 .FirstOrDefault(profile => profile.CourseId == courseId);
 
-            if (courseProfile is null)
+            if (courseProfile is null && course.OwnerId != executionContextAccessor.GetUserId())
                 throw new Exception("Cannot get codes from private course");
 
-            var discountCodes = courseProfile.Discounts.Select(dis => new DiscountCodeDto
+            var discountCodes = courseProfile?.Discounts.Select(dis => new DiscountCodeDto
             {
                 Type = dis switch
                 {
@@ -121,9 +128,9 @@ namespace KursyTutoriale.Application.Services.CoursePublication
                 },
                 Value = dis.Code
             })
-            .ToList();
+            ?.ToList();
 
-            return discountCodes;
+            return discountCodes ?? new List<DiscountCodeDto>();
         }
 
         public int GetPriceWithDiscountCode(Guid courseId, string code)

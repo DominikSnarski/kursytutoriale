@@ -5,7 +5,8 @@ namespace KursyTutoriale.Domain.Entities.UserProfiles
     public class UserProfile : BaseEntity
     {
         public UserProfile() :base() { }
-        public UserProfile(Guid id):base(id){}
+        public UserProfile(Guid id):base(id){
+        }
 
         public string Username { get; set; }
         public string Name { get; set; }

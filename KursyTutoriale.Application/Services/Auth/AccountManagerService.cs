@@ -5,7 +5,7 @@ using KursyTutoriale.Domain.Entities.UserProfiles;
 using KursyTutoriale.Domain.Repositories;
 using Microsoft.AspNetCore.Identity;
 using System;
-using System.Linq;
+using System.IO;
 using System.Threading.Tasks;
 using URF.Core.Abstractions;
 
@@ -41,6 +41,7 @@ namespace KursyTutoriale.Infrastructure
             
             var userProfile = new UserProfile(user.Id);
             userProfile.Username = user.UserName;
+            userProfile.AvatarPath = LoadDefaultAvatar();
 
             user.UserProfileId = userProfile.Id;
 
@@ -58,6 +59,14 @@ namespace KursyTutoriale.Infrastructure
             await unitOfWork.SaveChangesAsync();
 
             return result;
+        }
+
+        private string LoadDefaultAvatar()
+        {
+            var bytes = File.ReadAllBytes("Files/default_avatar.png");
+            var file = Convert.ToBase64String(bytes);
+
+            return $"data:image/jpeg;base64,{file}";
         }
 
         public async Task<ApplicationUser> FindByName(string UserName)

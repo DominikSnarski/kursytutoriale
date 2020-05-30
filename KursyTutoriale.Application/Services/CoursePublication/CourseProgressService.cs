@@ -41,20 +41,18 @@ namespace KursyTutoriale.Application.Services.CoursePublication
             var userId = executionContextAccessor.GetUserId();
 
             var profile = profilesRepository.Queryable().FirstOrDefault(p => p.CourseId == dto.CourseId);
+            if (userId.Equals(profile?.OwnerId)) return;
+
             if (profile is null)
                 throw new Exception("Cannot mark progress of non-public course");
-
-            if (userId.Equals(profile.OwnerId)) return;
 
             profile.AddCourseProgress(new CourseProgress(userId, dto.LessonId));
 
             await unitOfWork.SaveChangesAsync();
         }
 
-        public IEnumerable<CourseBasicInformationsDTO> GetUserCompletedCourses()
+        public IEnumerable<CourseBasicInformationsDTO> GetUserCompletedCourses(Guid userId)
         {
-            var userId = executionContextAccessor.GetUserId();
-
             List<CourseBasicInformationsDTO> courses = new List<CourseBasicInformationsDTO>();
 
             var profiles = profilesRepository.Queryable().Where(p => p.Participants.Any(o => o.UserId == userId)).ToList();
@@ -74,10 +72,8 @@ namespace KursyTutoriale.Application.Services.CoursePublication
 
         }
 
-        public IEnumerable<CourseBasicInformationsDTO> GetUserUncompletedCourses()
+        public IEnumerable<CourseBasicInformationsDTO> GetUserUncompletedCourses(Guid userId)
         {
-            var userId = executionContextAccessor.GetUserId();
-
             List<CourseBasicInformationsDTO> courses = new List<CourseBasicInformationsDTO>();
 
             var profiles = profilesRepository.Queryable().Where(p => p.Participants.Any(o => o.UserId == userId)).ToList();

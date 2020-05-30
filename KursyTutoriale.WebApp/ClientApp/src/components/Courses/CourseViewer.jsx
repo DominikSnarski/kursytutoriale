@@ -4,13 +4,17 @@ import {
   Container,
   Col,
   Row,
-  Card,
-  CardHeader,
   CardBody,
   CardText,
   Progress,
   Alert,
+  Nav,
+  NavItem,
+  NavLink,
+  TabContent,
+  TabPane,
 } from 'reactstrap';
+import classnames from 'classnames';
 import StarRating from 'react-star-rating-component';
 import { useHistory, Link, generatePath } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
@@ -21,6 +25,7 @@ import { ParticipantService } from '../../api/Services/ParticipantService';
 import Button from '../../layouts/CSS/Button/Button';
 import { UserService } from '../../api/Services/UserService';
 import DiscountGenerator from './DiscountGenerator';
+import Chat from './Chat';
 
 import AppRoutes from '../../routing/AppRoutes';
 import Comments from '../Comments/Comments';
@@ -33,12 +38,18 @@ const CourseViewer = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const course = { ...props.course };
   const [rating, setRating] = useState(0);
+  const [isParticipating, setIsParticipating] = useState(false);
+
+  const [activeTab, setActiveTab] = useState('1');
 
   useEffect(() => {
     if (!isLoading) {
       setIsLoading(true);
       UserService.getUserProfileById(course.ownerId).then((response) => {
         setOwnerUserName(response.data.username);
+      });
+      ParticipantService.isParticipating(course.id).then((response) => {
+        setIsParticipating(response.data);
       });
     }
   }, [props.id]);
@@ -84,6 +95,15 @@ const CourseViewer = (props) => {
     setRating(course.rating);
   };
 
+  const toggle = (tab) => {
+    if (activeTab !== tab) setActiveTab(tab);
+  };
+  const handleButtonSendToVerificationClick = () => {
+    CourseService.sendToVerification(course.id)
+      .then(() => history.push('/'))
+      .then(() => history.push(`/courseview/${course.id}`));
+  };
+
   return (
     <Container className="Container">
       <Jumbotron fluid className="jumbotron_courseView">
@@ -98,11 +118,63 @@ const CourseViewer = (props) => {
         </Col>
       </Row>
 
-      <Jumbotron className="courses_bg pr-4">
+      {(isParticipating || userContext.userid === course.ownerId) && (
+        <Chat courseid={course.id} username={userContext.username} />
+      )}
+
+      <Jumbotron className="bg pr-4">
         <Row className="d-flex mb-3">
           <Col className="column-text">
             State of course:{' '}
-            {!course.verified ? (
+            {course.verified === 0 && (
+              <text
+                style={{
+                  backgroundColor: 'red',
+                  paddingLeft: '10px',
+                  paddingRight: '10px',
+                }}
+              >
+                {' '}
+                Waiting for Verification
+              </text>
+            )}
+            {course.verified === 1 && (
+              <text
+                style={{
+                  backgroundColor: 'lightgreen',
+                  paddingLeft: '10px',
+                  paddingRight: '10px',
+                }}
+              >
+                {' '}
+                Verified
+              </text>
+            )}
+            {course.verified === 2 && (
+              <text
+                style={{
+                  backgroundColor: 'red',
+                  paddingLeft: '10px',
+                  paddingRight: '10px',
+                }}
+              >
+                {' '}
+                Rejected
+              </text>
+            )}
+            {course.verified === 3 && (
+              <text
+                style={{
+                  backgroundColor: 'red',
+                  paddingLeft: '10px',
+                  paddingRight: '10px',
+                }}
+              >
+                {' '}
+                Blocked
+              </text>
+            )}
+            {course.verified === 4 && (
               <text
                 style={{
                   backgroundColor: 'red',
@@ -112,16 +184,6 @@ const CourseViewer = (props) => {
               >
                 {' '}
                 Not verified
-              </text>
-            ) : (
-              <text
-                style={{
-                  backgroundColor: 'lightgreen',
-                  paddingLeft: '10px',
-                  paddingRight: '10px',
-                }}
-              >
-                Verified
               </text>
             )}
           </Col>
@@ -188,50 +250,87 @@ const CourseViewer = (props) => {
         <Row className="d-flex mb-3">
           <Col className="column-text">
             Tags:{' '}
-            {course.tags.map((txt, i) => (
-              <span key={i}> {txt.id}</span>
+            {course.tags.map((tag) => (
+              <span key={tag}> {tag}</span>
             ))}
           </Col>
           <Col className="column-text">Views: {course.popularity}</Col>
         </Row>
 
-        <Row className="justify-content-center mb-2">
-          <Col>
-            <Card fluid outline style={{ borderColor: '#ffb606' }}>
-              <CardHeader className="spans">Course details</CardHeader>
-              <CardBody style={{ backgroundColor: '#f5dfae' }}>
-                <CardText style={{ color: 'black' }}>{course.description}</CardText>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-
-        <Row className="d-flex justify-content-center mb-2">
-          Your progress into this course.
-        </Row>
-        {userContext.authenticated && (
-          <Progress color="warning" value={course.progress} className="mb-4" />
-        )}
-
-        <br />
         <Row>
-          <h3 style={{ fontWeight: '900' }}>Modules</h3>
+          <Nav tabs>
+            <NavItem className="tabItem">
+              <NavLink
+                className={classnames({
+                  active: activeTab === '1',
+                })}
+                onClick={() => {
+                  toggle('1');
+                }}
+              >
+                <l className="stats">Details</l>
+              </NavLink>
+            </NavItem>
+            <NavItem className="tabItem">
+              <NavLink
+                className={classnames({
+                  active: activeTab === '2',
+                })}
+                onClick={() => {
+                  toggle('2');
+                }}
+              >
+                <l className="stats">Modules</l>
+              </NavLink>
+            </NavItem>
+          </Nav>
+          <TabContent activeTab={activeTab} style={{ width: '100%' }}>
+            <TabPane tabId="1" className="description">
+              <CardBody style={{ backgroundColor: '#f5dfae' }}>
+                <CardText style={{ color: 'black' }}>
+                  {course.description}
+                </CardText>
+              </CardBody>
+            </TabPane>
+            <TabPane tabId="2" className="modules">
+              <CardBody style={{ backgroundColor: '#f5dfae' }}>
+                <Modules
+                  toggleLesson={props.toggleLesson}
+                  modules={course.modules}
+                  courseID={props.id}
+                  ownerID={course.ownerId}
+                  courseTitle={course.title}
+                  isParticipating={props.isParticipating}
+                />
+              </CardBody>
+            </TabPane>
+          </TabContent>
         </Row>
-        <br />
 
-        <Modules
-          toggleLesson={props.toggleLesson}
-          modules={course.modules}
-          courseID={props.id}
-          ownerID={course.ownerId}
-          courseTitle={course.title}
-          isParticipating={props.isParticipating}
-        />
+        {userContext.authenticated ||
+          (isParticipating && (
+            <Container>
+              <Row className="d-flex justify-content-center mb-2">
+                Your progress into this course.
+              </Row>
+              <Progress
+                color="warning"
+                value={course.progress}
+                className="mb-4"
+              />
+            </Container>
+          ))}
 
-        {userContext.userid === course.ownerId && <DiscountGenerator owner={course.ownerId} course={course.title} id={props.id}/>}
+        {userContext.userid === course.ownerId && (
+          <DiscountGenerator
+            owner={course.ownerId}
+            course={course.title}
+            id={props.id}
+          />
+        )}
       </Jumbotron>
 
-      {userContext.userid === course.ownerId && !course.verified && (
+      {userContext.userid === course.ownerId && course.verified === 4 && (
         <Container>
           <Row className="justify-content-md-center">
             <Alert>
@@ -240,12 +339,23 @@ const CourseViewer = (props) => {
             </Alert>
           </Row>
           <Row className="justify-content-md-center">
-            <Button text="Send to verification" />
+            <Button
+              onClick={() => handleButtonSendToVerificationClick()}
+              text="Send to verification"
+            />
           </Row>
         </Container>
       )}
+      {userContext.userid === course.ownerId && course.verified === 0 && (
+        <Container>
+          <Row className="justify-content-md-center">
+            <Alert>Your course is waiting for verification.</Alert>
+          </Row>
+          <Row className="justify-content-md-center"></Row>
+        </Container>
+      )}
       {userContext.userid === course.ownerId &&
-        course.verified &&
+        course.verified === 1 &&
         !course.public && (
           <Container>
             <Row className="justify-content-md-center">
@@ -264,7 +374,7 @@ const CourseViewer = (props) => {
           </Container>
         )}
       {userContext.userid === course.ownerId &&
-        course.verified &&
+        course.verified === 1 &&
         course.public && (
           <Container>
             <Row className="justify-content-md-center">
@@ -284,7 +394,7 @@ const CourseViewer = (props) => {
         )}
 
       {userContext.userid !== course.ownerId &&
-        course.verified &&
+        course.verified === 1 &&
         course.public &&
         !props.isParticipating && (
           <Container>
@@ -299,7 +409,7 @@ const CourseViewer = (props) => {
         )}
 
       {userContext.userid !== course.ownerId &&
-        course.verified &&
+        course.verified === 1 &&
         course.public &&
         props.isParticipating === true && (
           <Container>
@@ -319,11 +429,13 @@ const CourseViewer = (props) => {
         }}
       />
 
-      <Comments
-        courseId={props.id}
-        comments={props.comments}
-        ownerId={course.ownerId}
-      />
+      {course.public && (
+        <Comments
+          courseId={props.id}
+          comments={props.comments}
+          ownerId={course.ownerId}
+        />
+      )}
     </Container>
   );
 };

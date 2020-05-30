@@ -40,6 +40,11 @@ export const CourseService = {
   getUsersCourses: (id) => {
     return apiClient.get(`api/CoursesViewer/GetUsersCourses?UserId=${id}`);
   },
+  getFeaturedCourses: (categoryCount) => {
+    return apiClient.get(
+      `/api/CoursesViewer/GetFeaturedCourses?CategoryCount=${categoryCount}`,
+    );
+  },
   publishCourse: (id) => {
     return new Promise((resolve, reject) =>
       apiClient
@@ -72,14 +77,27 @@ export const CourseService = {
     );
   },
   generateDiscounts: (courseId, discountProperties) => {
-    return apiClient.post(`/api/PublicCourses/AddPromotionCode?Id=${courseId}`, {discountProperties});
+    return apiClient.post(
+      `/api/PublicCourses/AddPromotionCode?Id=${courseId}`,
+      { ...discountProperties },
+    );
   },
   getDiscounts: (courseId) => {
-    return apiClient.get(`/api/PublicCourses/GetDiscountCodes?Id=${courseId}`)
+    return apiClient.get(`/api/PublicCourses/GetDiscountCodes?Id=${courseId}`);
   },
+
   getPriceWithDiscount: (courseId, code) => {
-    return apiClient.get(`/api/PublicCourses/GetPriceWithDiscount?Id=${courseId}`, {code})
-  }
+    return apiClient.get(
+      `/api/PublicCourses/GetPriceWithDiscount?Id=${courseId}`,
+      { code },
+    );
+  },
+
+  sendToVerification: (courseId) => {
+    return apiClient.post(
+      `/api/CourseCreator/SendToVerification?CourseId=${courseId}`,
+    );
+  },
 };
 
 export default CourseService;
