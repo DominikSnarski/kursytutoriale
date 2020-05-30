@@ -194,19 +194,20 @@ const App = () => {
               />
               <ProtectedRoute
                 exact
-<<<<<<< KursyTutoriale.WebApp/ClientApp/src/App.js
-                path={AppRoutes.SummaryOfPayment}
-                component={SummaryOfPayment}
-=======
                 path={AppRoutes.Survey}
                 component={Survey}
+                layout={MainLayout}
+              />
+              ProtectedRoute
+                exact
+                path={AppRoutes.SummaryOfPayment}
+                component={SummaryOfPayment}
                 layout={MainLayout}
               />
               <ProtectedRoute
                 exact
                 path={AppRoutes.SurveyList}
                 component={SurveyList}
->>>>>>> KursyTutoriale.WebApp/ClientApp/src/App.js
                 layout={MainLayout}
               />
               <Route component={notfound} layout={MainLayout} />
