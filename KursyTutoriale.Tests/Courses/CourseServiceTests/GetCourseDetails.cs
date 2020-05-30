@@ -33,7 +33,8 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
                 null,
                 null,
                 null,
-                new Mock<IExtendedRepository<CoursePreview>>().Object);
+                new Mock<IExtendedRepository<CoursePreview>>().Object,
+                null);
 
             Assert.Throws<NullReferenceException>(()=>service.GetCourseDetails(Guid.Empty));
         }
@@ -71,7 +72,8 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
                 new Mock<IExtendedRepository<CoursePublicationProfile>>().Object,
                 null,
                 null,
-                new Mock<IExtendedRepository<CoursePreview>>().Object);
+                new Mock<IExtendedRepository<CoursePreview>>().Object,
+                new Mock<IExtendedRepository<Tag>>().Object);
 
             //Act
             var details = service.GetCourseDetails(courseId);
@@ -119,7 +121,8 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
                 new Mock<IExtendedRepository<CoursePublicationProfile>>().Object,
                 null,
                 null,
-                new Mock<IExtendedRepository<CoursePreview>>().Object);
+                new Mock<IExtendedRepository<CoursePreview>>().Object,
+                new Mock<IExtendedRepository<Tag>>().Object);
 
             //Act
             var details = service.GetCourseDetails(courseId);
@@ -160,7 +163,8 @@ namespace KursyTutoriale.Tests.Courses.CourseServiceTests
                 profileMock.Object,
                 null,
                 null,
-                new Mock<IExtendedRepository<CoursePreview>>().Object);
+                new Mock<IExtendedRepository<CoursePreview>>().Object,
+                new Mock<IExtendedRepository<Tag>>().Object);
 
             //Act
             var details = service.GetCourseDetails(courseId);

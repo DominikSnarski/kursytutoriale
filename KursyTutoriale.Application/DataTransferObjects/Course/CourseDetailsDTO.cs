@@ -18,7 +18,7 @@ namespace KursyTutoriale.Application.DataTransferObjects.Course
         public int Popularity { get; set; }
         public double Rating { get; set; }
         public int Progress { get; set; }
-        public ICollection<CourseTag> Tags { get; set; }
+        public ICollection<string> Tags { get; set; }
         public List<CourseModuleBasicInformationsDTO> Modules { get; set; }
 
     }

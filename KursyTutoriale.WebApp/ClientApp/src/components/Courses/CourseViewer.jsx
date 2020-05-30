@@ -100,9 +100,9 @@ const CourseViewer = (props) => {
   };
   const handleButtonSendToVerificationClick = () => {
     CourseService.sendToVerification(course.id)
-    .then(() => history.push('/'))
-    .then(() => history.push(`/courseview/${course.id}`));
-  }
+      .then(() => history.push('/'))
+      .then(() => history.push(`/courseview/${course.id}`));
+  };
 
   return (
     <Container className="Container">
@@ -118,14 +118,9 @@ const CourseViewer = (props) => {
         </Col>
       </Row>
 
-      {(isParticipating || userContext.userid === course.ownerId)  && (
-      <Chat
-        courseid = {course.id}
-        username = {userContext.username}
-      /> 
-      )
-      }
-
+      {(isParticipating || userContext.userid === course.ownerId) && (
+        <Chat courseid={course.id} username={userContext.username} />
+      )}
 
       <Jumbotron className="bg pr-4">
         <Row className="d-flex mb-3">
@@ -155,7 +150,6 @@ const CourseViewer = (props) => {
                 Verified
               </text>
             )}
-
             {course.verified === 2 && (
               <text
                 style={{
@@ -168,7 +162,6 @@ const CourseViewer = (props) => {
                 Rejected
               </text>
             )}
-
             {course.verified === 3 && (
               <text
                 style={{
@@ -181,7 +174,6 @@ const CourseViewer = (props) => {
                 Blocked
               </text>
             )}
-
             {course.verified === 4 && (
               <text
                 style={{
@@ -258,8 +250,8 @@ const CourseViewer = (props) => {
         <Row className="d-flex mb-3">
           <Col className="column-text">
             Tags:{' '}
-            {course.tags.map((txt, i) => (
-              <span key={i}> {txt.id}</span>
+            {course.tags.map((tag) => (
+              <span key={tag}> {tag}</span>
             ))}
           </Col>
           <Col className="column-text">Views: {course.popularity}</Col>
@@ -347,9 +339,9 @@ const CourseViewer = (props) => {
             </Alert>
           </Row>
           <Row className="justify-content-md-center">
-            <Button 
-            onClick={() => handleButtonSendToVerificationClick()}
-            text="Send to verification" 
+            <Button
+              onClick={() => handleButtonSendToVerificationClick()}
+              text="Send to verification"
             />
           </Row>
         </Container>
@@ -357,16 +349,13 @@ const CourseViewer = (props) => {
       {userContext.userid === course.ownerId && course.verified === 0 && (
         <Container>
           <Row className="justify-content-md-center">
-            <Alert>
-              Your course is waiting for verification.
-            </Alert>
+            <Alert>Your course is waiting for verification.</Alert>
           </Row>
-          <Row className="justify-content-md-center">
-          </Row>
+          <Row className="justify-content-md-center"></Row>
         </Container>
       )}
       {userContext.userid === course.ownerId &&
-        course.verified ===1 &&
+        course.verified === 1 &&
         !course.public && (
           <Container>
             <Row className="justify-content-md-center">
@@ -440,11 +429,13 @@ const CourseViewer = (props) => {
         }}
       />
 
-      <Comments
-        courseId={props.id}
-        comments={props.comments}
-        ownerId={course.ownerId}
-      />
+      {course.public && (
+        <Comments
+          courseId={props.id}
+          comments={props.comments}
+          ownerId={course.ownerId}
+        />
+      )}
     </Container>
   );
 };

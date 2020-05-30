@@ -56,6 +56,7 @@ namespace KursyTutoriale.Application.Services
         private IExtendedRepository<CoursePreview> previewRepository;
         private IExecutionContextAccessor executionContext;
         private IExtendedRepository<Rate> rateRepository;
+        private IExtendedRepository<Tag> tagRepository;
         private ICourseProgressService progressService;
 
         public CourseService(
@@ -66,7 +67,7 @@ namespace KursyTutoriale.Application.Services
             IExtendedRepository<CoursePublicationProfile> publicationRepository,
             IExtendedRepository<Rate> rateRepository,
             ICourseProgressService progressService,
-            IExtendedRepository<CoursePreview> previewRepository)
+            IExtendedRepository<CoursePreview> previewRepository, IExtendedRepository<Tag> tagRepository)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
@@ -76,6 +77,7 @@ namespace KursyTutoriale.Application.Services
             this.rateRepository = rateRepository;
             this.progressService = progressService;
             this.previewRepository = previewRepository;
+            this.tagRepository = tagRepository;
         }
 
 
@@ -93,6 +95,8 @@ namespace KursyTutoriale.Application.Services
             if (result == null)
                 throw new NullReferenceException("Course doesnt exist");
 
+
+
             var courseReadModel = mapper.Map<CourseReadModel>(result);
             foreach(var c in courseReadModel.Modules
                 .Zip(result.Modules, (rm, r) => new { ReadModel = rm, Result = r }))
@@ -103,6 +107,15 @@ namespace KursyTutoriale.Application.Services
                     m.ReadModel.Content = JsonConvert.SerializeObject(m.Result.Content);
                 }
             }
+
+            var tags = tagRepository.Queryable().Where(t => result.Tags.ToList().Contains(t.Id)).ToList();
+
+            courseReadModel.Tags = tags.Select(t => new CourseTag
+                {
+                    Tag = t
+                })
+                .ToList();
+
             var dto = mapper.Map<CourseDetailsDTO>(courseReadModel);
 
             dto.Verified = (int)result.VerificationStamp.Status;

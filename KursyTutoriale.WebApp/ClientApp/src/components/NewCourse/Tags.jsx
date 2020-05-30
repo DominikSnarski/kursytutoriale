@@ -1,8 +1,6 @@
 import React from 'react';
 
-const Tags = (props) => {
-  const { tag, handleCloseClick } = props;
-
+const Tags = ({ tag, handleCloseClick }) => {
   return (
     <div>
       <div
@@ -16,12 +14,17 @@ const Tags = (props) => {
         <span>{tag.name}</span>
         <button
           className="Close"
+          type="button"
           style={{
             position: 'absolute',
             right: '0',
             marginRight: '1rem',
             marginBottom: '1rem',
             fontSize: '0.75rem',
+            backgroundColor: 'red',
+            border: '0px',
+            color: 'white',
+            fontWeight: 'bold',
           }}
           onClick={() => handleCloseClick(tag.id)}
         >
