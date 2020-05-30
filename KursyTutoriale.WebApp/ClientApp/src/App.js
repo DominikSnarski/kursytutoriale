@@ -198,7 +198,7 @@ const App = () => {
                 component={Survey}
                 layout={MainLayout}
               />
-              ProtectedRoute
+              <ProtectedRoute
                 exact
                 path={AppRoutes.SummaryOfPayment}
                 component={SummaryOfPayment}

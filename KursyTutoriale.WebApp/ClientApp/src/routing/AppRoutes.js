@@ -18,7 +18,7 @@ const AppRoutes = {
   ModPanel: '/modPanel',
   AdminMainPanel: '/adminMainPanel',
   Payment: '/payment/:courseId',
-  SummaryOfPayment: '/summaryOfPayment/:courseId'
+  SummaryOfPayment: '/summaryOfPayment/:courseId',
   AssignmentsList: '/assignmentsList',
   Survey: '/survey',
   SurveyList: '/surveyList',
