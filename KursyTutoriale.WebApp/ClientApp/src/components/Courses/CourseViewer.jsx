@@ -68,7 +68,7 @@ const CourseViewer = (props) => {
 
   const handleButtonJoinCourseClick = () => {
     if (course.price !== 0) {
-      history.push(generatePath(AppRoutes.Payment, { courseId: course.id }));
+      history.push(generatePath(AppRoutes.SummaryOfPayment, { courseId: course.id }));
     } else {
       ParticipantService.addParticipant(course.id)
         .then(() => history.push('/'))

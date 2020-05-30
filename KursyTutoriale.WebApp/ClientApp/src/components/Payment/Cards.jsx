@@ -71,7 +71,7 @@ class Cards extends React.Component {
               <tr></tr>
             </thead>
             {this.state.pageOfItems.map((item, i) => (
-              <Card key={i} card={item} />
+              <Card key={i} card={item} deleteable={this.props.deleteable} courseId={this.props.courseId}/>
             ))}
           </Table>
         </div>

@@ -34,6 +34,7 @@ import ModRoute from './routing/ModRoute';
 import AdminMainPanel from './components/AdminPanel/AdminMainPanel';
 import AdminRoute from './routing/AdminRoute';
 import Payment from './components/Payment/Payment';
+import SummaryOfPayment from './components/Payment/SummaryOfPayment';
 import AssignmentsList from './components/Lesson/AssignmentsList';
 import Survey from './components/Courses/Survey/Survey';
 import SurveyList from './components/Courses/Survey/SurveyList';
@@ -195,6 +196,12 @@ const App = () => {
                 exact
                 path={AppRoutes.Survey}
                 component={Survey}
+                layout={MainLayout}
+              />
+              <ProtectedRoute
+                exact
+                path={AppRoutes.SummaryOfPayment}
+                component={SummaryOfPayment}
                 layout={MainLayout}
               />
               <ProtectedRoute

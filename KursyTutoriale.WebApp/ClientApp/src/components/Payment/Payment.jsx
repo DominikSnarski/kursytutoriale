@@ -5,12 +5,13 @@ import { useHistory, useParams } from 'react-router-dom';
 import { PaymentService } from '../../api/Services/PaymentService';
 
 // eslint-disable-next-line
-import { Form, FormGroup, Row, Col, Container } from 'reactstrap';
+import { Form, FormGroup, Row, Col, Container, TabContent, TabPane, Label } from 'reactstrap';
 
 import Button from '../../layouts/CSS/Button/Button';
 import Input from '../../layouts/CSS/InputField/InputField';
+import Cards from '../Payment/Cards';
 
-function Payment(props) {
+function Payment() {
   const history = useHistory();
   const { courseId } = useParams();
 
@@ -22,6 +23,8 @@ function Payment(props) {
   );
   const [cvvErrorMessage, setCvvErrorMessage] = useState('');
   const [addToList, setAddToList] = useState(false);
+
+  const [select, setSelect] = useState(false);
 
   const handleTextChange = () => {
     setNameErrorMessage('');
@@ -111,7 +114,7 @@ function Payment(props) {
       formData.get('expirationDateMonth'),
       formData.get('expirationDateYear'),
       formData.get('cvv'),
-      addToList,
+      formData.addToList,
     ).then(() => {
       history.push(`/courseview/${courseId}`);
     });
@@ -119,13 +122,46 @@ function Payment(props) {
 
   return (
     <Container className="Container">
-      <Form onSubmit={(e) => handleSubmit(e)}>
-        <Row></Row>
+      <div>
         <Row className="mt-2">
           <Col>
-            <Button text="Select from my cards" />
+            <Button 
+              text="Select from my cards" 
+              onClick={() => setSelect(!select)}
+            />
+            {select === true && (
+              <TabContent>
+                <TabPane>
+                  <Cards 
+                     deleteable={false}
+                     courseId={courseId}
+                  />
+                  
+                <FormGroup className="mt-2">
+                <Row className="mt-2">
+                <Col>
+                  Select option:
+                  <Input
+                    type="text"
+                    name="name"
+                    id="name"
+                    className="input_field"
+                    onChange={handleTextChange}
+                  />
+                </Col>
+                </Row>
+                </FormGroup>
+
+                </TabPane>
+              </TabContent>
+              )}
           </Col>
         </Row>
+      </div>
+
+      <Form onSubmit={(e) => handleSubmit(e)}>
+        <Row></Row>
+        
         <Row className="mt-2">
           <Col>
             <FormGroup className="mt-2">
@@ -276,7 +312,7 @@ function Payment(props) {
             <Col>
               <input
                 type="checkbox"
-                checked={addToList}
+                value={addToList}
                 onClick={() => setAddToList(!addToList)}
               />
             </Col>
@@ -288,7 +324,7 @@ function Payment(props) {
             <Button
               text="Back"
               onClick={() => {
-                history.push(`/courseview/${props.location.state.courseid}`);
+                history.push(`/courseview/${courseId}`);
               }}
             ></Button>
           </Col>

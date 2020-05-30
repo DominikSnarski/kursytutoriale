@@ -41,7 +41,9 @@ export const CourseService = {
     return apiClient.get(`api/CoursesViewer/GetUsersCourses?UserId=${id}`);
   },
   getFeaturedCourses: (categoryCount) => {
-    return apiClient.get(`/api/CoursesViewer/GetFeaturedCourses?CategoryCount=${categoryCount}`);
+    return apiClient.get(
+      `/api/CoursesViewer/GetFeaturedCourses?CategoryCount=${categoryCount}`,
+    );
   },
   publishCourse: (id) => {
     return new Promise((resolve, reject) =>
@@ -81,13 +83,20 @@ export const CourseService = {
     );
   },
   getDiscounts: (courseId) => {
-    return apiClient.get(`/api/PublicCourses/GetDiscountCodes?Id=${courseId}`)
+    return apiClient.get(`/api/PublicCourses/GetDiscountCodes?Id=${courseId}`);
+  },
+
+  getPriceWithDiscount: (courseId, code) => {
+    return apiClient.get(
+      `/api/PublicCourses/GetPriceWithDiscount?Id=${courseId}`,
+      { code },
+    );
   },
 
   sendToVerification: (courseId) => {
     return apiClient.post(
       `/api/CourseCreator/SendToVerification?CourseId=${courseId}`,
-    );  
+    );
   },
 };
 
