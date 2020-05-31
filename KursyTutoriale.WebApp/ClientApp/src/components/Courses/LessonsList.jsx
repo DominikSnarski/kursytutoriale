@@ -57,7 +57,7 @@ function LessonsList(props) {
                         lessons: props.lessons,
                         index: i,
                         ownerID: props.ownerID,
-                        courseID: props.courseid,
+                        courseid: props.courseid,
                         isEdited: true
                       },
                     }}
@@ -109,6 +109,7 @@ function LessonsList(props) {
                   courseid: props.courseid,
                   moduleid: props.moduleid,
                   description: props.moduleDescription,
+                  title: props.moduleTitle,
                   isEdited: false,
                 },
               }}

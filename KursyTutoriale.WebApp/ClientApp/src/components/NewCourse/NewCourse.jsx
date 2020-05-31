@@ -55,7 +55,7 @@ function NewCourse() {
 
   const newCourseSchema = Yup.object().shape({
     title: Yup.string()
-      .max(30, 'Description can contains max 30 characters')
+      .max(30, 'Title can contains max 30 characters')
       .required('Field required'),
     description: Yup.string().required('Field required'),
     price: Yup.number().min(0, 'Price cannot be negative'),

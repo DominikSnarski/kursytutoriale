@@ -72,10 +72,11 @@ class Comments extends React.Component {
   }
 
   sendComment = (event) => {
+
     event.preventDefault();
-
     // const newComment = {content: this.state.comment, courseId: this.props.courseID}
-
+    if(this.state.comment === '')
+      return;
     CommentService.addComment(this.state.comment, this.props.courseId);
     this.setState({ comment: '' });
   };
