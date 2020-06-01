@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { generatePath, useHistory, useParams } from 'react-router-dom';
-import {
-  Form,
-  FormGroup,
-  Input,
-  Row,
-  Col,
-  Container,
-  Spinner,
-} from 'reactstrap';
+import { Form, FormGroup, Input, Row, Col, Container, Spinner } from 'reactstrap';
 import AppRoutes from '../../routing/AppRoutes';
 import { CourseService } from '../../api/Services/CourseService';
 
@@ -22,6 +14,8 @@ function SummaryOfPayment(props) {
   const [courseLoaded, setCourseLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [newDiscount, setNewDiscount] = useState('');
+  const [newPrice, setNewPrice] = useState('');
+
 
   useEffect(() => {
     if (!isLoading) {
@@ -33,17 +27,11 @@ function SummaryOfPayment(props) {
     }
   });
 
-  const handleChangeDiscount = (event) => {
-    const formData = new FormData(event.target);
-    if (formData.get('newDisc') !== '') setNewDiscount(formData.get('newDisc'));
-
-    formData.set(
-      'priceWithDisc',
-      CourseService.getPriceWithDiscount(course.id, newDiscount)
-        .then(() => history.push('/'))
-        .then(() => history.push(`/courseview/${course.id}`)),
-    );
-  };
+  const handleButtonAddDiscountClick = () => {
+      setNewPrice(CourseService.getPriceWithDiscount(course.id, newDiscount)
+      .then(() => history.push('/'))
+      .then(() => history.push(`/courseview/${course.id}`)));
+  }
 
   if (!courseLoaded) {
     return (
@@ -62,13 +50,16 @@ function SummaryOfPayment(props) {
   }
 
   const handleSubmit = (event) => {
+    // if (newPrice !== '') {
+
+    // }
+
     event.preventDefault();
     history.push(generatePath(AppRoutes.Payment, { courseId: course.id }));
   };
 
   return (
     <Container className="Container">
-      <Form onSubmit={(e) => handleSubmit(e)}>
         <Row></Row>
         <Row className="mt-2">
           <Col>
@@ -81,21 +72,39 @@ function SummaryOfPayment(props) {
               <Row className="mt-2">
                 <Col>
                   Price:
-                  <br />
-                  <h3>{course.price} $</h3>
+                  <br/>
+                  <h3>
+                    {course.price} $
+                  </h3>
                 </Col>
 
                 <Col>
                   Discount:
-                  <br />
-                  <Input onChange={handleChangeDiscount} name="newDisc" />
+                  <br/>
+                  <Input onChange={e => setNewDiscount(e.target.value)} name="newDisc"/>
                 </Col>
 
                 <Col>
-                  Price with a discount:
-                  <br />
-                  <h3 name="priceWithDisc"></h3>
+                <br/>
+                <Button
+                height='40px'
+                onClick={() => handleButtonAddDiscountClick()}
+                text="Add discount"
+              />
                 </Col>
+
+                <Form onSubmit={(e) => handleSubmit(e)}>
+
+                <Col>
+                  Price with a discount:
+                  <br/>
+                  <h3 name="priceWithDisc">
+                    {newPrice}
+                  </h3>
+                </Col>
+
+                </Form>
+
               </Row>
             </FormGroup>
           </Col>
@@ -103,7 +112,7 @@ function SummaryOfPayment(props) {
 
         <Row className="mt-5">
           <Col>
-            <Button
+          <Button
               text="Back"
               onClick={() => {
                 history.push(`/courseview/${courseId}`);
@@ -114,7 +123,6 @@ function SummaryOfPayment(props) {
             <Button text="Submit"></Button>
           </Col>
         </Row>
-      </Form>
       <br />
     </Container>
   );
