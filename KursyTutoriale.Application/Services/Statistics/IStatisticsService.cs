@@ -11,5 +11,7 @@ namespace KursyTutoriale.Application.Services.Statistics
         List<DataDTO> GetCreatedAccountsData();
         List<DataDTO> GetSignInData();
         List<UniversalDataDTO> GetDailySignInData();
+        List<DataDTO> GetParticipantsData();
+        List<UniversalDataDTO> GetProgressData();
     }
 }

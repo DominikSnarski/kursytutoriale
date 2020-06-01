@@ -32,7 +32,7 @@ namespace KursyTutoriale.API.Utils
                 op.Password.RequireUppercase = false;
                 op.Password.RequireNonAlphanumeric = false;
 
-                op.User.RequireUniqueEmail = false;
+                op.User.RequireUniqueEmail = true;
             });
 
             var jwtConfig = configuration.GetSection("JwtConfiguration");

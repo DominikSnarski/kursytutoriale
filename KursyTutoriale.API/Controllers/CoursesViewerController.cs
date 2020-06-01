@@ -44,6 +44,21 @@ namespace KursyTutoriale.API.Controllers
             }
         }
 
+        [Authorize(Policy = "PowerUser")]
+        [HttpGet("GetCourseDetailsProtected")]
+        [ProducesResponseType(200, Type = typeof(CourseDetailsDTO))]
+        public IActionResult GetCourseDetailsProtected(Guid courseId)
+        {
+            try
+            {
+                return Ok(courseService.GetCourseDetailsProtected(courseId));
+            }
+            catch (NullReferenceException)
+            {
+                return NoContent();
+            }
+        }
+
         /// <summary>
         /// Used to get module details
         /// </summary>

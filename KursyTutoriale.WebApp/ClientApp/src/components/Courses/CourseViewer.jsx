@@ -307,8 +307,8 @@ const CourseViewer = (props) => {
           </TabContent>
         </Row>
 
-        {userContext.authenticated ||
-          (isParticipating && (
+        {(userContext.authenticated &&
+          isParticipating) && (
             <Container>
               <Row className="d-flex justify-content-center mb-2">
                 Your progress into this course.
@@ -319,7 +319,7 @@ const CourseViewer = (props) => {
                 className="mb-4"
               />
             </Container>
-          ))}
+          )}
 
         {userContext.userid === course.ownerId && (
           <DiscountGenerator

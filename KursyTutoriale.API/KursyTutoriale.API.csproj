@@ -31,8 +31,9 @@
     <ProjectReference Include="..\KursyTutoriale.Application\KursyTutoriale.Application.csproj" />
     <ProjectReference Include="..\KursyTutoriale.Shared\KursyTutoriale.Shared.csproj" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <Folder Include="Files\" />
   </ItemGroup>
+
 </Project>

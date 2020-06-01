@@ -12,13 +12,14 @@ import {
   Spinner,
 } from 'reactstrap';
 // import { AdminService } from '../../api/Services/AdminService';
-import CourseViewer from '../Courses/CourseViewer';
 import { ModService } from '../../api/Services/ModService';
 import { CourseService } from '../../api/Services/CourseService';
+import CourseViewerProtected from '../Courses/CourseViewerProtected';
 
 const UnverifiedCourseDetails = (props) => {
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
+  const [comment, setComment] = useState(false);
 
   const toggle = () => {
     setIsOpen(!isOpen);
@@ -30,7 +31,6 @@ const UnverifiedCourseDetails = (props) => {
       .then(() => history.push('/adminMainPanel'));
   };
   const handleButtonRejectClick = () => {
-    const comment = document.getElementById('VerifierCommentTextArea').value;
     ModService.rejectCourse(props.course.id, comment)
       .then(() => history.push('/'))
       .then(() => history.push('/adminMainPanel'));
@@ -40,16 +40,19 @@ const UnverifiedCourseDetails = (props) => {
   const [courseLoaded, setCourseLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error] = useState(false);
-  const [rating, setRating] = useState(0);
+
+  const onChange = (e) =>
+  {
+
+    setComment(e.target.value);
+  }
 
   useEffect(() => {
     if (!isLoading) {
       setIsLoading(true);
-      CourseService.getCourse(props.course.id).then((response) => {
+      CourseService.getCourseProtected(props.course.id).then((response) => {
         setCourse(response.data);
-        setRating(response.data.rating);
         setCourseLoaded(true);
-        CourseService.incrementViewCount(props.id);
       });
     }
   }, [props.id]);
@@ -92,9 +95,8 @@ const UnverifiedCourseDetails = (props) => {
       <td colSpan="5">
         <Collapse isOpen={isOpen}>
           <Container>
-            <CourseViewer
+            <CourseViewerProtected
               course={course}
-              rating={rating}
               id={props.course.id}
             />
           </Container>
@@ -109,6 +111,7 @@ const UnverifiedCourseDetails = (props) => {
             type="textarea"
             style={{ height: 150 }}
             placeholder="Reason for rejection"
+            onChange={(e) => onChange(e)}
           />
         </Collapse>
       </td>

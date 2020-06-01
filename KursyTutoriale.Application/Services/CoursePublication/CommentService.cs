@@ -77,7 +77,7 @@ namespace KursyTutoriale.Application.Services.CoursePublication
             var courseProfile = profileRepository.Queryable().FirstOrDefault(x => x.CourseId == courseId);
 
             if (courseProfile is null)
-                throw new InvalidStateException("Course is not public");
+                return new List<CommentDTO>();
 
             var comments = courseProfile.Comments;
 

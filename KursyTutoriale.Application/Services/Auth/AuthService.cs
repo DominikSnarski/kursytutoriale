@@ -119,5 +119,7 @@ namespace KursyTutoriale.Application.Services.Auth
                 audience: jwtOptions.Audience,
                 signingCredentials: creds);
         }
+
+
     }
 }

@@ -224,12 +224,14 @@ namespace KursyTutoriale.Application.Services.Mod
             List<CourseBasicInformationsDTO> result = new List<CourseBasicInformationsDTO>();
 
             var query = courseRepository.Queryable()
-                .Include(c => c.VerificationStamp)
+                .Include(c => c.VerificationStamp);
+
+            var courses = query
                 .Where(c => c.VerificationStamp.Status == StampStatus.Pending)
                 .OrderBy(s => s.VerificationStamp.Date)
-                .Take(NrOfCourses);
+                .Take(NrOfCourses).ToList();
 
-            foreach (var course in query)
+            foreach (var course in courses)
             {
                 result.Add(mapper.Map<CourseBasicInformationsDTO>(course));
             }

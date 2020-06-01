@@ -44,6 +44,7 @@ namespace KursyTutoriale.Application.Services
         Task IncrementViewCount(Guid CourseId);
 
         Task SendToVerification(Guid CourseId);
+        CourseDetailsDTO GetCourseDetailsProtected(Guid courseId);
 
     }
 
@@ -95,8 +96,6 @@ namespace KursyTutoriale.Application.Services
             if (result == null)
                 throw new NullReferenceException("Course doesnt exist");
 
-
-
             var courseReadModel = mapper.Map<CourseReadModel>(result);
             foreach(var c in courseReadModel.Modules
                 .Zip(result.Modules, (rm, r) => new { ReadModel = rm, Result = r }))
@@ -137,12 +136,69 @@ namespace KursyTutoriale.Application.Services
                 dto.Progress = progress;
 
             }
+            else
+            {
+                var userid = executionContext.GetUserId();
+
+                if (userid == null) return new CourseDetailsDTO();
+
+                if(!dto.OwnerId.Equals(userid))
+                {
+                    var roles = executionContext.GetUserRoles();
+                    if(!roles.Contains("Admin")) return new CourseDetailsDTO();
+                }
+
+            }
 
             dto = MarkPreviewLessons(dto);
 
             return dto;
         }
-        
+
+        public CourseDetailsDTO GetCourseDetailsProtected(Guid courseId)
+        {
+            var result = courseRepository.Find(courseId, DateTime.UtcNow);
+
+            if (result == null)
+                throw new NullReferenceException("Course doesnt exist");
+
+            var courseReadModel = mapper.Map<CourseReadModel>(result);
+            foreach (var c in courseReadModel.Modules
+                .Zip(result.Modules, (rm, r) => new { ReadModel = rm, Result = r }))
+            {
+                foreach (var m in c.ReadModel.Lessons
+                    .Zip(c.Result.Lessons, (rm, r) => new { ReadModel = rm, Result = r }))
+                {
+                    m.ReadModel.Content = JsonConvert.SerializeObject(m.Result.Content);
+                }
+            }
+            var dto = mapper.Map<CourseDetailsDTO>(courseReadModel);
+
+            dto.Verified = (int)result.VerificationStamp.Status;
+
+            var profileQuery = publicationRepository
+                .Queryable();
+
+            dto.Public = profileQuery
+                .Any(pp => pp.CourseId == courseId);
+
+            if (dto.Public)
+            {
+                var publication = profileQuery.Where(pp => pp.CourseId == courseId).FirstOrDefault();
+                dto.Rating = publication.Rating;
+                dto.Popularity = publication.Popularity;
+
+                int progress = progressService.GetProgress(courseReadModel, publication);
+
+                dto.Progress = progress;
+
+            }
+
+            dto = MarkPreviewLessons(dto);
+
+            return dto;
+        }
+
         private CourseDetailsDTO MarkPreviewLessons(CourseDetailsDTO courseDto)
         {
             var preview = previewRepository.Queryable().Include(p => p.LessonPreviews).FirstOrDefault(p => p.Id == courseDto.Id);

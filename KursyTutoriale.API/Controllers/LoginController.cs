@@ -5,6 +5,7 @@ using KursyTutoriale.Application.Services.Auth;
 using KursyTutoriale.Application.Services.Statistics;
 using KursyTutoriale.Infrastructure;
 using KursyTutoriale.Shared.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -71,6 +72,25 @@ namespace KursyTutoriale.API.Controllers
             token = await authService.RefreshTokenAsync(request.Username, request.RefreshToken);
 
             return Ok(token);
+        }
+
+        [Authorize]
+        [HttpPost("ConfirmEmail")]
+        public async Task ConfirmEmail(string code)
+        {
+            await accountManager.ConfirmEmail(code);
+        }
+
+        [HttpPost("ForgotPassword")]
+        public async Task ForgotPassword(String email)
+        {
+            await accountManager.ForgotPassword(email);
+        }
+
+        [HttpPost("ChangePassword")]
+        public async Task ChangePassword(ChangePasswordRequest request)
+        {
+            await accountManager.ChangePassword(request);
         }
     }
 }

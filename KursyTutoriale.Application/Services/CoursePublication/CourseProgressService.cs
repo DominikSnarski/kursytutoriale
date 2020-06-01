@@ -129,5 +129,39 @@ namespace KursyTutoriale.Application.Services.CoursePublication
 
             return progress;
         }
+
+        public int GetUserProgress(Guid userId, CourseReadModel course, CoursePublicationProfile profile)
+        {
+            int progress = 0;
+
+
+
+            if (userId.Equals(profile.OwnerId)) progress = 100;
+            else if (!profile.Participants.Any(o => o.UserId == userId)) progress = 0;
+            else
+            {
+                var progresses = profile.Progresses.AsQueryable().Where(pr => pr.UserId == userId);
+
+                if (progresses != null)
+                {
+                    int total = 0, completed = 0;
+
+                    foreach (CourseModuleReadModel module in course.Modules)
+                    {
+                        foreach (LessonReadModel lesson in module.Lessons)
+                        {
+                            total++;
+                            if (progresses.Any(p => p.LessonId == lesson.Id))
+                                completed++;
+                        }
+                    }
+                    if (total == 0) progress = 0;
+                    else progress = ((completed * 100) / total);
+                }
+                else progress = 0;
+            }
+
+            return progress;
+        }
     }
 }

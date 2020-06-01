@@ -33,6 +33,22 @@ export const StatisticsService = {
         .catch((error) => reject(error)),
     ),
 
+    getParticipantsData: () =>
+    new Promise((resolve, reject) =>
+      apiClient
+        .get(`/api/Statistics/GetParticipantsData`)
+        .then((res) => resolve(res.data))
+        .catch((error) => reject(error)),
+    ),
+
+    getProgressData: () =>
+    new Promise((resolve, reject) =>
+      apiClient
+        .get(`/api/Statistics/GetProgressData`)
+        .then((res) => resolve(res.data))
+        .catch((error) => reject(error)),
+    ),
+
 };
 
 export default StatisticsService;

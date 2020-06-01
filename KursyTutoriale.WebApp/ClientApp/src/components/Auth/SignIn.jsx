@@ -84,6 +84,11 @@ const SignIn = () => {
                     I don&apos;t have an account
                   </Button>
                 </Link>{' '}
+                <Link to={AppRoutes.ForgotPassword}>
+              <Button outline color="primary">
+                I forgot my password
+              </Button>
+            </Link>{' '}
               </Col>
             </Row>
           </Form>

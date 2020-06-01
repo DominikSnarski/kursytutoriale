@@ -8,6 +8,10 @@ using KursyTutoriale.Infrastructure.Repositories.Interfaces;
 using KursyTutoriale.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using URF.Core.Abstractions;
+using Microsoft.AspNetCore.Identity;
+using KursyTutoriale.Domain.Entities.Auth;
+using System.Threading.Tasks;
+using KursyTutoriale.Application.Contracts;
 
 namespace KursyTutoriale.Application.Services.UserProfiles
 {
@@ -18,18 +22,24 @@ namespace KursyTutoriale.Application.Services.UserProfiles
         private IUnitOfWork unitOfWork;
         private IDTOMapper mapper;
         private IKarmaRepository karmaRepository;
+        private UserManager<ApplicationUser> userManager;
+        private IExecutionContextAccessor executionContext;
         public UsersService(
             IExtendedRepository<UserProfile> profileRepository,
             IExtendedRepository<Gender> genderRepository,
             IUnitOfWork unitOfWork,
             IDTOMapper mapper,
-            IKarmaRepository karmaRepository)
+            IKarmaRepository karmaRepository,
+            UserManager<ApplicationUser> userManager,
+            IExecutionContextAccessor executionContext)
         {
             this.profileRepository = profileRepository;
             this.genderRepository = genderRepository;
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             this.karmaRepository = karmaRepository;
+            this.userManager = userManager;
+            this.executionContext = executionContext;
         }
         public UserProfileDTO GetProfile(Guid id)
         {
@@ -49,6 +59,17 @@ namespace KursyTutoriale.Application.Services.UserProfiles
                 u.Name != null ? u.Name.ToUpper().Contains(query.ToUpper()) : false);
 
             return mapper.Map<IEnumerable<UserProfileListItemDTO>>(users.AsEnumerable());
+        }
+
+        public async Task<bool> IsEmailConfirmed()
+        {
+            var userId = executionContext.GetUserId();
+            if (userId == null) return false;
+
+            var user = await userManager.FindByIdAsync(userId.ToString());
+            if (user == null) return false;
+
+            return user.EmailConfirmed;
         }
     }
 }

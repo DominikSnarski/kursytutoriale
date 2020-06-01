@@ -29,6 +29,7 @@ import { useRouteMatch, Link } from 'react-router-dom';
 import Transactions from '../Transactions/Transactions';
 import Cards from '../Payment/Cards';
 import AppRoutes from '../../routing/AppRoutes';
+import UserProfileStatisticPanel from './UserProfileStatisticPanel';
 
 const UserProfile = () => {
   const userContext = React.useContext(UserContext);
@@ -44,6 +45,7 @@ const UserProfile = () => {
   const [edit, setEdit] = useState(false);
   const [siteLoaded, setSiteLoaded] = useState(false);
   const [activeCoursesTab, setActiveCoursesTab] = useState('1');
+  const [emailConfirmed,setEmailConfirmed] = useState(false);
 
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
@@ -51,6 +53,8 @@ const UserProfile = () => {
   const toggleCourses = (tab) => {
     if (activeCoursesTab !== tab) setActiveCoursesTab(tab);
   };
+
+
 
   const toggleEdit = () => {
     setEdit(!edit);
@@ -62,12 +66,18 @@ const UserProfile = () => {
       setSiteLoaded(true);
       UserService.getUserProfileById(userid)
         .then((result) => {
-          console.log(result.data);
           setUser(result.data);
           setIsLoading(false);
         })
         .catch((error) => console.log(error));
 
+        UserService.isEmailConfirmed()
+        .then((result) => {
+          console.log(result.data);
+          setEmailConfirmed(result.data);
+        })
+        .catch((error) => console.log(error));
+ 
       CourseService.getUsersCourses(userid)
         .then((result) => setCourseList(result.data))
         .catch((error) => console.log(error));
@@ -191,6 +201,16 @@ const UserProfile = () => {
                             Edit profile
                           </Button>
                         )}
+                        {!emailConfirmed && userid == userContext.userid && (
+                          <Link to={AppRoutes.ConfirmEmail}>
+                            <Button 
+                            color="warning"
+                            outline color="primary"
+                            className="float-right">
+                              Confirm email
+                            </Button>
+                          </Link>
+                        )}
                       </Col>
                     </Row>
                   </Row>
@@ -269,6 +289,7 @@ const UserProfile = () => {
                             </NavLink>
                           )}
                         </NavItem>
+                      
                       </Nav>
                       <TabContent activeTab={activeTab}>
                         <TabPane tabId="1" className="about">
@@ -356,6 +377,25 @@ const UserProfile = () => {
                     </l>
                   </NavLink>
                 </NavItem>
+
+                <NavItem className="tabItem">
+                <NavLink
+                    className={classnames({
+                      active: activeCoursesTab === '4',
+                    })}
+                    onClick={() => {
+                      toggleCourses('4');
+                    }}
+                  >
+                    <l className="stats">
+                      <span role="img" aria-label="list">
+                      📊
+                      </span>{' '}
+                      Statistics
+                    </l>
+                  </NavLink>
+                        </NavItem>
+
               </Nav>
             </Row>
             <Row>
@@ -423,6 +463,11 @@ const UserProfile = () => {
                     </Col>
                   )}
                 </TabPane>
+
+                <TabPane tabId="4">
+                 <UserProfileStatisticPanel/>
+                </TabPane>
+
               </TabContent>
             </Row>
           </Container>

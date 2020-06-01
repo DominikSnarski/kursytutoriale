@@ -28,6 +28,12 @@ export const CourseService = {
       `api/CoursesViewer/GetCourseDetails?courseId=${courseId}`,
     );
   },
+
+  getCourseProtected: (courseId) => {
+    return apiClient.get(
+      `api/CoursesViewer/GetCourseDetailsProtected?courseId=${courseId}`,
+    );
+  },
   addCourse: (description, ownerId, tags, price, title) => {
     return apiClient.post('/api/CourseCreator/AddCourse', {
       description,
