@@ -58,8 +58,7 @@ namespace KursyTutoriale.API.Controllers
         }
 
 
-        [Authorize]
-        [HttpGet("GetPriceWithDiscount")]
+        [HttpPost("GetPriceWithDiscount")]
         public GenericResponse<int> GetPriceWithDiscount([FromQuery]Guid Id, [FromBody] CodeDto code)
         {
             return new GenericResponse<int>(publicationService.GetPriceWithDiscountCode(Id, code.Code));
