@@ -13,6 +13,7 @@ namespace KursyTutoriale.Application.DataTransferObjects.Course
         public string Description { get; set; }
         [Required]
         public float Price { get; set; }
+        public string Image { get; set; }
         public ICollection<TagCreationDTO> Tags { get; set; }
 
     }

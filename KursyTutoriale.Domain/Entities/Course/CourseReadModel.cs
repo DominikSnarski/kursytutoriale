@@ -18,5 +18,6 @@ namespace KursyTutoriale.Domain.Entities.Course
         public ICollection<CourseTag> Tags { get; set; }
         public ICollection<CourseModuleReadModel> Modules { get; set; }
         public VerificationStamp VerificationStamp { get; set; }
+        public string Image { get; set; }
     }
 }

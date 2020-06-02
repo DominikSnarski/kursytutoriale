@@ -4,7 +4,7 @@ function Transaction({ transaction }) {
   return (
     <tbody>
       <tr>
-        <td>{transaction.amount / 100}</td>
+        <td>{transaction.amount / 100} $</td>
         <td>**** **** **** {transaction.paymentMethodDetails}</td>
         <td>{transaction.orderItemName}</td>
         <td>

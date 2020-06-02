@@ -34,13 +34,14 @@ export const CourseService = {
       `api/CoursesViewer/GetCourseDetailsProtected?courseId=${courseId}`,
     );
   },
-  addCourse: (description, ownerId, tags, price, title) => {
+  addCourse: (description, ownerId, tags, price, title, image) => {
     return apiClient.post('/api/CourseCreator/AddCourse', {
       description,
       ownerId,
       price,
       title,
       tags,
+      image,
     });
   },
   getUsersCourses: (id) => {

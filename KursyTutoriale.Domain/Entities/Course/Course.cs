@@ -27,6 +27,7 @@ namespace KursyTutoriale.Domain.Entities.Course
         public Guid OwnerId { get; set; }
         public DateTime Date { get; set; }
         public DateTime DateOfLastEdit { get; set; }
+        public string Image { get; set; }
 
         public int Popularity { get; set; }
         public double Rating { get; set; }

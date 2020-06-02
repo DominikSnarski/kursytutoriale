@@ -68,7 +68,9 @@ const CourseViewer = (props) => {
 
   const handleButtonJoinCourseClick = () => {
     if (course.price !== 0) {
-      history.push(generatePath(AppRoutes.SummaryOfPayment, { courseId: course.id }));
+      history.push(
+        generatePath(AppRoutes.SummaryOfPayment, { courseId: course.id }),
+      );
     } else {
       ParticipantService.addParticipant(course.id)
         .then(() => history.push('/'))
@@ -109,14 +111,13 @@ const CourseViewer = (props) => {
       <Jumbotron fluid className="jumbotron_courseView">
         <h1>{course.title}</h1>
       </Jumbotron>
-      <Row className="mb-4">
-        <Col sm="12" md={{ size: 6, offset: 3 }}>
-          <img
-            src="https://via.placeholder.com/480x320"
-            alt="Generic placeholder"
-          />
-        </Col>
-      </Row>
+      {course.image !== undefined && (
+        <Row className="mb-4">
+          <Col sm="12" md={{ size: 6, offset: 3 }}>
+            <img src={course.image} alt="Generic placeholder" />
+          </Col>
+        </Row>
+      )}
 
       {(isParticipating || userContext.userid === course.ownerId) && (
         <Chat courseid={course.id} username={userContext.username} />
@@ -307,19 +308,18 @@ const CourseViewer = (props) => {
           </TabContent>
         </Row>
 
-        {(userContext.authenticated &&
-          isParticipating) && (
-            <Container>
-              <Row className="d-flex justify-content-center mb-2">
-                Your progress into this course.
-              </Row>
-              <Progress
-                color="warning"
-                value={course.progress}
-                className="mb-4"
-              />
-            </Container>
-          )}
+        {userContext.authenticated && isParticipating && (
+          <Container>
+            <Row className="d-flex justify-content-center mb-2">
+              Your progress into this course.
+            </Row>
+            <Progress
+              color="warning"
+              value={course.progress}
+              className="mb-4"
+            />
+          </Container>
+        )}
 
         {userContext.userid === course.ownerId && (
           <DiscountGenerator

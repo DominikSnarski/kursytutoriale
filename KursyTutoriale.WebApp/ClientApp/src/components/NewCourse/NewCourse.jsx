@@ -17,7 +17,7 @@ import TagsSelect from './TagSelect';
 
 function NewCourse() {
   const [tags, setTags] = useState([]);
-  const [setImage] = useState('');
+  const [image, setImage] = useState('');
 
   const userContext = useContext(UserContext);
 
@@ -51,6 +51,7 @@ function NewCourse() {
       selectedTags,
       price,
       title,
+      image,
     ).then((resp) => history.push(`/courseview/${resp.data}`));
 
   const newCourseSchema = Yup.object().shape({

@@ -339,7 +339,7 @@ namespace KursyTutoriale.Application.Services
             var tagsIds = request.Tags.Select(t => t.Id).ToList();
 
             var userId = executionContext.GetUserId();
-            var @event = new CourseCreated(Guid.NewGuid(), request.Title, request.Description, userId, DateTime.UtcNow, request.Price, tagsIds);
+            var @event = new CourseCreated(Guid.NewGuid(), request.Title, request.Description, userId, DateTime.UtcNow, request.Price, tagsIds, request.Image);
 
             var course = courseRepository.HandleEvent(@event, new Course());
 
