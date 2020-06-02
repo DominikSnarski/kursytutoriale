@@ -59,6 +59,12 @@ export const CourseService = {
         .catch((error) => reject(error)),
     );
   },
+  publishCourseOnSchedule: (id, date) => {
+    return apiClient.post(`/api/PublicCourses/PublishSchedule`, {
+      dateOfPublication: date,
+      courseId: id,
+    });
+  },
   publishNewVersionOfCourse: (id) => {
     return new Promise((resolve, reject) =>
       apiClient

@@ -29,6 +29,7 @@ import Chat from './Chat';
 
 import AppRoutes from '../../routing/AppRoutes';
 import Comments from '../Comments/Comments';
+import Publication from '../Publication/Publication';
 
 const CourseViewer = (props) => {
   const history = useHistory();
@@ -68,7 +69,9 @@ const CourseViewer = (props) => {
 
   const handleButtonJoinCourseClick = () => {
     if (course.price !== 0) {
-      history.push(generatePath(AppRoutes.SummaryOfPayment, { courseId: course.id }));
+      history.push(
+        generatePath(AppRoutes.SummaryOfPayment, { courseId: course.id }),
+      );
     } else {
       ParticipantService.addParticipant(course.id)
         .then(() => history.push('/'))
@@ -366,9 +369,13 @@ const CourseViewer = (props) => {
               </Alert>
             </Row>
             <Row className="justify-content-md-center">
-              <Button
-                onClick={() => handleButtonPublishClick()}
-                text="Publish"
+              <Publication
+                onPublish={() => handleButtonPublishClick()}
+                onPublishDate={(date) => {
+                  CourseService.publishCourseOnSchedule(course.id, date)
+                    .then(() => history.push('/'))
+                    .then(() => history.push(`/courseview/${course.id}`));
+                }}
               />
             </Row>
           </Container>
