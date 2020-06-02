@@ -45,7 +45,7 @@ const NavBar = () => {
               onInputChange={(value) => {
                 return UserService.getUserProfilesByName(value);
               }}
-              placeholder="Users"
+              placeholder="Find Users..."
             />
           </NavItem>
         </Nav>
