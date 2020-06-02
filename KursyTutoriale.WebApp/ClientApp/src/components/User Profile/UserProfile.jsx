@@ -107,7 +107,7 @@ const UserProfile = () => {
     );
   }
   if (edit) {
-    return <EditProfile onEditEnd={() => setEdit(false)} />;
+    return <EditProfile user={user} onEditEnd={() => setEdit(false)} />;
   }
   return (
     <div>
@@ -293,13 +293,16 @@ const UserProfile = () => {
                       </Nav>
                       <TabContent activeTab={activeTab}>
                         <TabPane tabId="1" className="about">
-                          {user.profileDescription ??
-                            '✧(>o<)ﾉ✧ Author left no description ✧(>o<)ﾉ✧'}
+                        {console.log(user)}
+                          {user.profileDescription ?
+                            `${user.profileDescription}`:
+                            '✧(>o<)ﾉ✧ Author left no description ✧(>o<)ﾉ✧'
+                            }
                         </TabPane>
                         <TabPane tabId="2" className="contact">
                           <a>
                             {user.mail != null
-                              ? `Contact E-mail: ${user.mail}`
+                              ? `User site ${user.siteLink}`
                               : ''}
                           </a>
                         </TabPane>

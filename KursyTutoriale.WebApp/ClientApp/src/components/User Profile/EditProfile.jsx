@@ -27,9 +27,9 @@ class EditProfile extends React.Component {
     super();
 
     this.state = {
-      userName: props.username,
+      name_value: props.user.name,
       type: 'Author',
-      karma: 421,
+      karma: props.user.karma,
       courses: 93,
       karma_color: 'primary',
       courses_color: 'success',
@@ -39,7 +39,11 @@ class EditProfile extends React.Component {
       slider_val3: '',
       slider_val4: '',
       slider_val5: '',
-      imageDataUrl: '',
+      imageDataUrl: props.user.avatarPath,
+      age_value: props.user.age,
+      site_value : props.user.siteLink,
+      genderName: props.user.genderName,
+      description_value: props.user.profileDescription,
     };
     this.toggle = this.toggle.bind(this);
   }
@@ -49,7 +53,7 @@ class EditProfile extends React.Component {
       this.state.name_value,
       this.state.site_value,
       this.state.age_value,
-      '',
+      this.state.description_value,
       this.state.imageDataUrl,
     ).then(() => this.props.onEditEnd());
   };
@@ -123,6 +127,12 @@ class EditProfile extends React.Component {
     });
   }
 
+  updateDescriptionValue(event) {
+    this.setState({
+      description_value: event.target.value,
+    });
+  }
+
   render() {
     return (
       <Jumbotron className="jumbotron_bg">
@@ -131,11 +141,11 @@ class EditProfile extends React.Component {
             <Col xs="3">
               <Container>
                 <Row>
-                  <Media
-                    src="https://www.w3schools.com/howto/img_avatar.png"
-                    style={{ width: '100%', height: '100%' }}
-                    alt="Generic placeholder image"
-                  />
+                <Media
+                      src={this.state.imageDataUrl}
+                      style={{ width: '100%', height: '100%' }}
+                      alt="Generic placeholder image"
+                    />
                   <CustomInput
                     type="file"
                     label="Pick a file!"
@@ -168,6 +178,7 @@ class EditProfile extends React.Component {
                       min="0"
                       max="100"
                       step="1"
+
                     />
                   </Col>
                 </Row>
@@ -276,6 +287,7 @@ class EditProfile extends React.Component {
                               size="sm"
                               type="text"
                               placeholder="name"
+                              defaultValue={this.state.name_value}
                             />
                           </Col>
                         </Row>
@@ -287,6 +299,7 @@ class EditProfile extends React.Component {
                               size="sm"
                               type="number"
                               placeholder="age"
+                              defaultValue = {this.state.age_value}
                             />
                           </Col>
                         </Row>
@@ -298,32 +311,19 @@ class EditProfile extends React.Component {
                               size="sm"
                               type="url"
                               placeholder="site"
+                              defaultValue={this.state.site_value}
                             />
                           </Col>
                         </Row>
                         <Row className="mb-3">
-                          <Col sm="3">Birthday</Col>
+                          <Col sm="3">Description</Col>
                           <Col>
                             <Input
-                              onChange={(event) =>
-                                this.updateBirthdayValue(event)
-                              }
-                              size="sm"
-                              type="date"
-                              placeholder="birthday"
-                            />
-                          </Col>
-                        </Row>
-                        <Row className="mb-3">
-                          <Col sm="3">Gender</Col>
-                          <Col>
-                            <Input
-                              onChange={(event) =>
-                                this.updateGenderValue(event)
-                              }
+                              onChange={(event) => this.updateDescriptionValue(event)}
                               size="sm"
                               type="text"
-                              placeholder="gender"
+                              placeholder="Description"
+                              defaultValue={this.state.description_value}
                             />
                           </Col>
                         </Row>
