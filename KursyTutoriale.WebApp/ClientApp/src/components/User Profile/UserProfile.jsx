@@ -118,11 +118,20 @@ const UserProfile = () => {
               <Col xs="3">
                 <Container>
                   <Row>
-                    <Media
+                  {user.avatarPath != null &&(
+                    <Media    
                       src={user.avatarPath}
                       style={{ width: '100%', height: '100%' }}
                       alt="Generic placeholder image"
                     />
+                    )}
+                    {user.avatarPath === null &&(
+                    <Media    
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      style={{ width: '100%', height: '100%' }}
+                      alt="Generic placeholder image"
+                    />
+                    )}
                   </Row>
                   <Row className="mb-3">
                     <Col style={{ textAlign: 'center' }}>
