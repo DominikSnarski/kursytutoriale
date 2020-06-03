@@ -111,6 +111,10 @@ export const CourseService = {
       `/api/CourseCreator/SendToVerification?CourseId=${courseId}`,
     );
   },
+
+  searchCourses: (phrase) => {
+    return apiClient.get(`/api/Search/GetCourseSearch?phrase=${phrase}`);
+  },
 };
 
 export default CourseService;

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using KursyTutoriale.Application.DataTransferObjects.Course;
+using KursyTutoriale.Application.DataTransferObjects.NewCourse;
 using KursyTutoriale.Application.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KursyTutoriale.API.Controllers
@@ -26,9 +23,9 @@ namespace KursyTutoriale.API.Controllers
         /// <param name="totalNumberOfResults">the maximum number of results to be returned</param>
         /// <returns>and object containing the list of items</returns>
         [HttpGet("GetCourseSearch")]
-        public IEnumerable<CourseBasicInformationsDTO> GetCourseSearch(string phrase, int totalNumberOfResults)
+        public IEnumerable<CoursePageItemDTO> GetCourseSearch(string phrase)
         {
-            return searchService.Search(phrase, totalNumberOfResults);
+            return searchService.Search(phrase);
         }
     }
 }

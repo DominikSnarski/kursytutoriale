@@ -1,4 +1,3 @@
-
 const AppRoutes = {
   Signin: '/signin',
   EditProfile: '/editprofile',
@@ -26,6 +25,7 @@ const AppRoutes = {
   ConfirmEmail: '/confirmEmail',
   ChangePassword: '/changePassword',
   ForgotPassword: '/forgotPassword',
+  CourseSearch: '/search',
 };
 
 export default AppRoutes;
