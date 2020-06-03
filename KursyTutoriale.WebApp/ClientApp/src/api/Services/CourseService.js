@@ -1,23 +1,28 @@
 import apiClient from '../ApiClient';
 
 export const CourseService = {
+  getCoursePages: (firstPage) => {
+    return apiClient.get('api/CoursesViewer/GetNumberOfCourses').then(
+      (response) => {
+        const nrOfPages = Math.ceil(response.data / 4) - 1;
 
-
-  getNumberOfCourses: () => {
-    return apiClient.get('api/CoursesViewer/GetNumberOfCourses')
-    .then((res) => {
-      return new Promise((reso) => reso(res.data));
-    });
+        return new Promise((resolve) =>
+          resolve(
+            apiClient
+              .get(
+                `api/CoursesViewer/GetPagesOfCourses?firstPageNumber=${firstPage}&lastPageNumber=${nrOfPages}&pageSize=1`,
+              )
+              .then((res) => {
+                return new Promise((reso) => reso(res.data));
+              }),
+          ),
+        );
+      },
+      (error) => {
+        return new Promise((resolve, reject) => reject(error));
+      },
+    );
   },
-
-      getCoursePages: (firstPage,lastPage) =>
-      new Promise((resolve, reject) =>
-        apiClient
-          .get(`api/CoursesViewer/GetPagesOfCourses?firstPageNumber=${firstPage}&lastPageNumber=${lastPage}&pageSize=1`)
-          .then((res) => resolve(res.data))
-          .catch((error) => reject(error)),
-      ),
-
   getCourse: (courseId) => {
     return apiClient.get(
       `api/CoursesViewer/GetCourseDetails?courseId=${courseId}`,

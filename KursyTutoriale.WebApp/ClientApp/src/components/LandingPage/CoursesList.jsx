@@ -24,8 +24,6 @@ class CoursesList extends React.Component {
       showFilters: false,
       error: false,
       courseID: '',
-      numberOfCourses: 0,
-      numberOfPages:2,
     };
     // an example array of items to be paged
     // bind function in constructor instead of render
@@ -37,16 +35,11 @@ class CoursesList extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ isLoading: true});
+    this.setState({ isLoading: true });
 
-    CourseService.getNumberOfCourses().then((data) => {
-      this.setState({ numberOfCourses: data, numberOfPages: Math.ceil(data/4)});
-
-
-    CourseService.getCoursePages(0, data).then((_data) => {
-      this.setState({ exampleItems: _data, isLoading: false });
+    CourseService.getCoursePages(0, 4).then((data) => {
+      this.setState({ exampleItems: data, isLoading: false });
     });
-  });
 
     // apiClient.fetchCourses(0,4, this);
   }
