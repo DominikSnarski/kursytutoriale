@@ -433,7 +433,7 @@ namespace KursyTutoriale.Application.Services
         /// </returns>
         public int GetNumberOfCourses()
         {
-            var query = courseRepository.Queryable();
+            var query = publicationRepository.Queryable();
             return query.Count();
         }
 
