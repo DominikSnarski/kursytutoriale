@@ -191,15 +191,6 @@ const UserProfile = () => {
                         <l className="name">Author</l>
                       </Col>
                       <Col>
-                        <Button color="warning" className="float-right">
-                          <span role="img" aria-label="text-bubble">
-                            💬
-                          </span>{' '}
-                          Send message
-                        </Button>
-                        <Button color="warning" className="float-right">
-                          Follow
-                        </Button>
                         {userid == userContext.userid && (
                           <Button
                             color="warning"
