@@ -41,6 +41,7 @@ import SurveyList from './components/Courses/Survey/SurveyList';
 import ConfirmEmail from './components/User Profile/ConfirmEmail';
 import ForgotPassword from './components/Auth/ForgotPassword';
 import ChangePassword from './components/Auth/ChangePassword';
+import CourseSearchView from './components/Courses/Search/CourseSearchView';
 
 const App = () => {
   const [userContext, setUserContext] = useState(
@@ -219,16 +220,22 @@ const App = () => {
                 component={ConfirmEmail}
                 layout={MainLayout}
               />
-                <AppRoute
+              <AppRoute
                 exact
                 path={AppRoutes.ForgotPassword}
                 component={ForgotPassword}
                 layout={MainLayout}
               />
-                <AppRoute
+              <AppRoute
                 exact
                 path={AppRoutes.ChangePassword}
                 component={ChangePassword}
+                layout={MainLayout}
+              />
+              <AppRoute
+                exact
+                path={AppRoutes.CourseSearch}
+                component={CourseSearchView}
                 layout={MainLayout}
               />
               <Route component={notfound} layout={MainLayout} />

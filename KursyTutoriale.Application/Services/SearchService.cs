@@ -8,89 +8,56 @@ using System.Linq;
 using KursyTutoriale.Application.DataTransferObjects.Course;
 using KursyTutoriale.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
+using KursyTutoriale.Application.DataTransferObjects.NewCourse;
+using KursyTutoriale.Domain.Repositories;
+using KursyTutoriale.Domain.Entities.CoursePublication;
 
 namespace KursyTutoriale.Application.Services
 {
     public interface ISearchService
     {
-        public IEnumerable<CourseBasicInformationsDTO> Search(string phrase, int totalNumberOfResults);
+        public IEnumerable<CoursePageItemDTO> Search(string phrase);
     }
 
     public class SearchService : ISearchService
     {
         ICourseRepository coursesRepository;
         IDTOMapper mapper;
+        private IExtendedRepository<CoursePublicationProfile> publicationRepository;
         public SearchService(
             ICourseRepository coursesRepository,
-            IDTOMapper mapper)
+            IDTOMapper mapper,
+            IExtendedRepository<CoursePublicationProfile> publicationRepository)
         {
             this.coursesRepository = coursesRepository;
             this.mapper = mapper;
+            this.publicationRepository = publicationRepository;
         }
 
-        protected class WeightDecorator
+        public IEnumerable<CoursePageItemDTO> Search(string phrase)
         {
-            public WeightDecorator(CourseReadModel course) {
-                this.course = course;
-                weight = 0;
-            }
-            public CourseReadModel course;
-            public double weight;
-            public void AddWeight(double w) { weight += w; }
-            public CourseReadModel unpack() { return course; }
-        }
+            try
+            {
+                var courseIds = publicationRepository.Queryable()
+                                    .Select(p => p.CourseId)
+                                    .ToList();
 
-        public IEnumerable<CourseBasicInformationsDTO> Search(string phrase, int totalNumberOfResults)
-        {
-            var query = coursesRepository.Queryable()
-                .Include(c => c.Modules)
-                    .ThenInclude(m => m.Lessons)
-                .Include(c => c.Tags)
-                .Where(c => c.Title.ToUpper().Contains(phrase.ToUpper()) ||
-                            // check if any of the modules contain the searched phrase
-                            c.Modules.TakeWhile(t => !t.Title.ToUpper().Contains(phrase.ToUpper())).Count() != c.Modules.Count());
-            if (query.Count() == 0) return null;
-            else if (totalNumberOfResults > query.Count())
-                return mapper.Map<IEnumerable<CourseBasicInformationsDTO>>(query.AsEnumerable());
+                var courses = coursesRepository.Queryable()
+                    .Include(c => c.Modules)
+                    .Where(c => courseIds.Contains(c.Id) && 
+                           (c.Title.ToUpper().Contains(phrase.ToUpper()) ||
+                            c.Modules.Any(m => m.Title.ToUpper().Contains(phrase))))
+                    .Include(c => c.Tags)
+                        .ThenInclude(t => t.Tag)
+                    .ToList();
 
-            List<WeightDecorator> searchList = new List<WeightDecorator>();
-            foreach (CourseReadModel course in query)
-            {
-                searchList.Add(new WeightDecorator(course));
+                return mapper.Map<List<CoursePageItemDTO>>(courses);
             }
-            var mostPopular = searchList.OrderByDescending(c => c.course.Popularity)
-                .ThenBy(c => c.course.Rating).First();
-            double maxRating = mostPopular.course.Rating <= 0 ? mostPopular.course.Rating : 0.01f;
-            double maxPopularity = mostPopular.course.Popularity <= 0 ? mostPopular.course.Popularity : 0.01f;
-            foreach (WeightDecorator item in searchList)
+            catch (SqlException)
             {
-                // add weight based on the popularity <0,15>
-                item.AddWeight((item.course.Popularity / maxPopularity) * 15);
-                // add weight based on the ratings <0,15>
-                item.AddWeight((item.course.Rating / maxRating) * 15);
-                double moduleWeight = 7f / 2;
-                double lessonWeight = 7f / 4;
-                if (item.course.Title.ToUpper().Contains(phrase.ToUpper()))
-                    item.AddWeight(10);
-                foreach (CourseModuleReadModel module in item.course.Modules)
-                {
-                    if (module.Title.ToUpper().Contains(phrase.ToUpper()))
-                        item.AddWeight(moduleWeight /= 3f / 2);
-                    foreach (LessonReadModel lesson in module.Lessons)
-                    {
-                        if (lesson.Title.ToUpper().Contains(phrase.ToUpper()))
-                            item.AddWeight(lessonWeight /= 3f / 2);
-                    }
-                }
+                return new List<CoursePageItemDTO>();
             }
-            List<CourseBasicInformationsDTO> results = new List<CourseBasicInformationsDTO>();
-            foreach (WeightDecorator item in searchList
-                .OrderByDescending(c => c.weight)
-                .Take(totalNumberOfResults))
-            {
-                results.Add(mapper.Map<CourseBasicInformationsDTO>(item.unpack()));
-            };
-            return results.AsEnumerable();
         }
     }
     public class SearchResult
