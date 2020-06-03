@@ -20,6 +20,6 @@ namespace KursyTutoriale.Application.DataTransferObjects.Course
         public int Progress { get; set; }
         public ICollection<string> Tags { get; set; }
         public List<CourseModuleBasicInformationsDTO> Modules { get; set; }
-
+        public string Image { get; set; }
     }
 }

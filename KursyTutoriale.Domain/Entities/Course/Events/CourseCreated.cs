@@ -13,7 +13,8 @@ namespace KursyTutoriale.Domain.Entities.Course.Events
             Guid ownerId,
             DateTime date,
             float price,
-            ICollection<Guid> tags) : base(entityId)
+            ICollection<Guid> tags,
+            string image) : base(entityId)
         {
             Title = title;
             Description = description;
@@ -21,6 +22,7 @@ namespace KursyTutoriale.Domain.Entities.Course.Events
             Date = date;
             Price = price;
             Tags = tags;
+            Image = image;
         }
 
         public Guid DefaultModuleId { get;  set; }
@@ -32,6 +34,7 @@ namespace KursyTutoriale.Domain.Entities.Course.Events
         public DateTime Date { get; private set; }
         public float Price { get; private set; }
         public ICollection<Guid> Tags { get; private set; }
+        public string Image { get; set; }
 
         public override Course Apply(Course entity)
         {
@@ -43,7 +46,8 @@ namespace KursyTutoriale.Domain.Entities.Course.Events
                 Price = Price,
                 Tags = Tags,
                 OwnerId = OwnerId,
-                VerificationStamp = new VerificationStamp()
+                VerificationStamp = new VerificationStamp(),
+                Image = Image
             };
 
             return entity;

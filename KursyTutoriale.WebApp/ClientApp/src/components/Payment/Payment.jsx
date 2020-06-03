@@ -5,7 +5,15 @@ import { useHistory, useParams } from 'react-router-dom';
 import { PaymentService } from '../../api/Services/PaymentService';
 
 // eslint-disable-next-line
-import { Form, FormGroup, Row, Col, Container, TabContent, TabPane, Label } from 'reactstrap';
+import {
+  Form,
+  FormGroup,
+  Row,
+  Col,
+  Container,
+  TabContent,
+  TabPane,
+} from 'reactstrap';
 
 import Button from '../../layouts/CSS/Button/Button';
 import Input from '../../layouts/CSS/InputField/InputField';
@@ -114,7 +122,7 @@ function Payment() {
       formData.get('expirationDateMonth'),
       formData.get('expirationDateYear'),
       formData.get('cvv'),
-      formData.addToList,
+      addToList,
     ).then(() => {
       history.push(`/courseview/${courseId}`);
     });
@@ -125,43 +133,39 @@ function Payment() {
       <div>
         <Row className="mt-2">
           <Col>
-            <Button 
-              text="Select from my cards" 
+            <Button
+              text="Select from my cards"
               onClick={() => setSelect(!select)}
             />
             {select === true && (
               <TabContent>
                 <TabPane>
-                  <Cards 
-                     deleteable={false}
-                     courseId={courseId}
-                  />
-                  
-                <FormGroup className="mt-2">
-                <Row className="mt-2">
-                <Col>
-                  Select option:
-                  <Input
-                    type="text"
-                    name="name"
-                    id="name"
-                    className="input_field"
-                    onChange={handleTextChange}
-                  />
-                </Col>
-                </Row>
-                </FormGroup>
+                  <Cards deleteable={false} courseId={courseId} />
 
+                  <FormGroup className="mt-2">
+                    <Row className="mt-2">
+                      <Col>
+                        Select option:
+                        <Input
+                          type="text"
+                          name="name"
+                          id="name"
+                          className="input_field"
+                          onChange={handleTextChange}
+                        />
+                      </Col>
+                    </Row>
+                  </FormGroup>
                 </TabPane>
               </TabContent>
-              )}
+            )}
           </Col>
         </Row>
       </div>
 
       <Form onSubmit={(e) => handleSubmit(e)}>
         <Row></Row>
-        
+
         <Row className="mt-2">
           <Col>
             <FormGroup className="mt-2">
