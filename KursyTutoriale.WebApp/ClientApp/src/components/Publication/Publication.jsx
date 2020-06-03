@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import { FormGroup, Label, Input, Container } from 'reactstrap';
 import DateTimePicker from 'react-datetime-picker';
+import Button from '../../layouts/CSS/Button/Button';
 
 const Publication = (props) => {
   const [checked, setChecked] = useState(0);
   const [date, setDate] = useState(new Date());
+
+  const publish = () => {
+    if (checked === 0) props.onPublish();
+    else if (checked === 1) props.onPublishDate(date);
+  };
 
   const checkedChanged = () => {
     setChecked(0);
@@ -21,19 +27,16 @@ const Publication = (props) => {
   return (
     <Container>
       <FormGroup>
-        <legend>
-          What do you want to do with course after positive verification?
-        </legend>
         <FormGroup check>
           <Label check>
             <Input type="radio" name="radio1" onChange={checkedChanged} />{' '}
-            Publish it immediately
+            Publish it
           </Label>
         </FormGroup>
         <FormGroup check>
           <Label check>
             <Input type="radio" name="radio1" onChange={checkedChanged1} />
-            Publish it at a specific moment
+            Publish it on date
           </Label>
         </FormGroup>
         {checked === 1 && (
@@ -47,9 +50,10 @@ const Publication = (props) => {
         <FormGroup check>
           <Label check>
             <Input type="radio" name="radio1" onChange={checkedChanged2} />
-            Don't publish it
+            {"Don't publish it"}
           </Label>
         </FormGroup>
+        <Button onClick={() => publish()} text="Publish" />
       </FormGroup>
     </Container>
   );

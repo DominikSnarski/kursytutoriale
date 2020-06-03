@@ -38,7 +38,7 @@ const Search = (props) => {
         options={options}
         onChange={handleChange}
         onInputChange={handleInputChange}
-        placeholder={props.place}
+        placeholder={props.placeholder}
         openMenuOnClick={false}
         className="bar"
       />

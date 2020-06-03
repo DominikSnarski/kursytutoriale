@@ -1,5 +1,6 @@
 ﻿using KursyTutoriale.API.Models.Publication;
 using KursyTutoriale.API.Responses;
+using KursyTutoriale.Application.DataTransferObjects.Course.Publication;
 using KursyTutoriale.Application.DataTransferObjects.Payments;
 using KursyTutoriale.Application.Services.CoursePublication;
 using Microsoft.AspNetCore.Authorization;
@@ -17,7 +18,9 @@ namespace KursyTutoriale.API.Controllers
     {
         private IPublicationService publicationService;
 
-        public PublicCoursesController(IPublicationService publicationService)
+        public PublicCoursesController(
+            IPublicationService publicationService
+            )
         {
             this.publicationService = publicationService;
         }
@@ -27,6 +30,15 @@ namespace KursyTutoriale.API.Controllers
         public IActionResult PublishCourse(Guid Id)
         {
             publicationService.PublishCourse(Id);
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPost("PublishSchedule")]
+        public IActionResult PublishCourse([FromBody] PublicationScheduleRequestDTO request)
+        {
+            publicationService.SchedulePublication(request.DateOfPublication,request.CourseId);
 
             return Ok();
         }

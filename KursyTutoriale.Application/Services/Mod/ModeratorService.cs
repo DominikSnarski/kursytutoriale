@@ -153,7 +153,6 @@ namespace KursyTutoriale.Application.Services.Mod
             report.ResolverComment = resolverComment;
 
             reportRepository.Update(report);
-            var result = await unitOfWork.SaveChangesAsync();
         }
         
         /// <summary>

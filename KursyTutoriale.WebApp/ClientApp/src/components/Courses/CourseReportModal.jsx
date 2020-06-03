@@ -1,6 +1,5 @@
 import {
   Spinner,
-  Button,
   Modal,
   ModalHeader,
   ModalBody,
@@ -12,6 +11,7 @@ import {
 import React, { useState, useEffect } from 'react';
 import './style.css';
 import { ReportService } from '../../api/Services/ReportService';
+import Button from '../../layouts/CSS/Button/Button';
 
 const CourseReportModal = (props) => {
   const [reportCodes, setReportCodes] = useState([]);
@@ -66,10 +66,13 @@ const CourseReportModal = (props) => {
           </FormGroup>
           <ModalFooter>
             <FormGroup>
-              <Button type="submit" color="success" onClick={props.toggle}>
-                Send
-              </Button>{' '}
-              <Button color="warning" onClick={props.toggle}>
+              <Button
+                type="submit"
+                color="success"
+                onClick={props.toggle}
+                text="Send"
+              ></Button>{' '}
+              <Button color="warning" onClick={props.toggle} text="Cancel">
                 Cancel
               </Button>
             </FormGroup>
