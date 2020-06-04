@@ -92,9 +92,11 @@ function LessonsList(props) {
                 pathname: AppRoutes.CreateLesson,
                 state: {
                   courseTitle: props.courseTitle,
+                  lessons: [],
                   courseid: props.courseid,
                   moduleid: props.moduleid,
                   lessonNumber: props.lessons.length,
+                  isEdited: false
                 },
               }}
             >

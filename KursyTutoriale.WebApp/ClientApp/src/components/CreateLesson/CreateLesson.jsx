@@ -169,10 +169,13 @@ function LessonEdit(props) {
     <Container fluid>
       <Formik
         initialValues={{
-          title: props.location.state.lessons[props.location.state.index].title,
-          description:
-            props.location.state.lessons[props.location.state.index]
-              .description,
+          title: !props.location.state.isEdited
+            ? ''
+            : props.location.state.lessons[props.location.state.index].title,
+          description: !props.location.state.isEdited
+            ? ''
+            : props.location.state.lessons[props.location.state.index]
+                .description,
         }}
         validationSchema={newLessonSchema}
         onSubmit={(values) => handleSubmit(values)}
